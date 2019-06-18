@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.RegisterPage"
+             Title="Register">
+    <ContentPage.BindingContext>
+        <viewModels:RegisterViewModel></viewModels:RegisterViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <Entry Text="{Binding Email}" Placeholder="Email"></Entry>
+            <Entry Text="{Binding Password}" Placeholder="Password" IsPassword="True"></Entry>
+            <Entry Text="{Binding ConfirmPassword}" Placeholder="Confirm Password" IsPassword="True"></Entry>
+            <Button Command="{Binding RegisterCommand}" Text="Register"></Button>
+            <Label Text="{Binding Message}"></Label>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

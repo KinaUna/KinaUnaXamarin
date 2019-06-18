@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+       mc:Ignorable="d"
+       xmlns:controls="clr-namespace:KinaUnaXamarin.Controls"
+       xmlns:models="clr-namespace:KinaUnaXamarin.Models"
+       xmlns:views="clr-namespace:KinaUnaXamarin.Views"
+       Title="Kina Una Mobile"
+       FlyoutHeaderBehavior="CollapseOnScroll"
+       x:Class="KinaUnaXamarin.AppShell"
+       Visual="Material"
+       FlyoutBackgroundColor="#4A1081">
+
+    <Shell.Resources>
+        <Style x:Key="BaseStyle" 
+               TargetType="Element">
+            <Setter Property="Shell.BackgroundColor" 
+                    Value="#3A2051" />
+            <Setter Property="Shell.ForegroundColor" 
+                    Value="White" />
+            <Setter Property="Shell.TitleColor" 
+                    Value="White" />
+            <Setter Property="Shell.DisabledColor" 
+                    Value="#B4FFFFFF" />
+            <Setter Property="Shell.UnselectedColor" 
+                    Value="#95FFFFFF" />
+            <Setter Property="Shell.TabBarBackgroundColor"
+                    Value="#6A3091" />
+            <Setter Property="Shell.TabBarTitleColor"
+                    Value="White" />
+            <Setter Property="Shell.TabBarUnselectedColor"
+                    Value="#B4FFFFFF" />
+        </Style>
+        <Style TargetType="ShellItem" 
+               BasedOn="{StaticResource BaseStyle}" />
+
+        <Style TargetType="FlyoutItem" 
+               BasedOn="{StaticResource BaseStyle}">
+        </Style>
+    </Shell.Resources>
+    
+    <Shell.FlyoutHeader>
+        <controls:FlyoutHeader />
+    </Shell.FlyoutHeader>
+
+    <Shell.ItemTemplate>
+        <DataTemplate>
+            <Grid Margin="10" x:Name="FlyoutItemGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Icon}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="18" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"></Label>
+                <Label Grid.Row="0" Grid.Column="1" Text ="{Binding Title}" FontSize="18" TextColor="White" HorizontalTextAlignment="Start" VerticalTextAlignment="Center"></Label>
+            </Grid>
+        </DataTemplate>
+    </Shell.ItemTemplate>
+    <FlyoutItem Title="Home" x:Name="HomeFlyoutItem"
+                Icon="{x:Static models:IconFont.Home}">
+        <Tab>
+            <ShellContent Title="Home"
+                          Icon="{x:Static models:IconFont.Home}"
+                          Route="home"
+                          ContentTemplate="{DataTemplate views:HomePage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Timeline" x:Name="TimelineFlyoutItem"
+                Icon="{x:Static models:IconFont.Update}">
+        <Tab>
+            <ShellContent Title="Timeline"
+                          Icon="{x:Static models:IconFont.Update}"
+                          Route="timeline"
+                          ContentTemplate="{DataTemplate views:TimelinePage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="Settings" x:Name="SettingsFlyoutItem"
+                Icon="{x:Static models:IconFont.Settings}">
+        <Tab Title="About" x:Name="AboutTabItem"
+             Icon="{x:Static models:IconFont.InformationOutline}"
+             Route="about">
+            <ShellContent ContentTemplate="{DataTemplate views:AboutPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="Account" x:Name="AccountTabItem"
+             Icon="{x:Static models:IconFont.AccountCircle}"
+             Route="account">
+            <ShellContent ContentTemplate="{DataTemplate views:AccountPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+</Shell>

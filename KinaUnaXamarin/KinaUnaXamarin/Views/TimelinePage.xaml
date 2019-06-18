@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dataTemplates="clr-namespace:KinaUnaXamarin.DataTemplates;assembly=KinaUnaXamarin"
+             xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.TimelinePage"
+             Title="Timeline"
+             Visual="Material">
+    <ContentPage.BindingContext>
+        <viewModels:TimelineFeedViewModel></viewModels:TimelineFeedViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
+                     Clicked="ReloadToolbarButton_OnClicked" />
+        <ToolbarItem Text="Add" IconImageSource="addicon.png"></ToolbarItem>
+        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="PhotoTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#326EBE" Margin="10" Padding="10" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="440"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Source="photosicon.png"></Image>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
+                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               HeightRequest="440"
+                                               RetryCount="3"
+                                               Source = "{Binding ItemObject.PictureLink600}">
+                            </forms:CachedImage>
+                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
+                        </Grid>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="PhotoTemplateLandscape">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#326EBE" Margin="10" Padding="10" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="250"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Source="photosicon.png"></Image>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
+                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               HeightRequest="250"
+                                               RetryCount="3"
+                                               Source = "{Binding ItemObject.PictureLink600}">
+                            </forms:CachedImage>
+                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
+                        </Grid>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="VideoTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="MediumVioletRed" Margin="10" Padding="10" >
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="250"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Source="videosicon.png"></Image>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
+                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               HeightRequest="250"
+                                               RetryCount="3"
+                                               Source = "{Binding ItemObject.ThumbLink}">
+                            </forms:CachedImage>
+                        </Grid>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="CalendarTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Source="calendaricon.png"></Image>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                            <Label Grid.Row="2" Grid.Column="1"  Text="Location: " TextColor="White"></Label>
+                            <Label Grid.Row="2" Grid.Column="2"  Text="{Binding ItemObject.Location}" TextColor="White"></Label>
+                        </Grid>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="LocationTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="locationsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
+                            <Label Text="{Binding ItemObject.Latitude}" TextColor="White"></Label>
+                            <Label Text="{Binding ItemObject.Longitude}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="VocabularyTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="vocabularyicon.png"></Image>
+                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.Word}" TextColor="White"></Label>
+                            <Label Text="{Binding ItemObject.Language}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="SkillTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="skillsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="FriendTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="BlueViolet" Margin="10" Padding="10" HeightRequest="350">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="friendsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.FriendsSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
+                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
+                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               HeightRequest="120"
+                                               RetryCount="3"
+                                               Source = "{Binding ItemObject.PictureLink}">
+                            </forms:CachedImage>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="MeasurementTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="DarkRed" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="measurementsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Weight: "></Label>
+                                <Label Text="{Binding ItemObject.Weight}" TextColor="White"></Label>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="Height: "></Label>
+                                <Label Text="{Binding ItemObject.Height}" TextColor="White"></Label>
+                            </StackLayout>
+                            
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="SleepTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="DarkGreen" Margin="10" Padding="10">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="25"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="25"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Row="0" Grid.Column="0" Source="sleepicon.png"></Image>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.EndString}" TextColor="White"></Label>
+                        </Grid>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="NoteTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="DarkOliveGreen" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10" >
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="notesicon.png"></Image>
+                                <Label Text="{Binding ItemObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                            <WebView HeightRequest="170"><WebView.Source><HtmlWebViewSource Html="{Binding ItemObject.Content}"></HtmlWebViewSource></WebView.Source></WebView>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="ContactTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="Purple" Margin="10" Padding="10" HeightRequest="350">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="contactsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.DisplayName}" TextColor="White"></Label>
+                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
+                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                               HeightRequest="120"
+                                               RetryCount="3"
+                                               Source = "{Binding ItemObject.PictureLink}">
+                            </forms:CachedImage>
+                            <Label Text="{Binding ItemObject.Context}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="VaccinationTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <StackLayout Orientation="Horizontal">
+                                <Image Source="vaccinationsicon.png"></Image>
+                                <Label Text="{Binding ItemObject.VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            </StackLayout>
+                            <Label Text="{Binding ItemObject.VaccinationName}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="DateHeaderTemplate">
+                <ViewCell>
+                    <Frame Margin="-5, 25, -5, 0" Padding="10" HeightRequest="30">
+                        <Label Text="{Binding ItemObject.DateText}" TextColor="DimGray" FontSize="16" FontAttributes="Bold"></Label>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <DataTemplate x:Key="InvalidTemplate">
+                <ViewCell>
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                        <StackLayout Orientation="Vertical" Padding="10">
+                            <Label Text="{Binding ItemObject.CreatedDate}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                        </StackLayout>
+                    </Frame>
+                </ViewCell>
+            </DataTemplate>
+            <dataTemplates:TimeLineTemplateSelector 
+                x:Key="TimeLineTemplateSelector"
+                PhotoTemplate="{StaticResource PhotoTemplate}"
+                PhotoTemplateLandscape="{StaticResource PhotoTemplateLandscape}"
+                VideoTemplate="{StaticResource VideoTemplate}"
+                CalendarTemplate="{StaticResource CalendarTemplate}"
+                LocationTemplate="{StaticResource LocationTemplate}"
+                VocabularyTemplate="{StaticResource VocabularyTemplate}"
+                SkillTemplate="{StaticResource SkillTemplate}"
+                FriendTemplate="{StaticResource FriendTemplate}"
+                MeasurementTemplate="{StaticResource MeasurementTemplate}"
+                SleepTemplate="{StaticResource SleepTemplate}"
+                NoteTemplate="{StaticResource NoteTemplate}"
+                ContactTemplate="{StaticResource ContactTemplate}"
+                VaccinationTemplate="{StaticResource VaccinationTemplate}"
+                DateHeaderTemplate="{StaticResource DateHeaderTemplate}"
+                InvalidTemplate="{StaticResource InvalidTemplate}">
+            </dataTemplates:TimeLineTemplateSelector>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="Log in or Register"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
+                <Label Text="Show timeline before:"></Label>
+                <DatePicker x:Name="TimelineStartDatePicker" MinimumDate="{Binding Progeny.BirthDay}" Format="dd MMM yyyy" DateSelected="TimelineStartDatePicker_OnDateSelected"></DatePicker>
+            </StackLayout>
+            <!--<CollectionView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}" Margin="0" ItemSizingStrategy="MeasureAllItems"  >
+            </CollectionView>-->
+            <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
+                      Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement" >
+            </ListView>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
