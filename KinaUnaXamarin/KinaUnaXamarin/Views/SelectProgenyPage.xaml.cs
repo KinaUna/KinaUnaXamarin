@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using FFImageLoading;
 using KinaUnaXamarin.Models.KinaUna;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -57,6 +58,7 @@ namespace KinaUnaXamarin.Views
                 if (progeny.NickName == (selected as Progeny)?.NickName)
                 {
                     childId = progeny.Id;
+                    await SecureStorage.SetAsync(Constants.UserViewChildKey, childId.ToString());
                 }
 
                 var networkAccess = Connectivity.NetworkAccess;
@@ -66,19 +68,18 @@ namespace KinaUnaXamarin.Views
                     string documentsPath = FileSystem.CacheDirectory;
                     string localFilename = "progenyprofile" + progeny.Id + ".jpg";
                     string progenyProfileFile = Path.Combine(documentsPath, localFilename);
-                    var webClient = new WebClient();
-                    webClient.DownloadDataCompleted += (s, ev) => {
-                            var bytes = ev.Result; // get the downloaded data
+                    ImageService.Instance.LoadUrl(progeny.PictureLink).DownSample(height: 60, allowUpscale: true).Preload();
+                    //var webClient = new WebClient();
+                    //webClient.DownloadDataCompleted += (s, ev) => {
+                    //        var bytes = ev.Result; // get the downloaded data
 
-                            File.WriteAllBytes(progenyProfileFile, bytes); // writes to local storage
-                    };
-                    var progenyProfileUrl = new Uri(progeny.PictureLink);
-                    webClient.DownloadDataAsync(progenyProfileUrl);
+                    //        File.WriteAllBytes(progenyProfileFile, bytes); // writes to local storage
+                    //};
+                    //var progenyProfileUrl = new Uri(progeny.PictureLink);
+                    //webClient.DownloadDataAsync(progenyProfileUrl);
                 }
-                
             }
             
-            await SecureStorage.SetAsync(Constants.UserViewChildKey, childId.ToString());
             MessagingCenter.Send(this, "Reload");
             await Shell.Current.Navigation.PopModalAsync();
         }

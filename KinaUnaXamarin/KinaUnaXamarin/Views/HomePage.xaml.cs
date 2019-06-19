@@ -150,7 +150,7 @@ namespace KinaUnaXamarin.Views
             {
                 _feedModel.IsLoggedIn = true;
                 _feedModel.LoggedOut = false;
-                _userInfo = await UserService.GetUserInfo(userEmail, _online);
+                _userInfo = await UserService.GetUserInfo(userEmail);
             }
 
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
@@ -184,7 +184,7 @@ namespace KinaUnaXamarin.Views
             {
                 _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
             }
-            Progeny progeny = await ProgenyService.GetProgeny(_viewChild, _online);
+            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
@@ -195,14 +195,14 @@ namespace KinaUnaXamarin.Views
             }
             _feedModel.Progeny = progeny;
 
-            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail, _online);
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _feedModel.ProgenyCollection.Clear();
             foreach (Progeny prog in progenyList)
             {
                 _feedModel.ProgenyCollection.Add(prog);
             }
 
-            _feedModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild, _online);
+            _feedModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
         }
         
 
@@ -267,7 +267,7 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateEvents()
         {
             _feedModel.EventsList = new List<CalendarItem>();
-            List<CalendarItem> eventsList = await ProgenyService.GetUpcommingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _online);
+            List<CalendarItem> eventsList = await ProgenyService.GetUpcommingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
             int eventListCurrent = 0;
             UpcomingEventsStatckLayout.IsVisible = false;
             EventFrame0.IsVisible = false;
@@ -328,15 +328,15 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateTimeLine()
         {
             _feedModel.LatestPosts = new List<TimeLineItem>();
-            // _feedModel.TimeLineItems.Clear();
-            _feedModel.LatestPosts = await ProgenyService.GetLatestPosts(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _userInfo.Timezone, _online);
+            _feedModel.TimeLineItems.Clear();
+            _feedModel.LatestPosts = await ProgenyService.GetLatestPosts(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _userInfo.Timezone);
             
 
             LatestPostsStackLayout.IsVisible = false;
             if (_feedModel.LatestPosts.Any())
             {
                 LatestPostsStackLayout.IsVisible = true;
-                _feedModel.TimeLineItems.ReplaceRange(_feedModel.LatestPosts);
+                _feedModel.TimeLineItems.AddRange(_feedModel.LatestPosts);
             }
         }
 

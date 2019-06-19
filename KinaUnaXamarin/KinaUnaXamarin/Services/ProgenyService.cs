@@ -20,8 +20,16 @@ namespace KinaUnaXamarin.Services
 {
     public static class ProgenyService
     {
-        public static async Task<Progeny> GetProgeny(int progenyId, bool online = true)
+        public static bool Online()
         {
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            return internetAccess;
+        }
+
+        public static async Task<Progeny> GetProgeny(int progenyId)
+        {
+            bool online = Online();
             if (!online)
             {
 
@@ -115,8 +123,9 @@ namespace KinaUnaXamarin.Services
         }
 
         
-        public static async Task<List<Progeny>> GetProgenyList(string userEmail, bool online = true)
+        public static async Task<List<Progeny>> GetProgenyList(string userEmail)
         {
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -172,8 +181,9 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<int> GetAccessLevel(int progenyId, bool online = true)
+        public static async Task<int> GetAccessLevel(int progenyId)
         {
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -249,6 +259,13 @@ namespace KinaUnaXamarin.Services
 
         public static async Task<Picture> GetRandomPicture(int progenyId, int userAccessLevel, string userTimeZone)
         {
+            bool online = Online();
+            if (!online)
+            {
+                return OfflineDefaultData.DefaultPicture;
+                // Todo: Replace with random picture from cached data.
+
+            }
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
@@ -332,8 +349,9 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<CalendarItem>> GetUpcommingEventsList(int progenyId, int accessLevel, bool online = true)
+        public static async Task<List<CalendarItem>> GetUpcommingEventsList(int progenyId, int accessLevel)
         {
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -390,8 +408,9 @@ namespace KinaUnaXamarin.Services
         }
 
         
-        public static async Task<List<TimeLineItem>> GetTimeLine(int progenyId, int accessLevel, int count, int start, string timezone, DateTime startTime, string lastItemDateText, bool online = true)
+        public static async Task<List<TimeLineItem>> GetTimeLine(int progenyId, int accessLevel, int count, int start, string timezone, DateTime startTime, string lastItemDateText)
         {
+            bool online = Online();
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(timezone);
@@ -448,61 +467,61 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Photo)
                 {
                     int.TryParse(tItem.ItemId, out int picId);
-                    tItem.ItemObject = await GetPicture(picId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetPicture(picId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Video)
                 {
                     int.TryParse(tItem.ItemId, out int vidId);
-                    tItem.ItemObject = await GetVideo(vidId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVideo(vidId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Calendar)
                 {
                     int.TryParse(tItem.ItemId, out int calId);
-                    tItem.ItemObject = await GetCalendarItem(calId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetCalendarItem(calId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Location)
                 {
                     int.TryParse(tItem.ItemId, out int locId);
-                    tItem.ItemObject = await GetLocation(locId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetLocation(locId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vocabulary)
                 {
                     int.TryParse(tItem.ItemId, out int vocId);
-                    tItem.ItemObject = await GetVocabularyItem(vocId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVocabularyItem(vocId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Skill)
                 {
                     int.TryParse(tItem.ItemId, out int skillId);
-                    tItem.ItemObject = await GetSkill(skillId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetSkill(skillId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     int.TryParse(tItem.ItemId, out int frnId);
-                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
                 {
                     int.TryParse(tItem.ItemId, out int mesId);
-                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
                 {
                     int.TryParse(tItem.ItemId, out int slpId);
-                    tItem.ItemObject = await GetSleep(slpId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetSleep(slpId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Note)
                 {
                     int.TryParse(tItem.ItemId, out int nteId);
-                    Note note = await GetNote(nteId, accessToken, timezone, online);
+                    Note note = await GetNote(nteId, accessToken, timezone);
                     note.Content = "<html><body>" + note.Content + "</body></html>";
                     tItem.ItemObject = note;
 
@@ -511,13 +530,13 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
                 {
                     int.TryParse(tItem.ItemId, out int contId);
-                    tItem.ItemObject = await GetContact(contId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
                 {
                     int.TryParse(tItem.ItemId, out int vacId);
-                    tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone);
                 }
 
                 string itemDate = tItem.ProgenyTime.ToLongDateString();
@@ -541,8 +560,10 @@ namespace KinaUnaXamarin.Services
         }
 
 
-    public static async Task<List<TimeLineItem>> GetLatestPosts(int progenyId, int accessLevel, string timezone, bool online = true)
+    public static async Task<List<TimeLineItem>> GetLatestPosts(int progenyId, int accessLevel, string timezone)
         {
+            bool online = Online();
+
             List<TimeLineItem> timeLineLatest = new List<TimeLineItem>();
 
             try
@@ -615,61 +636,61 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Photo)
                 {
                     int.TryParse(tItem.ItemId, out int picId);
-                    tItem.ItemObject = await GetPicture(picId, accessToken, timezone, online).ConfigureAwait(false);
+                    tItem.ItemObject = await GetPicture(picId, accessToken, timezone).ConfigureAwait(false);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Video)
                 {
                     int.TryParse(tItem.ItemId, out int vidId);
-                    tItem.ItemObject = await GetVideo(vidId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVideo(vidId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Calendar)
                 {
                     int.TryParse(tItem.ItemId, out int calId);
-                    tItem.ItemObject = await GetCalendarItem(calId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetCalendarItem(calId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Location)
                 {
                     int.TryParse(tItem.ItemId, out int locId);
-                    tItem.ItemObject = await GetLocation(locId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetLocation(locId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vocabulary)
                 {
                     int.TryParse(tItem.ItemId, out int vocId);
-                    tItem.ItemObject = await GetVocabularyItem(vocId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVocabularyItem(vocId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Skill)
                 {
                     int.TryParse(tItem.ItemId, out int skillId);
-                    tItem.ItemObject = await GetSkill(skillId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetSkill(skillId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     int.TryParse(tItem.ItemId, out int frnId);
-                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
                 {
                     int.TryParse(tItem.ItemId, out int mesId);
-                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
                 {
                     int.TryParse(tItem.ItemId, out int slpId);
-                    tItem.ItemObject = await GetSleep(slpId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetSleep(slpId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Note)
                 {
                     int.TryParse(tItem.ItemId, out int nteId);
-                    Note note = await GetNote(nteId, accessToken, timezone, online);
+                    Note note = await GetNote(nteId, accessToken, timezone);
                     note.Content = "<html><body>" + note.Content + "</body></html>";
                     tItem.ItemObject = note;
                 }
@@ -677,20 +698,21 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
                 {
                     int.TryParse(tItem.ItemId, out int contId);
-                    tItem.ItemObject = await GetContact(contId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
                 {
                     int.TryParse(tItem.ItemId, out int vacId);
-                    tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone, online);
+                    tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone);
                 }
             }
             return timeLineLatest;
         }
 
-        public static async Task<Picture> GetPicture(int pictureId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Picture> GetPicture(int pictureId, string accessToken, string userTimezone)
         {
+            bool online = Online();
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
@@ -832,7 +854,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Video> GetVideo(int videoId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Video> GetVideo(int videoId, string accessToken, string userTimezone)
         {
             try
             {
@@ -842,6 +864,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
+            bool online = Online();
 
             if (online)
             {
@@ -971,7 +994,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<CalendarItem> GetCalendarItem(int calendarId, string accessToken, string userTimeZone, bool online = true)
+        public static async Task<CalendarItem> GetCalendarItem(int calendarId, string accessToken, string userTimeZone)
         {
             try
             {
@@ -981,7 +1004,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimeZone = TZConvert.WindowsToIana(userTimeZone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1146,7 +1169,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Location> GetLocation(int locationId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Location> GetLocation(int locationId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1156,7 +1179,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1216,7 +1239,7 @@ namespace KinaUnaXamarin.Services
             
         }
 
-        public static async Task<VocabularyItem> GetVocabularyItem(int vocabularyId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<VocabularyItem> GetVocabularyItem(int vocabularyId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1226,7 +1249,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1285,7 +1308,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Skill> GetSkill(int skillId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Skill> GetSkill(int skillId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1295,7 +1318,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1353,7 +1376,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Friend> GetFriend(int frnId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Friend> GetFriend(int frnId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1363,7 +1386,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1425,7 +1448,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Measurement> GetMeasurement(int mesId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Measurement> GetMeasurement(int mesId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1435,7 +1458,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1490,7 +1513,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Sleep> GetSleep(int slpId, string accessToken, string userTimeZone, bool online = true)
+        public static async Task<Sleep> GetSleep(int slpId, string accessToken, string userTimeZone)
         {
             try
             {
@@ -1500,7 +1523,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimeZone = TZConvert.WindowsToIana(userTimeZone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1572,7 +1595,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<Sleep>> GetSleepList(int progenyId, int accessLevel, string userTimeZone, int start, bool online = true)
+        public static async Task<List<Sleep>> GetSleepList(int progenyId, int accessLevel, string userTimeZone, int start)
         {
             try
             {
@@ -1582,7 +1605,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimeZone = TZConvert.WindowsToIana(userTimeZone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1662,8 +1685,9 @@ namespace KinaUnaXamarin.Services
             
         }
 
-        public static async Task<SleepStatsModel> GetSleepStats(int progenyId, int accessLevel, bool online = true)
+        public static async Task<SleepStatsModel> GetSleepStats(int progenyId, int accessLevel)
         {
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1716,8 +1740,9 @@ namespace KinaUnaXamarin.Services
             
         }
 
-        public static async Task<List<Sleep>> GetSleepChartData(int progenyId, int accessLevel, bool online = true)
+        public static async Task<List<Sleep>> GetSleepChartData(int progenyId, int accessLevel)
         {
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1769,8 +1794,9 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Note> GetNote(int nteId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Note> GetNote(int nteId, string accessToken, string userTimezone)
         {
+            bool online = Online();
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
@@ -1835,7 +1861,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Contact> GetContact(int contId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Contact> GetContact(int contId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1845,7 +1871,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1904,7 +1930,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<Contact>> GetProgenyContacts(int progenyId, int accessLevel, string userTimeZone, bool online = true)
+        public static async Task<List<Contact>> GetProgenyContacts(int progenyId, int accessLevel, string userTimeZone)
         {
             try
             {
@@ -1914,7 +1940,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimeZone = TZConvert.WindowsToIana(userTimeZone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();
@@ -1986,7 +2012,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Vaccination> GetVaccination(int vacId, string accessToken, string userTimezone, bool online = true)
+        public static async Task<Vaccination> GetVaccination(int vacId, string accessToken, string userTimezone)
         {
             try
             {
@@ -1996,7 +2022,7 @@ namespace KinaUnaXamarin.Services
             {
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
-
+            bool online = Online();
             if (online)
             {
                 var client = new HttpClient();

@@ -7,21 +7,33 @@
              x:Class="KinaUnaXamarin.Views.AboutPage"
              Title="About">
     <ContentPage.Content>
-        <StackLayout Spacing="25">
-            <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
-                   HorizontalOptions="Start" Margin="0, 10, 0, 20" />
-            <Label Text="Kina Una for Android"
-                VerticalOptions="Start" 
-                HorizontalOptions="CenterAndExpand" />
-            <Label Text="Website: https://www.kinauna.com"
-                   VerticalOptions="Start" 
-                   HorizontalOptions="CenterAndExpand" />
-            <Label Text="Support: support@kinauna.com"
-                   VerticalOptions="Start" 
-                   HorizontalOptions="CenterAndExpand" />
-            <Label x:Name="VersionLabel"
-                   VerticalOptions="Start" 
-                   HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <ScrollView>
+            <StackLayout Spacing="25" Padding="15">
+                <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
+                       HorizontalOptions="Center" Margin="0, 10, 0, 20" />
+                <Label Text="Kina Una for Android" FontAttributes="Bold"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+                <Label Text="Website:" FontAttributes="Bold" Margin="0, 20, 0, 0"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+                <Label Text="https://www.kinauna.com"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+                <Label Text="Support:" FontAttributes="Bold" Margin="0, 20, 0, 0"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+                <Label Text="support@kinauna.com"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+                <Label Text="Source Code:" Margin="0, 20, 0, 0"
+                       HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold"></Label>
+                <Label Text="https://github.com/KinaUna/KinaUnaXamarin" HorizontalOptions="Center" LineBreakMode="WordWrap"></Label>
+                <Label x:Name="VersionLabel" Margin="0, 20, 0, 0"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+        </ScrollView>
+        
     </ContentPage.Content>
 </ContentPage>

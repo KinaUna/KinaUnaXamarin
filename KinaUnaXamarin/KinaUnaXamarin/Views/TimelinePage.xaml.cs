@@ -137,7 +137,7 @@ namespace KinaUnaXamarin.Views
             {
                 _timelineModel.IsLoggedIn = true;
                 _timelineModel.LoggedOut = false;
-                _userInfo = await UserService.GetUserInfo(userEmail, _online);
+                _userInfo = await UserService.GetUserInfo(userEmail);
             }
 
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
@@ -170,7 +170,7 @@ namespace KinaUnaXamarin.Views
             {
                 _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
             }
-            Progeny progeny = await ProgenyService.GetProgeny(_viewChild, _online);
+            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
@@ -181,21 +181,21 @@ namespace KinaUnaXamarin.Views
             }
             _timelineModel.Progeny = progeny;
 
-            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail, _online);
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _timelineModel.ProgenyCollection.Clear();
             foreach (Progeny prog in progenyList)
             {
                 _timelineModel.ProgenyCollection.Add(prog);
             }
 
-            _timelineModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild, _online);
+            _timelineModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
         }
     
         private async Task UpdateTimeLine()
         {
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth, _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(_timelineModel.Progeny.Id,
-                _timelineModel.UserAccessLevel, 10, 0, _userInfo.Timezone, timeLineStart, "", _online).ConfigureAwait(false);
+                _timelineModel.UserAccessLevel, 10, 0, _userInfo.Timezone, timeLineStart, "").ConfigureAwait(false);
             _timelineModel.TimeLineItems.Clear();
             _dateHeaderCount = 0;
             if (timeLineList.Any())
@@ -249,35 +249,40 @@ namespace KinaUnaXamarin.Views
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth,
                 _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 5, startItem, userTimeZone, timeLineStart, lastItemDateString, _online).ConfigureAwait(false);
-
-            foreach (TimeLineItem ti in timeLineList)
+                _timelineModel.UserAccessLevel, 5, startItem, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
+            if (timeLineList.Any())
             {
-                ti.VisibleBefore = false;
-                if (ti.ItemType == 9999)
+                foreach (TimeLineItem ti in timeLineList)
                 {
-                    _dateHeaderCount++;
+                    ti.VisibleBefore = false;
+                    if (ti.ItemType == 9999)
+                    {
+                        _dateHeaderCount++;
+                    }
+                    // _timelineModel.TimeLineItems.Add(ti);
                 }
-                // _timelineModel.TimeLineItems.Add(ti);
+                lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
+                _timelineModel.TimeLineItems.AddRange(timeLineList);
             }
-            lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-            _timelineModel.TimeLineItems.AddRange(timeLineList);
+            
             // Run GetTimeLine a second time to add more items.
             timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 10, startItem + 5, userTimeZone, timeLineStart, lastItemDateString, _online).ConfigureAwait(false);
-
-            foreach (TimeLineItem ti in timeLineList)
+                _timelineModel.UserAccessLevel, 10, startItem + 5, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
+            if (timeLineList.Any())
             {
-                ti.VisibleBefore = false;
-                if (ti.ItemType == 9999)
+                foreach (TimeLineItem ti in timeLineList)
                 {
-                    _dateHeaderCount++;
+                    ti.VisibleBefore = false;
+                    if (ti.ItemType == 9999)
+                    {
+                        _dateHeaderCount++;
+                    }
+                    //_timelineModel.TimeLineItems.Add(ti);
                 }
-                //_timelineModel.TimeLineItems.Add(ti);
+                lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
+                _timelineModel.TimeLineItems.AddRange(timeLineList);
             }
-            lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-            _timelineModel.TimeLineItems.AddRange(timeLineList);
-
+            
             _timelineModel.CanLoadMore = true;
             _timelineModel.IsBusy = false;
         }

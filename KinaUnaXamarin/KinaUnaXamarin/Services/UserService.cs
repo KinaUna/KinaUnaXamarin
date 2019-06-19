@@ -18,8 +18,9 @@ namespace KinaUnaXamarin.Services
 {
     public static class UserService
     {
-        public static async Task<UserInfo> GetUserInfo(string userEmail, bool online = true)
+        public static async Task<UserInfo> GetUserInfo(string userEmail)
         {
+            bool online = ProgenyService.Online();
             if (online)
             {
                 var client = new HttpClient();
