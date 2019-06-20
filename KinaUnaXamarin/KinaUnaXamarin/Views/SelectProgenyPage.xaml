@@ -7,39 +7,41 @@
              x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
              BackgroundColor="#3A2051">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Margin="10">
-            <Label Text="Select Child" TextColor="White"></Label>
-            <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Padding="10">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
-                                <RowDefinition Height="30" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
+        <ScrollView>
+            <StackLayout Orientation="Vertical" Margin="10">
+                <Label Text="Select Child" TextColor="White"></Label>
+                <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="30" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
                                    Aspect="AspectFill"
                                    HeightRequest="60"
                                    WidthRequest="60" />
-                            <Label Grid.Row="0" Grid.Column="1"
+                                <Label Grid.Row="0" Grid.Column="1"
                                    Text="{Binding NickName}"
                                    FontAttributes="Bold"
                                    FontSize="18"
                                    TextColor="Black"
                                    Margin="20, 0 , 0, 0"/>
-                            <Label Grid.Row="1" Grid.Column="1"
+                                <Label Grid.Row="1" Grid.Column="1"
                                    Text="{Binding Name}"
                                    TextColor="DarkSlateGray"
                                    Margin="20, 0, 0, 0"/>
-                        </Grid>
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </StackLayout>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -28,7 +28,7 @@ namespace KinaUnaXamarin.Views
         private double _screenHeight;
         private bool _reload = true;
         private bool _online = true;
-
+        
         public HomePage()
         {
             InitializeComponent();
@@ -359,7 +359,7 @@ namespace KinaUnaXamarin.Views
             {
                 _screenWidth = width;
                 _screenHeight = height;
-
+                
                 if (Device.Idiom == TargetIdiom.Desktop)
                 {
                     if (width > 1100)
@@ -373,12 +373,22 @@ namespace KinaUnaXamarin.Views
                 }
                 else
                 {
-                    if (width > height && (width - ProgenyDetailsStackLayout.MinimumWidthRequest) > 300) //if (width > height && width > 800)
+                    if (width > height && (width - ProgenyDetailsStackLayout.WidthRequest) > 200) //if (width > height && width > 800)
                     {
+                        ProgenyDetailsStackLayout.WidthRequest = (int)(width * 6 / 11);
+                        _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 2, 5);
+                        UpcomingEventsStatckLayout.Margin = new Thickness(3, 0, 5, 5);
+                        LatestPostsStackLayout.Margin = new Thickness(3, 0, 5, 5);
                         ContainerStackLayout.Orientation = StackOrientation.Horizontal;
                     }
                     else
                     {
+                        ProgenyDetailsStackLayout.WidthRequest = width;
+                        _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
+                        UpcomingEventsStatckLayout.Margin = new Thickness(5, 0, 5, 5);
+                        LatestPostsStackLayout.Margin = new Thickness(5, 0, 5, 5);
                         ContainerStackLayout.Orientation = StackOrientation.Vertical;
                     }
                 }

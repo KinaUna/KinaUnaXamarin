@@ -323,8 +323,8 @@
             <ScrollView BackgroundColor="DarkGray">
                 <StackLayout x:Name="ContainerStackLayout" Spacing="0" VerticalOptions="Start">
                     <StackLayout x:Name="ProgenyDetailsStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand"
-                             HorizontalOptions="FillAndExpand" Margin="10" MinimumWidthRequest="300">
-                       <Grid BackgroundColor="White" Margin="0, -20, 0, 0">
+                             HorizontalOptions="FillAndExpand">
+                       <Grid BackgroundColor="White" Margin="0, -10, 0, 0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="50" />
                                 <ColumnDefinition Width="*" />
@@ -339,8 +339,7 @@
                                            VerticalOptions="Center"
                                            WidthRequest="50" HeightRequest="50"
                                            DownsampleToViewSize="true"
-                                           Source="{Binding Progeny.PictureLink}"
-                                           LoadingPlaceholder="icon.png" />
+                                           Source="{Binding Progeny.PictureLink}"/>
                             <!--<Image Grid.Column="0" Grid.Row="0" Source="{Binding ProgenyProfilePicture}" Aspect="AspectFill" ></Image>-->
                             <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical">
                                 <Label Text="{Binding Progeny.NickName}" TextColor="Black"
@@ -420,9 +419,8 @@
                         <StackLayout BackgroundColor="White" Padding="10">
                             <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10"
                                        Aspect="AspectFit"
-                                       HeightRequest="250"
-                                       Source="{Binding ImageLink600}"
-                                       LoadingPlaceholder="icon.png" />
+                                       DownsampleToViewSize="True"
+                                       Source="{Binding ImageLink}"/>
                             <FlexLayout Wrap="Wrap">
                                 <Label Text="Photo Location: " />
                                 <Label Text="{Binding Location}" TextColor="Green" />
@@ -471,10 +469,10 @@
                             </FlexLayout>
                         </StackLayout>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical">
+                    <StackLayout Orientation="Vertical" Spacing="0">
                         <StackLayout x:Name="UpcomingEventsStatckLayout" Orientation="Vertical" VerticalOptions="Start"
-                                 Margin="10" IsVisible="False" BackgroundColor="White">
-                            <Label Text="Upcoming Events" HorizontalOptions="Center" />
+                                 IsVisible="False" BackgroundColor="White">
+                            <Label Text="Upcoming Events" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0" />
                             <Grid x:Name="UpcomingEventsGrid">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*" />
@@ -544,8 +542,8 @@
                             </Grid>
                         </StackLayout>
                         <StackLayout x:Name="LatestPostsStackLayout" IsVisible="False" VerticalOptions="FillAndExpand"
-                                 Margin="10" BackgroundColor="White">
-                            <Label Text="Latest Posts" HorizontalOptions="Center" />
+                                 BackgroundColor="White">
+                            <Label Text="Latest Posts" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0"/>
                             <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}"
                                   ItemsSource="{Binding TimeLineItems}" Margin="10, 10, 10, 20" HasUnevenRows="True"
                                   SeparatorVisibility="None" CachingStrategy="RecycleElement" />

@@ -5,7 +5,9 @@
   </item>
   <item>
     <bitmap
-      android:src="@drawable/icon_large"
+      android:src="@drawable/icon_large_beta"
+      android:antialias="true"
+      android:filter="true"
       android:tileMode="disabled"
       android:gravity="center"/>
   </item>

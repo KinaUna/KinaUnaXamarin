@@ -324,7 +324,7 @@
             <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
                       Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement" >
             </ListView>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+            <!--<ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

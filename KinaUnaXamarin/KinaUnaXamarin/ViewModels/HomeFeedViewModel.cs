@@ -48,7 +48,8 @@ namespace KinaUnaXamarin.ViewModels
         // private ObservableRangeCollection<CalendarItem> _upcomingEvents;
         private ObservableRangeCollection<TimeLineItem> _timeLineItems;
         private bool _loggedOut;
-        
+        private int _imageLinkWidth;
+
         public HomeFeedViewModel()
         {
             LoginCommand = new Command(Login);
@@ -111,6 +112,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _imageLink600;
             set => SetProperty(ref _imageLink600, value);
+        }
+
+        public int ImageLinkWidth
+        {
+            get => _imageLinkWidth;
+            set => SetProperty(ref _imageLinkWidth, value);
         }
 
         public string CurrentTime

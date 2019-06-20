@@ -83,13 +83,13 @@
     <FlyoutItem Title="Settings" x:Name="SettingsFlyoutItem"
                 Icon="{x:Static models:IconFont.Settings}">
         <Tab Title="About" x:Name="AboutTabItem"
-             Icon="{x:Static models:IconFont.InformationOutline}"
+             Icon="infoicon.png"
              Route="about">
             <ShellContent ContentTemplate="{DataTemplate views:AboutPage}">
             </ShellContent>
         </Tab>
         <Tab Title="Account" x:Name="AccountTabItem"
-             Icon="{x:Static models:IconFont.AccountCircle}"
+             Icon="useraccounticon.png"
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}">
             </ShellContent>

@@ -9,7 +9,7 @@
              
     <Grid BackgroundColor="#3A2051" >
         <Image Aspect="AspectFit" 
-               Source="icon.png" 
+               Source="iconbeta.png" 
                Opacity="1.0" />
         <Label Text="Kina Una" 
                TextColor="White" 

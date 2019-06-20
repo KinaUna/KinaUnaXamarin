@@ -11,7 +11,7 @@
             <StackLayout Spacing="25" Padding="15">
                 <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
                        HorizontalOptions="Center" Margin="0, 10, 0, 20" />
-                <Label Text="Kina Una for Android" FontAttributes="Bold"
+                <Label Text="Kina Una for Android - Beta" FontAttributes="Bold"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand" />
                 <Label Text="Website:" FontAttributes="Bold" Margin="0, 20, 0, 0"

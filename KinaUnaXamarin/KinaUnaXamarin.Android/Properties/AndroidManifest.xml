@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="0.1 Beta" package="com.kinauna.xamarin" android:installLocation="auto">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3" android:versionName="0.1.2 Beta" package="com.kinauna.xamarin" android:installLocation="auto">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
-	<application android:label="KinaUna Xamarin" android:icon="@drawable/icon"></application>
+	<application android:label="KinaUna Xamarin" android:icon="@drawable/iconbeta"></application>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

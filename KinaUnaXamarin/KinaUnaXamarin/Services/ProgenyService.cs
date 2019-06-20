@@ -298,7 +298,7 @@ namespace KinaUnaXamarin.Services
                         }
 
                     }
-                    ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                    ImageService.Instance.LoadUrl(picture.PictureLink).Preload();
                     return picture;
                 }
                 else
@@ -332,7 +332,7 @@ namespace KinaUnaXamarin.Services
                         }
 
                     }
-                    ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                    ImageService.Instance.LoadUrl(picture.PictureLink).Preload();
                     return picture;
                 }
                 else
@@ -343,7 +343,7 @@ namespace KinaUnaXamarin.Services
                     tempPicture.PictureLink600 = Constants.WebUrl + "/photodb/0/default_temp.jpg";
                     tempPicture.ProgenyId = progenyId;
                     tempPicture.PictureTime = new DateTime(2018, 9, 1, 12, 00, 00);
-                    ImageService.Instance.LoadUrl(tempPicture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                    ImageService.Instance.LoadUrl(tempPicture.PictureLink).Preload();
                     return tempPicture;
                 }
             }

@@ -65,9 +65,9 @@ namespace KinaUnaXamarin.Views
                 bool internetAccess = networkAccess == NetworkAccess.Internet;
                 if (internetAccess)
                 {
-                    string documentsPath = FileSystem.CacheDirectory;
-                    string localFilename = "progenyprofile" + progeny.Id + ".jpg";
-                    string progenyProfileFile = Path.Combine(documentsPath, localFilename);
+                    //string documentsPath = FileSystem.CacheDirectory;
+                    //string localFilename = "progenyprofile" + progeny.Id + ".jpg";
+                    //string progenyProfileFile = Path.Combine(documentsPath, localFilename);
                     ImageService.Instance.LoadUrl(progeny.PictureLink).DownSample(height: 60, allowUpscale: true).Preload();
                     //var webClient = new WebClient();
                     //webClient.DownloadDataCompleted += (s, ev) => {
