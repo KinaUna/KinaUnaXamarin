@@ -11,7 +11,7 @@
        FlyoutHeaderBehavior="CollapseOnScroll"
        x:Class="KinaUnaXamarin.AppShell"
        Visual="Material"
-       FlyoutBackgroundColor="#4A1081">
+       FlyoutBackgroundColor="#4A1061">
 
     <Shell.Resources>
         <Style x:Key="BaseStyle" 

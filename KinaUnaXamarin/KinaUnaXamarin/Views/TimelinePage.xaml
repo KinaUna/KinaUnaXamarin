@@ -16,7 +16,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
-        <ToolbarItem Text="Add" IconImageSource="addicon.png"></ToolbarItem>
+        <ToolbarItem Text="Add" IconImageSource="addicon.png" IsEnabled="{Binding CanUserAddItems}"></ToolbarItem>
         <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
         <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>

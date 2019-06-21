@@ -184,6 +184,9 @@ namespace KinaUnaXamarin.Views
             {
                 _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
             }
+
+            _feedModel.CanUserAddItems = _userInfo.CanUserAddItems;
+
             Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
             try
             {
@@ -405,6 +408,11 @@ namespace KinaUnaXamarin.Views
                 _online = internetAccess;
                 await Reload();
             }
+        }
+
+        private void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
+        {
+            Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
     }
 }

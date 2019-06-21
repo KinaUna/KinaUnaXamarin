@@ -20,6 +20,7 @@ namespace KinaUnaXamarin.ViewModels
         private int _selectedMonth;
         private int _selectedDay;
         private DateTime _maximumDate;
+        private bool _canUserAddItems;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -50,7 +51,13 @@ namespace KinaUnaXamarin.ViewModels
                 LoggedOut = !IsLoggedIn;
             }
         }
-        
+
+        public bool CanUserAddItems
+        {
+            get => _canUserAddItems;
+            set => SetProperty(ref _canUserAddItems, value);
+        }
+
         public DateTime MaxDate
         {
             get => _maximumDate;

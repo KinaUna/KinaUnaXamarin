@@ -4,38 +4,35 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
-             BackgroundColor="#3A2051"
-             Title="Select Child">
+             x:Class="KinaUnaXamarin.Views.AddItemPage"
+             Title="Add Item"
+             BackgroundColor="#3A2051">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Orientation="Vertical" Margin="10">
-                <Label Text="Select Child" TextColor="White"></Label>
-                <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
+                <Label Text="Add Item" TextColor="White"></Label>
+                <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Padding="10">
+                            <Grid Padding="10" BackgroundColor="{Binding BackgroundColor}">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
+                                    <RowDefinition Height="20" />
+                                    <RowDefinition Height="20" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
-                                   Aspect="AspectFill"
-                                   HeightRequest="60"
-                                   WidthRequest="60" />
+                                <BoxView Color="{Binding BackgroundColor}" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Text="{Binding Icon}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="32" TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"/>
                                 <Label Grid.Row="0" Grid.Column="1"
-                                   Text="{Binding NickName}"
+                                   Text="{Binding Name}"
                                    FontAttributes="Bold"
-                                   FontSize="18"
-                                   TextColor="Black"
+                                   FontSize="16"
+                                   TextColor="White"
                                    Margin="20, 0 , 0, 0"/>
                                 <Label Grid.Row="1" Grid.Column="1"
-                                   Text="{Binding Name}"
+                                   Text="{Binding Description}"
                                    TextColor="DarkSlateGray"
                                    Margin="20, 0, 0, 0"/>
                             </Grid>

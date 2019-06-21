@@ -181,6 +181,32 @@ namespace KinaUnaXamarin.Services
             }
         }
 
+        public static async Task<List<Progeny>> GetProgenyAdminList()
+        {
+            List<Progeny> progenyListResult = new List<Progeny>();
+            string userEmail = await UserService.GetUserEmail();
+            string progenyListString = await SecureStorage.GetAsync("ProgenyList" + userEmail);
+            List<Progeny> progenyList = JsonConvert.DeserializeObject<List<Progeny>>(progenyListString);
+            foreach (Progeny progeny in progenyList)
+            {
+                int al = 5;
+                try
+                {
+                    al = await GetAccessLevel(progeny.Id);
+                }
+                catch (Exception)
+                {
+                    al = 5;
+                }
+                if (al == 0)
+                {
+                    progenyListResult.Add(progeny);
+                }
+            }
+
+            return progenyListResult;
+        }
+
         public static async Task<int> GetAccessLevel(int progenyId)
         {
             bool online = Online();
@@ -1595,6 +1621,32 @@ namespace KinaUnaXamarin.Services
             }
         }
 
+        public static async Task<Sleep> SaveSleep(Sleep sleep)
+        {
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone);
+            }
+            catch (Exception)
+            {
+                sleep.Progeny.TimeZone = TZConvert.WindowsToIana(sleep.Progeny.TimeZone);
+            }
+            sleep.SleepStart = TimeZoneInfo.ConvertTimeToUtc(sleep.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone));
+            sleep.SleepEnd = TimeZoneInfo.ConvertTimeToUtc(sleep.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone));
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+            string accessToken = await UserService.GetAuthAccessToken();
+            client.SetBearerToken(accessToken);
+            var result = await client.PostAsync("api/sleep/", new StringContent(JsonConvert.SerializeObject(sleep), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            if (result.IsSuccessStatusCode)
+            {
+                string resultString = await result.Content.ReadAsStringAsync();
+                Sleep resultSleep = JsonConvert.DeserializeObject<Sleep>(resultString);
+                return resultSleep;
+            }
+
+            return sleep;
+        }
         public static async Task<List<Sleep>> GetSleepList(int progenyId, int accessLevel, string userTimeZone, int start)
         {
             try

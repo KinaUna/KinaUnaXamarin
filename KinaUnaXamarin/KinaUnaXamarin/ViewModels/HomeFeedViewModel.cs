@@ -49,6 +49,7 @@ namespace KinaUnaXamarin.ViewModels
         private ObservableRangeCollection<TimeLineItem> _timeLineItems;
         private bool _loggedOut;
         private int _imageLinkWidth;
+        private bool _canUserAddItems;
 
         public HomeFeedViewModel()
         {
@@ -77,6 +78,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _userAccessLevel;
             set => SetProperty(ref _userAccessLevel, value);
+        }
+
+        public bool CanUserAddItems
+        {
+            get => _canUserAddItems;
+            set => SetProperty(ref _canUserAddItems, value);
         }
 
         public List<CalendarItem> EventsList
