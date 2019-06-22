@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using KinaUnaXamarin.Models;
+using KinaUnaXamarin.Models.KinaUna;
+using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
 using KinaUnaXamarin.Views.AddItem;
 using Xamarin.Forms;
@@ -16,6 +20,21 @@ namespace KinaUnaXamarin.Views
             InitializeComponent();
             _addItemModel = new AddItemViewModel();
             AddItemListCollectionView.ItemsSource = _addItemModel.ItemList;
+            
+        }
+
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
+            if (progenyList.Any())
+            {
+                _addItemModel.CanAddItems = true;
+            }
+            else
+            {
+                _addItemModel.CanAddItems = false;
+            }
         }
 
         private void AddItemListCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -26,6 +45,11 @@ namespace KinaUnaXamarin.Views
                 if (model.Name == "Sleep")
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddSleepPage());
+                }
+
+                if (model.Name == "Photo")
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddPhotoPage());
                 }
             }
         }

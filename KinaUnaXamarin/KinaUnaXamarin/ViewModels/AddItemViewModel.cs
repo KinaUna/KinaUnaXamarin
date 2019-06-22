@@ -8,6 +8,7 @@ namespace KinaUnaXamarin.ViewModels
 {
     class AddItemViewModel: BaseViewModel
     {
+        private bool _canAddItems;
         public AddItemViewModel()
         {
             ItemList = new ObservableRangeCollection<AddItemModel>();
@@ -18,7 +19,20 @@ namespace KinaUnaXamarin.ViewModels
             addSleepItem.Description = "Add Sleep";
             addSleepItem.BackgroundColor = "Green";
             ItemList.Add(addSleepItem);
+
+            AddItemModel addPhoto = new AddItemModel();
+            addPhoto.Name = "Photo";
+            addPhoto.Icon = IconFont.Image;
+            addPhoto.Description = "Add Photo";
+            addPhoto.BackgroundColor = "#9c27b0";
+            ItemList.Add(addPhoto);
         }
         public ObservableRangeCollection<AddItemModel> ItemList { get; set; }
+
+        public bool CanAddItems
+        {
+            get => _canAddItems;
+            set => SetProperty(ref _canAddItems, value);
+        }
     }
 }

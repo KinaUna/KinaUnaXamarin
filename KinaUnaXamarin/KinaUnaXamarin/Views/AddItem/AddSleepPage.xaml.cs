@@ -135,9 +135,9 @@ namespace KinaUnaXamarin.Views.AddItem
             }
         }
 
-        private void CancelSleepButton_OnClicked(object sender, EventArgs e)
+        private async void CancelSleepButton_OnClicked(object sender, EventArgs e)
         {
-            Shell.Current.Navigation.PopModalAsync();
+            await Shell.Current.Navigation.PopToRootAsync();
         }
 
         private async void SaveSleepButton_OnClicked(object sender, EventArgs e)

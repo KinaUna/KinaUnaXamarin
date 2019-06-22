@@ -25,6 +25,7 @@ namespace KinaUnaXamarin.Droid
         {
             base.OnTerminate();
             UnregisterActivityLifecycleCallbacks(this);
+            CrossCurrentActivity.Current.Init(this);
         }
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)

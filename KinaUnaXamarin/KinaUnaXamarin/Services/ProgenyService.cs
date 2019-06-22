@@ -5,6 +5,8 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FFImageLoading;
 using FFImageLoading.Forms;
@@ -433,7 +435,26 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        
+        public static async Task<TimeLineItem> SaveTimeLineItem(TimeLineItem timeLineItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/timeline/", new StringContent(JsonConvert.SerializeObject(timeLineItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    TimeLineItem resultTimelineItem = JsonConvert.DeserializeObject<TimeLineItem>(resultString);
+                    return resultTimelineItem;
+                }
+            }
+
+            return timeLineItem;
+        }
+
         public static async Task<List<TimeLineItem>> GetTimeLine(int progenyId, int accessLevel, int count, int start, string timezone, DateTime startTime, string lastItemDateText)
         {
             bool online = Online();
@@ -808,6 +829,56 @@ namespace KinaUnaXamarin.Services
                 Picture picture = JsonConvert.DeserializeObject<Picture>(picturestring);
                 return picture;
             }
+        }
+
+        public static async Task<string> UploadPictureFile(int progenyId, string fileName)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+
+                var fileBytes = File.ReadAllBytes(fileName);
+                MemoryStream stream = new MemoryStream(fileBytes);
+                HttpContent fileStreamContent = new StreamContent(stream);
+
+                fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
+                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                MultipartFormDataContent content = new MultipartFormDataContent();
+                content.Add(fileStreamContent);
+                var result = await client.PostAsync("api/pictures/uploadpicture/", content).ConfigureAwait(false);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                    return pictureResultString;
+                }
+            }
+
+            return "";
+        }
+
+        public static async Task<Picture> SavePicture(Picture picture)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/pictures/", new StringContent(JsonConvert.SerializeObject(picture), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Picture resultPicture = JsonConvert.DeserializeObject<Picture>(resultString);
+                    return resultPicture;
+                }
+            }
+
+            return picture;
         }
 
         public static async Task<PicturePage> GetPicturePage(int pageNumber, int pageSize, int progenyId, int userAccessLevel, string userTimezone, int sortBy)
