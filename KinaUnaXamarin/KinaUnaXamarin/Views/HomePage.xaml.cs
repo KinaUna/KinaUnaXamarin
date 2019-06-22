@@ -21,7 +21,7 @@ namespace KinaUnaXamarin.Views
     public partial class HomePage : ContentPage
     {
         private int _viewChild;
-        private readonly HomeFeedViewModel _feedModel;
+        private HomeFeedViewModel _feedModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private double _screenWidth;
@@ -32,19 +32,7 @@ namespace KinaUnaXamarin.Views
         public HomePage()
         {
             InitializeComponent();
-            _feedModel = new HomeFeedViewModel();
-
-            _userInfo = OfflineDefaultData.DefaultUserInfo;
             
-            string userEmail = UserService.GetUserEmail().Result;
-            string userviewchild = SecureStorage.GetAsync(Constants.UserViewChildKey).Result;
-            bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
-            if (viewchildParsed)
-            {
-                _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(SecureStorage.GetAsync("ProgenyObject" + userviewchild).Result);
-                _userInfo = JsonConvert.DeserializeObject<UserInfo>(SecureStorage.GetAsync("UserInfo" + userEmail).Result);
-            }
-            BindingContext = _feedModel;
             MessagingCenter.Subscribe<HomeFeedViewModel>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -64,6 +52,23 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (_reload)
+            {
+                _feedModel = new HomeFeedViewModel();
+
+                _userInfo = OfflineDefaultData.DefaultUserInfo;
+
+                string userEmail = await UserService.GetUserEmail();
+                string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+                bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
+                if (viewchildParsed)
+                {
+                    _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(await SecureStorage.GetAsync("ProgenyObject" + userviewchild));
+                    _userInfo = JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
+                }
+                BindingContext = _feedModel;
+            }
+
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -200,12 +205,18 @@ namespace KinaUnaXamarin.Views
 
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _feedModel.ProgenyCollection.Clear();
+            _feedModel.CanUserAddItems = false;
             foreach (Progeny prog in progenyList)
             {
                 _feedModel.ProgenyCollection.Add(prog);
+                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                {
+                    _feedModel.CanUserAddItems = true;
+                }
             }
 
             _feedModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            
         }
         
 
@@ -410,9 +421,9 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
+        private async void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
         {
-            Shell.Current.Navigation.PushModalAsync(new AddItemPage());
+            await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
     }
 }

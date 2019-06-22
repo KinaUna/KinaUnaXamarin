@@ -839,7 +839,7 @@ namespace KinaUnaXamarin.Services
                 client.BaseAddress = new Uri(Constants.MediaApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
                 client.SetBearerToken(accessToken);
-
+             
                 var fileBytes = File.ReadAllBytes(fileName);
                 MemoryStream stream = new MemoryStream(fileBytes);
                 HttpContent fileStreamContent = new StreamContent(stream);

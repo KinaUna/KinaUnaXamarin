@@ -20,7 +20,7 @@ namespace KinaUnaXamarin.Views
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private readonly TimelineFeedViewModel _timelineModel;
+        private TimelineFeedViewModel _timelineModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
@@ -29,14 +29,8 @@ namespace KinaUnaXamarin.Views
 
         public TimelinePage()
         {
-            _timelineModel = new TimelineFeedViewModel();
             InitializeComponent();
-            _userInfo = OfflineDefaultData.DefaultUserInfo;
-            ContainerStackLayout.BindingContext = _timelineModel;
-            BindingContext = _timelineModel;
-            _timelineModel.SelectedYear = DateTime.UtcNow.Year;
-            _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
-            _timelineModel.SelectedDay = DateTime.UtcNow.Day;
+            
 
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
@@ -52,6 +46,16 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (_reload)
+            {
+                _timelineModel = new TimelineFeedViewModel();
+                _userInfo = OfflineDefaultData.DefaultUserInfo;
+                ContainerStackLayout.BindingContext = _timelineModel;
+                BindingContext = _timelineModel;
+                _timelineModel.SelectedYear = DateTime.UtcNow.Year;
+                _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
+                _timelineModel.SelectedDay = DateTime.UtcNow.Day;
+            }
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -186,9 +190,14 @@ namespace KinaUnaXamarin.Views
 
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _timelineModel.ProgenyCollection.Clear();
+            _timelineModel.CanUserAddItems = false;
             foreach (Progeny prog in progenyList)
             {
                 _timelineModel.ProgenyCollection.Add(prog);
+                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                {
+                    _timelineModel.CanUserAddItems = true;
+                }
             }
 
             _timelineModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
@@ -198,7 +207,7 @@ namespace KinaUnaXamarin.Views
         {
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth, _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(_timelineModel.Progeny.Id,
-                _timelineModel.UserAccessLevel, 10, 0, _userInfo.Timezone, timeLineStart, "").ConfigureAwait(false);
+                _timelineModel.UserAccessLevel, 6, 0, _userInfo.Timezone, timeLineStart, "").ConfigureAwait(false);
             _timelineModel.TimeLineItems.Clear();
             _dateHeaderCount = 0;
             if (timeLineList.Any())
@@ -233,16 +242,20 @@ namespace KinaUnaXamarin.Views
             {
                 return;
             }
+            
             int progenyId = tItem.ProgenyId;
             if (!_timelineModel.CanLoadMore || _timelineModel.TimeLineItems.Count == 0 || tItem.VisibleBefore || progenyId != _timelineModel.Progeny.Id)
                 return;
 
-            ////hit bottom!
-            if (tItem.ItemId == (_timelineModel.TimeLineItems[_timelineModel.TimeLineItems.Count - 3]).ItemId && !tItem.VisibleBefore)
+            //hit bottom!
+            if (_timelineModel.TimeLineItems.Count > 5)
             {
-                await LoadItems(_timelineModel.TimeLineItems.Count - _dateHeaderCount, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
+                if (tItem.ItemId == (_timelineModel.TimeLineItems[_timelineModel.TimeLineItems.Count - 5]).ItemId && !tItem.VisibleBefore)
+                {
+                    await LoadItems(_timelineModel.TimeLineItems.Count - _dateHeaderCount, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
+                }
+                tItem.VisibleBefore = true;
             }
-            tItem.VisibleBefore = true;
         }
 
         private async Task LoadItems(int startItem, int progenyId, string accessToken, string userTimeZone)
@@ -252,7 +265,7 @@ namespace KinaUnaXamarin.Views
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth,
                 _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 5, startItem, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
+                _timelineModel.UserAccessLevel, 10, startItem, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
             if (timeLineList.Any())
             {
                 foreach (TimeLineItem ti in timeLineList)
@@ -270,7 +283,7 @@ namespace KinaUnaXamarin.Views
             
             // Run GetTimeLine a second time to add more items.
             timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 10, startItem + 5, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
+                _timelineModel.UserAccessLevel, 15, startItem + 10, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
             if (timeLineList.Any())
             {
                 foreach (TimeLineItem ti in timeLineList)
@@ -329,6 +342,11 @@ namespace KinaUnaXamarin.Views
             _timelineModel.SelectedDay = DateTime.Now.Day;
             TimelineStartDatePicker.Date = DateTime.Now;
             await Reload();
+        }
+
+        private async void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
     }
 }

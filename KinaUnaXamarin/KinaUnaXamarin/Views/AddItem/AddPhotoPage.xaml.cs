@@ -124,7 +124,7 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void CancelPhotoButton_OnClicked(object sender, EventArgs e)
         {
-            await Shell.Current.Navigation.PopToRootAsync();
+            await Shell.Current.Navigation.PopModalAsync();
         }
 
         private async void SelectImageButton_OnClicked(object sender, EventArgs e)
