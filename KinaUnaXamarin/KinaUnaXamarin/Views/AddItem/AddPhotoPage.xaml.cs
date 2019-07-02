@@ -137,7 +137,8 @@ namespace KinaUnaXamarin.Views.AddItem
 
             var file = await CrossMedia.Current.PickPhotoAsync(new Plugin.Media.Abstractions.PickMediaOptions
             {
-                PhotoSize = Plugin.Media.Abstractions.PhotoSize.Full
+                RotateImage = false,
+                SaveMetaData = true
             });
 
             if (file == null)

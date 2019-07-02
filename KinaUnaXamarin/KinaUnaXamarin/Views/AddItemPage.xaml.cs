@@ -14,7 +14,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddItemPage : ContentPage
     {
-        private AddItemViewModel _addItemModel;
+        private readonly AddItemViewModel _addItemModel;
         public AddItemPage()
         {
             InitializeComponent();
@@ -23,9 +23,13 @@ namespace KinaUnaXamarin.Views
             
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            // Reset the selected item.
+            AddItemListCollectionView.SelectedItem = null;
+
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
