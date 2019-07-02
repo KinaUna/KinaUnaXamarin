@@ -50,8 +50,6 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SavePhotoButton_OnClicked(object sender, EventArgs e)
         {
-            SavePhotoButton.IsEnabled = false;
-            CancelPhotoButton.IsEnabled = false;
             Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
             if (string.IsNullOrEmpty(_filePath) || progeny == null)
             {
@@ -62,11 +60,18 @@ namespace KinaUnaXamarin.Views.AddItem
             {
                 return;
             }
-            
+
+            SavePhotoButton.IsEnabled = false;
+            CancelPhotoButton.IsEnabled = false;
+            _addPhotoViewModel.IsBusy = true;
+
             // Upload photo file, get a reference to the image.
             string pictureLink = await ProgenyService.UploadPictureFile(progeny.Id, _filePath);
             if (pictureLink == "")
             {
+                SavePhotoButton.IsEnabled = true;
+                CancelPhotoButton.IsEnabled = true;
+                _addPhotoViewModel.IsBusy = false;
                 return;
             }
             // Upload Picture object to add it to the database.
@@ -120,6 +125,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelPhotoButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelPhotoButton.IsEnabled = true;
             }
+
+            _addPhotoViewModel.IsBusy = false;
         }
 
         private async void CancelPhotoButton_OnClicked(object sender, EventArgs e)

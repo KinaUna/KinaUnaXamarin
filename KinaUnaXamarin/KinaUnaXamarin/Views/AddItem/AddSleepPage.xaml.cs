@@ -142,6 +142,7 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveSleepButton_OnClicked(object sender, EventArgs e)
         {
+            _addSleepViewModel.IsBusy = true;
             Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
             if (progeny != null)
             {
@@ -180,10 +181,10 @@ namespace KinaUnaXamarin.Views.AddItem
                     ErrorLabel.BackgroundColor = Color.Red;
                 }
                 
-
                 ErrorLabel.IsVisible = true;
             }
-            
+
+            _addSleepViewModel.IsBusy = false;
         }
     }
 }
