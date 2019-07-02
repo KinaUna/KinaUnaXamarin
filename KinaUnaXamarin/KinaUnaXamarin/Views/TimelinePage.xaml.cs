@@ -174,9 +174,7 @@ namespace KinaUnaXamarin.Views
             {
                 _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
             }
-
-            _timelineModel.CanUserAddItems = _userInfo.CanUserAddItems;
-
+            
             Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
             try
             {

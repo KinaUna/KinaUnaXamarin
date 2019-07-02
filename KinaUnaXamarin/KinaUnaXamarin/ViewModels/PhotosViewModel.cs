@@ -8,26 +8,36 @@ using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
 {
-    class TimelineFeedViewModel : BaseViewModel
+    class PhotosViewModel : BaseViewModel
     {
         private bool _isLoggedIn;
         private Progeny _progeny;
         private int _userAccessLevel;
         private bool _loggedOut;
         private bool _showOptions;
-        private int _selectedYear;
-        private int _selectedMonth;
-        private int _selectedDay;
-        private DateTime _maximumDate;
         private bool _canUserAddItems;
+        private int _pageNumber;
+        private int _pageCount;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
-        public TimelineFeedViewModel()
+        public PhotosViewModel()
         {
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
-            TimeLineItems = new ObservableRangeCollection<TimeLineItem>();
+            PhotoItems = new ObservableRangeCollection<Picture>();
+        }
+
+        public int PageNumber
+        {
+            get => _pageNumber;
+            set => SetProperty(ref _pageNumber, value);
+        }
+
+        public int PageCount
+        {
+            get => _pageCount;
+            set => SetProperty(ref _pageCount, value);
         }
 
         public bool LoggedOut
@@ -56,29 +66,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _canUserAddItems;
             set => SetProperty(ref _canUserAddItems, value);
         }
-
-        public DateTime MaxDate
-        {
-            get => _maximumDate;
-            set => SetProperty(ref _maximumDate, value);
-        }
-
-        public int SelectedYear
-        {
-            get => _selectedYear;
-            set => SetProperty(ref _selectedYear, value);
-        }
-
-        public int SelectedMonth
-        {
-            get => _selectedMonth;
-            set => SetProperty(ref _selectedMonth, value);
-        }
-        public int SelectedDay
-        {
-            get => _selectedDay;
-            set => SetProperty(ref _selectedDay, value);
-        }
+        
         public bool ShowOptions
         {
             get => _showOptions;
@@ -97,7 +85,7 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _userAccessLevel, value);
         }
 
-        public ObservableRangeCollection<TimeLineItem> TimeLineItems { get; set; }
+        public ObservableRangeCollection<Picture> PhotoItems { get; set; }
 
         public bool IsLoggedIn
         {

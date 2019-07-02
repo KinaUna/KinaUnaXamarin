@@ -327,6 +327,5 @@
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>
-        
     </ContentPage.Content>
 </ContentPage>

@@ -23,6 +23,7 @@ namespace KinaUnaXamarin
             _routes.Add("account", typeof(AccountPage));
             _routes.Add("register", typeof(RegisterPage));
             _routes.Add("about", typeof(AboutPage));
+            _routes.Add("photos", typeof(PhotosPage));
             foreach (var item in _routes)
             {
                 Routing.RegisterRoute(item.Key, item.Value);

@@ -80,6 +80,16 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="Photos" x:Name="PhotosFlyoutItem"
+                Icon="{x:Static models:IconFont.ImageAlbum}">
+        <Tab>
+            <ShellContent Title="Photos"
+                          Icon="{x:Static models:IconFont.ImageAlbum}"
+                          Route="photos"
+                          ContentTemplate="{DataTemplate views:PhotosPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="Settings" x:Name="SettingsFlyoutItem"
                 Icon="{x:Static models:IconFont.Settings}">
         <Tab Title="About" x:Name="AboutTabItem"

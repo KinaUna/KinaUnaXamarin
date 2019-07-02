@@ -881,7 +881,7 @@ namespace KinaUnaXamarin.Services
             return picture;
         }
 
-        public static async Task<PicturePage> GetPicturePage(int pageNumber, int pageSize, int progenyId, int userAccessLevel, string userTimezone, int sortBy)
+        public static async Task<PicturePage> GetPicturePage(int pageNumber, int pageSize, int progenyId, int userAccessLevel, string userTimezone, int sortBy, string tagFilter)
         {
             try
             {
@@ -901,7 +901,7 @@ namespace KinaUnaXamarin.Services
             if (String.IsNullOrEmpty(accessToken))
             {
                 
-                string pageApiPath = "api/publicaccess/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&sortBy=" + sortBy;
+                string pageApiPath = "api/publicaccess/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
                 var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
 
                 if (result.IsSuccessStatusCode)
@@ -914,6 +914,8 @@ namespace KinaUnaXamarin.Services
                         {
                             picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+                        ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                        await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
                     }
 
                     return picturePage;
@@ -927,7 +929,7 @@ namespace KinaUnaXamarin.Services
             {
                 client.SetBearerToken(accessToken);
             
-                string pageApiPath = "api/pictures/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&sortBy=" + sortBy;
+                string pageApiPath = "api/pictures/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
                 var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
 
                 if (result.IsSuccessStatusCode)
