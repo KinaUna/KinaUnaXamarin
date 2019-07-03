@@ -96,7 +96,7 @@ namespace KinaUnaXamarin.Views
             base.OnDisappearing();
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
-
+        
         private async Task Reload()
         {
             _feedModel.IsBusy = true;

@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.OS;
 using FFImageLoading.Config;
 using FFImageLoading.Forms.Platform;
+using PanCardView.Droid;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin.Droid
@@ -26,6 +27,7 @@ namespace KinaUnaXamarin.Droid
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
             CachedImageRenderer.InitImageViewHandler(); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
             FFImageLoading.ImageService.Instance.Initialize(new Configuration());
+            CardsViewRenderer.Preserve(); // See: https://github.com/AndreiMisiukevich/CardView
             LoadApplication(new App());
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)

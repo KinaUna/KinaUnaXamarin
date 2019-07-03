@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:panCardView="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.PhotoDetailPage">
+    <ContentPage.Content>
+        <Grid x:Name="ContentGrid" BackgroundColor="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <panCardView:CarouselView  Grid.Row="1"
+                ItemsSource="{Binding PhotoItems}"
+                SelectedIndex="{Binding CurrentIndex}"
+                ItemAppearing="CardsView_OnItemAppearing"
+                IsCyclical="False">
+                <panCardView:CarouselView.ItemTemplate>
+                    <DataTemplate>
+                        <ContentView>
+                            <Grid Margin="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <forms:CachedImage Grid.Row="1" Grid.Column="0"
+                                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                   RetryCount="3"
+                                                   Source = "{Binding PictureLink}">
+                                </forms:CachedImage>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Grid.Row="2" Grid.Column="0" Text="{Binding Location}" TextColor="LightBlue" FontSize="12"></Label>
+                            </Grid>
+                        </ContentView>
+                    </DataTemplate>
+                </panCardView:CarouselView.ItemTemplate>
+
+                <controls:LeftArrowControl/>
+                <controls:RightArrowControl/>
+                <controls:IndicatorsControl/>
+            </panCardView:CarouselView>
+            <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

@@ -12,7 +12,7 @@
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
                     <Label Text="Add Photo for:"></Label>
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.HorizontalList}" SelectionMode="Single" HeightRequest="105">
+                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">

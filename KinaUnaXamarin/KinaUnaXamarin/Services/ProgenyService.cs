@@ -892,64 +892,152 @@ namespace KinaUnaXamarin.Services
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
 
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(Constants.MediaApiUrl);
-
-            string accessToken = await UserService.GetAuthAccessToken();
-
-            // If user is not logged in.
-            if (String.IsNullOrEmpty(accessToken))
+            if (Online())
             {
-                
-                string pageApiPath = "api/publicaccess/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
-                var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
 
-                if (result.IsSuccessStatusCode)
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
                 {
-                    var picturePageString = await result.Content.ReadAsStringAsync();
-                    PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
-                    foreach (Picture picture in picturePage.PicturesList)
+
+                    string pageApiPath = "api/publicaccess/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
                     {
-                        if (picture.PictureTime.HasValue)
+                        var picturePageString = await result.Content.ReadAsStringAsync();
+                        PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
+                        foreach (Picture picture in picturePage.PicturesList)
                         {
-                            picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            if (picture.PictureTime.HasValue)
+                            {
+                                picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+                            ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
                         }
-                        ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
-                        await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                        await SecureStorage.SetAsync("PicturePage" + progenyId + "Page" + pageNumber + "Size" + pageSize, JsonConvert.SerializeObject(picturePage));
+                        return picturePage;
                     }
-
-                    return picturePage;
+                    else
+                    {
+                        return new PicturePage();
+                    }
                 }
-                else
+                else // If user is logged in.
                 {
-                    return new PicturePage();
+                    client.SetBearerToken(accessToken);
+
+                    string pageApiPath = "api/pictures/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var picturePageString = await result.Content.ReadAsStringAsync();
+                        PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
+                        foreach (Picture picture in picturePage.PicturesList)
+                        {
+                            if (picture.PictureTime.HasValue)
+                            {
+                                picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+                        }
+                        await SecureStorage.SetAsync("PicturePage" + progenyId + "Page" + pageNumber + "Size" + pageSize, JsonConvert.SerializeObject(picturePage));
+                        return picturePage;
+                    }
+                    else
+                    {
+                        return new PicturePage();
+                    }
                 }
             }
-            else // If user is logged in.
+            else
             {
-                client.SetBearerToken(accessToken);
-            
-                string pageApiPath = "api/pictures/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
-                var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+                string picturePageString = await SecureStorage.GetAsync("PicturePage" + progenyId + "Page" + pageNumber + "Size" + pageSize);
+                PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
+                return picturePage;
+            }
+        }
 
-                if (result.IsSuccessStatusCode)
+        public static async Task<PictureViewModel> GetPictureViewModel(int pictureId, int userAccessLevel, string userTimezone, int sortBy)
+        {
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
+            }
+            catch (Exception)
+            {
+                userTimezone = TZConvert.WindowsToIana(userTimezone);
+            }
+
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
                 {
-                    var picturePageString = await result.Content.ReadAsStringAsync();
-                    PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
-                    foreach (Picture picture in picturePage.PicturesList)
+
+                    string pictureViewApiPath = "api/pictures/pictureviewmodelmobile/" + pictureId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
                     {
-                        if (picture.PictureTime.HasValue)
+                        var pictureViewModelString = await result.Content.ReadAsStringAsync();
+                        PictureViewModel pictureViewModel = JsonConvert.DeserializeObject<PictureViewModel>(pictureViewModelString);
+                        if (pictureViewModel.PictureTime.HasValue)
                         {
-                            picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
-                    }
+                        ImageService.Instance.LoadUrl(pictureViewModel.PictureLink).DownSample(height: 440, allowUpscale: true).Preload();
+                        await SecureStorage.SetAsync("PictureViewModel" + pictureId, JsonConvert.SerializeObject(pictureViewModel));
 
-                    return picturePage;
+
+                        return pictureViewModel;
+                    }
+                    else
+                    {
+                        return new PictureViewModel();
+                    }
                 }
-                else
+                else // If user is logged in.
                 {
-                    return new PicturePage();
+                    client.SetBearerToken(accessToken);
+
+                    string pictureViewApiPath = "api/pictures/pictureviewmodelmobile/" + pictureId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var pictureViewModelString = await result.Content.ReadAsStringAsync();
+                        PictureViewModel pictureViewModel = JsonConvert.DeserializeObject<PictureViewModel>(pictureViewModelString);
+                        if (pictureViewModel.PictureTime.HasValue)
+                        {
+                            pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                        }
+                        ImageService.Instance.LoadUrl(pictureViewModel.PictureLink).DownSample(height: 440, allowUpscale: true).Preload();
+                        await SecureStorage.SetAsync("PictureViewModel" + pictureId, JsonConvert.SerializeObject(pictureViewModel));
+
+
+                        return pictureViewModel;
+                    }
+                    else
+                    {
+                        return new PictureViewModel();
+                    }
                 }
+            }
+            else
+            {
+                string pictureViewString = await SecureStorage.GetAsync("PictureViewModel" + pictureId);
+                PictureViewModel pictureViewModel = JsonConvert.DeserializeObject<PictureViewModel>(pictureViewString);
+                return pictureViewModel;
             }
         }
 

@@ -26,41 +26,37 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
                     
                 </StackLayout>
-                <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White">
-                    <CollectionView.ItemsLayout >
-                        <GridItemsLayout Orientation="Vertical"
+                    <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
+                        <CollectionView.ItemsLayout >
+                            <GridItemsLayout Orientation="Vertical"
                                          Span="2" />
-                    </CollectionView.ItemsLayout>
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
-                                <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                    <Grid.GestureRecognizers>
-                                        <SwipeGestureRecognizer Direction="Left" Swiped="SwipeGestureRecognizer_OnSwipedLeft"></SwipeGestureRecognizer>
-                                        <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_OnSwipedRight"></SwipeGestureRecognizer>
-                                    </Grid.GestureRecognizers>
-                                    <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
+                                    <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                        <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                        RetryCount="3"
                                                        Source = "{Binding PictureLink600}">
-                                    </forms:CachedImage>
-                                    <Frame BackgroundColor="Teal" Padding="5"
+                                        </forms:CachedImage>
+                                        <Frame BackgroundColor="Teal" Padding="5"
                                            Margin="5" HorizontalOptions="Start" VerticalOptions="Start" >
-                                        <Label Text="{Binding PictureNumber}"
+                                            <Label Text="{Binding PictureNumber}"
                                                FontAttributes="Bold"
                                                FontSize="14"
                                                TextColor="LightGray" />
-                                    </Frame>
-                                    <Frame BackgroundColor="DimGray" Padding="5"
+                                        </Frame>
+                                        <Frame BackgroundColor="DimGray" Padding="5"
                                            Margin="5" HorizontalOptions="Start" VerticalOptions="End">
-                                        <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}"
+                                            <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}"
                                                TextColor="LightGray"
                                                FontSize="10" />
-                                    </Frame>
+                                        </Frame>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>

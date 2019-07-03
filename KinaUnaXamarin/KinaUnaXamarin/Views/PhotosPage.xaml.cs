@@ -41,6 +41,7 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            
             if (_reload)
             {
                 _photosViewModel = new PhotosViewModel();
@@ -204,6 +205,7 @@ namespace KinaUnaXamarin.Views
                 _photosViewModel.PhotoItems.ReplaceRange(photoPage.PicturesList);
                 _photosViewModel.PageNumber = photoPage.PageNumber;
                 _photosViewModel.PageCount = photoPage.TotalPages;
+                PhotosListView.ScrollTo(0);
             }
             
         }
@@ -261,24 +263,11 @@ namespace KinaUnaXamarin.Views
             await UpdatePhotos();
         }
 
-        private async void SwipeGestureRecognizer_OnSwipedLeft(object sender, SwipedEventArgs e)
+        private async void PhotosListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _photosViewModel.PageNumber--;
-            if (_photosViewModel.PageNumber < 1)
-            {
-                _photosViewModel.PageNumber = _photosViewModel.PageCount;
-            }
-            await UpdatePhotos();
-        }
-
-        private async void SwipeGestureRecognizer_OnSwipedRight(object sender, SwipedEventArgs e)
-        {
-            _photosViewModel.PageNumber++;
-            if (_photosViewModel.PageNumber > _photosViewModel.PageCount)
-            {
-                _photosViewModel.PageNumber = 1;
-            }
-            await UpdatePhotos();
+            Picture selectedPicture = PhotosListView.SelectedItem as Picture;
+            PhotoDetailPage photoPage = new PhotoDetailPage(selectedPicture.PictureId);
+            await Shell.Current.Navigation.PushModalAsync(photoPage);
         }
     }
 }
