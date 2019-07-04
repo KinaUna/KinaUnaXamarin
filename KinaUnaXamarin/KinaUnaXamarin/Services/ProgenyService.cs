@@ -916,6 +916,8 @@ namespace KinaUnaXamarin.Services
                             {
                                 picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                             }
+
+                            picture.CommentsCount = picture.Comments.Count;
                             ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
                             await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
                         }
@@ -944,7 +946,11 @@ namespace KinaUnaXamarin.Services
                             {
                                 picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                             }
+                            picture.CommentsCount = picture.Comments.Count;
+                            ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true).Preload();
+                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
                         }
+                        
                         await SecureStorage.SetAsync("PicturePage" + progenyId + "Page" + pageNumber + "Size" + pageSize, JsonConvert.SerializeObject(picturePage));
                         return picturePage;
                     }
@@ -995,6 +1001,8 @@ namespace KinaUnaXamarin.Services
                         {
                             pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+
+                        pictureViewModel.CommentsCount = pictureViewModel.CommentsList.Count;
                         ImageService.Instance.LoadUrl(pictureViewModel.PictureLink).DownSample(height: 440, allowUpscale: true).Preload();
                         await SecureStorage.SetAsync("PictureViewModel" + pictureId, JsonConvert.SerializeObject(pictureViewModel));
 
@@ -1021,6 +1029,8 @@ namespace KinaUnaXamarin.Services
                         {
                             pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+
+                        pictureViewModel.CommentsCount = pictureViewModel.CommentsList.Count;
                         ImageService.Instance.LoadUrl(pictureViewModel.PictureLink).DownSample(height: 440, allowUpscale: true).Preload();
                         await SecureStorage.SetAsync("PictureViewModel" + pictureId, JsonConvert.SerializeObject(pictureViewModel));
 

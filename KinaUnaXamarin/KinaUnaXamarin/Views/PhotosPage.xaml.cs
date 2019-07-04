@@ -41,7 +41,8 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            
+
+            PhotosListView.SelectedItem = null;
             if (_reload)
             {
                 _photosViewModel = new PhotosViewModel();
@@ -265,9 +266,14 @@ namespace KinaUnaXamarin.Views
 
         private async void PhotosListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Picture selectedPicture = PhotosListView.SelectedItem as Picture;
-            PhotoDetailPage photoPage = new PhotoDetailPage(selectedPicture.PictureId);
-            await Shell.Current.Navigation.PushModalAsync(photoPage);
+            if (PhotosListView.SelectedItem is Picture selectedPicture)
+            {
+                PhotoDetailPage photoPage = new PhotoDetailPage(selectedPicture.PictureId);
+                // Reset selection
+                PhotosListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(photoPage);
+            }
+
         }
     }
 }

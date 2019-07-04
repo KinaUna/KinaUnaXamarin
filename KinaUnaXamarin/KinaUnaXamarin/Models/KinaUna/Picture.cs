@@ -33,5 +33,8 @@ namespace KinaUnaXamarin.Models.KinaUna
         public List<Comment> Comments { get; set; }
         public string TimeZone { get; set; }
         public int PictureNumber { get; set; }
+
+        [JsonIgnore]
+        public int CommentsCount { get; set; }
     }
 }

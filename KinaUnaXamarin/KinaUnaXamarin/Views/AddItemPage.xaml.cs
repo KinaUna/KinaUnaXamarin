@@ -26,10 +26,7 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
-            // Reset the selected item.
-            AddItemListCollectionView.SelectedItem = null;
-
+            
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
@@ -43,9 +40,10 @@ namespace KinaUnaXamarin.Views
 
         private void AddItemListCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            AddItemModel model = AddItemListCollectionView.SelectedItem as AddItemModel;
-            if (model != null)
+            if (AddItemListCollectionView.SelectedItem is AddItemModel model)
             {
+                // Reset the selected item.
+                AddItemListCollectionView.SelectedItem = null;
                 if (model.Name == "Sleep")
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddSleepPage());

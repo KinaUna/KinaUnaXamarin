@@ -64,23 +64,7 @@ namespace KinaUnaXamarin.Views
             PictureViewModel pictureViewModel = await ProgenyService.GetPictureViewModel(
                 _photoDetailViewModel.CurrentPictureId, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
             _photoDetailViewModel.PhotoItems.Add(pictureViewModel);
-
-            //PictureViewModel pictureViewModel4 = await ProgenyService.GetPictureViewModel(
-            //    pictureViewModel.PrevPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            //_photoDetailViewModel.PhotoItems.Insert(0, pictureViewModel4);
-
-            //PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-            //    pictureViewModel.NextPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            //_photoDetailViewModel.PhotoItems.Add(pictureViewModel2);
-
-            //PictureViewModel pictureViewModel3 = await ProgenyService.GetPictureViewModel(
-            //    pictureViewModel2.NextPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            //_photoDetailViewModel.PhotoItems.Add(pictureViewModel3);
-
-            //PictureViewModel pictureViewModel5 = await ProgenyService.GetPictureViewModel(
-            //    pictureViewModel4.PrevPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            //_photoDetailViewModel.PhotoItems.Insert(0, pictureViewModel5);
-
+            
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)
@@ -106,6 +90,10 @@ namespace KinaUnaXamarin.Views
                 PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
                     pictureViewModel.PrevPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
                 _photoDetailViewModel.PhotoItems.Insert(0, pictureViewModel2);
+                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                {
+                    _photoDetailViewModel.PhotoItems.RemoveAt(_photoDetailViewModel.PhotoItems.Count -1);
+                }
             }
 
             _photoDetailViewModel.CanLoadMore = true;
@@ -120,6 +108,10 @@ namespace KinaUnaXamarin.Views
                 PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
                     pictureViewModel.NextPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
                 _photoDetailViewModel.PhotoItems.Add(pictureViewModel2);
+                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                {
+                    _photoDetailViewModel.PhotoItems.RemoveAt(0);
+                }
             }
 
             _photoDetailViewModel.CanLoadMore = true;

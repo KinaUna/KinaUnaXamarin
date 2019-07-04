@@ -4,6 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.PhotosPage"
              Title="Photos"
@@ -48,11 +49,18 @@
                                         </Frame>
                                         <Frame BackgroundColor="DimGray" Padding="5"
                                            Margin="5" HorizontalOptions="Start" VerticalOptions="End">
-                                            <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}"
+                                            <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
                                                TextColor="LightGray"
                                                FontSize="10" />
                                         </Frame>
-                                    </Grid>
+                                    <Frame HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="5" HasShadow="False">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
+                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
+                                        </StackLayout>
+
+                                    </Frame>
+                                </Grid>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
