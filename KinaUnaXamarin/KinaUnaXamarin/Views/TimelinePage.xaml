@@ -43,6 +43,7 @@
                                                RetryCount="3"
                                                Source = "{Binding ItemObject.PictureLink600}">
                             </forms:CachedImage>
+
                             <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
@@ -322,7 +323,8 @@
                 </StackLayout>
                 <!--<CollectionView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}" Margin="0" ItemSizingStrategy="MeasureAllItems"></CollectionView>-->
                 <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
-                          Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement" >
+                          Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement"
+                          ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>

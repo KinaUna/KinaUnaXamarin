@@ -423,5 +423,11 @@ namespace KinaUnaXamarin.Views
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
+
+        private async void RandomPhotoClickGestureRecognizer_OnClicked(object sender, EventArgs e)
+        {
+            PhotoDetailPage photoPage = new PhotoDetailPage(_feedModel.ImageId);
+            await Shell.Current.Navigation.PushModalAsync(photoPage);
+        }
     }
 }
