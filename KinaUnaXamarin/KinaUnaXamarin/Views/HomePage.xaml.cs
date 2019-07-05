@@ -429,5 +429,19 @@ namespace KinaUnaXamarin.Views
             PhotoDetailPage photoPage = new PhotoDetailPage(_feedModel.ImageId);
             await Shell.Current.Navigation.PushModalAsync(photoPage);
         }
+
+        private async void TimeLineListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem is TimeLineItem timeLineItem)
+            {
+                if (timeLineItem.ItemObject is Picture picture)
+                {
+                    PhotoDetailPage photoPage = new PhotoDetailPage(picture.PictureId);
+                    // Reset selection
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(photoPage);
+                }
+            }
+        }
     }
 }

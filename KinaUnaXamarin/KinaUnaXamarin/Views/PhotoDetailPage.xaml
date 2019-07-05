@@ -7,6 +7,7 @@
              xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
              Visual="Material">
@@ -19,11 +20,13 @@
             <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                 <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
-            <panCardView:CarouselView  Grid.Row="1"
+            <panCardView:CarouselView
+                Grid.Row="1"
                 ItemsSource="{Binding PhotoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
-                IsCyclical="False">
+                IsCyclical="False"
+                IsPanInteractionEnabled="{Binding IsNotZoomed, Mode=TwoWay}">
                 <panCardView:CarouselView.ItemTemplate>
                     <DataTemplate>
                         <ContentView>
@@ -36,11 +39,17 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <forms:CachedImage Grid.Row="1" Grid.Column="0"
-                                                   HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                   RetryCount="3"
-                                                   Source = "{Binding PictureLink}">
-                                </forms:CachedImage>
+                                <ContentView Grid.Row="1" Grid.Column="0">
+                                    <forms:CachedImage
+                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        RetryCount="3"
+                                        Source = "{Binding PictureLink}"
+                                         LoadingPriority="High">
+                                        <forms:CachedImage.Behaviors>
+                                            <behaviors:MultiTouchBehavior IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}" />
+                                        </forms:CachedImage.Behaviors>
+                                    </forms:CachedImage>
+                                </ContentView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
                                     <Label Text="Photo" TextColor="WhiteSmoke"></Label>
                                     <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
@@ -48,15 +57,15 @@
                                     <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
                                 </StackLayout>
                                 <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
-                                    <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" ></Label>
+                                    <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
                                 </Frame>
                                 <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
-                                    <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" ></Label>
+                                    <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
                                 </Frame>
                                 <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
                                     <StackLayout Orientation="Horizontal">
-                                        <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
-                                        <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
+                                        <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
+                                        <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
                                     </StackLayout>
                                     
                                 </Frame>

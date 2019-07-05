@@ -36,5 +36,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public int PrevPicture { get; set; }
         public int NextPicture { get; set; }
 
+        public bool Zoomed { get; set; }
+
     }
 }

@@ -16,6 +16,8 @@ namespace KinaUnaXamarin.ViewModels
         private bool _loggedOut;
         private Progeny _progeny;
         private bool _isLoggedIn;
+        private bool _isNotZoomed = true;
+        private bool _isZoomed;
         
         public PhotoDetailViewModel()
         {
@@ -59,6 +61,22 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _isLoggedIn;
             set => SetProperty(ref _isLoggedIn, value);
+        }
+
+        public bool IsZoomed
+        {
+            get => _isZoomed;
+            set
+            {
+                SetProperty(ref _isZoomed, value);
+                IsNotZoomed = !_isZoomed;
+            }
+        }
+
+        public bool IsNotZoomed
+        {
+            get => _isNotZoomed;
+            set => SetProperty(ref _isNotZoomed, value);
         }
     }
 }

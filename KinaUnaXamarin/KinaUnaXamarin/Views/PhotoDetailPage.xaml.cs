@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using KinaUnaXamarin.Behaviors;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
@@ -78,7 +79,11 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
+
+            await LoadNewer();
+            await LoadOlder();
             _photoDetailViewModel.IsBusy = false;
+
         }
 
         private async Task LoadNewer()
@@ -214,14 +219,18 @@ namespace KinaUnaXamarin.Views
 
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
+            _photoDetailViewModel.IsZoomed = false;
+            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 3)
             {
                 await LoadNewer();
+                
+               
             }
 
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 2)
+            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 4)
             {
                 await LoadOlder();
+                
             }
         }
     }

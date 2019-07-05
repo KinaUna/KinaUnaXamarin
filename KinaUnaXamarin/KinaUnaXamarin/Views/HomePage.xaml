@@ -550,8 +550,8 @@
                             <Label Text="Latest Posts" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0"/>
                             <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}"
                                   ItemsSource="{Binding TimeLineItems}" Margin="10, 10, 10, 20" HasUnevenRows="True"
-                                  SeparatorVisibility="None" CachingStrategy="RecycleElement" />
-
+                                  SeparatorVisibility="None" CachingStrategy="RecycleElement"
+                                  ItemSelected="TimeLineListView_OnItemSelected"/>
                         </StackLayout>
                     </StackLayout>
                 </StackLayout>
