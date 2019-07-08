@@ -63,7 +63,15 @@ namespace KinaUnaXamarin.Views
                 bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
                 if (viewchildParsed)
                 {
-                    _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(await SecureStorage.GetAsync("ProgenyObject" + userviewchild));
+                    try
+                    {
+                        _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(await SecureStorage.GetAsync("ProgenyObject" + userviewchild));
+                    }
+                    catch (Exception e)
+                    {
+                        _feedModel.Progeny = await ProgenyService.GetProgeny(_viewChild);
+                    }
+                    
                     _userInfo = JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
                 }
                 BindingContext = _feedModel;
@@ -388,7 +396,10 @@ namespace KinaUnaXamarin.Views
                     if (width > height && (width - ProgenyDetailsStackLayout.WidthRequest) > 200) //if (width > height && width > 800)
                     {
                         ProgenyDetailsStackLayout.WidthRequest = (int)(width * 6 / 11);
-                        _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        if (_feedModel != null)
+                        {
+                            _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        }
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 2, 5);
                         UpcomingEventsStatckLayout.Margin = new Thickness(3, 0, 5, 5);
                         LatestPostsStackLayout.Margin = new Thickness(3, 0, 5, 5);
@@ -397,7 +408,11 @@ namespace KinaUnaXamarin.Views
                     else
                     {
                         ProgenyDetailsStackLayout.WidthRequest = width;
-                        _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        if (_feedModel != null)
+                        {
+                            _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                        }
+                        
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
                         UpcomingEventsStatckLayout.Margin = new Thickness(5, 0, 5, 5);
                         LatestPostsStackLayout.Margin = new Thickness(5, 0, 5, 5);

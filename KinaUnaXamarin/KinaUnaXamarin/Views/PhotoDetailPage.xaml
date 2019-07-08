@@ -21,27 +21,42 @@
                 <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <panCardView:CarouselView
+                x:Name="PhotoCarousel"
                 Grid.Row="1"
                 ItemsSource="{Binding PhotoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
                 IsCyclical="False"
-                IsPanInteractionEnabled="{Binding IsNotZoomed, Mode=TwoWay}">
+                IsUserInteractionEnabled="{Binding IsNotZoomed}"
+                IsPanSwipeEnabled ="{Binding IsNotZoomed}"
+                IsPanInteractionEnabled="{Binding IsNotZoomed}">
                 <panCardView:CarouselView.ItemTemplate>
                     <DataTemplate>
                         <ContentView>
                             <Grid Margin="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
+                                    <RowDefinition Height="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition></ColumnDefinition>
+                                    <ColumnDefinition Width="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth }"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <ContentView Grid.Row="1" Grid.Column="0">
+                                <!--<ContentView Grid.Row="1" Grid.Column="0" 
+                                             HeightRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }"
+                                             WidthRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth }">
+                                    <controls1:ZoomImage 
+                                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                         RetryCount="3"
+                                                         Source = "{Binding PictureLink}"
+                                                         LoadingPriority="High"
+                                                         IsScaleEnabled="False" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
+                                    </controls1:ZoomImage>
+                                </ContentView>-->
+                                <ContentView Grid.Row="1" Grid.Column="0" HeightRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }" WidthRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }">
                                     <forms:CachedImage
-                                        HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                        x:Name="CardCachedImage"
+                                        Aspect="AspectFit"
                                         RetryCount="3"
                                         Source = "{Binding PictureLink}"
                                          LoadingPriority="High">
@@ -73,9 +88,9 @@
                         </ContentView>
                     </DataTemplate>
                 </panCardView:CarouselView.ItemTemplate>
-                <controls:LeftArrowControl/>
-                <controls:RightArrowControl/>
-                <controls:IndicatorsControl/>
+                <controls:LeftArrowControl IsVisible="{Binding IsNotZoomed}"/>
+                <controls:RightArrowControl IsVisible="{Binding IsNotZoomed}"/>
+                <controls:IndicatorsControl IsVisible="{Binding IsNotZoomed}"/>
             </panCardView:CarouselView>
             <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>

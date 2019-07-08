@@ -1,31 +1,8 @@
-﻿// Modified by Per Rosing Mogensen.
-// Original details:
-//
-// ****************************************************************************
-// <copyright file="MultiTouchBehavior.cs" company="Davide Zordan">
-// Copyright © Davide Zordan 2016
-// </copyright>
-// ****************************************************************************
-// <author>Davide Zordan</author>
-// <email>mail@davide.dev</email>
-// <date>27.02.2016</date>
-// <project>MultiTouch.Behaviors</project>
-// <web>http://multitouch.codeplex.com/</web>
-// <web>https://github.com/davidezordan/multi-touch</web>
-// <license>
-// see https://github.com/davidezordan/multi-touch
-// </license>
-// ****************************************************************************
-// SAMPLE CODE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
-// INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-// PARTICULAR PURPOSE, ARE DISCLAIMED.  IN NO EVENT SHALL ESRI OR CONTRIBUTORS
-// BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-// INTERRUPTION) SUSTAINED BY YOU OR A THIRD PARTY, HOWEVER CAUSED AND ON ANY
-// THEORY OF LIABILITY, WHETHER IN CONTRACT; STRICT LIABILITY; OR TORT ARISING
-// IN ANY WAY OUT OF THE USE OF THIS SAMPLE CODE, EVEN IF ADVISED OF THE
-// POSSIBILITY OF SUCH DAMAGE TO THE FULL EXTENT ALLOWED BY APPLICABLE LAW.
+﻿// Original inspiration:
+// https://github.com/davidezordan/multi-touch
+// and
+// https://stackoverflow.com/questions/40181090/xamarin-forms-pinch-and-pan-together
+
 using System;
 using KinaUnaXamarin.Extensions;
 using Xamarin.Forms;
@@ -40,16 +17,15 @@ namespace KinaUnaXamarin.Behaviors
     {
         #region Fields
 
-        private double _currentScale = 1, _startScale = 1, _xOffset, _yOffset;
-
+        private double _currentScale = 1, _startScale = 1, _xOffset, _yOffset, _parentHeight, _parentWidth, _lastScale, _startX, _startY;
+        private bool _isPinching;
         private PinchGestureRecognizer _pinchGestureRecognizer;
-
         private PanGestureRecognizer _panGestureRecognizer;
-
+        private TapGestureRecognizer _tapGestureRecognizer;
         private ContentView _parent;
 
         private View _associatedObject;
-
+        
         #endregion
 
         /// <summary>
@@ -60,10 +36,13 @@ namespace KinaUnaXamarin.Behaviors
         private void AssociatedObjectBindingContextChanged(object sender, EventArgs e)
         {
             _parent = _associatedObject.Parent as ContentView;
+            
             _parent?.GestureRecognizers.Remove(_panGestureRecognizer);
             _parent?.GestureRecognizers.Add(_panGestureRecognizer);
             _parent?.GestureRecognizers.Remove(_pinchGestureRecognizer);
             _parent?.GestureRecognizers.Add(_pinchGestureRecognizer);
+            _parent?.GestureRecognizers.Remove(_tapGestureRecognizer);
+            _parent?.GestureRecognizers.Add(_tapGestureRecognizer);
         }
 
         /// <summary>
@@ -73,6 +52,7 @@ namespace KinaUnaXamarin.Behaviors
         {
             _pinchGestureRecognizer.PinchUpdated -= OnPinchUpdated;
             _panGestureRecognizer.PanUpdated -= OnPanUpdated;
+            _tapGestureRecognizer.Tapped -= OnTapped;
             _associatedObject.BindingContextChanged -= AssociatedObjectBindingContextChanged;
         }
 
@@ -84,6 +64,7 @@ namespace KinaUnaXamarin.Behaviors
             CleanupEvents();
             _pinchGestureRecognizer.PinchUpdated += OnPinchUpdated;
             _panGestureRecognizer.PanUpdated += OnPanUpdated;
+            _tapGestureRecognizer.Tapped += OnTapped;
             _associatedObject.BindingContextChanged += AssociatedObjectBindingContextChanged;
         }
 
@@ -94,6 +75,7 @@ namespace KinaUnaXamarin.Behaviors
         {
             _pinchGestureRecognizer = new PinchGestureRecognizer();
             _panGestureRecognizer = new PanGestureRecognizer();
+            _tapGestureRecognizer = new TapGestureRecognizer { NumberOfTapsRequired = 2 };
         }
 
         /// <summary>
@@ -104,7 +86,6 @@ namespace KinaUnaXamarin.Behaviors
             InitialiseRecognizers();
             _associatedObject = associatedObject;
             InitializeEvents();
-
             base.OnAttachedTo(associatedObject);
         }
 
@@ -118,9 +99,41 @@ namespace KinaUnaXamarin.Behaviors
             _parent = null;
             _pinchGestureRecognizer = null;
             _panGestureRecognizer = null;
+            _tapGestureRecognizer = null;
             _associatedObject = null;
 
             base.OnDetachingFrom(associatedObject);
+        }
+
+        private void OnTapped(object sender, EventArgs e)
+        {
+            _parent.Content.AnchorX = 0;
+            _parent.Content.AnchorY = 0;
+            if (_parent.Content.Scale > 1)
+            {
+                _parent.Content.ScaleTo(1, 250, Easing.CubicInOut);
+                _parent.Content.TranslateTo(0, 0, 250, Easing.CubicInOut);
+                _currentScale = 1;
+                _xOffset = _parent.Content.TranslationX = 0;
+                _yOffset = _parent.Content.TranslationY = 0;
+                IsZoomed = false;
+                IsTranslateEnabled = false;
+                // IsScaleEnabled = false;
+            }
+            else
+            {
+                var x = _parent.Content.Width / -2;
+                var y = _parent.Content.Height / -2;
+                _parent.Content.ScaleTo(2, 250, Easing.CubicInOut);
+                _parent.Content.TranslateTo(x, y, 250, Easing.CubicInOut);
+                _currentScale = 2;
+                _xOffset = x;
+                _yOffset = y;
+                IsZoomed = true;
+                IsTranslateEnabled = true;
+                IsScaleEnabled = true;
+            }
+            
         }
 
         /// <summary>
@@ -130,7 +143,7 @@ namespace KinaUnaXamarin.Behaviors
         /// <param name="e">The event parameters.</param>
         private void OnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
-            if (_parent == null)
+            if (_parent == null || _isPinching)
             {
                 return;
             }
@@ -139,19 +152,37 @@ namespace KinaUnaXamarin.Behaviors
             {
                 return;
             }
-
+            
             switch (e.StatusType)
             {
+                case GestureStatus.Started:
+                    _startX = e.TotalX;
+                    _startY = e.TotalY;
+
+                    _parent.Content.AnchorX = 0;
+                    _parent.Content.AnchorY = 0;
+
+                    break;
+
                 case GestureStatus.Running:
-                    _parent.Content.TranslationX = _xOffset + e.TotalX;
-                    _parent.Content.TranslationY = _yOffset + e.TotalY;
+                    var maxTranslationX = _parent.Content.Scale * _parent.Content.Width - _parent.Content.Width;
+                    _parent.Content.TranslationX = Math.Min(0, Math.Max(-maxTranslationX, _xOffset + e.TotalX - _startX));
+
+                    var maxTranslationY = _parent.Content.Scale * _parent.Content.Height - _parent.Content.Height;
+                    _parent.Content.TranslationY = Math.Min(0, Math.Max(-maxTranslationY, _yOffset + e.TotalY - _startY));
+
                     break;
 
                 case GestureStatus.Completed:
-                    _xOffset = _parent.Content.TranslationX;
-                    _yOffset = _parent.Content.TranslationY;
+                    if (!_isPinching)
+                    {
+                        _xOffset = _parent.Content.TranslationX;
+                        _yOffset = _parent.Content.TranslationY;
+                    }
                     break;
             }
+
+
         }
 
         /// <summary>
@@ -170,17 +201,25 @@ namespace KinaUnaXamarin.Behaviors
             {
                 return;
             }
-
+            
             switch (e.Status)
             {
                 case GestureStatus.Started:
+                    _isPinching = true;
                     _startScale = _parent.Content.Scale;
                     _parent.Content.AnchorX = 0;
                     _parent.Content.AnchorY = 0;
-
+                    _lastScale = e.Scale;
+                    IsZoomed = true;
                     break;
 
                 case GestureStatus.Running:
+                    _isPinching = true;
+                    if (e.Scale < 0 || Math.Abs(_lastScale - e.Scale) > (_lastScale * 1.3) - _lastScale)
+                    {
+                        return;
+                    }
+                    _lastScale = e.Scale;
                     _currentScale += (e.Scale - 1) * _startScale;
                     _currentScale = Math.Max(1, _currentScale);
 
@@ -201,7 +240,12 @@ namespace KinaUnaXamarin.Behaviors
                     _parent.Content.TranslationY = targetY.Clamp(-_parent.Content.Height * (_currentScale - 1), 0);
 
                     _parent.Content.Scale = _currentScale;
+                    
+                    break;
 
+                case GestureStatus.Completed:
+                    _xOffset = _parent.Content.TranslationX;
+                    _yOffset = _parent.Content.TranslationY;
                     if (Math.Abs(_currentScale - 1) < 0.025)
                     {
                         IsZoomed = false;
@@ -210,23 +254,22 @@ namespace KinaUnaXamarin.Behaviors
                     {
                         IsZoomed = true;
                     }
-
-                    break;
-
-                case GestureStatus.Completed:
-                    _xOffset = _parent.Content.TranslationX;
-                    _yOffset = _parent.Content.TranslationY;
-
+                    _isPinching = false;
                     break;
             }
+            
         }
 
         private void ResetZoom()
         {
             _parent.Content.TranslationX = 0;
             _parent.Content.TranslationY = 0;
-
+            _parent.Content.AnchorX = 0;
+            _parent.Content.AnchorY = 0;
+            _currentScale = 1;
             _parent.Content.Scale = 1;
+            _xOffset = 0;
+            _yOffset = 0;
         }
 
         /// <summary>
@@ -235,8 +278,23 @@ namespace KinaUnaXamarin.Behaviors
         public void OnAppearing()
         {
             AssociatedObjectBindingContextChanged(_associatedObject, null);
+            if (_parent != null)
+            {
+                _parentHeight = _parent.Height;
+                _parentWidth = _parent.Width;
+            }
         }
 
+        public void OnDisAppearing()
+        {
+            CleanupEvents();
+
+            _parent = null;
+            _pinchGestureRecognizer = null;
+            _panGestureRecognizer = null;
+            _tapGestureRecognizer = null;
+            _associatedObject = null;
+        }
         #region IsScaleEnabled property
 
         /// <summary>
@@ -284,6 +342,7 @@ namespace KinaUnaXamarin.Behaviors
         public static readonly BindableProperty IsZoomedProperty =
             BindableProperty.Create(nameof(IsZoomed), typeof(bool), typeof(MultiTouchBehavior), default(bool), propertyChanged: OnIsZoomedPropertyChanged);
 
+        
         // See https://forums.xamarin.com/discussion/96459/xamarin-forms-parent-bindingcontext-in-datatemplate-in-the-xaml
         private static void OnIsZoomedPropertyChanged(BindableObject bindable, object oldValue, object newValue)
         {

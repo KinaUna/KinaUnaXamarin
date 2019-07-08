@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using FFImageLoading.Forms;
 using KinaUnaXamarin.Behaviors;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -79,9 +81,7 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
-
-            await LoadNewer();
-            await LoadOlder();
+            
             _photoDetailViewModel.IsBusy = false;
 
         }
@@ -220,18 +220,39 @@ namespace KinaUnaXamarin.Views
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
             _photoDetailViewModel.IsZoomed = false;
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 3)
+            _photoDetailViewModel.IsBusy = true;
+            // var ciView = view.CurrentView..SingleOrDefault(c => c.GetType() == typeof(CachedImage));
+            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
+            if (ciView != null)
+            {
+                CachedImage ci = ciView as CachedImage;
+                if (ci.Behaviors[0] is MultiTouchBehavior mtb)
+                {
+                    mtb.OnAppearing();
+                }
+            }
+            
+            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
             {
                 await LoadNewer();
-                
                
             }
 
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 4)
+            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 2)
             {
                 await LoadOlder();
                 
             }
+
+            _photoDetailViewModel.IsBusy = false;
         }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height); //must be called
+            _photoDetailViewModel.ImageHeight = height - 60;
+            _photoDetailViewModel.ImageWidth = width;
+        }
+        
     }
 }

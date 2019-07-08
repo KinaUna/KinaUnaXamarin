@@ -31,6 +31,11 @@ namespace KinaUnaXamarin.Services
 
         public static async Task<Progeny> GetProgeny(int progenyId)
         {
+            if (progenyId == 0)
+            {
+                return OfflineDefaultData.DefaultProgeny;
+            }
+
             bool online = Online();
             if (!online)
             {

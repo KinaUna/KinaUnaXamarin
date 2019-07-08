@@ -18,7 +18,9 @@ namespace KinaUnaXamarin.ViewModels
         private bool _isLoggedIn;
         private bool _isNotZoomed = true;
         private bool _isZoomed;
-        
+        private double _imageHeight;
+        private double _imageWidth;
+
         public PhotoDetailViewModel()
         {
             PhotoItems = new ObservableRangeCollection<PictureViewModel>();
@@ -77,6 +79,18 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _isNotZoomed;
             set => SetProperty(ref _isNotZoomed, value);
+        }
+
+        public double ImageHeight
+        {
+            get => _imageHeight;
+            set => SetProperty(ref _imageHeight, value);
+        }
+
+        public double ImageWidth
+        {
+            get => _imageWidth;
+            set => SetProperty(ref _imageWidth, value);
         }
     }
 }
