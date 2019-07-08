@@ -67,6 +67,9 @@
     <PackageReference Include="CardsView">
       <Version>2.1.6</Version>
     </PackageReference>
+    <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView">
+      <Version>1.0.7</Version>
+    </PackageReference>
     <PackageReference Include="glidex.forms">
       <Version>1.0.4</Version>
     </PackageReference>

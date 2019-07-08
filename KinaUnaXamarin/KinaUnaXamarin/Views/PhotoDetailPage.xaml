@@ -4,9 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:panCardView="clr-namespace:PanCardView;assembly=PanCardView"
-             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:panCardViewControls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:cropView="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.ImageCropView"
+             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
@@ -36,32 +39,35 @@
                             <Grid Margin="0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }"></RowDefinition>
+                                    <RowDefinition Height="*"></RowDefinition>
                                     <RowDefinition Height="20"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth }"></ColumnDefinition>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <!--<ContentView Grid.Row="1" Grid.Column="0" 
-                                             HeightRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }"
-                                             WidthRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth }">
-                                    <controls1:ZoomImage 
-                                                         HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                                         RetryCount="3"
-                                                         Source = "{Binding PictureLink}"
-                                                         LoadingPriority="High"
-                                                         IsScaleEnabled="False" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
-                                    </controls1:ZoomImage>
-                                </ContentView>-->
-                                <ContentView Grid.Row="1" Grid.Column="0" HeightRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }" WidthRequest="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight }">
+                                <!--<controls:PinchToZoomContainer Grid.Row="1" Grid.Column="0"  IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
                                     <forms:CachedImage
                                         x:Name="CardCachedImage"
                                         Aspect="AspectFit"
                                         RetryCount="3"
                                         Source = "{Binding PictureLink}"
-                                         LoadingPriority="High">
+                                        LoadingPriority="High">
+                                    </forms:CachedImage>
+                                </controls:PinchToZoomContainer>-->
+                                <ContentView Grid.Row="1" Grid.Column="0" >
+                                    <forms:CachedImage 
+                                        x:Name="CardCachedImage"
+                                        Aspect="AspectFit"
+                                        RetryCount="3"
+                                        Source = "{Binding PictureLink}"
+                                        LoadingPriority="High">
                                         <forms:CachedImage.Behaviors>
-                                            <behaviors:MultiTouchBehavior IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}" />
+                                            <behaviors:MultiTouchBehavior
+                                                IsScaleEnabled="True"
+                                                IsTranslateEnabled="False" 
+                                                IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}"
+                                                ContainerHeight="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight}"
+                                                ContainerWidth="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth}"/>
                                         </forms:CachedImage.Behaviors>
                                     </forms:CachedImage>
                                 </ContentView>
@@ -82,15 +88,14 @@
                                         <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
                                         <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
                                     </StackLayout>
-                                    
                                 </Frame>
                             </Grid>
                         </ContentView>
                     </DataTemplate>
                 </panCardView:CarouselView.ItemTemplate>
-                <controls:LeftArrowControl IsVisible="{Binding IsNotZoomed}"/>
-                <controls:RightArrowControl IsVisible="{Binding IsNotZoomed}"/>
-                <controls:IndicatorsControl IsVisible="{Binding IsNotZoomed}"/>
+                <panCardViewControls:LeftArrowControl/>
+                <panCardViewControls:RightArrowControl/>
+                <panCardViewControls:IndicatorsControl/>
             </panCardView:CarouselView>
             <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>

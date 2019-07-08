@@ -231,7 +231,7 @@ namespace KinaUnaXamarin.Views
                     mtb.OnAppearing();
                 }
             }
-            
+
             if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
             {
                 await LoadNewer();
@@ -250,7 +250,7 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            _photoDetailViewModel.ImageHeight = height - 60;
+            _photoDetailViewModel.ImageHeight = height;
             _photoDetailViewModel.ImageWidth = width;
         }
         

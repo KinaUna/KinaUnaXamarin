@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinaUnaXamarin.Android", "KinaUnaXamarin\KinaUnaXamarin.Android\KinaUnaXamarin.Android.csproj", "{32DA6520-C650-427B-967A-EBF8B3CBC01E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KinaUnaXamarin", "KinaUnaXamarin\KinaUnaXamarin\KinaUnaXamarin.csproj", "{5B2D4A1E-41AF-4187-921D-E40331571C48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KinaUnaXamarin", "KinaUnaXamarin\KinaUnaXamarin\KinaUnaXamarin.csproj", "{5B2D4A1E-41AF-4187-921D-E40331571C48}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

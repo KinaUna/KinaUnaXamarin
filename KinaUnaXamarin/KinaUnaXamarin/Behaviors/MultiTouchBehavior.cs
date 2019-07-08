@@ -4,6 +4,7 @@
 // https://stackoverflow.com/questions/40181090/xamarin-forms-pinch-and-pan-together
 
 using System;
+using FFImageLoading.Forms;
 using KinaUnaXamarin.Extensions;
 using Xamarin.Forms;
 
@@ -17,7 +18,7 @@ namespace KinaUnaXamarin.Behaviors
     {
         #region Fields
 
-        private double _currentScale = 1, _startScale = 1, _xOffset, _yOffset, _parentHeight, _parentWidth, _lastScale, _startX, _startY;
+        private double _currentScale = 1, _startScale = 1, _xOffset, _yOffset, _lastScale, _startX, _startY;
         private bool _isPinching;
         private PinchGestureRecognizer _pinchGestureRecognizer;
         private PanGestureRecognizer _panGestureRecognizer;
@@ -25,7 +26,10 @@ namespace KinaUnaXamarin.Behaviors
         private ContentView _parent;
 
         private View _associatedObject;
-        
+        private DateTime _lastPinch;
+        private double _imageHeight;
+        private double _imageWidth;
+
         #endregion
 
         /// <summary>
@@ -107,35 +111,28 @@ namespace KinaUnaXamarin.Behaviors
 
         private void OnTapped(object sender, EventArgs e)
         {
-            _parent.Content.AnchorX = 0;
-            _parent.Content.AnchorY = 0;
+            
+
             if (_parent.Content.Scale > 1)
             {
-                _parent.Content.ScaleTo(1, 250, Easing.CubicInOut);
-                _parent.Content.TranslateTo(0, 0, 250, Easing.CubicInOut);
-                _currentScale = 1;
-                _xOffset = _parent.Content.TranslationX = 0;
-                _yOffset = _parent.Content.TranslationY = 0;
+                ResetZoom();
+                System.Threading.Thread.Sleep(200);
                 IsZoomed = false;
                 IsTranslateEnabled = false;
-                // IsScaleEnabled = false;
             }
             else
             {
-                var x = _parent.Content.Width / -2;
-                var y = _parent.Content.Height / -2;
-                _parent.Content.ScaleTo(2, 250, Easing.CubicInOut);
-                _parent.Content.TranslateTo(x, y, 250, Easing.CubicInOut);
-                _currentScale = 2;
-                _xOffset = x;
-                _yOffset = y;
+                // Todo: Ease in/out.
+                StartScaling();
+                ExecuteScaling(2, .5, .5);
+                EndGesture();
                 IsZoomed = true;
                 IsTranslateEnabled = true;
                 IsScaleEnabled = true;
             }
             
         }
-
+        
         /// <summary>
         /// Implements Pan/Translate.
         /// </summary>
@@ -152,7 +149,12 @@ namespace KinaUnaXamarin.Behaviors
             {
                 return;
             }
-            
+
+            if (_lastPinch + TimeSpan.FromMilliseconds(300) > DateTime.UtcNow)
+            {
+                return;
+            }
+
             switch (e.StatusType)
             {
                 case GestureStatus.Started:
@@ -165,26 +167,22 @@ namespace KinaUnaXamarin.Behaviors
                     break;
 
                 case GestureStatus.Running:
+                    // Todo: Limit movement more exact, as the container and image most likely doesn't have the same proportions.
                     var maxTranslationX = _parent.Content.Scale * _parent.Content.Width - _parent.Content.Width;
                     _parent.Content.TranslationX = Math.Min(0, Math.Max(-maxTranslationX, _xOffset + e.TotalX - _startX));
-
                     var maxTranslationY = _parent.Content.Scale * _parent.Content.Height - _parent.Content.Height;
                     _parent.Content.TranslationY = Math.Min(0, Math.Max(-maxTranslationY, _yOffset + e.TotalY - _startY));
-
                     break;
 
                 case GestureStatus.Completed:
                     if (!_isPinching)
                     {
-                        _xOffset = _parent.Content.TranslationX;
-                        _yOffset = _parent.Content.TranslationY;
+                        EndGesture();
                     }
                     break;
             }
-
-
         }
-
+        
         /// <summary>
         /// Implements Pinch/Zoom.
         /// </summary>
@@ -220,32 +218,13 @@ namespace KinaUnaXamarin.Behaviors
                         return;
                     }
                     _lastScale = e.Scale;
-                    _currentScale += (e.Scale - 1) * _startScale;
-                    _currentScale = Math.Max(1, _currentScale);
-
-                    var renderedX = _parent.Content.X + _xOffset;
-                    var deltaX = renderedX / _parent.Width;
-                    var deltaWidth = _parent.Width / (_parent.Content.Width * _startScale);
-                    var originX = (e.ScaleOrigin.X - deltaX) * deltaWidth;
-
-                    var renderedY = _parent.Content.Y + _yOffset;
-                    var deltaY = renderedY / _parent.Height;
-                    var deltaHeight = _parent.Height / (_parent.Content.Height * _startScale);
-                    var originY = (e.ScaleOrigin.Y - deltaY) * deltaHeight;
-
-                    var targetX = _xOffset - (originX * _parent.Content.Width) * (_currentScale - _startScale);
-                    var targetY = _yOffset - (originY * _parent.Content.Height) * (_currentScale - _startScale);
-
-                    _parent.Content.TranslationX = targetX.Clamp(-_parent.Content.Width * (_currentScale - 1), 0);
-                    _parent.Content.TranslationY = targetY.Clamp(-_parent.Content.Height * (_currentScale - 1), 0);
-
-                    _parent.Content.Scale = _currentScale;
+                    
+                    ExecuteScaling(e.Scale, e.ScaleOrigin.X, e.ScaleOrigin.Y);
                     
                     break;
 
                 case GestureStatus.Completed:
-                    _xOffset = _parent.Content.TranslationX;
-                    _yOffset = _parent.Content.TranslationY;
+                    EndGesture();
                     if (Math.Abs(_currentScale - 1) < 0.025)
                     {
                         IsZoomed = false;
@@ -254,22 +233,61 @@ namespace KinaUnaXamarin.Behaviors
                     {
                         IsZoomed = true;
                     }
+                    _lastPinch = DateTime.UtcNow;
                     _isPinching = false;
                     break;
             }
-            
+        }
+
+        private void StartScaling()
+        {
+            _startScale = _parent.Content.Scale;
+
+            _parent.Content.AnchorX = 0;
+            _parent.Content.AnchorY = 0;
+        }
+
+        private void ExecuteScaling(double scale, double x, double y)
+        {
+            _currentScale += (scale - 1) * _startScale;
+            _currentScale = Math.Max(1, _currentScale);
+
+            var renderedX = _parent.Content.X + _xOffset;
+            var deltaX = renderedX / _parent.Width;
+            var deltaWidth = _parent.Width / (_parent.Content.Width * _startScale);
+            var originX = (x - deltaX) * deltaWidth;
+
+            var renderedY = _parent.Content.Y + _yOffset;
+            var deltaY = renderedY / _parent.Height;
+            var deltaHeight = _parent.Height / (_parent.Content.Height * _startScale);
+            var originY = (y - deltaY) * deltaHeight;
+
+            var targetX = _xOffset - (originX * _parent.Content.Width) * (_currentScale - _startScale);
+            var targetY = _yOffset - (originY * _parent.Content.Height) * (_currentScale - _startScale);
+
+            _parent.Content.TranslationX = targetX.Clamp(-_parent.Content.Width * (_currentScale - 1), 0);
+            _parent.Content.TranslationY = targetY.Clamp(-_parent.Content.Height * (_currentScale - 1), 0);
+
+            _parent.Content.Scale = _currentScale;
+        }
+
+        private void EndGesture()
+        {
+            _xOffset = _parent.Content.TranslationX;
+            _yOffset = _parent.Content.TranslationY;
         }
 
         private void ResetZoom()
         {
-            _parent.Content.TranslationX = 0;
-            _parent.Content.TranslationY = 0;
-            _parent.Content.AnchorX = 0;
-            _parent.Content.AnchorY = 0;
+            // Todo: Ease in/out.
+            StartScaling();
+            ExecuteScaling(1.0, 0, 0);
+            EndGesture();
+            //_parent.Content.ScaleTo(1, 250, Easing.CubicInOut);
+            //_parent.Content.TranslateTo(0, 0, 250, Easing.CubicInOut);
             _currentScale = 1;
-            _parent.Content.Scale = 1;
-            _xOffset = 0;
-            _yOffset = 0;
+            _xOffset = _parent.Content.TranslationX = 0;
+            _yOffset = _parent.Content.TranslationY = 0;
         }
 
         /// <summary>
@@ -278,23 +296,13 @@ namespace KinaUnaXamarin.Behaviors
         public void OnAppearing()
         {
             AssociatedObjectBindingContextChanged(_associatedObject, null);
-            if (_parent != null)
+            if (_parent.Content is CachedImage cachedImage)
             {
-                _parentHeight = _parent.Height;
-                _parentWidth = _parent.Width;
+                _imageHeight = cachedImage.Height;
+                _imageWidth = cachedImage.Width;
             }
         }
-
-        public void OnDisAppearing()
-        {
-            CleanupEvents();
-
-            _parent = null;
-            _pinchGestureRecognizer = null;
-            _panGestureRecognizer = null;
-            _tapGestureRecognizer = null;
-            _associatedObject = null;
-        }
+        
         #region IsScaleEnabled property
 
         /// <summary>
@@ -379,6 +387,82 @@ namespace KinaUnaXamarin.Behaviors
                 {
                     ResetZoom();
                 }
+            }
+        }
+
+        #endregion
+
+        #region ContainerHeight property
+
+        /// <summary>
+        /// Identifies the <see cref="ContainerHeightProperty" /> property.
+        /// </summary>
+        public static readonly BindableProperty ContainerHeightProperty =
+            BindableProperty.Create(nameof(ContainerHeight), typeof(double), typeof(MultiTouchBehavior), default(double), propertyChanged: OnContainerHeightPropertyChanged);
+
+
+        // See https://forums.xamarin.com/discussion/96459/xamarin-forms-parent-bindingcontext-in-datatemplate-in-the-xaml
+        private static void OnContainerHeightPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (newValue != oldValue && newValue != null)
+            {
+                if (bindable is MultiTouchBehavior multiTouchBehavior)
+                {
+                    if (newValue is double newdouble)
+                    {
+                        multiTouchBehavior.ContainerHeight = newdouble;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ContainerHeight" /> dependency / bindable property.
+        /// </summary>
+        public double ContainerHeight
+        {
+            get { return (double)GetValue(ContainerHeightProperty); }
+            set
+            {
+                SetValue(ContainerHeightProperty, value);
+            }
+        }
+
+        #endregion
+
+        #region ContainerWidth property
+
+        /// <summary>
+        /// Identifies the <see cref="ContainerWidthProperty" /> property.
+        /// </summary>
+        public static readonly BindableProperty ContainerWidthProperty =
+            BindableProperty.Create(nameof(ContainerWidth), typeof(double), typeof(MultiTouchBehavior), default(double), propertyChanged: OnContainerWidthPropertyChanged);
+
+
+        // See https://forums.xamarin.com/discussion/96459/xamarin-forms-parent-bindingcontext-in-datatemplate-in-the-xaml
+        private static void OnContainerWidthPropertyChanged(BindableObject bindable, object oldValue, object newValue)
+        {
+            if (newValue != oldValue && newValue != null)
+            {
+                if (bindable is MultiTouchBehavior multiTouchBehavior)
+                {
+                    if (newValue is double newdouble)
+                    {
+                        multiTouchBehavior.ContainerWidth = newdouble;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Identifies the <see cref="ContainerWidth" /> dependency / bindable property.
+        /// </summary>
+        public double ContainerWidth
+        {
+            get { return (double)GetValue(ContainerWidthProperty); }
+            set
+            {
+                SetValue(ContainerWidthProperty, value);
             }
         }
 
