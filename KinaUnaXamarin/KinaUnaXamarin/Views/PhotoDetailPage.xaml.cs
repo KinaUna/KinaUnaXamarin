@@ -39,14 +39,7 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await Reload();
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
-
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
@@ -57,6 +50,13 @@ namespace KinaUnaXamarin.Views
             {
                 OfflineStackLayout.IsVisible = true;
             }
+            await Reload();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
         private async Task Reload()
@@ -216,6 +216,13 @@ namespace KinaUnaXamarin.Views
                 await Reload();
             }
         }
+        
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height); //must be called
+            _photoDetailViewModel.ImageHeight = height;
+            _photoDetailViewModel.ImageWidth = width;
+        }
 
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
@@ -225,8 +232,8 @@ namespace KinaUnaXamarin.Views
             CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
             if (ciView != null)
             {
-                CachedImage ci = ciView as CachedImage;
-                if (ci.Behaviors[0] is MultiTouchBehavior mtb)
+
+                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
                 {
                     mtb.OnAppearing();
                 }
@@ -235,24 +242,33 @@ namespace KinaUnaXamarin.Views
             if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
             {
                 await LoadNewer();
-               
+
             }
 
             if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 2)
             {
                 await LoadOlder();
-                
+
             }
 
             _photoDetailViewModel.IsBusy = false;
         }
 
-        protected override void OnSizeAllocated(double width, double height)
+        private async void PhotoCarousel_OnItemDisappearing(CardsView view, ItemDisappearingEventArgs args)
         {
-            base.OnSizeAllocated(width, height); //must be called
-            _photoDetailViewModel.ImageHeight = height;
-            _photoDetailViewModel.ImageWidth = width;
+            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
+            if (ciView != null)
+            {
+
+                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                {
+                    await mtb.OnDisAppearing();
+                }
+            }
         }
-        
+
+        private void PhotoCarousel_OnItemBeforeAppearing(CardsView view, ItemBeforeAppearingEventArgs args)
+        {
+        }
     }
 }

@@ -29,6 +29,8 @@
                 ItemsSource="{Binding PhotoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
+                ItemDisappearing="PhotoCarousel_OnItemDisappearing"
+                ItemBeforeAppearing="PhotoCarousel_OnItemBeforeAppearing"
                 IsCyclical="False"
                 IsUserInteractionEnabled="{Binding IsNotZoomed}"
                 IsPanSwipeEnabled ="{Binding IsNotZoomed}"
@@ -36,7 +38,7 @@
                 <panCardView:CarouselView.ItemTemplate>
                     <DataTemplate>
                         <ContentView>
-                            <Grid Margin="0">
+                            <Grid Margin="0" IsClippedToBounds="True">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="*"></RowDefinition>
@@ -54,7 +56,7 @@
                                         LoadingPriority="High">
                                     </forms:CachedImage>
                                 </controls:PinchToZoomContainer>-->
-                                <ContentView Grid.Row="1" Grid.Column="0" >
+                                <ContentView Grid.Row="1" Grid.Column="0">
                                     <forms:CachedImage 
                                         x:Name="CardCachedImage"
                                         Aspect="AspectFit"

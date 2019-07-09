@@ -4,6 +4,7 @@
 // https://stackoverflow.com/questions/40181090/xamarin-forms-pinch-and-pan-together
 
 using System;
+using System.Threading.Tasks;
 using FFImageLoading.Forms;
 using KinaUnaXamarin.Extensions;
 using Xamarin.Forms;
@@ -29,6 +30,7 @@ namespace KinaUnaXamarin.Behaviors
         private DateTime _lastPinch;
         private double _imageHeight;
         private double _imageWidth;
+        
 
         #endregion
 
@@ -123,6 +125,7 @@ namespace KinaUnaXamarin.Behaviors
             else
             {
                 // Todo: Ease in/out.
+
                 StartScaling();
                 ExecuteScaling(2, .5, .5);
                 EndGesture();
@@ -167,7 +170,7 @@ namespace KinaUnaXamarin.Behaviors
                     break;
 
                 case GestureStatus.Running:
-                    // Todo: Limit movement more exact, as the container and image most likely doesn't have the same proportions.
+                    // Todo: Limit movement more precisely, as the container and image most likely don't have the same proportions.
                     var maxTranslationX = _parent.Content.Scale * _parent.Content.Width - _parent.Content.Width;
                     _parent.Content.TranslationX = Math.Min(0, Math.Max(-maxTranslationX, _xOffset + e.TotalX - _startX));
                     var maxTranslationY = _parent.Content.Scale * _parent.Content.Height - _parent.Content.Height;
@@ -280,11 +283,10 @@ namespace KinaUnaXamarin.Behaviors
         private void ResetZoom()
         {
             // Todo: Ease in/out.
+            double tempScale = _currentScale;
             StartScaling();
-            ExecuteScaling(1.0, 0, 0);
+            ExecuteScaling(1, 0, 0);
             EndGesture();
-            //_parent.Content.ScaleTo(1, 250, Easing.CubicInOut);
-            //_parent.Content.TranslateTo(0, 0, 250, Easing.CubicInOut);
             _currentScale = 1;
             _xOffset = _parent.Content.TranslationX = 0;
             _yOffset = _parent.Content.TranslationY = 0;
@@ -300,9 +302,16 @@ namespace KinaUnaXamarin.Behaviors
             {
                 _imageHeight = cachedImage.Height;
                 _imageWidth = cachedImage.Width;
+                ResetZoom();
             }
         }
-        
+
+        public async Task OnDisAppearing()
+        {
+            await Task.Factory.StartNew(() => ResetZoom());
+            // ResetZoom();
+        }
+
         #region IsScaleEnabled property
 
         /// <summary>

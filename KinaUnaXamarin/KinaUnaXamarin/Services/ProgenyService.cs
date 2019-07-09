@@ -995,7 +995,7 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    string pictureViewApiPath = "api/pictures/pictureviewmodelmobile/" + pictureId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    string pictureViewApiPath = "api/publicaccess/pictureviewmodelmobile/" + pictureId + "/" + userAccessLevel + "?sortBy=" + sortBy;
                     var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)

@@ -314,249 +314,251 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Spacing="0">
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-            </StackLayout>
-            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="Log in or Register"
+        <Grid>
+            <StackLayout Orientation="Vertical" Spacing="0">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                    <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="Log in or Register"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-            <ScrollView BackgroundColor="DarkGray">
-                <StackLayout x:Name="ContainerStackLayout" Spacing="0" VerticalOptions="Start">
-                    <StackLayout x:Name="ProgenyDetailsStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand"
+                <ScrollView BackgroundColor="DarkGray">
+                    <StackLayout x:Name="ContainerStackLayout" Spacing="0" VerticalOptions="Start">
+                        <StackLayout x:Name="ProgenyDetailsStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand"
                              HorizontalOptions="FillAndExpand">
-                       <Grid BackgroundColor="White" Margin="0, -10, 0, 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="50" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="50" />
-                            </Grid.RowDefinitions>
-                            <Image Grid.ColumnSpan="2" Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
-                               HorizontalOptions="Start" Margin="0, 10, 0, 20" />
-                            <forms:CachedImage Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" Margin="10, 0, 0, 0"
-                                           VerticalOptions="Center"
-                                           WidthRequest="50" HeightRequest="50"
-                                           DownsampleToViewSize="true"
-                                           Source="{Binding Progeny.PictureLink}"/>
-                            <!--<Image Grid.Column="0" Grid.Row="0" Source="{Binding ProgenyProfilePicture}" Aspect="AspectFill" ></Image>-->
-                            <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical">
-                                <Label Text="{Binding Progeny.NickName}" TextColor="Black"
-                                        FontAttributes="Bold" />
-                                <Label Text="{Binding Progeny.Name}" TextColor="Black"/>
-                            </StackLayout>
-                            
-                        </Grid>
-                        <StackLayout BackgroundColor="White" Padding="10">
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyYears" Text="{Binding Years}" TextColor="Green" />
-                                <Label Text=" years old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMonth" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyMonths" Text="{Binding Months}" TextColor="Green" />
-                                <Label Text=" months old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyWeeksName" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyWeeks" Text="{Binding Weeks[0]}" TextColor="Green" />
-                                <Label Text=" Weeks and " />
-                                <Label x:Name="ProgenyWeeksDays" Text="{Binding Weeks[1]}" TextColor="Green" />
-                                <Label Text=" days old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyDays" Text="{Binding Days}" TextColor="Green" />
-                                <Label Text=" days old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyHours" Text="{Binding Hours}" TextColor="Green" />
-                                <Label Text=" hours old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" is now " />
-                                <Label x:Name="ProgenyMinutes" Text="{Binding Minutes}" TextColor="Green" />
-                                <Label Text=" minutes old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMilestoneWeeks" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" will be " />
-                                <Label x:Name="ProgenyMilestoneWeeks0" Text="{Binding WeeksMileStone[0]}" TextColor="Green" />
-                                <Label Text=" weeks: " />
-                                <Label x:Name="ProgenyMilestoneWeeks1" Text="{Binding WeeksMileStone[1]}" TextColor="Green" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMilestoneDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" will be " />
-                                <Label x:Name="ProgenyMilestoneDays0" Text="{Binding DaysMileStone[0]}" TextColor="Green" />
-                                <Label Text=" days: " />
-                                <Label x:Name="ProgenyMilestoneDays1" Text="{Binding DaysMileStone[1]}" TextColor="Green" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMilestoneHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" will be " />
-                                <Label x:Name="ProgenyMilestoneHours0" Text="{Binding HoursMileStone[0]}" TextColor="Green" />
-                                <Label Text=" hours:" />
-                                <Label x:Name="ProgenyMilestoneHours1" Text="{Binding HoursMileStone[1]}" TextColor="Green" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNameMilestoneMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" will be " />
-                                <Label x:Name="ProgenyMilestoneMinutes0" Text="{Binding MinutesMileStone[0]}" TextColor="Green" />
-                                <Label Text=" minutes: " />
-                                <Label x:Name="ProgenyMilestoneMinutes1" Text="{Binding MinutesMileStone[1]}" TextColor="Green" />
-                            </FlexLayout>
-                        </StackLayout>
-                        <StackLayout BackgroundColor="White" Padding="10">
-                            <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10"
-                                       Aspect="AspectFit"
-                                       DownsampleToViewSize="True"
-                                       Source="{Binding ImageLink}">
-                                <forms:CachedImage.GestureRecognizers>
-                                    <TapGestureRecognizer Tapped="RandomPhotoClickGestureRecognizer_OnClicked"></TapGestureRecognizer>
-                                </forms:CachedImage.GestureRecognizers>
-                            </forms:CachedImage>
-                            <FlexLayout Wrap="Wrap">
-                                <Label Text="Photo Location: " />
-                                <Label Text="{Binding Location}" TextColor="Green" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label Text="Photo Taken: " />
-                                <Label Text="{Binding PicTime}" TextColor="Green" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="Green" />
-                                <Label Text=" years old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="Green" />
-                                <Label Text=" months old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="Green" />
-                                <Label Text=" weeks and " />
-                                <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="Green" />
-                                <Label Text=" days old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="Green" />
-                                <Label Text=" days old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="Green" />
-                                <Label Text=" hours old." />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                <Label Text=" was " />
-                                <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="Green" />
-                                <Label Text=" minutes old." />
-                            </FlexLayout>
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Spacing="0">
-                        <StackLayout x:Name="UpcomingEventsStatckLayout" Orientation="Vertical" VerticalOptions="Start"
-                                 IsVisible="False" BackgroundColor="White">
-                            <Label Text="Upcoming Events" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0" />
-                            <Grid x:Name="UpcomingEventsGrid">
+                            <Grid BackgroundColor="White" Margin="0, -10, 0, 0">
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="50" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="50" />
                                 </Grid.RowDefinitions>
-                                <Frame Grid.Column="0" Grid.Row="0" x:Name="EventFrame0" CornerRadius="5"
-                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Image Source="calendaricon.png" />
-                                            <Label x:Name="EventStart0" Text="" TextColor="Orange" FontSize="13"
-                                               FontAttributes="Bold" />
-                                        </StackLayout>
-                                        <Label x:Name="EventTitle0" Text="" TextColor="White" />
-                                    </StackLayout>
-                                </Frame>
-                                <Frame Grid.Column="0" Grid.Row="1" x:Name="EventFrame1" CornerRadius="5"
-                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Image Source="calendaricon.png" />
-                                            <Label x:Name="EventStart1" Text="" TextColor="Orange" FontSize="13"
-                                               FontAttributes="Bold" />
-                                        </StackLayout>
-                                        <Label x:Name="EventTitle1" Text="" TextColor="White" />
-                                    </StackLayout>
-                                </Frame>
-                                <Frame Grid.Column="0" Grid.Row="2" x:Name="EventFrame2" CornerRadius="5"
-                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Image Source="calendaricon.png" />
-                                            <Label x:Name="EventStart2" Text="" TextColor="Orange" FontSize="13"
-                                               FontAttributes="Bold" />
-                                        </StackLayout>
-                                        <Label x:Name="EventTitle2" Text="" TextColor="White" />
-                                    </StackLayout>
-                                </Frame>
-                                <Frame Grid.Column="0" Grid.Row="3" x:Name="EventFrame3" CornerRadius="5"
-                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Image Source="calendaricon.png" />
-                                            <Label x:Name="EventStart3" Text="" TextColor="Orange" FontSize="13"
-                                               FontAttributes="Bold" />
-                                        </StackLayout>
-                                        <Label x:Name="EventTitle3" Text="" TextColor="White" />
-                                    </StackLayout>
-                                </Frame>
-                                <Frame Grid.Column="0" Grid.Row="4" x:Name="EventFrame4" CornerRadius="5"
-                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
-                                    <StackLayout Orientation="Vertical" Padding="10">
-                                        <StackLayout Orientation="Horizontal">
-                                            <Image Source="calendaricon.png" />
-                                            <Label x:Name="EventStart4" Text="" TextColor="Orange" FontSize="13"
-                                               FontAttributes="Bold" />
-                                        </StackLayout>
-                                        <Label x:Name="EventTitle4" Text="" TextColor="White" />
-                                    </StackLayout>
-                                </Frame>
+                                <Image Grid.ColumnSpan="2" Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
+                               HorizontalOptions="Start" Margin="0, 10, 0, 20" />
+                                <forms:CachedImage Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" Margin="10, 0, 0, 0"
+                                           VerticalOptions="Center"
+                                           WidthRequest="50" HeightRequest="50"
+                                           DownsampleToViewSize="true"
+                                           Source="{Binding Progeny.PictureLink}"/>
+                                <!--<Image Grid.Column="0" Grid.Row="0" Source="{Binding ProgenyProfilePicture}" Aspect="AspectFill" ></Image>-->
+                                <StackLayout Grid.Column="1" Grid.Row="1" Orientation="Vertical">
+                                    <Label Text="{Binding Progeny.NickName}" TextColor="Black"
+                                        FontAttributes="Bold" />
+                                    <Label Text="{Binding Progeny.Name}" TextColor="Black"/>
+                                </StackLayout>
+
                             </Grid>
+                            <StackLayout BackgroundColor="White" Padding="10">
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyYears" Text="{Binding Years}" TextColor="Green" />
+                                    <Label Text=" years old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMonth" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyMonths" Text="{Binding Months}" TextColor="Green" />
+                                    <Label Text=" months old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyWeeksName" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyWeeks" Text="{Binding Weeks[0]}" TextColor="Green" />
+                                    <Label Text=" Weeks and " />
+                                    <Label x:Name="ProgenyWeeksDays" Text="{Binding Weeks[1]}" TextColor="Green" />
+                                    <Label Text=" days old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyDays" Text="{Binding Days}" TextColor="Green" />
+                                    <Label Text=" days old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyHours" Text="{Binding Hours}" TextColor="Green" />
+                                    <Label Text=" hours old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" is now " />
+                                    <Label x:Name="ProgenyMinutes" Text="{Binding Minutes}" TextColor="Green" />
+                                    <Label Text=" minutes old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMilestoneWeeks" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" will be " />
+                                    <Label x:Name="ProgenyMilestoneWeeks0" Text="{Binding WeeksMileStone[0]}" TextColor="Green" />
+                                    <Label Text=" weeks: " />
+                                    <Label x:Name="ProgenyMilestoneWeeks1" Text="{Binding WeeksMileStone[1]}" TextColor="Green" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMilestoneDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" will be " />
+                                    <Label x:Name="ProgenyMilestoneDays0" Text="{Binding DaysMileStone[0]}" TextColor="Green" />
+                                    <Label Text=" days: " />
+                                    <Label x:Name="ProgenyMilestoneDays1" Text="{Binding DaysMileStone[1]}" TextColor="Green" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMilestoneHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" will be " />
+                                    <Label x:Name="ProgenyMilestoneHours0" Text="{Binding HoursMileStone[0]}" TextColor="Green" />
+                                    <Label Text=" hours:" />
+                                    <Label x:Name="ProgenyMilestoneHours1" Text="{Binding HoursMileStone[1]}" TextColor="Green" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNameMilestoneMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" will be " />
+                                    <Label x:Name="ProgenyMilestoneMinutes0" Text="{Binding MinutesMileStone[0]}" TextColor="Green" />
+                                    <Label Text=" minutes: " />
+                                    <Label x:Name="ProgenyMilestoneMinutes1" Text="{Binding MinutesMileStone[1]}" TextColor="Green" />
+                                </FlexLayout>
+                            </StackLayout>
+                            <StackLayout BackgroundColor="White" Padding="10">
+                                <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10"
+                                       Aspect="AspectFit"
+                                       DownsampleToViewSize="True"
+                                       Source="{Binding ImageLink}">
+                                    <forms:CachedImage.GestureRecognizers>
+                                        <TapGestureRecognizer Tapped="RandomPhotoClickGestureRecognizer_OnClicked"></TapGestureRecognizer>
+                                    </forms:CachedImage.GestureRecognizers>
+                                </forms:CachedImage>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="Photo Location: " />
+                                    <Label Text="{Binding Location}" TextColor="Green" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="Photo Taken: " />
+                                    <Label Text="{Binding PicTime}" TextColor="Green" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="Green" />
+                                    <Label Text=" years old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="Green" />
+                                    <Label Text=" months old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="Green" />
+                                    <Label Text=" weeks and " />
+                                    <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="Green" />
+                                    <Label Text=" days old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="Green" />
+                                    <Label Text=" days old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="Green" />
+                                    <Label Text=" hours old." />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
+                                    <Label Text=" was " />
+                                    <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="Green" />
+                                    <Label Text=" minutes old." />
+                                </FlexLayout>
+                            </StackLayout>
                         </StackLayout>
-                        <StackLayout x:Name="LatestPostsStackLayout" IsVisible="False" VerticalOptions="FillAndExpand"
+                        <StackLayout Orientation="Vertical" Spacing="0">
+                            <StackLayout x:Name="UpcomingEventsStatckLayout" Orientation="Vertical" VerticalOptions="Start"
+                                 IsVisible="False" BackgroundColor="White">
+                                <Label Text="Upcoming Events" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0" />
+                                <Grid x:Name="UpcomingEventsGrid">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Frame Grid.Column="0" Grid.Row="0" x:Name="EventFrame0" CornerRadius="5"
+                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendaricon.png" />
+                                                <Label x:Name="EventStart0" Text="" TextColor="Orange" FontSize="13"
+                                               FontAttributes="Bold" />
+                                            </StackLayout>
+                                            <Label x:Name="EventTitle0" Text="" TextColor="White" />
+                                        </StackLayout>
+                                    </Frame>
+                                    <Frame Grid.Column="0" Grid.Row="1" x:Name="EventFrame1" CornerRadius="5"
+                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendaricon.png" />
+                                                <Label x:Name="EventStart1" Text="" TextColor="Orange" FontSize="13"
+                                               FontAttributes="Bold" />
+                                            </StackLayout>
+                                            <Label x:Name="EventTitle1" Text="" TextColor="White" />
+                                        </StackLayout>
+                                    </Frame>
+                                    <Frame Grid.Column="0" Grid.Row="2" x:Name="EventFrame2" CornerRadius="5"
+                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendaricon.png" />
+                                                <Label x:Name="EventStart2" Text="" TextColor="Orange" FontSize="13"
+                                               FontAttributes="Bold" />
+                                            </StackLayout>
+                                            <Label x:Name="EventTitle2" Text="" TextColor="White" />
+                                        </StackLayout>
+                                    </Frame>
+                                    <Frame Grid.Column="0" Grid.Row="3" x:Name="EventFrame3" CornerRadius="5"
+                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendaricon.png" />
+                                                <Label x:Name="EventStart3" Text="" TextColor="Orange" FontSize="13"
+                                               FontAttributes="Bold" />
+                                            </StackLayout>
+                                            <Label x:Name="EventTitle3" Text="" TextColor="White" />
+                                        </StackLayout>
+                                    </Frame>
+                                    <Frame Grid.Column="0" Grid.Row="4" x:Name="EventFrame4" CornerRadius="5"
+                                   BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
+                                        <StackLayout Orientation="Vertical" Padding="10">
+                                            <StackLayout Orientation="Horizontal">
+                                                <Image Source="calendaricon.png" />
+                                                <Label x:Name="EventStart4" Text="" TextColor="Orange" FontSize="13"
+                                               FontAttributes="Bold" />
+                                            </StackLayout>
+                                            <Label x:Name="EventTitle4" Text="" TextColor="White" />
+                                        </StackLayout>
+                                    </Frame>
+                                </Grid>
+                            </StackLayout>
+                            <StackLayout x:Name="LatestPostsStackLayout" IsVisible="False" VerticalOptions="FillAndExpand"
                                  BackgroundColor="White">
-                            <Label Text="Latest Posts" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0"/>
-                            <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}"
+                                <Label Text="Latest Posts" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0"/>
+                                <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}"
                                   ItemsSource="{Binding TimeLineItems}" Margin="10, 10, 10, 20" HasUnevenRows="True"
                                   SeparatorVisibility="None" CachingStrategy="RecycleElement"
                                   ItemSelected="TimeLineListView_OnItemSelected"/>
+                            </StackLayout>
                         </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </ScrollView>
-            <ActivityIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" />
-        </StackLayout>
+                </ScrollView>
+            </StackLayout>
+            <ActivityIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
