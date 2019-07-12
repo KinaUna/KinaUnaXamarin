@@ -358,6 +358,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Page:.
+        /// </summary>
+        internal static string PageColon {
+            get {
+                return ResourceManager.GetString("PageColon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo.
         /// </summary>
         internal static string Photo {

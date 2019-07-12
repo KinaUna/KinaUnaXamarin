@@ -195,11 +195,11 @@
                                 <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="{i18n:Translate Weight}"></Label>
+                                <Label Text="{i18n:Translate Weight}" TextColor="LightGray"></Label>
                                 <Label Text="{Binding ItemObject.Weight}" Margin="5,0" TextColor="White"></Label>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
-                                <Label Text="{i18n:Translate Height}"></Label>
+                                <Label Text="{i18n:Translate Height}" TextColor="LightGray"></Label>
                                 <Label Text="{Binding ItemObject.Height}" Margin="5,0" TextColor="White"></Label>
                             </StackLayout>
 

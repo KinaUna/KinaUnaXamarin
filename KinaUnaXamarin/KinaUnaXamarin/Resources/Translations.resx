@@ -285,4 +285,7 @@
   <data name="YearsOld" xml:space="preserve">
     <value>years old.</value>
   </data>
+  <data name="PageColon" xml:space="preserve">
+    <value>Page:</value>
+  </data>
 </root>
