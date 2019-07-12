@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
+using System.Resources;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels.AddItem;
 using Plugin.Media;
+using Plugin.Multilingual;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -20,6 +21,9 @@ namespace KinaUnaXamarin.Views.AddItem
     {
         private readonly AddPhotoViewModel _addPhotoViewModel;
         private string _filePath;
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
+
         public AddPhotoPage()
         {
             InitializeComponent();
@@ -110,7 +114,8 @@ namespace KinaUnaXamarin.Views.AddItem
             ErrorLabel.IsVisible = true;
             if (newPicture.PictureId == 0)
             {
-                ErrorLabel.Text = "Error: Photo was not saved. Try again later.";
+                var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                ErrorLabel.Text = resmgr.Value.GetString("ErrorPhotoNotSaved", ci);
                 ErrorLabel.BackgroundColor = Color.Red;
                 SavePhotoButton.IsEnabled = true;
                 CancelPhotoButton.IsEnabled = true;
@@ -118,7 +123,8 @@ namespace KinaUnaXamarin.Views.AddItem
             }
             else
             {
-                ErrorLabel.Text = $"Photo for {progeny.NickName} saved successfully. Photo Id: {newPicture.PictureId}";
+                var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                ErrorLabel.Text = resmgr.Value.GetString("PhotoSaved", ci) + newPicture.PictureId;
                 ErrorLabel.BackgroundColor = Color.Green;
                 SavePhotoButton.IsVisible = false;
                 CancelPhotoButton.Text = "Ok";

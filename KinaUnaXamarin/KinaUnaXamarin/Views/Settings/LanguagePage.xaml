@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.LanguagePage"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             Title="{i18n:Translate Language}"
+             Visual="Material">
+    <ContentPage.Content>
+        <StackLayout Padding="20" VerticalOptions="StartAndExpand">
+            <Label x:Name="SelectLanguageLabel"  Text="{i18n:Translate SelectLanguage}"  />
+            <Picker x:Name="picker" SelectedIndexChanged="Picker_OnSelectedIndexChanged" />
+            <!--<Button Text="{i18n:Translate Save}" Clicked="OnUpdateLangugeClicked" BackgroundColor="Green" TextColor="White" ImageSource="{x:Static models:IconFont.ContentSave}"></Button>-->
+            <Frame x:Name="SaveButtonFrame" CornerRadius="5" BackgroundColor="Green">
+                <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
+                    <Label Text="{x:Static models:IconFont.ContentSave}"
+                           FontFamily="{StaticResource MaterialFontFamily}"
+                           FontSize="24"
+                           TextColor="White"
+                           VerticalOptions="Center"></Label>
+                    <Label x:Name="SaveLabel" Text="{i18n:Translate Save}" TextColor="White" FontSize="18" VerticalOptions="Center"></Label>
+                </StackLayout>
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnUpdateLangugeClicked"/>
+                </Frame.GestureRecognizers>
+            </Frame>
+            <StackLayout Orientation="Vertical" HorizontalOptions="End">
+                <Label x:Name="WarningLabel" Text="{i18n:Translate ChangeLanguageWarning}"></Label>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using FFImageLoading;
 using KinaUnaXamarin.Models.KinaUna;
 using Xamarin.Essentials;
@@ -65,18 +59,7 @@ namespace KinaUnaXamarin.Views
                 bool internetAccess = networkAccess == NetworkAccess.Internet;
                 if (internetAccess)
                 {
-                    //string documentsPath = FileSystem.CacheDirectory;
-                    //string localFilename = "progenyprofile" + progeny.Id + ".jpg";
-                    //string progenyProfileFile = Path.Combine(documentsPath, localFilename);
                     ImageService.Instance.LoadUrl(progeny.PictureLink).DownSample(height: 60, allowUpscale: true).Preload();
-                    //var webClient = new WebClient();
-                    //webClient.DownloadDataCompleted += (s, ev) => {
-                    //        var bytes = ev.Result; // get the downloaded data
-
-                    //        File.WriteAllBytes(progenyProfileFile, bytes); // writes to local storage
-                    //};
-                    //var progenyProfileUrl = new Uri(progeny.PictureLink);
-                    //webClient.DownloadDataAsync(progenyProfileUrl);
                 }
             }
             

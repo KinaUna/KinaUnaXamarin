@@ -7,11 +7,13 @@
        xmlns:controls="clr-namespace:KinaUnaXamarin.Controls"
        xmlns:models="clr-namespace:KinaUnaXamarin.Models"
        xmlns:views="clr-namespace:KinaUnaXamarin.Views"
+       xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
        Title="Kina Una Mobile"
        FlyoutHeaderBehavior="CollapseOnScroll"
        x:Class="KinaUnaXamarin.AppShell"
        Visual="Material"
-       FlyoutBackgroundColor="#4A1061">
+       FlyoutBackgroundColor="#4A1061"
+       >
 
     <Shell.Resources>
         <Style x:Key="BaseStyle" 
@@ -70,38 +72,45 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="Timeline" x:Name="TimelineFlyoutItem"
+    <FlyoutItem Title="{i18n:Translate Timeline}" x:Name="TimelineFlyoutItem"
                 Icon="{x:Static models:IconFont.Update}">
         <Tab>
-            <ShellContent Title="Timeline"
+            <ShellContent x:Name="TimelineMenuItem" Title="{i18n:Translate Timeline}"
                           Icon="{x:Static models:IconFont.Update}"
                           Route="timeline"
                           ContentTemplate="{DataTemplate views:TimelinePage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="Photos" x:Name="PhotosFlyoutItem"
+    <FlyoutItem Title="{i18n:Translate Photos}" x:Name="PhotosFlyoutItem"
                 Icon="{x:Static models:IconFont.ImageMultiple}">
         <Tab>
-            <ShellContent Title="Photos"
+            <ShellContent x:Name="PhotosMenuItem"
+                          Title="{i18n:Translate Photos}"
                           Icon="{x:Static models:IconFont.ImageMultiple}"
                           Route="photos"
                           ContentTemplate="{DataTemplate views:PhotosPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
-    <FlyoutItem Title="Settings" x:Name="SettingsFlyoutItem"
+    <FlyoutItem Title="{i18n:Translate Settings}" x:Name="SettingsFlyoutItem"
                 Icon="{x:Static models:IconFont.Settings}">
-        <Tab Title="About" x:Name="AboutTabItem"
-             Icon="infoicon.png"
-             Route="about">
-            <ShellContent ContentTemplate="{DataTemplate views:AboutPage}">
+        <Tab Title="{i18n:Translate Language}" x:Name="LanguageTabItem"
+             Icon="languageicon.png"
+             Route="language">
+            <ShellContent ContentTemplate="{DataTemplate views:LanguagePage}">
             </ShellContent>
         </Tab>
-        <Tab Title="Account" x:Name="AccountTabItem"
+        <Tab Title="{i18n:Translate Account}" x:Name="AccountTabItem"
              Icon="useraccounticon.png"
              Route="account">
             <ShellContent ContentTemplate="{DataTemplate views:AccountPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate About}" x:Name="AboutTabItem"
+             Icon="infoicon.png"
+             Route="about">
+            <ShellContent ContentTemplate="{DataTemplate views:AboutPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>

@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using KinaUnaXamarin.Models;
+using KinaUnaXamarin.Models.KinaUna;
 using MvvmHelpers;
+using Plugin.Multilingual;
 
 namespace KinaUnaXamarin.ViewModels
 {
@@ -13,17 +15,40 @@ namespace KinaUnaXamarin.ViewModels
         {
             ItemList = new ObservableRangeCollection<AddItemModel>();
 
+            var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
             AddItemModel addSleepItem = new AddItemModel();
+            addSleepItem.ItemType = (int)KinaUnaTypes.TimeLineType.Sleep;
             addSleepItem.Name = "Sleep";
-            addSleepItem.Icon = IconFont.Hotel;
             addSleepItem.Description = "Add Sleep";
+            if (ci == "da")
+            {
+                addSleepItem.Name = "Søvn";
+                addSleepItem.Description = "Tilføj søvn";
+            }
+            if (ci == "de")
+            {
+                addSleepItem.Name = "Schlaf";
+                addSleepItem.Description = "Schlaf hinzufügen";
+            }
+            addSleepItem.Icon = IconFont.Hotel;
             addSleepItem.BackgroundColor = "Green";
             ItemList.Add(addSleepItem);
 
             AddItemModel addPhoto = new AddItemModel();
+            addPhoto.ItemType = (int) KinaUnaTypes.TimeLineType.Photo;
             addPhoto.Name = "Photo";
-            addPhoto.Icon = IconFont.Image;
             addPhoto.Description = "Add Photo";
+            if (ci == "da")
+            {
+                addPhoto.Name = "Foto";
+                addPhoto.Description = "Tilføj foto";
+            }
+            if (ci == "de")
+            {
+                addPhoto.Name = "Foto";
+                addPhoto.Description = "Foto hinzufügen";
+            }
+            addPhoto.Icon = IconFont.Image;
             addPhoto.BackgroundColor = "#9c27b0";
             ItemList.Add(addPhoto);
         }

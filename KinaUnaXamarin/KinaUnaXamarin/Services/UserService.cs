@@ -270,6 +270,29 @@ namespace KinaUnaXamarin.Services
             }
         }
 
+        public static async Task<string> GetLanguage()
+        {
+            try
+            {
+                return await SecureStorage.GetAsync("UserLanguage");
+            }
+            catch (Exception ex)
+            {
+                return "";
+            }
+        }
+
+        public static async Task SetLanguage(string language)
+        {
+            try
+            {
+                await SecureStorage.SetAsync("UserLanguage", language);
+            }
+            catch (Exception ex)
+            {
+                
+            }
+        }
 
         public static async Task<bool> LogoutIdsAsync()
         {

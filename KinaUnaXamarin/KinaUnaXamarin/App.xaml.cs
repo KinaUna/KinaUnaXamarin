@@ -1,5 +1,9 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using System.Linq;
+using KinaUnaXamarin.Resources;
+using Xamarin.Forms;
 using KinaUnaXamarin.Services;
+using Plugin.Multilingual;
 
 namespace KinaUnaXamarin
 {
@@ -11,7 +15,18 @@ namespace KinaUnaXamarin
             InitializeComponent();
 
             Xamarin.Essentials.VersionTracking.Track();
-                
+            string language = UserService.GetLanguage().GetAwaiter().GetResult();
+            
+            if (!string.IsNullOrEmpty(language))
+            {
+                CrossMultilingual.Current.CurrentCultureInfo = CrossMultilingual.Current.NeutralCultureInfoList.ToList().First(element => element.TwoLetterISOLanguageName == language);
+                Translations.Culture = CrossMultilingual.Current.CurrentCultureInfo;
+            }
+            else
+            {
+                Translations.Culture = CrossMultilingual.Current.DeviceCultureInfo;
+            }
+
             MainPage = new AppShell();
         }
 

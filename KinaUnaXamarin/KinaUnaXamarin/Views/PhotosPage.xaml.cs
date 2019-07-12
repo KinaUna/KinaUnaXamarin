@@ -195,6 +195,7 @@ namespace KinaUnaXamarin.Views
 
         private async Task UpdatePhotos()
         {
+            _photosViewModel.IsBusy = true;
             if (_photosViewModel.PageNumber < 1)
             {
                 _photosViewModel.PageNumber = 1;
@@ -208,7 +209,7 @@ namespace KinaUnaXamarin.Views
                 _photosViewModel.PageCount = photoPage.TotalPages;
                 PhotosListView.ScrollTo(0);
             }
-            
+            _photosViewModel.IsBusy = false;
         }
         
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)

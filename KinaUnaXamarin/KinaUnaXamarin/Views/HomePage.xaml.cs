@@ -52,6 +52,7 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            
             if (_reload)
             {
                 _feedModel = new HomeFeedViewModel();
@@ -67,7 +68,7 @@ namespace KinaUnaXamarin.Views
                     {
                         _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(await SecureStorage.GetAsync("ProgenyObject" + userviewchild));
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         _feedModel.Progeny = await ProgenyService.GetProgeny(_viewChild);
                     }

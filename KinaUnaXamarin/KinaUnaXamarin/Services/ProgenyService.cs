@@ -1744,13 +1744,12 @@ namespace KinaUnaXamarin.Services
                         slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         slpItem.StartString = slpItem.SleepStart.ToString("dd-MMM-yyyy HH:mm") + " - " + slpItem.SleepEnd.ToString("dd-MMM-yyyy HH:mm");
-                        slpItem.EndString = "Sleep Duration: ";
                         DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
                             TimeZoneInfo.FindSystemTimeZoneById(userTimeZone).GetUtcOffset(slpItem.SleepStart));
                         DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
                             TimeZoneInfo.FindSystemTimeZoneById(userTimeZone).GetUtcOffset(slpItem.SleepEnd));
                         slpItem.SleepDuration = eOffset - sOffset;
-                        slpItem.EndString = slpItem.EndString + slpItem.SleepDuration;
+                        slpItem.EndString = slpItem.SleepDuration.ToString();
                         await SecureStorage.SetAsync("Sleep" + slpId, JsonConvert.SerializeObject(slpItem));
                         return slpItem;
                     }
@@ -1773,13 +1772,12 @@ namespace KinaUnaXamarin.Services
                         slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         slpItem.StartString = slpItem.SleepStart.ToString("dd-MMM-yyyy HH:mm") + " - " + slpItem.SleepEnd.ToString("dd-MMM-yyyy HH:mm");
-                        slpItem.EndString = "Sleep Duration: ";
                         DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
                             TimeZoneInfo.FindSystemTimeZoneById(userTimeZone).GetUtcOffset(slpItem.SleepStart));
                         DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
                             TimeZoneInfo.FindSystemTimeZoneById(userTimeZone).GetUtcOffset(slpItem.SleepEnd));
                         slpItem.SleepDuration = eOffset - sOffset;
-                        slpItem.EndString = slpItem.EndString + slpItem.SleepDuration;
+                        slpItem.EndString = slpItem.SleepDuration.ToString();
                         await SecureStorage.SetAsync("Sleep" + slpId, JsonConvert.SerializeObject(slpItem));
                         return slpItem;
                     }

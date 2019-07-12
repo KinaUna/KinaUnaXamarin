@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
+             mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             x:Class="KinaUnaXamarin.Views.AccountPage"
+             Title="{i18n:Translate Account}">
+    <ContentPage.BindingContext>
+        <viewModels:AccountViewModel></viewModels:AccountViewModel>
+    </ContentPage.BindingContext>
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout x:Name="LoginStackLayout" Orientation="Vertical" Margin="5">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start" HorizontalOptions="Center" Margin="0, 0, 0, 20" ></Image>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{i18n:Translate UserName}"></Label>
+                    <Label x:Name="UsernameLabel" Text="{Binding Username}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{i18n:Translate FullName}"></Label>
+                    <Label x:Name="FullnameLabel" Text="{Binding FullName}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="Email"></Label>
+                    <Label x:Name="UserEmailLabel" Text="{Binding Email}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{i18n:Translate TimeZone}"></Label>
+                    <Label x:Name="TimezoneLabel" Text="{Binding Timezone}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10"></Label>
+                </StackLayout>
+                <!--<Label x:Name="MessageLabel" Text="{Binding Message}" TextColor="Blue" Margin="10"></Label>-->
+                <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
+                <Button x:Name="LogOutButton" Command="{Binding LogoutCommand}" IsVisible="{Binding LoggedIn}" Text="{i18n:Translate LogOut}" BackgroundColor="DarkOrchid" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

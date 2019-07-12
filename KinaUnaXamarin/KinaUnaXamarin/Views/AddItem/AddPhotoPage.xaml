@@ -4,14 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.AddItem.AddPhotoPage"
-             Title="Add Photo"
+             Title="{i18n:Translate AddPhoto}"
              Visual="Material">
     <ContentPage.Content>
         <ScrollView>
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
-                    <Label Text="Add Photo for:"></Label>
+                    <Label Text="{i18n:Translate AddPhotoFor}"></Label>
                     <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -42,16 +43,16 @@
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
-                    <Image x:Name="UploadImage" HeightRequest="300" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
-                    <Button x:Name="SelectImageButton" Text="Select Image" Clicked="SelectImageButton_OnClicked"></Button>
+                    <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
+                    <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Access Level"></Label>
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
-                        <Button x:Name="SavePhotoButton" Text="Save" BackgroundColor="#4caf50" Clicked="SavePhotoButton_OnClicked" IsEnabled="False"></Button>
-                        <Button x:Name="CancelPhotoButton" Text="Cancel" BackgroundColor="#f44336" Clicked="CancelPhotoButton_OnClicked"></Button>
+                        <Button x:Name="SavePhotoButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SavePhotoButton_OnClicked" IsEnabled="False"></Button>
+                        <Button x:Name="CancelPhotoButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelPhotoButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>

@@ -4,13 +4,14 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.AddItemPage"
-             Title="Add Item"
+             Title="{i18n:Translate AddItem}"
              BackgroundColor="#3A2051">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Orientation="Vertical" Margin="10">
-                <Label Text="Add Item" TextColor="White"></Label>
+                <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
                 <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged" IsVisible="{Binding CanAddItems}">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

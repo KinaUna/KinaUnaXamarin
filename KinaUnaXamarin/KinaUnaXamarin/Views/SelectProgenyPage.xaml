@@ -4,13 +4,14 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
              BackgroundColor="#3A2051"
-             Title="Select Child">
+             Title="{i18n:Translate SelectChild}">
     <ContentPage.Content>
         <ScrollView>
             <StackLayout Orientation="Vertical" Margin="10">
-                <Label Text="Select Child" TextColor="White"></Label>
+                <Label Text="{i18n:Translate SelectChild}" TextColor="White"></Label>
                 <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>

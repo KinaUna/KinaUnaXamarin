@@ -302,7 +302,7 @@ namespace KinaUnaXamarin.Behaviors
             {
                 _imageHeight = cachedImage.Height;
                 _imageWidth = cachedImage.Width;
-                ResetZoom();
+                //ResetZoom();
             }
         }
 

@@ -4,14 +4,15 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.AddItem.AddSleepPage"
-             Title="Add Sleep"
+             Title="{i18n:Translate AddSleep}"
              Visual="Material">
     <ContentPage.Content>
         <ScrollView>
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
-                    <Label Text="Add sleep for:"></Label>
+                    <Label Text="{i18n:Translate AddSleepFor}"></Label>
                     <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -43,37 +44,37 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Start (Day/Month/Year  Hours:Minutes)"></Label>
+                        <Label Text="{i18n:Translate Start}"></Label>
                         <StackLayout Orientation="Horizontal">
                             <DatePicker x:Name="SleepStartDatePicker" Format="dd MMM yyyy" DateSelected="SleepStartDatePicker_OnDateSelected"></DatePicker>
                             <TimePicker x:Name="SleepStartTimePicker" Format="HH:mm" PropertyChanged="SleepStartTimePicker_OnPropertyChanged"></TimePicker>
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="End (Day/Month/Year  Hours:Minutes)"></Label>
+                        <Label Text="{i18n:Translate End}"></Label>
                         <StackLayout Orientation="Horizontal">
                             <DatePicker x:Name="SleepEndDatePicker" Format="dd MMM yyyy" DateSelected="SleepEndDatePicker_OnDateSelected"></DatePicker>
                             <TimePicker x:Name="SleepEndTimePicker" Format="HH:mm" PropertyChanged="SleepEndTimePicker_OnPropertyChanged"></TimePicker>
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Rating"></Label>
+                        <Label Text="{i18n:Translate Rating}"></Label>
                         <Label Text="{Binding Rating}" TextColor="Black" Margin="15, 0, 0, 0"></Label>
                         <!--<Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="3" ValueChanged="RatingSlider_OnValueChanged"></Slider>-->
                         <Stepper x:Name="RatingStepper" Minimum="1" Maximum="5" Increment="1" Value="{Binding Rating}" ></Stepper>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Notes"></Label>
+                        <Label Text="{i18n:Translate Notes}"></Label>
                         <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Access Level"></Label>
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
-                        <Button x:Name="SaveSleepButton" Text="Save" BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked"></Button>
-                        <Button x:Name="CancelSleepButton" Text="Cancel" BackgroundColor="#f44336" Clicked="CancelSleepButton_OnClicked"></Button>
+                        <Button x:Name="SaveSleepButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked"></Button>
+                        <Button x:Name="CancelSleepButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelSleepButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>

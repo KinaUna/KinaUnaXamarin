@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -44,12 +43,12 @@ namespace KinaUnaXamarin.Views
             {
                 // Reset the selected item.
                 AddItemListCollectionView.SelectedItem = null;
-                if (model.Name == "Sleep")
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddSleepPage());
                 }
 
-                if (model.Name == "Photo")
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Photo)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddPhotoPage());
                 }

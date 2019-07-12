@@ -6,8 +6,9 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.PhotosPage"
-             Title="Photos"
+             Title="{i18n:Translate Photos}"
              Visual="Material">
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
@@ -20,7 +21,7 @@
         <Grid>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                    <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="Log in or Register"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
@@ -74,14 +75,14 @@
                         <ColumnDefinition Width="140"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="Newer" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
+                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
                     <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
                         <Label Text="Page: "></Label>
                         <Label Text="{Binding PageNumber}"></Label>
-                        <Label Text=" of "></Label>
+                        <Label Text="{i18n:Translate Of} "></Label>
                         <Label Text="{Binding PageCount}"></Label>
                     </StackLayout>
-                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="Older" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
+                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
                 </Grid>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>

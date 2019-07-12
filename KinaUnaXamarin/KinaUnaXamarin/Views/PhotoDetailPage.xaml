@@ -7,11 +7,9 @@
              xmlns:panCardViewControls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:cropView="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.ImageCropView"
-             xmlns:fftransformations="clr-namespace:FFImageLoading.Transformations;assembly=FFImageLoading.Transformations"
-             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
              Visual="Material">
     <ContentPage.Content>
@@ -21,7 +19,7 @@
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                <Label Text="Offline: No internet connection." TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <panCardView:CarouselView
                 x:Name="PhotoCarousel"
@@ -74,9 +72,9 @@
                                     </forms:CachedImage>
                                 </ContentView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
-                                    <Label Text="Photo" TextColor="WhiteSmoke"></Label>
+                                    <Label Text="{i18n:Translate Photo}" TextColor="WhiteSmoke"></Label>
                                     <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
-                                    <Label Text="of" TextColor="WhiteSmoke"></Label>
+                                    <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
                                     <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
                                 </StackLayout>
                                 <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
