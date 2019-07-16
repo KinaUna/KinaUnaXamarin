@@ -285,6 +285,9 @@
   <data name="YearsOld" xml:space="preserve">
     <value>år gammel.</value>
   </data>
+  <data name="OnThisDay" xml:space="preserve">
+    <value>På denne dag</value>
+  </data>
   <data name="PageColon" xml:space="preserve">
     <value>Side:</value>
   </data>

@@ -358,6 +358,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On  This Day.
+        /// </summary>
+        internal static string OnThisDay {
+            get {
+                return ResourceManager.GetString("OnThisDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Page:.
         /// </summary>
         internal static string PageColon {

@@ -611,8 +611,144 @@ namespace KinaUnaXamarin.Services
             return resultList;
         }
 
+        public static async Task<List<TimeLineItem>> GetTimeLineYearAgo(int progenyId, int accessLevel, string timezone)
+        {
+            bool online = Online();
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(timezone);
+            }
+            catch (Exception)
+            {
+                timezone = TZConvert.WindowsToIana(timezone);
+            }
+            string accessToken = await UserService.GetAuthAccessToken();
+            List<TimeLineItem> timeLineYearAgo = new List<TimeLineItem>();
 
-    public static async Task<List<TimeLineItem>> GetLatestPosts(int progenyId, int accessLevel, string timezone)
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    var result = await client.GetAsync("api/publicaccess/progenyyearago/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var timelineString = await result.Content.ReadAsStringAsync();
+                        timeLineYearAgo = JsonConvert.DeserializeObject<List<TimeLineItem>>(timelineString);
+                        await SecureStorage.SetAsync("YearAgo" + progenyId + "Al" + accessLevel + "Date" + DateTime.Today.DayOfYear, JsonConvert.SerializeObject(timeLineYearAgo));
+                    }
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/timeline/progenyyearago/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var timelineString = await result.Content.ReadAsStringAsync();
+                        timeLineYearAgo = JsonConvert.DeserializeObject<List<TimeLineItem>>(timelineString);
+                        await SecureStorage.SetAsync("YearAgo" + progenyId + "Al" + accessLevel + "Date" + DateTime.Today.DayOfYear, JsonConvert.SerializeObject(timeLineYearAgo));
+                    }
+                }
+            }
+            else
+            {
+                string timlineListString = await SecureStorage.GetAsync("YearAgo" + progenyId + "Al" + accessLevel + "Date" + DateTime.Today.DayOfYear);
+                timeLineYearAgo = JsonConvert.DeserializeObject<List<TimeLineItem>>(timlineListString);
+            }
+
+            List<TimeLineItem> resultList = new List<TimeLineItem>();
+            foreach (TimeLineItem tItem in timeLineYearAgo)
+            {
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Photo)
+                {
+                    int.TryParse(tItem.ItemId, out int picId);
+                    tItem.ItemObject = await GetPicture(picId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Video)
+                {
+                    int.TryParse(tItem.ItemId, out int vidId);
+                    tItem.ItemObject = await GetVideo(vidId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Calendar)
+                {
+                    int.TryParse(tItem.ItemId, out int calId);
+                    tItem.ItemObject = await GetCalendarItem(calId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Location)
+                {
+                    int.TryParse(tItem.ItemId, out int locId);
+                    tItem.ItemObject = await GetLocation(locId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vocabulary)
+                {
+                    int.TryParse(tItem.ItemId, out int vocId);
+                    tItem.ItemObject = await GetVocabularyItem(vocId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Skill)
+                {
+                    int.TryParse(tItem.ItemId, out int skillId);
+                    tItem.ItemObject = await GetSkill(skillId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
+                {
+                    int.TryParse(tItem.ItemId, out int frnId);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
+                {
+                    int.TryParse(tItem.ItemId, out int mesId);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
+                {
+                    int.TryParse(tItem.ItemId, out int slpId);
+                    tItem.ItemObject = await GetSleep(slpId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Note)
+                {
+                    int.TryParse(tItem.ItemId, out int nteId);
+                    Note note = await GetNote(nteId, accessToken, timezone);
+                    note.Content = "<html><body>" + note.Content + "</body></html>";
+                    tItem.ItemObject = note;
+
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
+                {
+                    int.TryParse(tItem.ItemId, out int contId);
+                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
+                }
+
+                if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
+                {
+                    int.TryParse(tItem.ItemId, out int vacId);
+                    tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone);
+                }
+                
+                resultList.Add(tItem);
+            }
+
+            return resultList;
+        }
+        
+        public static async Task<List<TimeLineItem>> GetLatestPosts(int progenyId, int accessLevel, string timezone)
         {
             bool online = Online();
 

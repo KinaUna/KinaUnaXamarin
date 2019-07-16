@@ -29,6 +29,7 @@ namespace KinaUnaXamarin
         void RegisterRoutes()
         {
             _routes.Add("home", typeof(HomePage));
+            _routes.Add("yearago", typeof(YearAgoPage));
             _routes.Add("timeline", typeof(TimelinePage));
             _routes.Add("account", typeof(AccountPage));
             _routes.Add("register", typeof(RegisterPage));
@@ -50,6 +51,7 @@ namespace KinaUnaXamarin
             SettingsFlyoutItem.Title = resmgr.Value.GetString("Settings", ci);
             PhotosFlyoutItem.Title = PhotosMenuItem.Title = resmgr.Value.GetString("Photos", ci);
             TimelineFlyoutItem.Title = TimelineMenuItem.Title = resmgr.Value.GetString("Timeline", ci);
+            YearAgoMenuItem.Title = resmgr.Value.GetString("OnThisDay", ci);
         }
     }
 }

@@ -64,11 +64,19 @@
     </Shell.ItemTemplate>
     <FlyoutItem Title="Home" x:Name="HomeFlyoutItem"
                 Icon="{x:Static models:IconFont.Home}">
-        <Tab>
-            <ShellContent Title="Home"
-                          Icon="{x:Static models:IconFont.Home}"
-                          Route="home"
+        <Tab Title="Home"
+             Icon="homeicon.png"
+             Route="home">
+            <ShellContent 
                           ContentTemplate="{DataTemplate views:HomePage}">
+            </ShellContent>
+        </Tab>
+        <Tab x:Name="YearAgoMenuItem"
+             Title="{i18n:Translate OnThisDay}"
+             Icon="timelineicon.png"
+             Route="yearago">
+            <ShellContent 
+                          ContentTemplate="{DataTemplate views:YearAgoPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
