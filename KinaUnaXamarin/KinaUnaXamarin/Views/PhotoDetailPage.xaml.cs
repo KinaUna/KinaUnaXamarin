@@ -251,6 +251,21 @@ namespace KinaUnaXamarin.Views
 
             }
 
+            _photoDetailViewModel.CurrentPictureViewModel = _photoDetailViewModel.PhotoItems[_photoDetailViewModel.CurrentIndex];
+            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
+            if (_photoDetailViewModel.CurrentPictureViewModel.PictureTime != null && _photoDetailViewModel.Progeny.BirthDay.HasValue)
+            {
+                DateTime picTimeBirthday = new DateTime(_photoDetailViewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
+
+                picTime = new PictureTime(picTimeBirthday, _photoDetailViewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
+                _photoDetailViewModel.PicTimeValid = true;
+                _photoDetailViewModel.PicYears = picTime.CalcYears();
+                _photoDetailViewModel.PicMonths = picTime.CalcMonths();
+                _photoDetailViewModel.PicWeeks = picTime.CalcWeeks();
+                _photoDetailViewModel.PicDays = picTime.CalcDays();
+                _photoDetailViewModel.PicHours = picTime.CalcHours();
+                _photoDetailViewModel.PicMinutes = picTime.CalcMinutes();
+            }
             _photoDetailViewModel.IsBusy = false;
         }
 
@@ -267,8 +282,85 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void PhotoCarousel_OnItemBeforeAppearing(CardsView view, ItemBeforeAppearingEventArgs args)
+        private double x, y;
+
+        private void FrameOnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
+            // Source: https://github.com/rlingineni/Forms-BottomSheet/blob/master/XamJuly/MainPage.xaml.cs
+
+            // Handle the pan
+            switch (e.StatusType)
+            {
+                case GestureStatus.Running:
+                    // Translate and ensure we don't y + e.TotalY pan beyond the wrapped user interface element bounds.
+                    var translateY = Math.Max(Math.Min(0, y + e.TotalY), -Math.Abs((Height * .25) - Height));
+                    BottomSheetFrame.TranslateTo(BottomSheetFrame.X, translateY, 20);
+                    break;
+                case GestureStatus.Completed:
+                    // Store the translation applied during the pan
+                    y = BottomSheetFrame.TranslationY;
+
+                    //at the end of the event - snap to the closest location
+                    var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(e.TotalY + y)));
+
+                    //depending on Swipe Up or Down - change the snapping animation
+                    if (isSwipeUp(e))
+                    {
+                        BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringIn);
+                    }
+                    else
+                    {
+                        BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringOut);
+                    }
+
+                    
+                    y = BottomSheetFrame.TranslationY;
+
+                    break;
+            }
+        }
+
+        private bool isSwipeUp(PanUpdatedEventArgs e)
+        {
+            if (e.TotalY < 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private double getClosestLockState(double TranslationY)
+        {
+            //Play with these values to adjust the locking motions - this will change depending on the amount of content ona  apge
+            var lockStates = new double[] { 0, .1, .2, .3, .4, .5, .6, .85 };
+
+            //get the current proportion of the sheet in relation to the screen
+            var distance = Math.Abs(TranslationY);
+            var currentProportion = distance / Height;
+
+            //calculate which lockstate it's the closest to
+            var smallestDistance = 10000.0;
+            var closestIndex = 0;
+            for (var i = 0; i < lockStates.Length; i++)
+            {
+                var state = lockStates[i];
+                var absoluteDistance = Math.Abs(state - currentProportion);
+                if (absoluteDistance < smallestDistance)
+                {
+                    smallestDistance = absoluteDistance;
+                    closestIndex = i;
+                }
+            }
+
+            var selectedLockState = lockStates[closestIndex];
+            var TranslateToLockState = GetProportionCoordinate(selectedLockState);
+
+            return TranslateToLockState;
+        }
+
+        private double GetProportionCoordinate(double proportion)
+        {
+            return proportion * Height;
         }
     }
 }

@@ -13,39 +13,48 @@
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
              Visual="Material">
     <ContentPage.Content>
-        <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0"></RowDefinition>
-                <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions>
-            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-            </StackLayout>
-            <panCardView:CarouselView
+        <RelativeLayout BackgroundColor="Black">
+            <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
+                  RelativeLayout.WidthConstraint=
+                  "{ConstraintExpression Type=RelativeToParent,
+                                Property=Width,
+                                Factor=1}"
+                  RelativeLayout.HeightConstraint=
+                  "{ConstraintExpression Type=RelativeToParent,
+                                Property=Height,
+                                Factor=0.95}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="0"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <panCardView:CarouselView
                 x:Name="PhotoCarousel"
+                HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
                 ItemsSource="{Binding PhotoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
                 ItemDisappearing="PhotoCarousel_OnItemDisappearing"
-                ItemBeforeAppearing="PhotoCarousel_OnItemBeforeAppearing"
                 IsCyclical="False"
                 IsUserInteractionEnabled="{Binding IsNotZoomed}"
                 IsPanSwipeEnabled ="{Binding IsNotZoomed}"
                 IsPanInteractionEnabled="{Binding IsNotZoomed}">
-                <panCardView:CarouselView.ItemTemplate>
-                    <DataTemplate>
-                        <ContentView>
-                            <Grid Margin="0" IsClippedToBounds="True">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="20"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <!--<controls:PinchToZoomContainer Grid.Row="1" Grid.Column="0"  IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
+                    <panCardView:CarouselView.ItemTemplate>
+                        <DataTemplate>
+                            <ContentView>
+                                <Grid Margin="0" IsClippedToBounds="True">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="20"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <!--<controls:PinchToZoomContainer Grid.Row="1" Grid.Column="0"  IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
                                     <forms:CachedImage
                                         x:Name="CardCachedImage"
                                         Aspect="AspectFit"
@@ -54,51 +63,118 @@
                                         LoadingPriority="High">
                                     </forms:CachedImage>
                                 </controls:PinchToZoomContainer>-->
-                                <ContentView Grid.Row="1" Grid.Column="0">
-                                    <forms:CachedImage 
+                                    <ContentView Grid.Row="1" Grid.Column="0">
+                                        <forms:CachedImage 
                                         x:Name="CardCachedImage"
                                         Aspect="AspectFit"
                                         RetryCount="3"
                                         Source = "{Binding PictureLink}"
                                         LoadingPriority="High">
-                                        <forms:CachedImage.Behaviors>
-                                            <behaviors:MultiTouchBehavior
+                                            <forms:CachedImage.Behaviors>
+                                                <behaviors:MultiTouchBehavior
                                                 IsScaleEnabled="True"
                                                 IsTranslateEnabled="False" 
                                                 IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}"
                                                 ContainerHeight="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight}"
                                                 ContainerWidth="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth}"/>
-                                        </forms:CachedImage.Behaviors>
-                                    </forms:CachedImage>
-                                </ContentView>
-                                <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
-                                    <Label Text="{i18n:Translate Photo}" TextColor="WhiteSmoke"></Label>
-                                    <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
-                                    <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
-                                    <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
-                                </StackLayout>
-                                <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
-                                    <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
-                                </Frame>
-                                <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
-                                    <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
-                                </Frame>
-                                <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
-                                    <StackLayout Orientation="Horizontal">
-                                        <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
-                                        <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
+                                            </forms:CachedImage.Behaviors>
+                                        </forms:CachedImage>
+                                    </ContentView>
+                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
+                                        <Label Text="{i18n:Translate Photo}" TextColor="WhiteSmoke"></Label>
+                                        <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
+                                        <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
+                                        <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
                                     </StackLayout>
-                                </Frame>
-                            </Grid>
-                        </ContentView>
-                    </DataTemplate>
-                </panCardView:CarouselView.ItemTemplate>
-                <panCardViewControls:LeftArrowControl/>
-                <panCardViewControls:RightArrowControl/>
-                <panCardViewControls:IndicatorsControl/>
-            </panCardView:CarouselView>
-            <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
-        </Grid>
-        
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
+                                        <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
+                                    </Frame>
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
+                                        <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
+                                    </Frame>
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
+                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
+                                        </StackLayout>
+                                    </Frame>
+                                </Grid>
+                            </ContentView>
+                        </DataTemplate>
+                    </panCardView:CarouselView.ItemTemplate>
+                    <panCardViewControls:LeftArrowControl/>
+                    <panCardViewControls:RightArrowControl/>
+                    <panCardViewControls:IndicatorsControl/>
+                </panCardView:CarouselView>
+                <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+            </Grid>
+            <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
+                   x:Name="BottomSheetFrame" 
+                   RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
+                        Property=Height,Factor=.95,Constant=0}"
+                   RelativeLayout.WidthConstraint="{ConstraintExpression
+                        Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
+                   RelativeLayout.HeightConstraint="{ConstraintExpression
+                        Type=RelativeToParent,Property=Height,Factor=1,Constant=0}">
+                <Frame.GestureRecognizers>
+                    <PanGestureRecognizer PanUpdated="FrameOnPanUpdated" />
+                </Frame.GestureRecognizers>
+                <StackLayout Spacing="5">
+                    <BoxView HeightRequest="5" CornerRadius="2" WidthRequest="50" BackgroundColor="Gray" HorizontalOptions="Center"/>
+                    <StackLayout Orientation="Vertical">
+                        <FlexLayout Wrap="Wrap">
+                            <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
+                            <Label Text="{Binding CurrentPictureViewModel.Tags}" TextColor="White" />
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label Text="{i18n:Translate PhotoLocation}" Margin="0,0,5,0" TextColor="Azure" />
+                            <Label Text="{Binding CurrentPictureViewModel.Location}" TextColor="White" />
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label Text="{i18n:Translate PhotoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
+                            <Label Text="{Binding CurrentPictureViewModel.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="White" />
+                            <Label Text="{i18n:Translate YearsOld}" Margin="5, 0" TextColor="Azure"/>
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="White" />
+                            <Label Text="{i18n:Translate MonthsOld}" Margin="5, 0" TextColor="Azure"/>
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="White" />
+                            <Label Text="{i18n:Translate WeeksAnd}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="White" />
+                            <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="White" />
+                            <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="White" />
+                            <Label Text="{i18n:Translate HoursOld}" Margin="5, 0" TextColor="Azure"/>
+                        </FlexLayout>
+                        <FlexLayout Wrap="Wrap">
+                            <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="White" />
+                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                            <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="White" />
+                            <Label Text="{i18n:Translate MinutesOld}" Margin="5, 0" TextColor="Azure" />
+                        </FlexLayout>
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+        </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

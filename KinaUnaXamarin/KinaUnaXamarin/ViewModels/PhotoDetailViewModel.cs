@@ -20,6 +20,14 @@ namespace KinaUnaXamarin.ViewModels
         private bool _isZoomed;
         private double _imageHeight;
         private double _imageWidth;
+        private PictureViewModel _currentPictureViewModel;
+        private string _picYears;
+        private string _picMonths;
+        private string[] _picWeeks;
+        private string _picDays;
+        private string _picHours;
+        private string _picMinutes;
+        private bool _picTimeValid;
 
         public PhotoDetailViewModel()
         {
@@ -28,6 +36,11 @@ namespace KinaUnaXamarin.ViewModels
 
         public ObservableRangeCollection<PictureViewModel> PhotoItems { get; set; }
 
+        public PictureViewModel CurrentPictureViewModel
+        {
+            get => _currentPictureViewModel;
+            set => SetProperty(ref _currentPictureViewModel, value);
+        }
         public int CurrentPictureId
         {
             get => _currentPictureId;
@@ -91,6 +104,48 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _imageWidth;
             set => SetProperty(ref _imageWidth, value);
+        }
+
+        public string PicYears
+        {
+            get => _picYears;
+            set => SetProperty(ref _picYears, value);
+        }
+
+        public string PicMonths
+        {
+            get => _picMonths;
+            set => SetProperty(ref _picMonths, value);
+        }
+
+        public string[] PicWeeks
+        {
+            get => _picWeeks;
+            set => SetProperty(ref _picWeeks, value);
+        }
+
+        public string PicDays
+        {
+            get => _picDays;
+            set => SetProperty(ref _picDays, value);
+        }
+
+        public string PicHours
+        {
+            get => _picHours;
+            set => SetProperty(ref _picHours, value);
+        }
+
+        public string PicMinutes
+        {
+            get => _picMinutes;
+            set => SetProperty(ref _picMinutes, value);
+        }
+
+        public bool PicTimeValid
+        {
+            get => _picTimeValid;
+            set => SetProperty(ref _picTimeValid, value);
         }
     }
 }
