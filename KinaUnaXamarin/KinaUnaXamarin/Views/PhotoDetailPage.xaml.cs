@@ -362,5 +362,11 @@ namespace KinaUnaXamarin.Views
         {
             return proportion * Height;
         }
+
+        private async void CommentsClicked(object sender, EventArgs e)
+        {
+            CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
+            await Shell.Current.Navigation.PushModalAsync(commentsPage);
+        }
     }
 }

@@ -129,7 +129,70 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        
+        public static async Task<List<Comment>> GetComments(int commentThread)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    return new List<Comment>();
+                    
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    string commentsApiPath = "api/comments/getcommentsbythread/" + commentThread;
+                    var result = await client.GetAsync(commentsApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var commentsListString = await result.Content.ReadAsStringAsync();
+                        List<Comment> commentsList = JsonConvert.DeserializeObject<List<Comment>>(commentsListString);
+                        string userEmail = await UserService.GetUserEmail();
+                        UserInfo userInfo = JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
+                        string userTimezone = userInfo.Timezone;
+
+                        try
+                        {
+                            TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
+                        }
+                        catch (Exception)
+                        {
+                            userTimezone = TZConvert.WindowsToIana(userTimezone);
+                        }
+
+                        foreach (Comment comment in commentsList)
+                        {
+                            comment.Created = TimeZoneInfo.ConvertTimeFromUtc(comment.Created, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            
+                            await SecureStorage.SetAsync("Comment" + comment.CommentId, JsonConvert.SerializeObject(comment));
+                        }
+
+                        await SecureStorage.SetAsync("CommentThread" + commentThread, JsonConvert.SerializeObject(commentsList));
+                        return commentsList;
+                    }
+                    else
+                    {
+                        return new List<Comment>();
+                    }
+                }
+            }
+            else
+            {
+                string commentsListString = await SecureStorage.GetAsync("CommentThread" + commentThread);
+                List<Comment> commentsList = JsonConvert.DeserializeObject<List<Comment>>(commentsListString);
+                return commentsList;
+            }
+        }
+
         public static async Task<List<Progeny>> GetProgenyList(string userEmail)
         {
             bool online = Online();

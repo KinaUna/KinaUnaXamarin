@@ -12,7 +12,6 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string DisplayName { get; set; }
         public DateTime Created { get; set; }
 
-        [JsonIgnore]
         public string AuthorImage { get; set; }
     }
 }

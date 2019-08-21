@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.CommentsPage"
+             Title="Comments"
+             Visual="Material"
+             BackgroundColor="Black">
+    <ContentPage.Content>
+        <CollectionView x:Name="CommentsCollectionView" ItemsLayout="VerticalList" Margin="5">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="5" Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="*"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="55"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+
+                        </Grid.ColumnDefinitions>
+                        <BoxView Color="Lavender" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" CornerRadius="5"/>
+                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding AuthorImage}"
+                               Aspect="AspectFit"
+                               HeightRequest="50"
+                               WidthRequest="50" />
+                        <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                            <Label Text="{Binding DisplayName}" TextColor="DarkSlateGray" FontSize="16" VerticalTextAlignment="Center"></Label>
+                            <Label Text="{Binding Created, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="DarkOliveGreen" FontSize="12" VerticalTextAlignment="Center" Margin="5, 0, 0, 0"></Label>
+                        </StackLayout>
+                        
+                        <Label Text="{Binding CommentText}" Grid.Row="1" Grid.Column="1" TextColor="Black" FontSize="15"></Label>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </ContentPage.Content>
+</ContentPage>

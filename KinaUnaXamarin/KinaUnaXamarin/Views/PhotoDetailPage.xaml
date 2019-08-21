@@ -93,6 +93,10 @@
                                         <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
                                     </Frame>
                                     <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
+                                        <Frame.GestureRecognizers>
+                                            <!--<ClickGestureRecognizer Clicked="CommentsClicked"></ClickGestureRecognizer>-->
+                                            <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
+                                        </Frame.GestureRecognizers>
                                         <StackLayout Orientation="Horizontal">
                                             <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
                                             <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
