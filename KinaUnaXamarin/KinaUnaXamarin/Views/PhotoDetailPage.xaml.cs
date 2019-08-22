@@ -378,5 +378,22 @@ namespace KinaUnaXamarin.Views
             CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
             await Shell.Current.Navigation.PushModalAsync(commentsPage);
         }
+
+        private void FrameOnTap(object sender, EventArgs e)
+        {
+            y = BottomSheetFrame.TranslationY;
+            if (Math.Abs(y) < Height / 10)
+            {
+                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(Height / 3)));
+                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringIn);
+            }
+            else
+            {
+                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, 0, 250, Easing.SpringOut);
+            }
+
+
+            y = BottomSheetFrame.TranslationY;
+        }
     }
 }
