@@ -26,6 +26,7 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
         private bool _online = true;
+        private bool _modalShowing;
 
         public PhotoDetailPage(int pictureId)
         {
@@ -50,13 +51,22 @@ namespace KinaUnaXamarin.Views
             {
                 OfflineStackLayout.IsVisible = true;
             }
-            await Reload();
+
+            if (!_modalShowing)
+            {
+                await Reload();
+            }
+            else
+            {
+                _modalShowing = false;
+            }
         }
 
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            _modalShowing = true;
         }
 
         private async Task Reload()
