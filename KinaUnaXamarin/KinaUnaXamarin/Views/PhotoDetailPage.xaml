@@ -41,6 +41,7 @@
                 IsCyclical="False"
                 IsUserInteractionEnabled="{Binding IsNotZoomed}"
                 IsPanSwipeEnabled ="{Binding IsNotZoomed}"
+                IsVerticalSwipeEnabled="False"
                 IsPanInteractionEnabled="{Binding IsNotZoomed}">
                     <panCardView:CarouselView.ItemTemplate>
                         <DataTemplate>
@@ -54,15 +55,6 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <!--<controls:PinchToZoomContainer Grid.Row="1" Grid.Column="0"  IsScaleEnabled="True" IsTranslateEnabled="false" IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}">
-                                    <forms:CachedImage
-                                        x:Name="CardCachedImage"
-                                        Aspect="AspectFit"
-                                        RetryCount="3"
-                                        Source = "{Binding PictureLink}"
-                                        LoadingPriority="High">
-                                    </forms:CachedImage>
-                                </controls:PinchToZoomContainer>-->
                                     <ContentView Grid.Row="1" Grid.Column="0">
                                         <forms:CachedImage 
                                         x:Name="CardCachedImage"
