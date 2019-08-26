@@ -291,4 +291,22 @@
   <data name="PageColon" xml:space="preserve">
     <value>Side:</value>
   </data>
+  <data name="AddComment" xml:space="preserve">
+    <value>Tilføj kommentar</value>
+  </data>
+  <data name="ConfirmCommentDelete" xml:space="preserve">
+    <value>Er du sikker på at du vil slette denne kommentar?</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Slet</value>
+  </data>
+  <data name="DeleteCommentTitle" xml:space="preserve">
+    <value>Slet kommentar</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Nej</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Ja</value>
+  </data>
 </root>

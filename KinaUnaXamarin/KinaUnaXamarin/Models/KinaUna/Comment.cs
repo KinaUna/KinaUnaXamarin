@@ -13,5 +13,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public DateTime Created { get; set; }
 
         public string AuthorImage { get; set; }
+        
+        public bool IsAuthor { get; set; }
     }
 }

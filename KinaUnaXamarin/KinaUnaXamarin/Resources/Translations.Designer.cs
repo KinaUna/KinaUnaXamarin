@@ -88,6 +88,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Comment.
+        /// </summary>
+        internal static string AddComment {
+            get {
+                return ResourceManager.GetString("AddComment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Item.
         /// </summary>
         internal static string AddItem {
@@ -151,6 +160,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this comment?.
+        /// </summary>
+        internal static string ConfirmCommentDelete {
+            get {
+                return ResourceManager.GetString("ConfirmCommentDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to days.
         /// </summary>
         internal static string Days {
@@ -165,6 +183,24 @@ namespace KinaUnaXamarin.Resources {
         internal static string DaysOld {
             get {
                 return ResourceManager.GetString("DaysOld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete.
+        /// </summary>
+        internal static string Delete {
+            get {
+                return ResourceManager.GetString("Delete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Comment.
+        /// </summary>
+        internal static string DeleteCommentTitle {
+            get {
+                return ResourceManager.GetString("DeleteCommentTitle", resourceCulture);
             }
         }
         
@@ -318,6 +354,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Newer {
             get {
                 return ResourceManager.GetString("Newer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
             }
         }
         
@@ -579,6 +624,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string YearsOld {
             get {
                 return ResourceManager.GetString("YearsOld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Yes.
+        /// </summary>
+        internal static string Yes {
+            get {
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

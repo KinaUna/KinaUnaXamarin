@@ -10,6 +10,7 @@
              xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
              Visual="Material">
     <ContentPage.Content>
@@ -22,7 +23,7 @@
                   RelativeLayout.HeightConstraint=
                   "{ConstraintExpression Type=RelativeToParent,
                                 Property=Height,
-                                Factor=0.95}">
+                                Factor=0.94}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -30,7 +31,7 @@
                 <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-                <panCardView:CarouselView
+                <panCardView:CoverFlowView
                 x:Name="PhotoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
@@ -42,8 +43,13 @@
                 IsUserInteractionEnabled="{Binding IsNotZoomed}"
                 IsPanSwipeEnabled ="{Binding IsNotZoomed}"
                 IsVerticalSwipeEnabled="False"
-                IsPanInteractionEnabled="{Binding IsNotZoomed}">
-                    <panCardView:CarouselView.ItemTemplate>
+                IsPanInteractionEnabled="{Binding IsNotZoomed}"
+                IsViewReusingEnabled="False">
+                    <x:Arguments>
+                        <processors:BaseCoverFlowFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0.25" />
+                        <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />
+                    </x:Arguments>
+                    <panCardView:CoverFlowView.ItemTemplate>
                         <DataTemplate>
                             <ContentView>
                                 <Grid Margin="0" IsClippedToBounds="True">
@@ -97,17 +103,17 @@
                                 </Grid>
                             </ContentView>
                         </DataTemplate>
-                    </panCardView:CarouselView.ItemTemplate>
+                    </panCardView:CoverFlowView.ItemTemplate>
                     <panCardViewControls:LeftArrowControl/>
                     <panCardViewControls:RightArrowControl/>
                     <panCardViewControls:IndicatorsControl/>
-                </panCardView:CarouselView>
+                </panCardView:CoverFlowView>
                 <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
             </Grid>
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 
                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
-                        Property=Height,Factor=.92,Constant=0}"
+                        Property=Height,Factor=.94,Constant=0}"
                    RelativeLayout.WidthConstraint="{ConstraintExpression
                         Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression

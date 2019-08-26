@@ -129,6 +129,34 @@ namespace KinaUnaXamarin.Services
             }
         }
 
+        public static async Task<Comment> AddComment(int commentThread, string text)
+        {
+            Comment cmnt = new Comment();
+
+            cmnt.CommentThreadNumber = commentThread;
+            cmnt.CommentText = text;
+            cmnt.Author = await UserService.GetUserId();
+            cmnt.DisplayName = await UserService.GetFullname();
+            cmnt.Created = DateTime.UtcNow;
+
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/comments/", new StringContent(JsonConvert.SerializeObject(cmnt), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Comment resultComment = JsonConvert.DeserializeObject<Comment>(resultString);
+                    return resultComment;
+                }
+            }
+
+            return cmnt;
+        }
+
         public static async Task<List<Comment>> GetComments(int commentThread)
         {
             if (Online())
@@ -172,7 +200,10 @@ namespace KinaUnaXamarin.Services
                         foreach (Comment comment in commentsList)
                         {
                             comment.Created = TimeZoneInfo.ConvertTimeFromUtc(comment.Created, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                            
+                            if (comment.Author == userInfo.UserId)
+                            {
+                                comment.IsAuthor = true;
+                            }
                             await SecureStorage.SetAsync("Comment" + comment.CommentId, JsonConvert.SerializeObject(comment));
                         }
 
@@ -191,6 +222,40 @@ namespace KinaUnaXamarin.Services
                 List<Comment> commentsList = JsonConvert.DeserializeObject<List<Comment>>(commentsListString);
                 return commentsList;
             }
+        }
+
+        public static async Task<Comment> DeleteComment(Comment comment)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    return new Comment();
+
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    string commentsApiPath = "api/comments/" + comment.CommentId;
+                    var result = await client.DeleteAsync(commentsApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        SecureStorage.Remove("Comment" + comment.CommentId);
+                        return comment;
+                    }
+                    
+                }
+            }
+            return new Comment();
         }
 
         public static async Task<List<Progeny>> GetProgenyList(string userEmail)

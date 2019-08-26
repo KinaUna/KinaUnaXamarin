@@ -77,7 +77,8 @@ namespace KinaUnaXamarin.Views
             PictureViewModel pictureViewModel = await ProgenyService.GetPictureViewModel(
                 _photoDetailViewModel.CurrentPictureId, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
             _photoDetailViewModel.PhotoItems.Add(pictureViewModel);
-            
+            _photoDetailViewModel.CurrentPictureViewModel = pictureViewModel;
+
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)

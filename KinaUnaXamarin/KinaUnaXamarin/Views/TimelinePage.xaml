@@ -45,7 +45,6 @@
                                                RetryCount="3"
                                                Source = "{Binding ItemObject.PictureLink600}">
                             </forms:CachedImage>
-                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
@@ -334,7 +333,16 @@
                     <Label Text="{i18n:Translate ShowTimelineBefore}"></Label>
                     <DatePicker x:Name="TimelineStartDatePicker" MinimumDate="{Binding Progeny.BirthDay}" Format="dd MMM yyyy" DateSelected="TimelineStartDatePicker_OnDateSelected"></DatePicker>
                 </StackLayout>
-                <!--<CollectionView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}" Margin="0" ItemSizingStrategy="MeasureAllItems"></CollectionView>-->
+                <!--<CollectionView 
+                    x:Name="TimeLineCollectionView" 
+                    ItemTemplate="{StaticResource TimeLineTemplateSelector}"
+                    ItemsSource="{Binding TimeLineItems}"
+                    Margin="0"
+                    ItemSizingStrategy="MeasureAllItems"
+                    SelectionMode="Single"
+                    SelectionChanged="TimeLineCollectionView_OnSelectionChanged"
+                    RemainingItemsThreshold="5"
+                    RemainingItemsThresholdReached="TimeLineCollectionView_OnRemainingItemsThresholdReached"></CollectionView>-->
                 <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
                           Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement"
                           ItemSelected="TimeLineListView_OnItemSelected">
