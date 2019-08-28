@@ -309,4 +309,25 @@
   <data name="Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
+  <data name="AddChild" xml:space="preserve">
+    <value>Add Child</value>
+  </data>
+  <data name="Birthday" xml:space="preserve">
+    <value>Birthday</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Display Name</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ChildSaved" xml:space="preserve">
+    <value>Child saved successfully. Child ID:</value>
+  </data>
+  <data name="ErrorChildNotSaved" xml:space="preserve">
+    <value>Error: Add child failed. Try again later.</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Profile Picture</value>
+  </data>
 </root>

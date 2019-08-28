@@ -18,6 +18,7 @@ namespace KinaUnaXamarin.Droid
         {
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
+            CrossCurrentActivity.Current.Init(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!
         }
 
@@ -25,7 +26,7 @@ namespace KinaUnaXamarin.Droid
         {
             base.OnTerminate();
             UnregisterActivityLifecycleCallbacks(this);
-            CrossCurrentActivity.Current.Init(this);
+            
         }
 
         public void OnActivityCreated(Activity activity, Bundle savedInstanceState)

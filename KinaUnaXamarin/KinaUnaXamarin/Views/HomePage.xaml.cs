@@ -459,5 +459,7 @@ namespace KinaUnaXamarin.Views
                 }
             }
         }
+
+        
     }
 }

@@ -309,4 +309,25 @@
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="AddChild" xml:space="preserve">
+    <value>Tilføj barn</value>
+  </data>
+  <data name="Birthday" xml:space="preserve">
+    <value>Fødselsdag</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Visningsnavn</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="ChildSaved" xml:space="preserve">
+    <value>Barnet er nu tilføjet. Barn ID:</value>
+  </data>
+  <data name="ErrorChildNotSaved" xml:space="preserve">
+    <value>Fejl: Barnet blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Profilbillede</value>
+  </data>
 </root>

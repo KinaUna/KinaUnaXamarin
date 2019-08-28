@@ -88,6 +88,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Child.
+        /// </summary>
+        internal static string AddChild {
+            get {
+                return ResourceManager.GetString("AddChild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Comment.
         /// </summary>
         internal static string AddComment {
@@ -142,6 +151,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Birthday.
+        /// </summary>
+        internal static string Birthday {
+            get {
+                return ResourceManager.GetString("Birthday", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -156,6 +174,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ChangeLanguageWarning {
             get {
                 return ResourceManager.GetString("ChangeLanguageWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Child saved successfully. Child ID:.
+        /// </summary>
+        internal static string ChildSaved {
+            get {
+                return ResourceManager.GetString("ChildSaved", resourceCulture);
             }
         }
         
@@ -205,6 +232,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Display Name.
+        /// </summary>
+        internal static string DisplayName {
+            get {
+                return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration:.
         /// </summary>
         internal static string DurationColon {
@@ -219,6 +255,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string End {
             get {
                 return ResourceManager.GetString("End", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Add child failed. Try again later..
+        /// </summary>
+        internal static string ErrorChildNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorChildNotSaved", resourceCulture);
             }
         }
         
@@ -349,6 +394,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Name.
+        /// </summary>
+        internal static string Name {
+            get {
+                return ResourceManager.GetString("Name", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Newer.
         /// </summary>
         internal static string Newer {
@@ -462,6 +516,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string PhotoTaken {
             get {
                 return ResourceManager.GetString("PhotoTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Profile Picture.
+        /// </summary>
+        internal static string ProfilePicture {
+            get {
+                return ResourceManager.GetString("ProfilePicture", resourceCulture);
             }
         }
         

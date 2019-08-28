@@ -57,6 +57,7 @@ namespace KinaUnaXamarin.Views.AddItem
             bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
             ProgenyCollectionView.SelectedItem =
                 _addSleepViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
             _addSleepViewModel.SleepItem.ProgenyId = viewChild;
             _addSleepViewModel.SleepItem.SleepStart = DateTime.Now;
             _addSleepViewModel.SleepItem.SleepEnd = DateTime.Now + TimeSpan.FromMinutes(10);

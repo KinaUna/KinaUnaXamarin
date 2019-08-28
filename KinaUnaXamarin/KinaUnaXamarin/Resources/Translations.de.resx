@@ -309,4 +309,25 @@
   <data name="Yes" xml:space="preserve">
     <value>Ja</value>
   </data>
+  <data name="AddChild" xml:space="preserve">
+    <value>Kind hinzufügen</value>
+  </data>
+  <data name="Birthday" xml:space="preserve">
+    <value>Geburtstag</value>
+  </data>
+  <data name="DisplayName" xml:space="preserve">
+    <value>Anzeigename</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="ChildSaved" xml:space="preserve">
+    <value>Das Kind wurde hinzugefügt. Kind ID:</value>
+  </data>
+  <data name="ErrorChildNotSaved" xml:space="preserve">
+    <value>Fehler: Das Kind würde nicht gespeichert.</value>
+  </data>
+  <data name="ProfilePicture" xml:space="preserve">
+    <value>Profilbild</value>
+  </data>
 </root>

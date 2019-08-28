@@ -51,6 +51,24 @@ namespace KinaUnaXamarin.ViewModels
             addPhoto.Icon = IconFont.Image;
             addPhoto.BackgroundColor = "#9c27b0";
             ItemList.Add(addPhoto);
+
+            AddItemModel addChild = new AddItemModel();
+            addChild.ItemType = (int)KinaUnaTypes.TimeLineType.Child;
+            addChild.Name = "Child";
+            addChild.Description = "Add a Child";
+            if (ci == "da")
+            {
+                addChild.Name = "Barn";
+                addChild.Description = "Tilføj et barn";
+            }
+            if (ci == "de")
+            {
+                addChild.Name = "Kind";
+                addChild.Description = "Ein Kind hinzufügen";
+            }
+            addChild.Icon = IconFont.HumanChild;
+            addChild.BackgroundColor = "#ff9800";
+            ItemList.Add(addChild);
         }
         public ObservableRangeCollection<AddItemModel> ItemList { get; set; }
 

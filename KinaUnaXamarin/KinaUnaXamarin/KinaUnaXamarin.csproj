@@ -14,7 +14,7 @@
     <PackageReference Include="CardsView" Version="2.2.0" />
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView" Version="1.0.7" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
-    <PackageReference Include="IdentityModel.OidcClient" Version="2.9.0" />
+    <PackageReference Include="IdentityModel.OidcClient" Version="2.9.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="Plugin.Multilingual" Version="1.0.2" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
@@ -23,7 +23,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.Forms" Version="4.2.0.709249" />  
-    <PackageReference Include="Xamarin.Essentials" Version="1.2.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.3.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +41,9 @@
     <EmbeddedResource Update="Resources\Translations.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\AddItem\AddChildPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CommentsPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.AddItem.AddChildPage"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             Visual="Material">
+    <ContentPage.Content>
+        <Grid>
+            <ScrollView>
+                <StackLayout Orientation="Vertical" Margin="5" >
+                    <Label Text="{i18n:Translate AddChild}" FontSize="16" Margin="0, 0, 5, 0"></Label>
+                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Name}"></Label>
+                        <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" ></Entry>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate DisplayName}"></Label>
+                        <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand"></Entry>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Birthday}"></Label>
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="BirthdayDatePicker"></DatePicker>
+                            <TimePicker x:Name="BirthdayTimePicker"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate TimeZone}"></Label>
+                        <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}"></Picker>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate ProfilePicture}"></Label>
+                        <Image x:Name="UploadImage" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
+                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
+                    </StackLayout>
+                    <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+                    <StackLayout Orientation="Horizontal" Margin="5">
+                        <Button x:Name="SaveChildButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveChildButton_OnClicked" ></Button>
+                        <Button x:Name="CancelChildButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelChildButton_OnClicked"></Button>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+        </Grid>
+        
+    </ContentPage.Content>
+</ContentPage>

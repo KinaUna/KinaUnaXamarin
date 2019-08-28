@@ -25,6 +25,7 @@ namespace KinaUnaXamarin
                 UpdateLanguage();
             });
         }
+        
 
         void RegisterRoutes()
         {

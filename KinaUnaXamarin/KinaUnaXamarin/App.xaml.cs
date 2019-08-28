@@ -26,7 +26,7 @@ namespace KinaUnaXamarin
             {
                 Translations.Culture = CrossMultilingual.Current.DeviceCultureInfo;
             }
-
+            
             MainPage = new AppShell();
         }
 
