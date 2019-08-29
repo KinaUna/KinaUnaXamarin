@@ -1,12 +1,13 @@
 ﻿using Android.App;
 using Android.Content.PM;
+using Android.Content.Res;
 using Android.Runtime;
 using Android.OS;
 using Android.Widget;
-using FFImageLoading.Config;
 using FFImageLoading.Forms.Platform;
 using PanCardView.Droid;
 using Xamarin.Forms;
+using Configuration = FFImageLoading.Config.Configuration;
 
 namespace KinaUnaXamarin.Droid
 {
@@ -44,22 +45,31 @@ namespace KinaUnaXamarin.Droid
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        bool doubleBackToExitPressedOnce = false;
+        bool _doubleBackToExitPressedOnce = false;
 
         public override void OnBackPressed()
         {
-            if (doubleBackToExitPressedOnce)
+            if (App.Current.MainPage.Navigation.ModalStack.Count > 0)
             {
                 base.OnBackPressed();
-                Java.Lang.JavaSystem.Exit(0);
                 return;
+
             }
+            else
+            {
+                if (_doubleBackToExitPressedOnce)
+                {
+                    base.OnBackPressed();
+                    Java.Lang.JavaSystem.Exit(0);
+                    return;
+                }
 
 
-            this.doubleBackToExitPressedOnce = true;
-            Toast.MakeText(this, "Press Back again to exit", ToastLength.Short).Show(); // Todo: Translate the message.
+                this._doubleBackToExitPressedOnce = true;
+                Toast.MakeText(this, "Press Back again to exit", ToastLength.Short).Show(); // Todo: Translate the message.
 
-            new Handler().PostDelayed(() => { doubleBackToExitPressedOnce = false; }, 2000);
+                new Handler().PostDelayed(() => { _doubleBackToExitPressedOnce = false; }, 2000);
+            }
         }
     }
 }
