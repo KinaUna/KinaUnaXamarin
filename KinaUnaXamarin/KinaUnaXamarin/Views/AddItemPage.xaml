@@ -12,7 +12,7 @@
         <ScrollView>
             <StackLayout Orientation="Vertical" Margin="10">
                 <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
-                <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged" IsVisible="{Binding CanAddItems}">
+                <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Grid Padding="10" Margin="0" >

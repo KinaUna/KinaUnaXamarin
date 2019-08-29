@@ -35,6 +35,7 @@ namespace KinaUnaXamarin.Views
             {
                 _addItemModel.CanAddItems = false;
             }
+            _addItemModel.UpdateItemList();
         }
 
         private void AddItemListCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
