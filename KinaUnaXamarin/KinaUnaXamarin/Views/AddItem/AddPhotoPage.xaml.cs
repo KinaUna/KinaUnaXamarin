@@ -48,8 +48,7 @@ namespace KinaUnaXamarin.Views.AddItem
             bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
             ProgenyCollectionView.SelectedItem =
                 _addPhotoViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-            
-
+            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
         }
 
         private async void SavePhotoButton_OnClicked(object sender, EventArgs e)

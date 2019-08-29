@@ -25,6 +25,7 @@ namespace KinaUnaXamarin.Droid
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
 
             Callbacks?.Invoke(Intent.DataString);
 

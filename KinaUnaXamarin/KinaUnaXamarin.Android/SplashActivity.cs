@@ -23,6 +23,7 @@ namespace KinaUnaXamarin.Droid
         public override void OnCreate(Bundle savedInstanceState, PersistableBundle persistentState)
         {
             base.OnCreate(savedInstanceState, persistentState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
         }
 
         // Launches the startup task
@@ -34,5 +35,12 @@ namespace KinaUnaXamarin.Droid
 
         // Prevent the back button from canceling the startup process
         public override void OnBackPressed() { }
+
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+        {
+            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
 }
