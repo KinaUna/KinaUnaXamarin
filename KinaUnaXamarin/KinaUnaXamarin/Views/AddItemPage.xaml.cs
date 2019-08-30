@@ -26,6 +26,11 @@ namespace KinaUnaXamarin.Views
         {
             base.OnAppearing();
             
+            string accessToken = await UserService.GetAuthAccessToken();
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                return;
+            }
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {

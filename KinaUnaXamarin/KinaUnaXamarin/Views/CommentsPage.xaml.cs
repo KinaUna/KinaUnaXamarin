@@ -18,8 +18,8 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CommentsPage : ContentPage
     {
-        private int _commentThread;
-        private CommentsPageViewModel _commentsPageViewModel;
+        private readonly int _commentThread;
+        private readonly CommentsPageViewModel _commentsPageViewModel;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 

@@ -1,5 +1,9 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows.Input;
+using KinaUnaXamarin.Models;
+using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Xamarin.Forms;
@@ -10,13 +14,31 @@ namespace KinaUnaXamarin.ViewModels
     {
         private string _message;
         private string _username;
+        private string _firstName;
+        private string _middleName;
+        private string _lastName;
         private string _fullName;
         private string _email;
         private string _userId;
         private string _timezone;
         private bool _loggedIn;
         private bool _loggedOut;
-        
+        private string _profilePicture;
+        private bool _editMode;
+
+        public AccountViewModel()
+        {
+            TimeZoneList = new ObservableCollection<TimeZoneInfo>();
+            ProgenyCollection = new ObservableCollection<Progeny>();
+            ProgenyCollection.Add(OfflineDefaultData.DefaultProgeny);
+            LoginCommand = new Command(Login);
+            LogoutCommand = new Command(Logout);
+        }
+
+        public ObservableCollection<TimeZoneInfo> TimeZoneList { get; set; }
+
+        public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+
         public string Message
         {
             get => _message;
@@ -27,6 +49,24 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _username;
             set => SetProperty(ref _username, value);
+        }
+
+        public string FirstName
+        {
+            get => _firstName;
+            set => SetProperty(ref _firstName, value);
+        }
+
+        public string MiddleName
+        {
+            get => _middleName;
+            set => SetProperty(ref _middleName, value);
+        }
+
+        public string LastName
+        {
+            get => _lastName;
+            set => SetProperty(ref _lastName, value);
         }
 
         public string FullName
@@ -41,6 +81,12 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _email, value);
         }
 
+        public string ProfilePicture
+        {
+            get => _profilePicture;
+            set => SetProperty(ref _profilePicture, value);
+        }
+
         public string UserId
         {
             get => _userId;
@@ -51,6 +97,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _timezone;
             set => SetProperty(ref _timezone, value);
+        }
+
+        public bool EditMode
+        {
+            get => _editMode;
+            set => SetProperty(ref _editMode, value);
         }
 
         public bool LoggedIn
@@ -64,14 +116,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _loggedOut;
             set => SetProperty(ref _loggedOut, value);
         }
-
-        public AccountViewModel()
-        {
-            LoginCommand = new Command(Login);
-            LogoutCommand = new Command(Logout);
-
-        }
-
+        
         public ICommand LoginCommand
         {
             get;

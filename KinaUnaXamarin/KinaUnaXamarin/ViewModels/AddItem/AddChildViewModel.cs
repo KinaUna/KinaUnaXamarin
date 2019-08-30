@@ -10,9 +10,9 @@ namespace KinaUnaXamarin.ViewModels.AddItem
     {
         public AddChildViewModel()
         {
-            timeZoneList = new ObservableCollection<TimeZoneInfo>();
+            TimeZoneList = new ObservableCollection<TimeZoneInfo>();
         }
 
-        public ObservableCollection<TimeZoneInfo> timeZoneList { get; set; }
+        public ObservableCollection<TimeZoneInfo> TimeZoneList { get; set; }
     }
 }

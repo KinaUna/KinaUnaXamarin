@@ -17,7 +17,7 @@
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" IsEnabled="{Binding CanUserAddItems}" Clicked="AddItemToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
         <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
         <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
@@ -327,7 +327,7 @@
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="Log in or Register"
+                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
                     <Label Text="{i18n:Translate ShowTimelineBefore}"></Label>

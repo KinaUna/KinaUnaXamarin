@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
@@ -60,6 +62,43 @@ namespace KinaUnaXamarin.Services
                 }
 
                 return OfflineDefaultData.DefaultUserInfo;
+            }
+        }
+
+        public static async Task<string> GetUserPicture(string pictureId)
+        {
+            bool online = ProgenyService.Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                string accessToken = await SecureStorage.GetAsync(Constants.AuthAccessTokenKey);
+                client.SetBearerToken(accessToken);
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                var result = await client.GetAsync("api/pictures/getprofilepicture/" + pictureId).ConfigureAwait(false);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                    await SecureStorage.SetAsync("ProfilePicture" + pictureId, pictureResultString);
+                    return pictureResultString;
+                }
+                else
+                {
+                    // Todo: Handle errors
+                    return Constants.ProfilePicture;
+                }
+            }
+            else
+            {
+                string pictureResultString = await SecureStorage.GetAsync("ProfilePicture" + pictureId);
+                if (!string.IsNullOrEmpty(pictureResultString))
+                {
+                    return pictureResultString;
+                }
+
+                return Constants.ProfilePicture;
             }
         }
 
@@ -334,6 +373,71 @@ namespace KinaUnaXamarin.Services
             }
 
             return true;
+        }
+
+        public static async Task<string> UploadProfilePicture(string fileName)
+        {
+            if (ProgenyService.Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+
+                var fileBytes = File.ReadAllBytes(fileName);
+                MemoryStream stream = new MemoryStream(fileBytes);
+                HttpContent fileStreamContent = new StreamContent(stream);
+
+                fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
+                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                MultipartFormDataContent content = new MultipartFormDataContent();
+                content.Add(fileStreamContent);
+                var result = await client.PostAsync("api/pictures/uploadprofilepicture/", content).ConfigureAwait(false);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                    return pictureResultString;
+                }
+            }
+
+            return "";
+        }
+
+        public static async Task<UserInfo> UpdateUserInfo(UserInfo updatedUserInfo)
+        {
+            if (ProgenyService.Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/userinfo/" + updatedUserInfo.UserId, new StringContent(JsonConvert.SerializeObject(updatedUserInfo), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    UserInfo resultUserInfo = JsonConvert.DeserializeObject<UserInfo>(resultString);
+
+                    await SecureStorage.SetAsync(Constants.UserNameKey, resultUserInfo.UserName);
+                    await SecureStorage.SetAsync(Constants.UserFirstNameKey, resultUserInfo.FirstName);
+                    await SecureStorage.SetAsync(Constants.UserMiddleNameKey, resultUserInfo.MiddleName);
+                    await SecureStorage.SetAsync(Constants.UserLastNameKey, resultUserInfo.LastName);
+                    try
+                    {
+                        TimeZoneInfo.FindSystemTimeZoneById(resultUserInfo.Timezone);
+                    }
+                    catch (Exception)
+                    {
+                        resultUserInfo.Timezone = TZConvert.WindowsToIana(resultUserInfo.Timezone);
+                    }
+                    await SecureStorage.SetAsync(Constants.UserTimezoneKey, resultUserInfo.Timezone);
+                    
+                    return resultUserInfo;
+                }
+            }
+
+            return new UserInfo();
         }
     }
 }

@@ -32,10 +32,10 @@ namespace KinaUnaXamarin.Views.AddItem
             IReadOnlyCollection<TimeZoneInfo> timeZoneList = TimeZoneInfo.GetSystemTimeZones();
             foreach (TimeZoneInfo timeZoneInfo in timeZoneList)
             {
-                _addChildViewModel.timeZoneList.Add(timeZoneInfo);
+                _addChildViewModel.TimeZoneList.Add(timeZoneInfo);
             }
 
-            TimeZonePicker.ItemsSource = _addChildViewModel.timeZoneList;
+            TimeZonePicker.ItemsSource = _addChildViewModel.TimeZoneList;
             
         }
 
@@ -44,8 +44,8 @@ namespace KinaUnaXamarin.Views.AddItem
             base.OnAppearing();
             string userTimeZone = await UserService.GetUserTimezone();
             TimeZoneInfo userTimeZoneInfo =
-                _addChildViewModel.timeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
-            int timeZoneIndex = _addChildViewModel.timeZoneList.IndexOf(userTimeZoneInfo);
+                _addChildViewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
+            int timeZoneIndex = _addChildViewModel.TimeZoneList.IndexOf(userTimeZoneInfo);
             TimeZonePicker.SelectedIndex = timeZoneIndex;
         }
 
@@ -75,8 +75,6 @@ namespace KinaUnaXamarin.Views.AddItem
                 file.Dispose();
                 return stream;
             });
-
-            
         }
 
         private async void SaveChildButton_OnClicked(object sender, EventArgs e)
@@ -106,8 +104,8 @@ namespace KinaUnaXamarin.Views.AddItem
             {
                 progeny.TimeZone = "Romance Standard Time";
             }
-            
-            progeny.Admins = await UserService.GetUserEmail();
+            string userEmail = await UserService.GetUserEmail();
+            progeny.Admins = userEmail;
 
             Progeny newProgeny = await ProgenyService.AddProgeny(progeny);
             
@@ -130,6 +128,9 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelChildButton.Text = "Ok";
                 CancelChildButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelChildButton.IsEnabled = true;
+
+                // Update the progeny list.
+                await ProgenyService.GetProgenyList(userEmail);
             }
 
             _addChildViewModel.IsBusy = false;

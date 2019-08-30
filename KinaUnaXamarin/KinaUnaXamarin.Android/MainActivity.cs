@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Widget;
 using FFImageLoading.Forms.Platform;
 using PanCardView.Droid;
+using Plugin.CurrentActivity;
 using Xamarin.Forms;
 using Configuration = FFImageLoading.Config.Configuration;
 
@@ -27,6 +28,7 @@ namespace KinaUnaXamarin.Droid
                 "CollectionView_Experimental", "FastRenderers_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //Android.Glide.Forms.Init(); // https://github.com/jonathanpeppers/glidex
             FFImageLoading.Forms.Platform.CachedImageRenderer
                 .Init(enableFastRenderer: true); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
