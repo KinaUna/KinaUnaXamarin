@@ -57,7 +57,6 @@
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
             </Grid>
-            
         </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
@@ -201,7 +202,13 @@ namespace KinaUnaXamarin.Views
 
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
         {
-            SelectProgenyPage selProPage = new SelectProgenyPage(_viewModel.ProgenyCollection);
+            ObservableCollection<Progeny> progenyCollection = new ObservableCollection<Progeny>();
+            List<Progeny> progList = await ProgenyService.GetProgenyList(await UserService.GetUserEmail());
+            foreach (Progeny progeny in progList)
+            {
+                progenyCollection.Add(progeny);
+            }
+            SelectProgenyPage selProPage = new SelectProgenyPage(progenyCollection);
             await Shell.Current.Navigation.PushModalAsync(selProPage);
         }
 

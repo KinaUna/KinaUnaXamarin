@@ -101,6 +101,21 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
+                Icon="{x:Static models:IconFont.AccountChild}">
+        <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"
+             Icon="childicon.png"
+             Route="mychildren">
+            <ShellContent ContentTemplate="{DataTemplate views:MyChildrenPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate UserAccess}" x:Name="UserAccessTabItem"
+             Icon="myfamilyicon.png"
+             Route="useraccess">
+            <ShellContent ContentTemplate="{DataTemplate views:UserAccessPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Settings}" x:Name="SettingsFlyoutItem"
                 Icon="{x:Static models:IconFont.Settings}">
         <Tab Title="{i18n:Translate Language}" x:Name="LanguageTabItem"

@@ -149,6 +149,26 @@ namespace KinaUnaXamarin.Services
             return progeny;
         }
 
+        public static async Task<Progeny> UpdateProgeny(Progeny progeny)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/progeny/" + progeny.Id, new StringContent(JsonConvert.SerializeObject(progeny), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Progeny resultProgeny = JsonConvert.DeserializeObject<Progeny>(resultString);
+                    return resultProgeny;
+                }
+            }
+
+            return progeny;
+        }
+
         public static async Task<Comment> AddComment(int commentThread, string text)
         {
             Comment cmnt = new Comment();

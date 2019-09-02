@@ -169,6 +169,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administrators.
+        /// </summary>
+        internal static string Administrators {
+            get {
+                return ResourceManager.GetString("Administrators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birthday.
         /// </summary>
         internal static string Birthday {
@@ -421,6 +430,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to My Children.
+        /// </summary>
+        internal static string MyChildren {
+            get {
+                return ResourceManager.GetString("MyChildren", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to My Family.
+        /// </summary>
+        internal static string MyFamily {
+            get {
+                return ResourceManager.GetString("MyFamily", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Name.
         /// </summary>
         internal static string Name {
@@ -651,6 +678,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string UpcomingEvents {
             get {
                 return ResourceManager.GetString("UpcomingEvents", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User Access.
+        /// </summary>
+        internal static string UserAccess {
+            get {
+                return ResourceManager.GetString("UserAccess", resourceCulture);
             }
         }
         

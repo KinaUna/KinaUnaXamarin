@@ -336,8 +336,20 @@
   <data name="AddUserFor" xml:space="preserve">
     <value>Tilføj bruger for:</value>
   </data>
+  <data name="Administrators" xml:space="preserve">
+    <value>Administratorer</value>
+  </data>
   <data name="ErrorUserNotSaved" xml:space="preserve">
     <value>Fejl: Brugeren blev ikke gemt.</value>
+  </data>
+  <data name="MyChildren" xml:space="preserve">
+    <value>Mine børn</value>
+  </data>
+  <data name="MyFamily" xml:space="preserve">
+    <value>Min familie</value>
+  </data>
+  <data name="UserAccess" xml:space="preserve">
+    <value>Brugeradgang</value>
   </data>
   <data name="UserSaved" xml:space="preserve">
     <value>Brugeren er nu tilføjet. Adgangs-ID:</value>

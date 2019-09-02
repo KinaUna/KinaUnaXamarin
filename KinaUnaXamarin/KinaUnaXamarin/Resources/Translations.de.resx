@@ -336,8 +336,20 @@
   <data name="AddUserFor" xml:space="preserve">
     <value>Benutzer hinzufügen für:</value>
   </data>
+  <data name="Administrators" xml:space="preserve">
+    <value>Administratoren</value>
+  </data>
   <data name="ErrorUserNotSaved" xml:space="preserve">
     <value>Fehler: Benutzer würde nicht gespeichert.</value>
+  </data>
+  <data name="MyChildren" xml:space="preserve">
+    <value>Meine Kinder</value>
+  </data>
+  <data name="MyFamily" xml:space="preserve">
+    <value>Meine Familie</value>
+  </data>
+  <data name="UserAccess" xml:space="preserve">
+    <value>Benutzerzugriff</value>
   </data>
   <data name="UserSaved" xml:space="preserve">
     <value>Benutzer wurde hinzugefügt. Zugriff-ID:</value>

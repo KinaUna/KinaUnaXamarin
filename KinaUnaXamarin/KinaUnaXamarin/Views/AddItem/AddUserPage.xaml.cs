@@ -36,6 +36,7 @@ namespace KinaUnaXamarin.Views.AddItem
         {
             base.OnAppearing();
 
+            await ProgenyService.GetProgenyList(await UserService.GetUserEmail());
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
@@ -43,12 +44,21 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     _addUserViewModel.ProgenyCollection.Add(progeny);
                 }
+
+                string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+                bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
+                Progeny viewProgeny = _addUserViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                if (viewProgeny != null)
+                {
+                    ProgenyCollectionView.SelectedItem =
+                        _addUserViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                }
+                else
+                {
+                    ProgenyCollectionView.SelectedItem = _addUserViewModel.ProgenyCollection[0];
+                }
             }
-            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-            ProgenyCollectionView.SelectedItem =
-                _addUserViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
         }
 
         private async void SaveUserButton_OnClicked(object sender, EventArgs e)

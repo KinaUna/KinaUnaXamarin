@@ -45,6 +45,7 @@ namespace KinaUnaXamarin.Views.AddItem
         {
             base.OnAppearing();
 
+            await ProgenyService.GetProgenyList(await UserService.GetUserEmail());
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
@@ -52,13 +53,22 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     _addSleepViewModel.ProgenyCollection.Add(progeny);
                 }
+
+                string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+                bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
+                Progeny viewProgeny = _addSleepViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                if (viewProgeny != null)
+                {
+                    ProgenyCollectionView.SelectedItem =
+                        _addSleepViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                }
+                else
+                {
+                    ProgenyCollectionView.SelectedItem = _addSleepViewModel.ProgenyCollection[0];
+                }
             }
-            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-            ProgenyCollectionView.SelectedItem =
-                _addSleepViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-            _addSleepViewModel.SleepItem.ProgenyId = viewChild;
+            _addSleepViewModel.SleepItem.ProgenyId = ((Progeny)ProgenyCollectionView.SelectedItem).Id;
             _addSleepViewModel.SleepItem.SleepStart = DateTime.Now;
             _addSleepViewModel.SleepItem.SleepEnd = DateTime.Now + TimeSpan.FromMinutes(10);
             _addSleepViewModel.SleepItem.AccessLevel = 0;
