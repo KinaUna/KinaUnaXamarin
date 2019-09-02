@@ -59,6 +59,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddPhotoPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddUserPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Child)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddChildPage());

@@ -330,4 +330,16 @@
   <data name="ProfilePicture" xml:space="preserve">
     <value>Profilbillede</value>
   </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Tilføj bruger</value>
+  </data>
+  <data name="AddUserFor" xml:space="preserve">
+    <value>Tilføj bruger for:</value>
+  </data>
+  <data name="ErrorUserNotSaved" xml:space="preserve">
+    <value>Fejl: Brugeren blev ikke gemt.</value>
+  </data>
+  <data name="UserSaved" xml:space="preserve">
+    <value>Brugeren er nu tilføjet. Adgangs-ID:</value>
+  </data>
 </root>

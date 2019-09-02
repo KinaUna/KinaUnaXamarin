@@ -151,6 +151,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add User.
+        /// </summary>
+        internal static string AddUser {
+            get {
+                return ResourceManager.GetString("AddUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add User for:.
+        /// </summary>
+        internal static string AddUserFor {
+            get {
+                return ResourceManager.GetString("AddUserFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birthday.
         /// </summary>
         internal static string Birthday {
@@ -273,6 +291,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorPhotoNotSaved {
             get {
                 return ResourceManager.GetString("ErrorPhotoNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Adding user failed. Try again later..
+        /// </summary>
+        internal static string ErrorUserNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorUserNotSaved", resourceCulture);
             }
         }
         
@@ -633,6 +660,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string UserName {
             get {
                 return ResourceManager.GetString("UserName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User saved successfully. Access ID:.
+        /// </summary>
+        internal static string UserSaved {
+            get {
+                return ResourceManager.GetString("UserSaved", resourceCulture);
             }
         }
         

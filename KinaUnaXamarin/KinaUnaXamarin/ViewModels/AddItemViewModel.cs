@@ -67,6 +67,24 @@ namespace KinaUnaXamarin.ViewModels
                 addPhoto.Icon = IconFont.Image;
                 addPhoto.BackgroundColor = "#9c27b0";
                 ItemList.Add(addPhoto);
+
+                AddItemModel addUser = new AddItemModel();
+                addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;
+                addUser.Name = "User";
+                addUser.Description = "Add User";
+                if (ci == "da")
+                {
+                    addUser.Name = "Bruger";
+                    addUser.Description = "Tilføj bruger";
+                }
+                if (ci == "de")
+                {
+                    addUser.Name = "Foto";
+                    addUser.Description = "Benutzer hinzufügen";
+                }
+                addUser.Icon = IconFont.AccountPlus;
+                addUser.BackgroundColor = "#ff9800";
+                ItemList.Add(addUser);
             }
 
             AddItemModel addChild = new AddItemModel();

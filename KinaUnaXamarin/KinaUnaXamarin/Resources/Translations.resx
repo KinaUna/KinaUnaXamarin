@@ -330,4 +330,16 @@
   <data name="ProfilePicture" xml:space="preserve">
     <value>Profile Picture</value>
   </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Add User</value>
+  </data>
+  <data name="AddUserFor" xml:space="preserve">
+    <value>Add User for:</value>
+  </data>
+  <data name="ErrorUserNotSaved" xml:space="preserve">
+    <value>Error: Adding user failed. Try again later.</value>
+  </data>
+  <data name="UserSaved" xml:space="preserve">
+    <value>User saved successfully. Access ID:</value>
+  </data>
 </root>

@@ -2615,5 +2615,24 @@ namespace KinaUnaXamarin.Services
                 return vacItem;
             }
         }
+
+        public static async Task<UserAccess> AddUser(UserAccess userAccess)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/access/", new StringContent(JsonConvert.SerializeObject(userAccess), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    UserAccess resultAccess = JsonConvert.DeserializeObject<UserAccess>(resultString);
+                    return resultAccess;
+                }
+            }
+            return userAccess;
+        }
     }
 }

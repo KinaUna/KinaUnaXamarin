@@ -330,4 +330,16 @@
   <data name="ProfilePicture" xml:space="preserve">
     <value>Profilbild</value>
   </data>
+  <data name="AddUser" xml:space="preserve">
+    <value>Benutzer hinzufügen</value>
+  </data>
+  <data name="AddUserFor" xml:space="preserve">
+    <value>Benutzer hinzufügen für:</value>
+  </data>
+  <data name="ErrorUserNotSaved" xml:space="preserve">
+    <value>Fehler: Benutzer würde nicht gespeichert.</value>
+  </data>
+  <data name="UserSaved" xml:space="preserve">
+    <value>Benutzer wurde hinzugefügt. Zugriff-ID:</value>
+  </data>
 </root>
