@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -2652,6 +2653,78 @@ namespace KinaUnaXamarin.Services
                     return resultAccess;
                 }
             }
+            return userAccess;
+        }
+
+        public static async Task<List<UserAccess>> GetProgenyAccessList(int progenyId)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    var result = await client.GetAsync("api/publicaccess/access/" + progenyId).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var accessListString = await result.Content.ReadAsStringAsync();
+                        List<UserAccess> accessList = JsonConvert.DeserializeObject<List<UserAccess>>(accessListString);
+                        if (accessList != null)
+                        {
+                            return accessList;
+                        }
+
+                    }
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/access/progeny/" + progenyId).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var accessListString = await result.Content.ReadAsStringAsync();
+                        List<UserAccess> accessList = JsonConvert.DeserializeObject<List<UserAccess>>(accessListString);
+                        if (accessList != null)
+                        {
+                                await SecureStorage.SetAsync("AccessList" + progenyId, JsonConvert.SerializeObject(accessList));
+                                return accessList;
+                        }
+                    }
+                }
+            }
+
+            string offlineListString = await SecureStorage.GetAsync("AccessList" + progenyId);
+            List<UserAccess> offlineList = JsonConvert.DeserializeObject<List<UserAccess>>(offlineListString);
+            return offlineList;
+            
+        }
+
+        public static async Task<UserAccess> UpdateUserAccess(UserAccess userAccess)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/access/" + userAccess.AccessId, new StringContent(JsonConvert.SerializeObject(userAccess), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    UserAccess resultUserAccess = JsonConvert.DeserializeObject<UserAccess>(resultString);
+                    return resultUserAccess;
+                }
+            }
+
+            userAccess.AccessId = 0;
             return userAccess;
         }
     }
