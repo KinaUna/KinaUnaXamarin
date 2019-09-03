@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Extensions;
 using KinaUnaXamarin.Models;
@@ -25,6 +23,7 @@ namespace KinaUnaXamarin.Views
         private bool _online = true;
         private string _filePath;
         private bool _reload;
+        private int _selectedProgenyId;
 
         public MyChildrenPage()
         {
@@ -38,8 +37,6 @@ namespace KinaUnaXamarin.Views
             {
                 _myChildrenViewModel.TimeZoneList.Add(timeZoneInfo);
             }
-
-            TimeZonePicker.ItemsSource = _myChildrenViewModel.TimeZoneList;
         }
 
         protected override async void OnAppearing()
@@ -90,52 +87,69 @@ namespace KinaUnaXamarin.Views
                     _myChildrenViewModel.ProgenyCollection.Add(progeny);
                 }
 
-                string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-                bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-                if (viewProgeny != null)
+                if (_selectedProgenyId == 0)
                 {
-                    ProgenyCollectionView.SelectedItem =
-                        _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                    string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+                    bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
+                    Progeny viewProgeny = _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    if (viewProgeny != null)
+                    {
+                        ProgenyCollectionView.SelectedItem =
+                            _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                        ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                    }
+                    else
+                    {
+                        ProgenyCollectionView.SelectedItem = _myChildrenViewModel.ProgenyCollection[0];
+                    }
                 }
                 else
                 {
-                    ProgenyCollectionView.SelectedItem = _myChildrenViewModel.ProgenyCollection[0];
+                    ProgenyCollectionView.SelectedItem =
+                        _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == _selectedProgenyId);
+                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
                 }
 
                 _myChildrenViewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
                 if (_myChildrenViewModel.Progeny.BirthDay.HasValue)
                 {
-                    BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
-                    BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
+                    _myChildrenViewModel.ProgenyBirthDay = _myChildrenViewModel.Progeny.BirthDay.Value;
+                    // BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
+                    // BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
                 }
+
+                _selectedProgenyId = _myChildrenViewModel.Progeny.Id;
 
                 TimeZoneInfo progenyTimeZoneInfo =
                     _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz =>
                         tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
-                int timeZoneIndex = _myChildrenViewModel.TimeZoneList.IndexOf(progenyTimeZoneInfo);
-                TimeZonePicker.SelectedIndex = timeZoneIndex;
+                _myChildrenViewModel.SelectedTimeZone = progenyTimeZoneInfo;
+                //int timeZoneIndex = _myChildrenViewModel.TimeZoneList.IndexOf(progenyTimeZoneInfo);
+                //TimeZonePicker.SelectedIndex = timeZoneIndex;
             }
             
             _filePath = "";
+            
         }
 
         private void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             _myChildrenViewModel.EditMode = false;
+            EditButton.Text = IconFont.AccountEdit;
             _myChildrenViewModel.Progeny = (Progeny) ProgenyCollectionView.SelectedItem;
-            if (_myChildrenViewModel.Progeny.BirthDay.HasValue)
-            {
-                BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
-                BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
-            }
+            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+            //if (_myChildrenViewModel.Progeny.BirthDay.HasValue)
+            //{
+            //    BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
+            //    BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
+            //}
 
             TimeZoneInfo progenyTimeZoneInfo =
                 _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz =>
                     tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
-            int timeZoneIndex = _myChildrenViewModel.TimeZoneList.IndexOf(progenyTimeZoneInfo);
-            TimeZonePicker.SelectedIndex = timeZoneIndex;
+            _myChildrenViewModel.SelectedTimeZone = progenyTimeZoneInfo;
+            ChildPicture.Source = _myChildrenViewModel.ProfilePicture;
+            _selectedProgenyId = _myChildrenViewModel.Progeny.Id;
             _filePath = "";
             MessageLabel.Text = "";
             MessageLabel.IsVisible = false;
@@ -260,12 +274,6 @@ namespace KinaUnaXamarin.Views
         private async void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
-        }
-
-        private void BirthdayDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
-        {
-            DateTime newBirthDay = new DateTime(BirthdayDatePicker.Date.Year, BirthdayDatePicker.Date.Month, BirthdayDatePicker.Date.Day, BirthdayTimePicker.Time.Hours, BirthdayTimePicker.Time.Minutes, 0);
-            _myChildrenViewModel.Progeny.BirthDay = newBirthDay;
         }
         
     }
