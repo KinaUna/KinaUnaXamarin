@@ -52,32 +52,31 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged">
+            <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemSizingStrategy="MeasureFirstItem">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Frame Margin="2" Padding="2" >
-                            <Grid Margin="0" Padding="5" BackgroundColor="LightGray">
+                            <Grid Margin="0" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="40"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
+                                    <RowDefinition Height="30"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
-                                    
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding User.UserName}"></Label>
-                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding User.Email}"></Label>
-                                <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" >
-                                    <Label  Text="{Binding User.FirstName}"></Label>
-                                    <Label  Text="{Binding User.MiddleName}"></Label>
-                                    <Label  Text="{Binding User.LastName}"></Label>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding User.UserName}" FontAttributes="Bold"></Label>
+                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding User.Email}" ></Label>
+                                <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                                    <Label  Text="{Binding User.FirstName}" ></Label>
+                                    <Label  Text="{Binding User.MiddleName}" ></Label>
+                                    <Label  Text="{Binding User.LastName}" ></Label>
                                 </StackLayout>
-                                <StackLayout  Grid.Row="3" Grid.Column="0" Orientation="Horizontal" >
-                                    <Label Text="{i18n:Translate AccessLevel}"></Label>
+                                <StackLayout  Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
+                                    <Label Text="{i18n:Translate AccessLevel}" ></Label>
                                     <Label Text=":"></Label>
-                                    <Label Text="{Binding AccessLevelString}" TextColor="Black"></Label>
+                                    <Label Text="{Binding AccessLevelString}" TextColor="Black" ></Label>
                                 </StackLayout>
                             </Grid>
                         </Frame>

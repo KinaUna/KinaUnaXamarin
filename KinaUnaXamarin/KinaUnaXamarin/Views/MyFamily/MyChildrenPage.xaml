@@ -84,7 +84,7 @@
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate Administrators}"></Label>
-                        <Entry x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" ></Entry>
+                        <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges"  ></Editor>
                     </StackLayout>
                     <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
 

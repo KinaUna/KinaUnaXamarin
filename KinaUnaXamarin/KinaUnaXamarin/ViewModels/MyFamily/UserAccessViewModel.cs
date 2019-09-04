@@ -43,7 +43,7 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
                 }
                 else
                 {
-                    _accessLevelList.Add("Hidden/Private");
+                    _accessLevelList.Add("Administrator");
                     _accessLevelList.Add("Family");
                     _accessLevelList.Add("Caretakers/Special Access");
                     _accessLevelList.Add("Friends");

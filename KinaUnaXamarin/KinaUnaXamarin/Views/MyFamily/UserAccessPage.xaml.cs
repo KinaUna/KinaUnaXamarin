@@ -115,6 +115,7 @@ namespace KinaUnaXamarin.Views
             UserAccessCollectionView.SelectedItem = null;
             _viewModel.SelectedAccess = null;
             _viewModel.EditMode = false;
+            _viewModel.IsBusy = true;
             _viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
             ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
             _selectedProgenyId = _viewModel.Progeny.Id;
@@ -147,6 +148,8 @@ namespace KinaUnaXamarin.Views
                 ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
                 _viewModel.UserAccessCollection.Add(ua);
             }
+            UserAccessCollectionView.ScrollTo(0);
+            _viewModel.IsBusy = false;
         }
 
         private void UserAccessCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

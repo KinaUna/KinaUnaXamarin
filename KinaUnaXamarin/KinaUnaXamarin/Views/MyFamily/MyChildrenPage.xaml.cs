@@ -69,6 +69,8 @@ namespace KinaUnaXamarin.Views
 
         private async Task Reload()
         {
+            _myChildrenViewModel.IsBusy = true;
+            _myChildrenViewModel.EditMode = false;
             _myChildrenViewModel.ProgenyCollection.Clear();
             await ProgenyService.GetProgenyList(await UserService.GetUserEmail());
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
@@ -129,7 +131,7 @@ namespace KinaUnaXamarin.Views
             }
             
             _filePath = "";
-            
+            _myChildrenViewModel.IsBusy = false;
         }
 
         private void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
