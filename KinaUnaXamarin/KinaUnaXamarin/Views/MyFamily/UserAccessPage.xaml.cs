@@ -174,7 +174,25 @@ namespace KinaUnaXamarin.Views
 
         private async void SaveAccessButton_OnClicked(object sender, EventArgs e)
         {
-            
+            _viewModel.IsBusy = true;
+            _viewModel.EditMode = false;
+            _viewModel.SelectedAccess.AccessLevel = AccessLevelPicker.SelectedIndex;
+            UserAccess updatedUserAccess = await ProgenyService.UpdateUserAccess(_viewModel.SelectedAccess);
+            if (updatedUserAccess.AccessId != 0)
+            {
+                _viewModel.EditMode = false;
+                _viewModel.SelectedAccess = null;
+                UserAccessCollectionView.SelectedItem = null;
+                // Todo: Show success message	
+                await Reload();
+            }
+            else
+            {
+                _viewModel.EditMode = true;
+                // Todo: Show failed message	
+            }
+
+            _viewModel.IsBusy = false;
         }
 
         private void CancelAccessButton_OnClicked(object sender, EventArgs e)
