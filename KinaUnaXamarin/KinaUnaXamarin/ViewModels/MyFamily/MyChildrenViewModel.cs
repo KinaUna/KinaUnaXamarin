@@ -15,6 +15,7 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         private DateTime _progenyBirthDay;
         private TimeZoneInfo _selectedTimeZone;
         private string _profilePicture;
+        private bool _anyChildren;
 
         public MyChildrenViewModel()
         {
@@ -64,6 +65,12 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         {
             get => _selectedTimeZone;
             set => SetProperty(ref _selectedTimeZone, value);
+        }
+
+        public bool AnyChildren
+        {
+            get => _anyChildren;
+            set => SetProperty(ref _anyChildren, value);
         }
     }
 }

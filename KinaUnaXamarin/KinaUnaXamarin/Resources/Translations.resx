@@ -360,4 +360,7 @@
   <data name="DeleteAccessMessage" xml:space="preserve">
     <value>Are you sure you want to remove access for this user:</value>
   </data>
+  <data name="NoChildrenFound" xml:space="preserve">
+    <value>You don't have administrator rights for any children.</value>
+  </data>
 </root>

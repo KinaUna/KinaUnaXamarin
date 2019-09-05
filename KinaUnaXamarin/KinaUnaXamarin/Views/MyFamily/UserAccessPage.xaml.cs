@@ -26,11 +26,12 @@ namespace KinaUnaXamarin.Views
         private int _selectedProgenyId;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
-
+        
         public UserAccessPage()
         {
             InitializeComponent();
             _viewModel = new UserAccessViewModel();
+            _viewModel.AnyChildren = true;
             _reload = true;
             BindingContext = _viewModel;
             ProgenyCollectionView.ItemsSource = _viewModel.ProgenyCollection;
@@ -67,6 +68,7 @@ namespace KinaUnaXamarin.Views
 
         private async Task Reload()
         {
+            _viewModel.IsBusy = true;
             _viewModel.EditMode = false;
             _viewModel.ProgenyCollection.Clear();
             UserAccessCollectionView.SelectedItem = null;
@@ -75,6 +77,7 @@ namespace KinaUnaXamarin.Views
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
+                _viewModel.AnyChildren = true;
                 foreach (Progeny progeny in progenyList)
                 {
                     _viewModel.ProgenyCollection.Add(progeny);
@@ -112,9 +115,19 @@ namespace KinaUnaXamarin.Views
                 foreach (UserAccess ua in userAccessList)
                 {
                     ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
+                    if (string.IsNullOrEmpty(ua.User.UserName))
+                    {
+                        ua.User.UserName = ua.User.Email;
+                    }
                     _viewModel.UserAccessCollection.Add(ua);
                 }
             }
+            else
+            {
+                _viewModel.AnyChildren = false;
+            }
+
+            _viewModel.IsBusy = false;
         }
 
         private async void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -153,6 +166,10 @@ namespace KinaUnaXamarin.Views
             foreach (UserAccess ua in userAccessList)
             {
                 ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
+                if (string.IsNullOrEmpty(ua.User.UserName))
+                {
+                    ua.User.UserName = ua.User.Email;
+                }
                 _viewModel.UserAccessCollection.Add(ua);
             }
             UserAccessCollectionView.ScrollTo(0);

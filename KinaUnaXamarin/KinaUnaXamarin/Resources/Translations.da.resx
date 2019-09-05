@@ -360,4 +360,7 @@
   <data name="DeleteAccessMessage" xml:space="preserve">
     <value>Er du sikker på at du vil fjerne adgang for denne bruger:</value>
   </data>
+  <data name="NoChildrenFound" xml:space="preserve">
+    <value>Du er ikke administrator for nogen børn.</value>
+  </data>
 </root>

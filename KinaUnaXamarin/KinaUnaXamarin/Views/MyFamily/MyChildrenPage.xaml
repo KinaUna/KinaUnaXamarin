@@ -26,7 +26,7 @@
     <ContentPage.Content>
         <ScrollView>
             <Grid>
-                <StackLayout Orientation="Vertical" Margin="5">
+                <StackLayout Orientation="Vertical" Margin="5" IsVisible="{Binding AnyChildren}">
                     <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -92,6 +92,9 @@
                         <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DarkGreen" Clicked="EditButton_OnClicked"></Button>
                         <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                     </StackLayout>
+                </StackLayout>
+                <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
+                    <Label Text="{i18n:Translate NoChildrenFound}"></Label>
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
             </Grid>

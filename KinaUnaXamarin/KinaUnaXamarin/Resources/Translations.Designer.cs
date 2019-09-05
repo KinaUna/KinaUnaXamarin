@@ -493,6 +493,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You don&apos;t have administrator rights for any children..
+        /// </summary>
+        internal static string NoChildrenFound {
+            get {
+                return ResourceManager.GetString("NoChildrenFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         internal static string Notes {

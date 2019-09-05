@@ -14,6 +14,7 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         private List<string> _accessLevelList;
         private bool _editMode;
         private UserAccess _selectedAccessLevel;
+        private bool _anyChildren;
 
         public UserAccessViewModel()
         {
@@ -79,6 +80,12 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         {
             get => _editMode;
             set => SetProperty(ref _editMode, value);
+        }
+
+        public bool AnyChildren
+        {
+            get => _anyChildren;
+            set => SetProperty(ref _anyChildren, value);
         }
     }
 }

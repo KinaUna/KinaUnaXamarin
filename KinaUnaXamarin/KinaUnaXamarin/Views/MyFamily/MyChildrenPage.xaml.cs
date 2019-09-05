@@ -29,6 +29,7 @@ namespace KinaUnaXamarin.Views
         {
             InitializeComponent();
             _myChildrenViewModel = new MyChildrenViewModel();
+            _myChildrenViewModel.AnyChildren = true;
             _reload = true;
             BindingContext = _myChildrenViewModel;
             ProgenyCollectionView.ItemsSource = _myChildrenViewModel.ProgenyCollection;
@@ -76,6 +77,7 @@ namespace KinaUnaXamarin.Views
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
             {
+                _myChildrenViewModel.AnyChildren = true;
                 foreach (Progeny progeny in progenyList)
                 {
                     try
@@ -129,8 +131,13 @@ namespace KinaUnaXamarin.Views
                 //int timeZoneIndex = _myChildrenViewModel.TimeZoneList.IndexOf(progenyTimeZoneInfo);
                 //TimeZonePicker.SelectedIndex = timeZoneIndex;
             }
+            else
+            {
+                _myChildrenViewModel.AnyChildren = false;
+            }
             
             _filePath = "";
+
             _myChildrenViewModel.IsBusy = false;
         }
 
