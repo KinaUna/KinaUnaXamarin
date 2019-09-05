@@ -30,11 +30,13 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
         }

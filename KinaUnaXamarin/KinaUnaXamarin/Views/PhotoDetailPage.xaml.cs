@@ -21,7 +21,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PhotoDetailPage : ContentPage
     {
-        PhotoDetailViewModel _photoDetailViewModel = new PhotoDetailViewModel();
+        private readonly PhotoDetailViewModel _photoDetailViewModel = new PhotoDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -263,6 +263,7 @@ namespace KinaUnaXamarin.Views
             }
 
             _photoDetailViewModel.CurrentPictureViewModel = _photoDetailViewModel.PhotoItems[_photoDetailViewModel.CurrentIndex];
+            
             PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
             if (_photoDetailViewModel.CurrentPictureViewModel.PictureTime != null && _photoDetailViewModel.Progeny.BirthDay.HasValue)
             {

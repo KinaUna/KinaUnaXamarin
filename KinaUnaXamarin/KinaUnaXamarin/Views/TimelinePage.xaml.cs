@@ -358,6 +358,14 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(photoPage);
                 }
+
+                if (timeLineItem.ItemObject is Video video)
+                {
+                    VideoDetailPage videoPage = new VideoDetailPage(video.VideoId);
+                    // Reset selection
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(videoPage);
+                }
             }
         }
     }
