@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels.MyFamily;
+using Plugin.Multilingual;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -20,6 +24,9 @@ namespace KinaUnaXamarin.Views
         private bool _online = true;
         private bool _reload;
         private int _selectedProgenyId;
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
+
         public UserAccessPage()
         {
             InitializeComponent();
@@ -167,25 +174,7 @@ namespace KinaUnaXamarin.Views
 
         private async void SaveAccessButton_OnClicked(object sender, EventArgs e)
         {
-            _viewModel.IsBusy = true;
-            _viewModel.EditMode = false;
-            _viewModel.SelectedAccess.AccessLevel = AccessLevelPicker.SelectedIndex;
-            UserAccess updatedUserAccess = await ProgenyService.UpdateUserAccess(_viewModel.SelectedAccess);
-            if (updatedUserAccess.AccessId != 0)
-            {
-                _viewModel.EditMode = false;
-                _viewModel.SelectedAccess = null;
-                UserAccessCollectionView.SelectedItem = null;
-                // Todo: Show success message
-                await Reload();
-            }
-            else
-            {
-                _viewModel.EditMode = true;
-                // Todo: Show failed message
-            }
-
-            _viewModel.IsBusy = false;
+            
         }
 
         private void CancelAccessButton_OnClicked(object sender, EventArgs e)
@@ -215,6 +204,36 @@ namespace KinaUnaXamarin.Views
         private async void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
+        }
+
+        private async void DeleteAccessButton_OnClicked(object sender, EventArgs e)
+        {
+            var ci = CrossMultilingual.Current.CurrentCultureInfo;
+            string confirmTitle = resmgr.Value.GetString("DeleteAccess", ci);
+            string confirmMessage = resmgr.Value.GetString("DeleteAccessMessage", ci) + " " + _viewModel.SelectedAccess.User.UserName + " ? ";
+            string yes = resmgr.Value.GetString("Yes", ci);
+            string no = resmgr.Value.GetString("No", ci); ;
+            bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
+            if (confirmDelete)
+            {
+                _viewModel.IsBusy = true;
+                _viewModel.EditMode = false;
+                UserAccess updatedUserAccess = await ProgenyService.DeleteUserAccess(_viewModel.SelectedAccess);
+                if (updatedUserAccess.AccessId != 0)
+                {
+                    _viewModel.EditMode = false;
+                    _viewModel.SelectedAccess = null;
+                    UserAccessCollectionView.SelectedItem = null;
+                    // Todo: Show success message
+                    await Reload();
+                }
+                else
+                {
+                    _viewModel.EditMode = true;
+                    // Todo: Show failed message
+                }
+                _viewModel.IsBusy = false;
+            }
         }
     }
 }

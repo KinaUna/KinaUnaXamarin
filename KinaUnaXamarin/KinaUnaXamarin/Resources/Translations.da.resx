@@ -354,4 +354,10 @@
   <data name="UserSaved" xml:space="preserve">
     <value>Brugeren er nu tilføjet. Adgangs-ID:</value>
   </data>
+  <data name="DeleteAccess" xml:space="preserve">
+    <value>Slet adgang</value>
+  </data>
+  <data name="DeleteAccessMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil fjerne adgang for denne bruger:</value>
+  </data>
 </root>

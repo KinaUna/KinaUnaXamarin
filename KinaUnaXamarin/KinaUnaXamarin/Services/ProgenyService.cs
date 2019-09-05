@@ -2727,5 +2727,24 @@ namespace KinaUnaXamarin.Services
             userAccess.AccessId = 0;
             return userAccess;
         }
+
+        public static async Task<UserAccess> DeleteUserAccess(UserAccess userAccess)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/access/" + userAccess.AccessId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    return userAccess;
+                }
+            }
+
+            userAccess.AccessId = 0;
+            return userAccess;
+        }
     }
 }

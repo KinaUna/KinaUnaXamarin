@@ -250,6 +250,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Access.
+        /// </summary>
+        internal static string DeleteAccess {
+            get {
+                return ResourceManager.GetString("DeleteAccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to remove access for this user:.
+        /// </summary>
+        internal static string DeleteAccessMessage {
+            get {
+                return ResourceManager.GetString("DeleteAccessMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Comment.
         /// </summary>
         internal static string DeleteCommentTitle {

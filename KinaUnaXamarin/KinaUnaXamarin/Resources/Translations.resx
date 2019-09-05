@@ -354,4 +354,10 @@
   <data name="UserSaved" xml:space="preserve">
     <value>User saved successfully. Access ID:</value>
   </data>
+  <data name="DeleteAccess" xml:space="preserve">
+    <value>Delete Access</value>
+  </data>
+  <data name="DeleteAccessMessage" xml:space="preserve">
+    <value>Are you sure you want to remove access for this user:</value>
+  </data>
 </root>

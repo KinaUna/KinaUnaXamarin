@@ -354,4 +354,10 @@
   <data name="UserSaved" xml:space="preserve">
     <value>Benutzer wurde hinzugefügt. Zugriff-ID:</value>
   </data>
+  <data name="DeleteAccess" xml:space="preserve">
+    <value>Zugriff löschen</value>
+  </data>
+  <data name="DeleteAccessMessage" xml:space="preserve">
+    <value>Möchten Sie den Zugriff für diesen Benutzer wirklich entfernen:</value>
+  </data>
 </root>
