@@ -101,6 +101,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Videos}" x:Name="VideosFlyoutItem"
+                Icon="{x:Static models:IconFont.Video}">
+        <Tab>
+            <ShellContent x:Name="VideosMenuItem"
+                          Title="{i18n:Translate Videos}"
+                          Icon="{x:Static models:IconFont.Video}"
+                          Route="videos"
+                          ContentTemplate="{DataTemplate views:VideosPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

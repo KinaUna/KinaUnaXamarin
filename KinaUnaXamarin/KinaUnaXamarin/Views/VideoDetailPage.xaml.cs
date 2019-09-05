@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
+using System.Text;
 using System.Threading.Tasks;
 using FFImageLoading.Forms;
 using KinaUnaXamarin.Behaviors;
@@ -19,22 +19,22 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PhotoDetailPage : ContentPage
+    public partial class VideoDetailPage : ContentPage
     {
-        PhotoDetailViewModel _photoDetailViewModel = new PhotoDetailViewModel();
+        VideoDetailViewModel _viewModel = new VideoDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
         private bool _online = true;
         private bool _modalShowing;
 
-        public PhotoDetailPage(int pictureId)
+        public VideoDetailPage(int videoId)
         {
             InitializeComponent();
-            _photoDetailViewModel = new PhotoDetailViewModel();
-            _photoDetailViewModel.CurrentPictureId = pictureId;
-            BindingContext = _photoDetailViewModel;
-            ContentGrid.BindingContext = _photoDetailViewModel;
+            _viewModel = new VideoDetailViewModel();
+            _viewModel.CurrentVideoId = videoId;
+            BindingContext = _viewModel;
+            ContentGrid.BindingContext = _viewModel;
         }
 
         protected override async void OnAppearing()
@@ -71,13 +71,13 @@ namespace KinaUnaXamarin.Views
 
         private async Task Reload()
         {
-            _photoDetailViewModel.IsBusy = true;
+            _viewModel.IsBusy = true;
             await CheckAccount();
 
-            PictureViewModel pictureViewModel = await ProgenyService.GetPictureViewModel(
-                _photoDetailViewModel.CurrentPictureId, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            _photoDetailViewModel.PhotoItems.Add(pictureViewModel);
-            _photoDetailViewModel.CurrentPictureViewModel = pictureViewModel;
+            VideoViewModel videoViewModel = await ProgenyService.GetVideoViewModel(
+                _viewModel.CurrentVideoId, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            _viewModel.VideoItems.Add(videoViewModel);
+            _viewModel.CurrentVideoViewModel = videoViewModel;
 
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -92,45 +92,45 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
-            
-            _photoDetailViewModel.IsBusy = false;
+
+            _viewModel.IsBusy = false;
 
         }
 
         private async Task LoadNewer()
         {
-            _photoDetailViewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _photoDetailViewModel.PhotoItems.FirstOrDefault();
-            if (pictureViewModel != null)
+            _viewModel.CanLoadMore = false;
+            VideoViewModel videoViewModel = _viewModel.VideoItems.FirstOrDefault();
+            if (videoViewModel != null)
             {
-                PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.PrevPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _photoDetailViewModel.PhotoItems.Insert(0, pictureViewModel2);
-                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                VideoViewModel videoViewModel2 = await ProgenyService.GetVideoViewModel(
+                    videoViewModel.PrevVideo, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.VideoItems.Insert(0, videoViewModel2);
+                if (_viewModel.VideoItems.Count > 10)
                 {
-                    _photoDetailViewModel.PhotoItems.RemoveAt(_photoDetailViewModel.PhotoItems.Count -1);
+                    _viewModel.VideoItems.RemoveAt(_viewModel.VideoItems.Count - 1);
                 }
             }
 
-            _photoDetailViewModel.CanLoadMore = true;
+            _viewModel.CanLoadMore = true;
         }
 
         private async Task LoadOlder()
         {
-            _photoDetailViewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _photoDetailViewModel.PhotoItems.LastOrDefault();
-            if (pictureViewModel != null)
+            _viewModel.CanLoadMore = false;
+            VideoViewModel videoViewModel = _viewModel.VideoItems.LastOrDefault();
+            if (videoViewModel != null)
             {
-                PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.NextPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _photoDetailViewModel.PhotoItems.Add(pictureViewModel2);
-                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                VideoViewModel videoViewModel2 = await ProgenyService.GetVideoViewModel(
+                    videoViewModel.NextVideo, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.VideoItems.Add(videoViewModel2);
+                if (_viewModel.VideoItems.Count > 10)
                 {
-                    _photoDetailViewModel.PhotoItems.RemoveAt(0);
+                    _viewModel.VideoItems.RemoveAt(0);
                 }
             }
 
-            _photoDetailViewModel.CanLoadMore = true;
+            _viewModel.CanLoadMore = true;
         }
 
         private async Task CheckAccount()
@@ -159,16 +159,16 @@ namespace KinaUnaXamarin.Views
             if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
             {
 
-                _photoDetailViewModel.IsLoggedIn = false;
-                _photoDetailViewModel.LoggedOut = true;
+                _viewModel.IsLoggedIn = false;
+                _viewModel.LoggedOut = true;
                 _accessToken = "";
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
 
             }
             else
             {
-                _photoDetailViewModel.IsLoggedIn = true;
-                _photoDetailViewModel.LoggedOut = false;
+                _viewModel.IsLoggedIn = true;
+                _viewModel.LoggedOut = false;
                 _userInfo = await UserService.GetUserInfo(userEmail);
             }
 
@@ -212,9 +212,9 @@ namespace KinaUnaXamarin.Views
             {
                 progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
             }
-            _photoDetailViewModel.Progeny = progeny;
+            _viewModel.Progeny = progeny;
 
-            _photoDetailViewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
@@ -227,70 +227,52 @@ namespace KinaUnaXamarin.Views
                 await Reload();
             }
         }
-        
+
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            _photoDetailViewModel.ImageHeight = height;
-            _photoDetailViewModel.ImageWidth = width;
+            _viewModel.ImageHeight = height;
+            _viewModel.ImageWidth = width;
         }
 
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
-            _photoDetailViewModel.IsZoomed = false;
-            _photoDetailViewModel.IsBusy = true;
-            // var ciView = view.CurrentView..SingleOrDefault(c => c.GetType() == typeof(CachedImage));
-            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-            if (ciView != null)
-            {
-
-                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
-                {
-                    mtb.OnAppearing();
-                }
-            }
-
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
+            _viewModel.IsZoomed = false;
+            _viewModel.IsBusy = true;
+            
+            if (_viewModel.CanLoadMore && _viewModel.CurrentIndex < 1)
             {
                 await LoadNewer();
 
             }
 
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 2)
+            if (_viewModel.CanLoadMore && _viewModel.CurrentIndex > _viewModel.VideoItems.Count - 2)
             {
                 await LoadOlder();
 
             }
 
-            _photoDetailViewModel.CurrentPictureViewModel = _photoDetailViewModel.PhotoItems[_photoDetailViewModel.CurrentIndex];
-            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
-            if (_photoDetailViewModel.CurrentPictureViewModel.PictureTime != null && _photoDetailViewModel.Progeny.BirthDay.HasValue)
+            _viewModel.CurrentVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex];
+            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+            if (_viewModel.CurrentVideoViewModel.VideoTime != null && _viewModel.Progeny.BirthDay.HasValue)
             {
-                DateTime picTimeBirthday = new DateTime(_photoDetailViewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
+                DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                picTime = new PictureTime(picTimeBirthday, _photoDetailViewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
-                _photoDetailViewModel.PicTimeValid = true;
-                _photoDetailViewModel.PicYears = picTime.CalcYears();
-                _photoDetailViewModel.PicMonths = picTime.CalcMonths();
-                _photoDetailViewModel.PicWeeks = picTime.CalcWeeks();
-                _photoDetailViewModel.PicDays = picTime.CalcDays();
-                _photoDetailViewModel.PicHours = picTime.CalcHours();
-                _photoDetailViewModel.PicMinutes = picTime.CalcMinutes();
+                picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentVideoViewModel.VideoTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                _viewModel.PicTimeValid = true;
+                _viewModel.PicYears = picTime.CalcYears();
+                _viewModel.PicMonths = picTime.CalcMonths();
+                _viewModel.PicWeeks = picTime.CalcWeeks();
+                _viewModel.PicDays = picTime.CalcDays();
+                _viewModel.PicHours = picTime.CalcHours();
+                _viewModel.PicMinutes = picTime.CalcMinutes();
             }
-            _photoDetailViewModel.IsBusy = false;
+            _viewModel.IsBusy = false;
         }
 
         private async void PhotoCarousel_OnItemDisappearing(CardsView view, ItemDisappearingEventArgs args)
         {
-            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-            if (ciView != null)
-            {
-
-                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
-                {
-                    await mtb.OnDisAppearing();
-                }
-            }
+            
         }
 
         private double y;
@@ -324,7 +306,7 @@ namespace KinaUnaXamarin.Views
                         BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringOut);
                     }
 
-                    
+
                     y = BottomSheetFrame.TranslationY;
 
                     break;
@@ -376,7 +358,7 @@ namespace KinaUnaXamarin.Views
 
         private async void CommentsClicked(object sender, EventArgs e)
         {
-            CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
+            CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
             await Shell.Current.Navigation.PushModalAsync(commentsPage);
         }
 

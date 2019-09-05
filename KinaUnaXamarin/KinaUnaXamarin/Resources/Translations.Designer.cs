@@ -736,6 +736,33 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo Location:.
+        /// </summary>
+        internal static string VideoLocation {
+            get {
+                return ResourceManager.GetString("VideoLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Videos.
+        /// </summary>
+        internal static string Videos {
+            get {
+                return ResourceManager.GetString("Videos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Video Taken:.
+        /// </summary>
+        internal static string VideoTaken {
+            get {
+                return ResourceManager.GetString("VideoTaken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to was.
         /// </summary>
         internal static string Was {

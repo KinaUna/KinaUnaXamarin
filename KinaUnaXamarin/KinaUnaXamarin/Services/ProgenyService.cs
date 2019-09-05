@@ -1463,7 +1463,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<VideosPageModel> GetVideoPage(int pageNumber, int pageSize, int progenyId, int userAccessLevel, string userTimezone, int sortBy)
+        public static async Task<VideoPage> GetVideoPage(int pageNumber, int pageSize, int progenyId, int userAccessLevel, string userTimezone, int sortBy, string tagFilter)
         {
             try
             {
@@ -1489,47 +1489,133 @@ namespace KinaUnaXamarin.Services
                 if (result.IsSuccessStatusCode)
                 {
                     var videoPageString = await result.Content.ReadAsStringAsync();
-                    VideosPageModel videoPage = JsonConvert.DeserializeObject<VideosPageModel>(videoPageString);
+                    VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
                     foreach (Video video in videoPage.VideosList)
                     {
                         if (video.VideoTime.HasValue)
                         {
                             video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+
+                        video.CommentsCount = video.Comments.Count;
                     }
 
                     return videoPage;
                 }
                 else
                 {
-                    return new VideosPageModel();
+                    return new VideoPage();
                 }
             }
             else // User is logged in.
             {
                 client.SetBearerToken(accessToken);
 
-                string pageApiPath = "api/videos/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&sortBy=" + sortBy;
+                string pageApiPath = "api/videos/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
                 var result = await client.GetAsync(pageApiPath).ConfigureAwait(false); 
 
                 if (result.IsSuccessStatusCode)
                 {
                     var videoPageString = await result.Content.ReadAsStringAsync();
-                    VideosPageModel videoPage = JsonConvert.DeserializeObject<VideosPageModel>(videoPageString);
+                    VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
                     foreach (Video video in videoPage.VideosList)
                     {
                         if (video.VideoTime.HasValue)
                         {
                             video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+
+                        video.CommentsCount = video.Comments.Count;
                     }
 
                     return videoPage;
                 }
                 else
                 {
-                    return new VideosPageModel();
+                    return new VideoPage();
                 }
+            }
+        }
+
+        public static async Task<VideoViewModel> GetVideoViewModel(int videoId, int userAccessLevel, string userTimezone, int sortBy)
+        {
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
+            }
+            catch (Exception)
+            {
+                userTimezone = TZConvert.WindowsToIana(userTimezone);
+            }
+
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    string pictureViewApiPath = "api/publicaccess/videoviewmodel/" + videoId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var videoViewModelString = await result.Content.ReadAsStringAsync();
+                        VideoViewModel videoViewModel = JsonConvert.DeserializeObject<VideoViewModel>(videoViewModelString);
+                        if (videoViewModel.VideoTime.HasValue)
+                        {
+                            videoViewModel.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(videoViewModel.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                        }
+
+                        videoViewModel.CommentsCount = videoViewModel.CommentsList.Count;
+                        
+                        await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
+
+
+                        return videoViewModel;
+                    }
+                    else
+                    {
+                        return new VideoViewModel();
+                    }
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    string pictureViewApiPath = "api/videos/videoviewmodel/" + videoId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var videoViewModelString = await result.Content.ReadAsStringAsync();
+                        VideoViewModel videoViewModel = JsonConvert.DeserializeObject<VideoViewModel>(videoViewModelString);
+                        if (videoViewModel.VideoTime.HasValue)
+                        {
+                            videoViewModel.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(videoViewModel.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                        }
+
+                        videoViewModel.CommentsCount = videoViewModel.CommentsList.Count;
+                        await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
+
+
+                        return videoViewModel;
+                    }
+                    else
+                    {
+                        return new VideoViewModel();
+                    }
+                }
+            }
+            else
+            {
+                string videoViewString = await SecureStorage.GetAsync("VideoViewModel" + videoId);
+                VideoViewModel videoViewModel = JsonConvert.DeserializeObject<VideoViewModel>(videoViewString);
+                return videoViewModel;
             }
         }
 

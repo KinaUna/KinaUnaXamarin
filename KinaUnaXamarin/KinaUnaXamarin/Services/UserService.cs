@@ -315,7 +315,7 @@ namespace KinaUnaXamarin.Services
             {
                 return await SecureStorage.GetAsync("UserLanguage");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return "";
             }
@@ -327,7 +327,7 @@ namespace KinaUnaXamarin.Services
             {
                 await SecureStorage.SetAsync("UserLanguage", language);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 
             }

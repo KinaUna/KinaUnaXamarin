@@ -363,4 +363,13 @@
   <data name="NoChildrenFound" xml:space="preserve">
     <value>Sie haben keine Administratorrechte für Kinder.</value>
   </data>
+  <data name="VideoLocation" xml:space="preserve">
+    <value>Video Ort:</value>
+  </data>
+  <data name="Videos" xml:space="preserve">
+    <value>Video</value>
+  </data>
+  <data name="VideoTaken" xml:space="preserve">
+    <value>Dieses Video ist vom:</value>
+  </data>
 </root>

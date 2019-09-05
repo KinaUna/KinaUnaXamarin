@@ -36,6 +36,7 @@ namespace KinaUnaXamarin
             _routes.Add("register", typeof(RegisterPage));
             _routes.Add("about", typeof(AboutPage));
             _routes.Add("photos", typeof(PhotosPage));
+            _routes.Add("videos", typeof(VideosPage));
             _routes.Add("language", typeof(LanguagePage));
             _routes.Add("mychildren", typeof(MyChildrenPage));
             _routes.Add("useraccess", typeof(UserAccessPage));
@@ -53,6 +54,7 @@ namespace KinaUnaXamarin
             AboutTabItem.Title = resmgr.Value.GetString("About", ci);
             SettingsFlyoutItem.Title = resmgr.Value.GetString("Settings", ci);
             PhotosFlyoutItem.Title = PhotosMenuItem.Title = resmgr.Value.GetString("Photos", ci);
+            VideosFlyoutItem.Title = VideosMenuItem.Title = resmgr.Value.GetString("Videos", ci);
             TimelineFlyoutItem.Title = TimelineMenuItem.Title = resmgr.Value.GetString("Timeline", ci);
             YearAgoMenuItem.Title = resmgr.Value.GetString("OnThisDay", ci);
             MyFamilyFlyoutItem.Title = resmgr.Value.GetString("MyFamily", ci);

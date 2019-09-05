@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {
@@ -30,5 +31,8 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string DurationHours { get; set; }
         public string DurationMinutes { get; set; }
         public string DurationSeconds { get; set; }
+
+        [JsonIgnore]
+        public int CommentsCount { get; set; }
     }
 }

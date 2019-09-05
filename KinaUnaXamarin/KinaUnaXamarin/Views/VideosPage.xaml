@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.VideosPage"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             Title="{i18n:Translate Videos}"
+             Visual="Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
+                     Clicked="ReloadToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
+                        BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+                <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
+
+                </StackLayout>
+                <CollectionView x:Name="VideosListView" ItemsSource="{Binding VideoItems}" Margin="2" BackgroundColor="White" SelectionChanged="VideosListView_OnSelectionChanged" SelectionMode="Single" >
+                    <CollectionView.ItemsLayout >
+                        <GridItemsLayout Orientation="Vertical"
+                                         Span="2" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
+                                <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                                                       RetryCount="3"
+                                                       Source = "{Binding ThumbLink}">
+                                    </forms:CachedImage>
+                                    <Frame BackgroundColor="Teal" Padding="5"
+                                           Margin="5" HorizontalOptions="Start" VerticalOptions="Start" >
+                                        <Label Text="{Binding VideoNumber}"
+                                               FontAttributes="Bold"
+                                               FontSize="14"
+                                               TextColor="LightGray" />
+                                    </Frame>
+                                    <Frame BackgroundColor="DimGray" Padding="5"
+                                           Margin="5" HorizontalOptions="Start" VerticalOptions="End">
+                                        <Label Text="{Binding VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                                               TextColor="LightGray"
+                                               FontSize="10" />
+                                    </Frame>
+                                    <Frame HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="5" HasShadow="False">
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
+                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
+                                        </StackLayout>
+
+                                    </Frame>
+                                </Grid>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0"></Label>
+                        <Label Text="{Binding PageNumber}"></Label>
+                        <Label Text="{i18n:Translate Of} "></Label>
+                        <Label Text="{Binding PageCount}"></Label>
+                    </StackLayout>
+                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
+                </Grid>
+            </StackLayout>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
