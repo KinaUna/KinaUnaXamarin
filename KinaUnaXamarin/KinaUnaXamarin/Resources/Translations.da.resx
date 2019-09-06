@@ -372,4 +372,10 @@
   <data name="VideoTaken" xml:space="preserve">
     <value>Video optaget:</value>
   </data>
+  <data name="Sleep" xml:space="preserve">
+    <value>Søvn</value>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistik</value>
+  </data>
 </root>

@@ -52,8 +52,8 @@
                     </StackLayout>
                     <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal" Margin="5">
-                        <Button x:Name="SaveUserButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveUserButton_OnClicked" IsEnabled="False" ></Button>
-                        <Button x:Name="CancelUserButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelUserButton_OnClicked"></Button>
+                        <Button x:Name="SaveUserButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveUserButton_OnClicked" IsEnabled="False" ></Button>
+                        <Button x:Name="CancelUserButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelUserButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>

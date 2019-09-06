@@ -21,5 +21,7 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         [JsonIgnore]
         public double SleepDurDouble { get; set; }
+
+        public int SleepNumber { get; set; }
     }
 }

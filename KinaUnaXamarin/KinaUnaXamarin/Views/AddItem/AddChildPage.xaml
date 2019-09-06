@@ -18,7 +18,7 @@
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate DisplayName}"></Label>
-                        <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand"></Entry>
+                        <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" TextChanged="DisplayNameEntry_OnTextChanged"></Entry>
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate Birthday}"></Label>
@@ -38,8 +38,8 @@
                     </StackLayout>
                     <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal" Margin="5">
-                        <Button x:Name="SaveChildButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveChildButton_OnClicked" ></Button>
-                        <Button x:Name="CancelChildButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelChildButton_OnClicked"></Button>
+                        <Button x:Name="SaveChildButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveChildButton_OnClicked" IsEnabled="False"></Button>
+                        <Button x:Name="CancelChildButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelChildButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
             </ScrollView>

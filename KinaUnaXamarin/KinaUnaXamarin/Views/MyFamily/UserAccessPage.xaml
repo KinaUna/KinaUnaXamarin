@@ -104,11 +104,11 @@
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}"></Picker>
                     </StackLayout>
                     <StackLayout Grid.Row="2" Orientation="Horizontal">
-                        <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked" VerticalOptions="Center"></Button>
-                        <Button x:Name="CancelAccessButton" Text="{i18n:Translate Cancel}" Clicked="CancelAccessButton_OnClicked" VerticalOptions="Center"></Button>
+                        <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked" VerticalOptions="Center"></Button>
+                        <Button x:Name="CancelAccessButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelAccessButton_OnClicked" VerticalOptions="Center"></Button>
                     </StackLayout>
                     <StackLayout Grid.Row="3" Margin="0, 20, 0, 0">
-                        <Button x:Name="DeleteAccessButton" Text="{i18n:Translate Delete}" BackgroundColor="#f44336" Clicked="DeleteAccessButton_OnClicked" FontSize="8" HeightRequest="30" HorizontalOptions="Center"></Button>
+                        <Button x:Name="DeleteAccessButton" Text="{i18n:Translate Delete}" TextColor="White" BackgroundColor="#f44336" Clicked="DeleteAccessButton_OnClicked" FontSize="8" HeightRequest="40" HorizontalOptions="Center"></Button>
                     </StackLayout>
                 </Grid>
             </ScrollView>

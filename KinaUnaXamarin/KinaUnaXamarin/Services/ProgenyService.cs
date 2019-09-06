@@ -2832,5 +2832,79 @@ namespace KinaUnaXamarin.Services
             userAccess.AccessId = 0;
             return userAccess;
         }
+
+        public static async Task<SleepListPage> GetSleepListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, string timezone, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/sleep/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var sleepString = await result.Content.ReadAsStringAsync();
+                        SleepListPage sleepList = JsonConvert.DeserializeObject<SleepListPage>(sleepString);
+                        foreach (Sleep slpItem in sleepList.SleepList)
+                        {
+                            slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
+                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
+                            slpItem.SleepDuration = eOffset - sOffset;
+                        }
+                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
+                        return sleepList;
+                    }
+                    else
+                    {
+                        return new SleepListPage();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/sleep/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var sleepString = await result.Content.ReadAsStringAsync();
+                        SleepListPage sleepList = JsonConvert.DeserializeObject<SleepListPage>(sleepString);
+                        foreach (Sleep slpItem in sleepList.SleepList)
+                        {
+                            slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
+                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
+                            slpItem.SleepDuration = eOffset - sOffset;
+                        }
+                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
+                        return sleepList;
+                    }
+                    else
+                    {
+                        return new SleepListPage();
+                    }
+                }
+            }
+            else
+            {
+                string sleepString = await SecureStorage.GetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel);
+                SleepListPage sleepList = JsonConvert.DeserializeObject<SleepListPage>(sleepString);
+                return sleepList;
+            }
+        }
     }
 }

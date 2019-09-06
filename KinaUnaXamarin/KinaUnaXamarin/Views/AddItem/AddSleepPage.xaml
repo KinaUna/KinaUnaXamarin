@@ -73,8 +73,8 @@
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
-                        <Button x:Name="SaveSleepButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked"></Button>
-                        <Button x:Name="CancelSleepButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelSleepButton_OnClicked"></Button>
+                        <Button x:Name="SaveSleepButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked"></Button>
+                        <Button x:Name="CancelSleepButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelSleepButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>

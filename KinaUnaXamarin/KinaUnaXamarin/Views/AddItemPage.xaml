@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AddItemPage"
              Title="{i18n:Translate AddItem}"
              BackgroundColor="#3A2051">
@@ -14,7 +15,7 @@
                 <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
                 <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="models:AddItemModel">
                             <Grid Padding="10" Margin="0" >
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />

@@ -57,12 +57,12 @@
                     </StackLayout>
                     <StackLayout Orientation="Horizontal" HorizontalOptions="End" VerticalOptions="End">
                         <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DarkGreen" Clicked="EditButton_OnClicked"></Button>
-                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                     </StackLayout>
                     <ActivityIndicator x:Name="AccountAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
                 </Grid>
                 <!--<Label x:Name="MessageLabel" Text="{Binding Message}" TextColor="Blue" Margin="10"></Label>-->
-                <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
+                <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="#4caf50" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
                 <Button x:Name="LogOutButton" Command="{Binding LogoutCommand}" IsVisible="{Binding LoggedIn}" Text="{i18n:Translate LogOut}" BackgroundColor="MediumVioletRed" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
             </StackLayout>
         </ScrollView>

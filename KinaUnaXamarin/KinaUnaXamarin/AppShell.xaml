@@ -112,6 +112,21 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Sleep}" x:Name="SleepFlyoutItem"
+                Icon="{x:Static models:IconFont.Sleep}">
+        <Tab Title="{i18n:Translate Sleep}" x:Name="SleepTabItem"
+             Icon="sleepicon.png"
+             Route="sleep">
+            <ShellContent ContentTemplate="{DataTemplate views:SleepPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate Statistics}" x:Name="SleepStatsTabItem"
+             Icon="measurementsicon.png"
+             Route="sleepstats">
+            <ShellContent ContentTemplate="{DataTemplate views:SleepStatsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

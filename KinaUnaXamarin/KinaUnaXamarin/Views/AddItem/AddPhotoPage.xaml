@@ -51,8 +51,8 @@
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
-                        <Button x:Name="SavePhotoButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SavePhotoButton_OnClicked" IsEnabled="False"></Button>
-                        <Button x:Name="CancelPhotoButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelPhotoButton_OnClicked"></Button>
+                        <Button x:Name="SavePhotoButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SavePhotoButton_OnClicked" IsEnabled="False"></Button>
+                        <Button x:Name="CancelPhotoButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelPhotoButton_OnClicked"></Button>
                     </StackLayout>
                 </StackLayout>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>

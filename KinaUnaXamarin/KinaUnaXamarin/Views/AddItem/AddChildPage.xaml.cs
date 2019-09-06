@@ -39,7 +39,7 @@ namespace KinaUnaXamarin.Views.AddItem
             
         }
 
-        protected async override void OnAppearing()
+        protected override async void OnAppearing()
         {
             base.OnAppearing();
             string userTimeZone = await UserService.GetUserTimezone();
@@ -139,6 +139,18 @@ namespace KinaUnaXamarin.Views.AddItem
         private async void CancelChildButton_OnClicked(object sender, EventArgs e)
         {
             await Shell.Current.Navigation.PopModalAsync();
+        }
+
+        private void DisplayNameEntry_OnTextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (DisplayNameEntry.Text.Length < 2)
+            {
+                SaveChildButton.IsEnabled = false;
+            }
+            else
+            {
+                SaveChildButton.IsEnabled = true;
+            }
         }
     }
 }
