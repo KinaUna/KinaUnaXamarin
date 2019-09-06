@@ -5,9 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:panCardView="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:panCardViewControls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
-             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.VideoDetailPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
@@ -32,13 +31,12 @@
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
                 <panCardView:CoverFlowView
-                x:Name="PhotoCarousel"
+                x:Name="VideoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
                 ItemsSource="{Binding VideoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
-                ItemDisappearing="PhotoCarousel_OnItemDisappearing"
                 IsCyclical="False"
                 IsVerticalSwipeEnabled="False"
                 IsViewReusingEnabled="False">
@@ -47,7 +45,7 @@
                         <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />
                     </x:Arguments>
                     <panCardView:CoverFlowView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:VideoViewModel">
                             <ContentView>
                                 <Grid Margin="0" IsClippedToBounds="True">
                                     <Grid.RowDefinitions>

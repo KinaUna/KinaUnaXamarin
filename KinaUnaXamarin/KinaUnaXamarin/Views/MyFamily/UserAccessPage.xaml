@@ -7,6 +7,7 @@
              x:Class="KinaUnaXamarin.Views.UserAccessPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="{i18n:Translate UserAccess}"
              Visual="Material">
     <ContentPage.ToolbarItems>
@@ -27,7 +28,7 @@
             </Grid.RowDefinitions>
             <CollectionView Grid.Row="0" x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged" IsVisible="{Binding AnyChildren}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="modelsKinaUna:Progeny">
                         <Grid Padding="10">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="20" />
@@ -57,7 +58,7 @@
             </CollectionView>
             <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemSizingStrategy="MeasureFirstItem" IsVisible="{Binding AnyChildren}">
                 <CollectionView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="modelsKinaUna:UserAccess">
                         <Frame Margin="2" Padding="2" >
                             <Grid Margin="0" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
                                 <Grid.RowDefinitions>
@@ -86,34 +87,35 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <Grid Grid.Row="1" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Margin="5" BackgroundColor="AliceBlue" Padding="15" IsVisible="{Binding EditMode}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" Orientation="Vertical">
-                    <Label Text="{Binding SelectedAccess.User.UserName}" FontAttributes="Bold"></Label>
-                    <Label Text="{Binding SelectedAccess.User.Email}"></Label>
-                </StackLayout>
-                <StackLayout Grid.Row="1" Margin="5" BackgroundColor="White">
-                    <Label Text="{i18n:Translate AccessLevel}"></Label>
-                    <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}"></Picker>
-                </StackLayout>
-                <StackLayout Grid.Row="2" Orientation="Horizontal">
-                    <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked"></Button>
-                    <Button x:Name="CancelAccessButton" Text="{i18n:Translate Cancel}" BackgroundColor="#f44336" Clicked="CancelAccessButton_OnClicked"></Button>
-                </StackLayout>
-                <StackLayout Grid.Row="3" Margin="0, 20, 0, 0">
-                    <Button x:Name="DeleteAccessButton" Text="{i18n:Translate Delete}" BackgroundColor="#f44336" Clicked="DeleteAccessButton_OnClicked"></Button>
-                </StackLayout>
-            </Grid>
+            <ScrollView Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding EditMode}">
+                <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Margin="5" BackgroundColor="AliceBlue" Padding="15" >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0" Orientation="Vertical">
+                        <Label Text="{Binding SelectedAccess.User.UserName}" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding SelectedAccess.User.Email}"></Label>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}"></Picker>
+                    </StackLayout>
+                    <StackLayout Grid.Row="2" Orientation="Horizontal">
+                        <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked" VerticalOptions="Center"></Button>
+                        <Button x:Name="CancelAccessButton" Text="{i18n:Translate Cancel}" Clicked="CancelAccessButton_OnClicked" VerticalOptions="Center"></Button>
+                    </StackLayout>
+                    <StackLayout Grid.Row="3" Margin="0, 20, 0, 0">
+                        <Button x:Name="DeleteAccessButton" Text="{i18n:Translate Delete}" BackgroundColor="#f44336" Clicked="DeleteAccessButton_OnClicked" FontSize="8" HeightRequest="30" HorizontalOptions="Center"></Button>
+                    </StackLayout>
+                </Grid>
+            </ScrollView>
             <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
                 <Label Text="{i18n:Translate NoChildrenFound}"></Label>
             </StackLayout>
             <ActivityIndicator Grid.Row="1" IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
         </Grid>
-        
     </ContentPage.Content>
 </ContentPage>

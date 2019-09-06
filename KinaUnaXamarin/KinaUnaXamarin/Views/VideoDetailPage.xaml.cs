@@ -270,11 +270,6 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = false;
         }
 
-        private async void PhotoCarousel_OnItemDisappearing(CardsView view, ItemDisappearingEventArgs args)
-        {
-            
-        }
-
         private double y;
 
         private void FrameOnPanUpdated(object sender, PanUpdatedEventArgs e)

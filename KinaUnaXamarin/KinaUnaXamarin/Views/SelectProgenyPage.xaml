@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
              BackgroundColor="#3A2051"
              Title="{i18n:Translate SelectChild}">
@@ -14,7 +15,7 @@
                 <Label Text="{i18n:Translate SelectChild}" TextColor="White"></Label>
                 <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:Progeny">
                             <Grid Padding="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30" />

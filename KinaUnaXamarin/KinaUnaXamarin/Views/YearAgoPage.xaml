@@ -7,6 +7,7 @@
              xmlns:dataTemplates="clr-namespace:KinaUnaXamarin.DataTemplates;assembly=KinaUnaXamarin"
              xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              Title="{i18n:Translate OnThisDay}"
              Visual="Material"
@@ -22,7 +23,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="PhotoTemplate">
+            <DataTemplate x:Key="PhotoTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#326EBE" Margin="10" Padding="10" >
                         <Grid>
@@ -36,20 +37,19 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Source="photosicon.png"></Image>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold" Margin="0"></Label>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12" Margin="0"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PictureObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PictureObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                               Margin="0"
                                                HeightRequest="440"
                                                RetryCount="3"
-                                               Source = "{Binding ItemObject.PictureLink600}">
+                                               Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
                             <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="PhotoTemplateLandscape">
+            <DataTemplate x:Key="PhotoTemplateLandscape" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#326EBE" Margin="10" Padding="10" >
                         <Grid>
@@ -63,20 +63,19 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Source="photosicon.png"></Image>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold" Margin="0"></Label>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12" Margin="0"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding PictureObject.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding PictureObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
-                                               Margin="0"
                                                HeightRequest="250"
                                                RetryCount="3"
-                                               Source = "{Binding ItemObject.PictureLink600}">
+                                               Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
                             <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="VideoTemplate">
+            <DataTemplate x:Key="VideoTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="MediumVioletRed" Margin="10" Padding="10" >
                         <Grid>
@@ -90,18 +89,18 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Source="videosicon.png"></Image>
-                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
-                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ItemObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding VideoObject.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding VideoObject.Location}" TextColor="LightBlue" FontSize="12"></Label>
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="250"
                                                RetryCount="3"
-                                               Source = "{Binding ItemObject.ThumbLink}">
+                                               Source = "{Binding VideoObject.ThumbLink}">
                             </forms:CachedImage>
                         </Grid>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="CalendarTemplate">
+            <DataTemplate x:Key="CalendarTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <Grid>
@@ -116,97 +115,97 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Source="calendaricon.png"></Image>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
-                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding CalendarObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding CalendarObject.Title}" TextColor="White"></Label>
                             <Label Grid.Row="2" Grid.Column="1"  Text="{i18n:Translate LocationColon}" TextColor="White"></Label>
-                            <Label Grid.Row="2" Grid.Column="2"  Text="{Binding ItemObject.Location}" TextColor="White"></Label>
+                            <Label Grid.Row="2" Grid.Column="2"  Text="{Binding CalendarObject.Location}" TextColor="White"></Label>
                         </Grid>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="LocationTemplate">
+            <DataTemplate x:Key="LocationTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="locationsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding LocationObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
-                            <Label Text="{Binding ItemObject.Latitude}" TextColor="White"></Label>
-                            <Label Text="{Binding ItemObject.Longitude}" TextColor="White"></Label>
+                            <Label Text="{Binding LocationObject.Name}" TextColor="White"></Label>
+                            <Label Text="{Binding LocationObject.Latitude}" TextColor="White"></Label>
+                            <Label Text="{Binding LocationObject.Longitude}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="VocabularyTemplate">
+            <DataTemplate x:Key="VocabularyTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="vocabularyicon.png"></Image>
-                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding VocabularyObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.Word}" TextColor="White"></Label>
-                            <Label Text="{Binding ItemObject.Language}" TextColor="White"></Label>
+                            <Label Text="{Binding VocabularyObject.Word}" TextColor="White"></Label>
+                            <Label Text="{Binding VocabularyObject.Language}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="SkillTemplate">
+            <DataTemplate x:Key="SkillTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="skillsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding SkillObject.SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
+                            <Label Text="{Binding SkillObject.Name}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="FriendTemplate">
+            <DataTemplate x:Key="FriendTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="BlueViolet" Margin="10" Padding="10" HeightRequest="350">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="friendsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.FriendsSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding FriendObject.FriendSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.Name}" TextColor="White"></Label>
+                            <Label Text="{Binding FriendObject.Name}" TextColor="White"></Label>
                             <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
-                                               Source = "{Binding ItemObject.PictureLink}">
+                                               Source = "{Binding FriendObject.PictureLink}">
                             </forms:CachedImage>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="MeasurementTemplate">
+            <DataTemplate x:Key="MeasurementTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="DarkRed" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="measurementsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding MeasurementObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{i18n:Translate Weight}" TextColor="LightGray"></Label>
-                                <Label Text="{Binding ItemObject.Weight}" Margin="5,0" TextColor="White"></Label>
+                                <Label Text="{Binding MeasurementObject.Weight}" Margin="5,0" TextColor="White"></Label>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
                                 <Label Text="{i18n:Translate Height}" TextColor="LightGray"></Label>
-                                <Label Text="{Binding ItemObject.Height}" Margin="5,0" TextColor="White"></Label>
+                                <Label Text="{Binding MeasurementObject.Height}" Margin="5,0" TextColor="White"></Label>
                             </StackLayout>
 
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="SleepTemplate">
+            <DataTemplate x:Key="SleepTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="DarkGreen" Margin="10" Padding="10">
                         <Grid>
@@ -220,83 +219,83 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Image Grid.Row="0" Grid.Column="0" Source="sleepicon.png"></Image>
-                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ItemObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding SleepObject.StartString}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             <Grid Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate DurationColon}" TextColor="LightGray"></Label>
-                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding ItemObject.EndString}" TextColor="White" Margin="5,0"></Label>
+                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding SleepObject.EndString}" TextColor="White" Margin="5,0"></Label>
                             </Grid>
                         </Grid>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="NoteTemplate">
+            <DataTemplate x:Key="NoteTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="DarkOliveGreen" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10" >
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="notesicon.png"></Image>
-                                <Label Text="{Binding ItemObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding NoteObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                            <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
                             <WebView HeightRequest="170">
                                 <WebView.Source>
-                                    <HtmlWebViewSource Html="{Binding ItemObject.Content}"></HtmlWebViewSource>
+                                    <HtmlWebViewSource Html="{Binding NoteObject.Content}"></HtmlWebViewSource>
                                 </WebView.Source>
                             </WebView>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="ContactTemplate">
+            <DataTemplate x:Key="ContactTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="Purple" Margin="10" Padding="10" HeightRequest="350">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="contactsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding ContactObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.DisplayName}" TextColor="White"></Label>
+                            <Label Text="{Binding ContactObject.DisplayName}" TextColor="White"></Label>
                             <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
-                                               Source = "{Binding ItemObject.PictureLink}">
+                                               Source = "{Binding ContactObject.PictureLink}">
                             </forms:CachedImage>
-                            <Label Text="{Binding ItemObject.Context}" TextColor="White"></Label>
+                            <Label Text="{Binding ContactObject.Context}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="VaccinationTemplate">
+            <DataTemplate x:Key="VaccinationTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="vaccinationsicon.png"></Image>
-                                <Label Text="{Binding ItemObject.VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                                <Label Text="{Binding VaccinationObject.VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
-                            <Label Text="{Binding ItemObject.VaccinationName}" TextColor="White"></Label>
+                            <Label Text="{Binding VaccinationObject.VaccinationName}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="DateHeaderTemplate">
+            <DataTemplate x:Key="DateHeaderTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame Margin="-5, 25, -5, 0" Padding="10" HeightRequest="30">
-                        <Label Text="{Binding ItemObject.DateText}" TextColor="DimGray" FontSize="16" FontAttributes="Bold"></Label>
+                        <Label Text="{Binding DateHeaderObject.DateText}" TextColor="DimGray" FontSize="16" FontAttributes="Bold"></Label>
                     </Frame>
                 </ViewCell>
             </DataTemplate>
-            <DataTemplate x:Key="InvalidTemplate">
+            <DataTemplate x:Key="InvalidTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
-                            <Label Text="{Binding ItemObject.CreatedDate}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
-                            <Label Text="{Binding ItemObject.Title}" TextColor="White"></Label>
+                            <Label Text="{Binding NoteObject.CreatedDate}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
+                            <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
                         </StackLayout>
                     </Frame>
                 </ViewCell>

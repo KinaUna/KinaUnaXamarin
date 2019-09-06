@@ -4,7 +4,7 @@ using System.Text;
 
 namespace KinaUnaXamarin.Models
 {
-    class DateHeader
+    public class DateHeader
     {
         public string DateText { get; set; }
     }

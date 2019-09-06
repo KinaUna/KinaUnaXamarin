@@ -6,6 +6,7 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.CommentsPage"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="Comments"
              Visual="Material"
              BackgroundColor="Black">
@@ -17,7 +18,7 @@
                 </Grid.RowDefinitions>
                 <CollectionView x:Name="CommentsCollectionView" ItemsLayout="VerticalList" Margin="5" VerticalOptions="StartAndExpand" Grid.Row="0">
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:Comment">
                             <Grid Padding="5" Margin="5">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="30"></RowDefinition>

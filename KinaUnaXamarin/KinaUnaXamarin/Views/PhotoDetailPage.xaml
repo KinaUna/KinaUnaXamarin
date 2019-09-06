@@ -11,6 +11,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
              Visual="Material">
     <ContentPage.Content>
@@ -50,7 +51,7 @@
                         <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />
                     </x:Arguments>
                     <panCardView:CoverFlowView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:PictureViewModel">
                             <ContentView>
                                 <Grid Margin="0" IsClippedToBounds="True">
                                     <Grid.RowDefinitions>
