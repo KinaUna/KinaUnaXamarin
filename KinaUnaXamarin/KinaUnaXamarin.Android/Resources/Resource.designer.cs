@@ -26,6 +26,7 @@ namespace KinaUnaXamarin.Droid
 		
 		public static void UpdateIdValues()
 		{
+			global::Microcharts.Droid.Resource.String.library_name = global::KinaUnaXamarin.Droid.Resource.String.library_name;
 			global::PanCardView.Droid.Resource.Animation.abc_fade_in = global::KinaUnaXamarin.Droid.Resource.Animation.abc_fade_in;
 			global::PanCardView.Droid.Resource.Animation.abc_fade_out = global::KinaUnaXamarin.Droid.Resource.Animation.abc_fade_out;
 			global::PanCardView.Droid.Resource.Animation.abc_grow_fade_in_from_bottom = global::KinaUnaXamarin.Droid.Resource.Animation.abc_grow_fade_in_from_bottom;

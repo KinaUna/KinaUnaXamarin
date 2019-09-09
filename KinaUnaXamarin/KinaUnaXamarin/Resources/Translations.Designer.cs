@@ -205,6 +205,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Chart Type:.
+        /// </summary>
+        internal static string ChartType {
+            get {
+                return ResourceManager.GetString("ChartType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Child saved successfully. Child ID:.
         /// </summary>
         internal static string ChildSaved {

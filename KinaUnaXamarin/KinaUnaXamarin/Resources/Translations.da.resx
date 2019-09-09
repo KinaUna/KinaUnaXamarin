@@ -378,4 +378,7 @@
   <data name="Statistics" xml:space="preserve">
     <value>Statistik</value>
   </data>
+  <data name="ChartType" xml:space="preserve">
+    <value>Diagram type:</value>
+  </data>
 </root>
