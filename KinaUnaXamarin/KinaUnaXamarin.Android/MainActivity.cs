@@ -36,6 +36,7 @@ namespace KinaUnaXamarin.Droid
                 .InitImageViewHandler(); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
             FFImageLoading.ImageService.Instance.Initialize(new Configuration());
             CardsViewRenderer.Preserve(); // See: https://github.com/AndreiMisiukevich/CardView
+            OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init(); // See: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
             LoadApplication(new App());
         }
 

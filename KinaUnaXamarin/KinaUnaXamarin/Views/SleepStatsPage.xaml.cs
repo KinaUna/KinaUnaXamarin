@@ -8,6 +8,9 @@ using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
 using Microcharts;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using SkiaSharp;
 using TimeZoneConverter;
 using Xamarin.Essentials;
@@ -17,6 +20,8 @@ using Entry = Microcharts.Entry;
 
 namespace KinaUnaXamarin.Views
 {
+    // Uses OxyPlot, see: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
+
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SleepStatsPage : ContentPage
     {
@@ -26,7 +31,7 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
-
+        
         public SleepStatsPage()
         {
             InitializeComponent();
@@ -79,6 +84,7 @@ namespace KinaUnaXamarin.Views
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
+        
         private async Task Reload()
         {
             _viewModel.IsBusy = true;
@@ -91,7 +97,7 @@ namespace KinaUnaXamarin.Views
                 }
 
                 EndDatePicker.Date = DateTime.Now;
-                ChartTypePicker.SelectedIndex = 1;
+                // ChartTypePicker.SelectedIndex = 1;
             }
 
             await UpdateSleep();
@@ -224,41 +230,71 @@ namespace KinaUnaXamarin.Views
 
             List<Sleep> sleepList =
                 await ProgenyService.GetSleepChartData(_viewChild, _viewModel.UserAccessLevel);
-            _viewModel.SleepItems.AddRange(sleepList);
-            List<Microcharts.Entry> chartsEntryList = new List<Entry>();
+            _viewModel.SleepItems.ReplaceRange(sleepList);
+            //List<Microcharts.Entry> chartsEntryList = new List<Entry>();
+            LineSeries sleepSeries = new LineSeries()
+            {
+                Color = OxyColors.DarkGreen,
+                MarkerType = MarkerType.Circle,
+                MarkerSize = 3,
+                MarkerStroke = OxyColors.White,
+                MarkerFill = OxyColors.Green,
+                MarkerStrokeThickness = 1.5
+            };
+            
+            double maxSleep = 0;
+            double minSleep = 24;
             foreach (Sleep slp in _viewModel.SleepItems)
             {
                 if (slp.SleepStart >= StartDatePicker.Date && slp.SleepStart <= EndDatePicker.Date)
                 {
                     slp.SleepStart = slp.SleepStart.Date;
                     slp.SleepDurDouble = slp.SleepDuration.TotalMinutes / 60.0;
-                    Microcharts.Entry entry = new Entry((float)slp.SleepDurDouble);
-                    entry.Label = slp.SleepStart.ToString("dd-MMM-yy");
-                    entry.ValueLabel = slp.SleepDurDouble.ToString("F2");
-                    entry.Color = SKColor.Parse("#006400");
-                    chartsEntryList.Add(entry);
+                    double startDateDouble = DateTimeAxis.ToDouble(slp.SleepStart.Date);
+                    sleepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                    if (slp.SleepDurDouble > maxSleep)
+                    {
+                        maxSleep = slp.SleepDurDouble;
+                    }
+
+                    if (slp.SleepDurDouble < minSleep)
+                    {
+                        minSleep = slp.SleepDurDouble;
+                    }
                 }
                 
             }
 
-            if (ChartTypePicker.SelectedIndex == 0)
-            {
-                var barChart = new BarChart() { Entries = chartsEntryList, LabelTextSize = 36.0f};
+            _viewModel.MinValue = Math.Floor(minSleep);
+            _viewModel.MaxValue = Math.Ceiling(maxSleep);
 
-                SleepChartView.Chart = barChart;
-            }
+            LinearAxis durationAxis = new LinearAxis();
+            durationAxis.Key = "DurationAxis";
+            durationAxis.Minimum = 0; //_viewModel.MinValue -1;
+            durationAxis.Maximum = _viewModel.MaxValue; // + 1;
+            durationAxis.Position = AxisPosition.Left;
+            durationAxis.MajorStep = 5;
+            durationAxis.MinorStep = 1;
+            durationAxis.MajorGridlineStyle = LineStyle.Solid;
+            durationAxis.MinorGridlineStyle = LineStyle.Solid;
+            durationAxis.MajorGridlineColor = OxyColors.LightGreen;
+            durationAxis.MinorGridlineColor = OxyColors.LightBlue;
+            durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+           
+            DateTimeAxis dateAxis = new DateTimeAxis();
+            dateAxis.Key = "DateAxis";
+            dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
+            dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
+            dateAxis.Position = AxisPosition.Bottom;
+            dateAxis.IntervalType = DateTimeIntervalType.Days;
+            dateAxis.AxislineColor = OxyColor.FromRgb(0, 0,0);
+            dateAxis.StringFormat = "dd-MMM-yyyy";
 
-            if (ChartTypePicker.SelectedIndex == 1)
-            {
-                var pointChart = new PointChart() { Entries = chartsEntryList, LabelTextSize = 36.0f };
-
-                SleepChartView.Chart = pointChart;
-            }
-
-            if (ChartTypePicker.SelectedIndex == 2)
-            {
-                var lineChart = new LineChart() {Entries = chartsEntryList, LabelTextSize = 36.0f, LineMode = LineMode.Straight};
-            }
+            _viewModel.SleepPlotModel = new PlotModel();
+            _viewModel.SleepPlotModel.Background = OxyColors.White;
+            _viewModel.SleepPlotModel.Axes.Add(durationAxis);
+            _viewModel.SleepPlotModel.Axes.Add(dateAxis);
+            _viewModel.SleepPlotModel.Series.Add(sleepSeries);
             
             _viewModel.IsBusy = false;
         }
@@ -301,5 +337,6 @@ namespace KinaUnaXamarin.Views
             _viewModel.ShowOptions = false;
             await Reload();
         }
+
     }
 }

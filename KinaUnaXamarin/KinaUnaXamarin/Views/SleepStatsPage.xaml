@@ -6,10 +6,7 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.SleepStatsPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
-             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
-             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:microcharts="clr-namespace:Microcharts.Forms;assembly=Microcharts.Forms"
+             xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
              Title="{i18n:Translate Sleep}"
              Visual="Material">
     <ContentPage.ToolbarItems>
@@ -34,7 +31,7 @@
                         <Label Text="{i18n:Translate End}"></Label>
                         <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding TodayDate}"></DatePicker>
                         <Label Text="{i18n:Translate ChartType}"></Label>
-                        <Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>
+                        <!--<Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>-->
                         <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Save}"></Button>
                     </StackLayout>
                     <Grid x:Name="SleepStatsGrid" Margin="5">
@@ -49,7 +46,7 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="230"></RowDefinition>
+                            <RowDefinition Height="500"></RowDefinition>
                         </Grid.RowDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" Text="Total sleep recorded: "></Label>
                         <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}"></Label>
@@ -63,7 +60,7 @@
                         <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}"></Label>
                         <Label Grid.Row="5" Grid.Column="0" Text="Average sleep per day in the last 30 days: "></Label>
                         <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}"></Label>
-                        <microcharts:ChartView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="SleepChartView" HeightRequest="200" VerticalOptions="EndAndExpand" />
+                        <oxy:PlotView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding SleepPlotModel}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
                     </Grid>
                 </StackLayout>
                 

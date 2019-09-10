@@ -6,6 +6,9 @@ using System.Windows.Input;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
@@ -30,6 +33,9 @@ namespace KinaUnaXamarin.ViewModels
         private DateTime _endDate;
         private DateTime _todayDate;
         private List<string> _chartTypeList;
+        private double _maxValue;
+        private double _minValue;
+        private OxyPlot.PlotModel _sleepPlotModel;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -42,6 +48,8 @@ namespace KinaUnaXamarin.ViewModels
             _todayDate = DateTime.Now;
             _startDate = DateTime.Now - TimeSpan.FromDays(14);
             _endDate = DateTime.Now;
+            _maxValue = 24;
+            _minValue = 0;
             
             _chartTypeList = new List<string>();
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
@@ -66,6 +74,10 @@ namespace KinaUnaXamarin.ViewModels
                     _chartTypeList.Add("Line Chart");
                 }
             }
+
+
+            SleepPlotModel = new PlotModel();
+            
         }
 
         public List<string> ChartTypeList
@@ -79,6 +91,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _sleepStats;
             set => SetProperty(ref _sleepStats, value);
+        }
+
+        public OxyPlot.PlotModel SleepPlotModel
+        {
+            get => _sleepPlotModel;
+            set => SetProperty(ref _sleepPlotModel, value);
         }
 
         public DateTime TodayDate
@@ -122,6 +140,18 @@ namespace KinaUnaXamarin.ViewModels
         public TimeSpan LastYearAverage {
             get => _lastYearAverage;
             set => SetProperty(ref _lastYearAverage, value);
+        }
+
+        public double MaxValue
+        {
+            get => _maxValue;
+            set => SetProperty(ref _maxValue, value);
+        }
+
+        public double MinValue
+        {
+            get => _minValue;
+            set => SetProperty(ref _minValue, value);
         }
 
         public bool LoggedOut
