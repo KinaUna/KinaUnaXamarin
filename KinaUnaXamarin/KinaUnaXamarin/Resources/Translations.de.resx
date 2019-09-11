@@ -393,13 +393,49 @@
   <data name="AverageSleepPerDayInTheLastYear" xml:space="preserve">
     <value>Durschnit pro Tag im letzten Jahr:</value>
   </data>
+  <data name="CaretakerFriends" xml:space="preserve">
+    <value>Betreuer</value>
+  </data>
+  <data name="ChartOptions" xml:space="preserve">
+    <value>Diagramm:</value>
+  </data>
+  <data name="ContextColon" xml:space="preserve">
+    <value>Zusammenhang:</value>
+  </data>
+  <data name="FamilyFriends" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Freunde</value>
+  </data>
+  <data name="FriendsSince" xml:space="preserve">
+    <value>Freunde zeit:</value>
+  </data>
+  <data name="FriendType" xml:space="preserve">
+    <value>Art:</value>
+  </data>
+  <data name="ParentsFriends" xml:space="preserve">
+    <value>Eltern</value>
+  </data>
+  <data name="PersonalFriends" xml:space="preserve">
+    <value>Persönliche Freunde</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Zeigen:</value>
+  </data>
   <data name="SleepRecordedInTheLast30Days" xml:space="preserve">
     <value>Schlaf in den letzten 30 Tage erfasst:</value>
   </data>
   <data name="SleepRecordedInTheLastYear" xml:space="preserve">
     <value>Schlaf im letzten Jahr erfasst:</value>
   </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sortiere nach:</value>
+  </data>
   <data name="TotalSleepRecorded" xml:space="preserve">
     <value>Schlaf Gesamtaufnahme:</value>
+  </data>
+  <data name="ToyFriends" xml:space="preserve">
+    <value>Spielzeuge/Tiere</value>
   </data>
 </root>

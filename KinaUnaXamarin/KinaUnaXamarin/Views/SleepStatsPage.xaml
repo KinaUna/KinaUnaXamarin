@@ -63,10 +63,11 @@
             <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
             <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
-                <Label Text="{i18n:Translate Start}"></Label>
-                <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" MinimumDate="{Binding FirstDate}" MaximumDate="{Binding Source={x:Reference EndDatePicker}, Path=Date}"></DatePicker>
-                <Label Text="{i18n:Translate End}"></Label>
-                <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding LastDate}"></DatePicker>
+                <Label Text="{i18n:Translate ChartOptions}"></Label>
+                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate Start}"></Label>
+                <DatePicker Margin="40, 0, 0, 0" x:Name="StartDatePicker" Date="{Binding StartDate}" MinimumDate="{Binding FirstDate}" MaximumDate="{Binding Source={x:Reference EndDatePicker}, Path=Date}"></DatePicker>
+                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate End}"></Label>
+                <DatePicker Margin="40, 10, 0, 0" x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding LastDate}"></DatePicker>
                 <!--<Label Text="{i18n:Translate ChartType}"></Label>-->
                 <!--<Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>-->
                 <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}"></Button>

@@ -393,13 +393,49 @@
   <data name="AverageSleepPerDayInTheLastYear" xml:space="preserve">
     <value>Gennemsnitlig søvn per dag i det seneste år:</value>
   </data>
+  <data name="CaretakerFriends" xml:space="preserve">
+    <value>Omsorgspersoner</value>
+  </data>
+  <data name="ChartOptions" xml:space="preserve">
+    <value>Diagram:</value>
+  </data>
+  <data name="ContextColon" xml:space="preserve">
+    <value>Sammenhæng:</value>
+  </data>
+  <data name="FamilyFriends" xml:space="preserve">
+    <value>Familie</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Venner</value>
+  </data>
+  <data name="FriendsSince" xml:space="preserve">
+    <value>Venner siden:</value>
+  </data>
+  <data name="FriendType" xml:space="preserve">
+    <value>Type:</value>
+  </data>
+  <data name="ParentsFriends" xml:space="preserve">
+    <value>Forældre</value>
+  </data>
+  <data name="PersonalFriends" xml:space="preserve">
+    <value>Personlige venner</value>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Vis:</value>
+  </data>
   <data name="SleepRecordedInTheLast30Days" xml:space="preserve">
     <value>Søvn noteret i de seneste 30 dage:</value>
   </data>
   <data name="SleepRecordedInTheLastYear" xml:space="preserve">
     <value>Søvn noteret i det seneste år:</value>
   </data>
+  <data name="SortBy" xml:space="preserve">
+    <value>Sorter efter:</value>
+  </data>
   <data name="TotalSleepRecorded" xml:space="preserve">
     <value>Samlet søvn noteret:</value>
+  </data>
+  <data name="ToyFriends" xml:space="preserve">
+    <value>Legetøj/Dyr</value>
   </data>
 </root>

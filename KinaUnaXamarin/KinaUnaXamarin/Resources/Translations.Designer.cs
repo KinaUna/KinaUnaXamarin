@@ -232,11 +232,29 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Caretakers.
+        /// </summary>
+        internal static string CaretakerFriends {
+            get {
+                return ResourceManager.GetString("CaretakerFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note: When changing language, some text may appear in the previously selected language until the app is restarted..
         /// </summary>
         internal static string ChangeLanguageWarning {
             get {
                 return ResourceManager.GetString("ChangeLanguageWarning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Chart:.
+        /// </summary>
+        internal static string ChartOptions {
+            get {
+                return ResourceManager.GetString("ChartOptions", resourceCulture);
             }
         }
         
@@ -264,6 +282,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ConfirmCommentDelete {
             get {
                 return ResourceManager.GetString("ConfirmCommentDelete", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Context:.
+        /// </summary>
+        internal static string ContextColon {
+            get {
+                return ResourceManager.GetString("ContextColon", resourceCulture);
             }
         }
         
@@ -372,6 +399,42 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorUserNotSaved {
             get {
                 return ResourceManager.GetString("ErrorUserNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Family.
+        /// </summary>
+        internal static string FamilyFriends {
+            get {
+                return ResourceManager.GetString("FamilyFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friends.
+        /// </summary>
+        internal static string Friends {
+            get {
+                return ResourceManager.GetString("Friends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friends Since:.
+        /// </summary>
+        internal static string FriendsSince {
+            get {
+                return ResourceManager.GetString("FriendsSince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type:.
+        /// </summary>
+        internal static string FriendType {
+            get {
+                return ResourceManager.GetString("FriendType", resourceCulture);
             }
         }
         
@@ -601,6 +664,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Parents.
+        /// </summary>
+        internal static string ParentsFriends {
+            get {
+                return ResourceManager.GetString("ParentsFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Personal Friends.
+        /// </summary>
+        internal static string PersonalFriends {
+            get {
+                return ResourceManager.GetString("PersonalFriends", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photo.
         /// </summary>
         internal static string Photo {
@@ -709,6 +790,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show:.
+        /// </summary>
+        internal static string Show {
+            get {
+                return ResourceManager.GetString("Show", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Timeline before:.
         /// </summary>
         internal static string ShowTimelineBefore {
@@ -741,6 +831,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string SleepRecordedInTheLastYear {
             get {
                 return ResourceManager.GetString("SleepRecordedInTheLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sort By:.
+        /// </summary>
+        internal static string SortBy {
+            get {
+                return ResourceManager.GetString("SortBy", resourceCulture);
             }
         }
         
@@ -786,6 +885,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string TotalSleepRecorded {
             get {
                 return ResourceManager.GetString("TotalSleepRecorded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Toys/Animals.
+        /// </summary>
+        internal static string ToyFriends {
+            get {
+                return ResourceManager.GetString("ToyFriends", resourceCulture);
             }
         }
         

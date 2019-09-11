@@ -2906,5 +2906,87 @@ namespace KinaUnaXamarin.Services
                 return sleepList;
             }
         }
+
+        public static async Task<List<Friend>> GetFriendsList(int progenyId, int accessLevel, string userTimeZone)
+        {
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
+            }
+            catch (Exception)
+            {
+                userTimeZone = TZConvert.WindowsToIana(userTimeZone);
+            }
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/publicaccess/progenyfriendsmobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var friendsString = await result.Content.ReadAsStringAsync();
+                        List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
+                        if (frnList.Any())
+                        {
+                            foreach (Friend frnItem in frnList)
+                            {
+                                if (frnItem.FriendSince.HasValue)
+                                {
+                                    frnItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(frnItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                }
+                            }
+                        }
+                        await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        return frnList;
+                    }
+                    else
+                    {
+                        return new List<Friend>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/friends/progenymobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var friendsString = await result.Content.ReadAsStringAsync();
+                        List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
+                        if (frnList.Any())
+                        {
+                            foreach (Friend frnItem in frnList)
+                            {
+                                if (frnItem.FriendSince.HasValue)
+                                {
+                                    frnItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(frnItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                }
+                            }
+                        }
+                        await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        return frnList;
+                    }
+                    else
+                    {
+                        return new List<Friend>();
+                    }
+                }
+            }
+            else
+            {
+                string friendsString = await SecureStorage.GetAsync("FriendList" + progenyId + "Al" + accessLevel);
+                List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
+                return frnList;
+            }
+        }
     }
 }
