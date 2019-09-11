@@ -381,4 +381,25 @@
   <data name="ChartType" xml:space="preserve">
     <value>Chart Type:</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="AverageSleepPerDay" xml:space="preserve">
+    <value>Average sleep per day:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLast30Days" xml:space="preserve">
+    <value>Average sleep per day in the last 30 days:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLastYear" xml:space="preserve">
+    <value>Average sleep per day in the last year:</value>
+  </data>
+  <data name="SleepRecordedInTheLast30Days" xml:space="preserve">
+    <value>Sleep recorded in the last 30 days:</value>
+  </data>
+  <data name="SleepRecordedInTheLastYear" xml:space="preserve">
+    <value>Sleep recorded in the last year:</value>
+  </data>
+  <data name="TotalSleepRecorded" xml:space="preserve">
+    <value>Total sleep recorded:</value>
+  </data>
 </root>

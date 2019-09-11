@@ -178,6 +178,42 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Apply.
+        /// </summary>
+        internal static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average sleep per day:.
+        /// </summary>
+        internal static string AverageSleepPerDay {
+            get {
+                return ResourceManager.GetString("AverageSleepPerDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average sleep per day in the last 30 days:.
+        /// </summary>
+        internal static string AverageSleepPerDayInTheLast30Days {
+            get {
+                return ResourceManager.GetString("AverageSleepPerDayInTheLast30Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Average sleep per day in the last year:.
+        /// </summary>
+        internal static string AverageSleepPerDayInTheLastYear {
+            get {
+                return ResourceManager.GetString("AverageSleepPerDayInTheLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Birthday.
         /// </summary>
         internal static string Birthday {
@@ -691,6 +727,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sleep recorded in the last 30 days:.
+        /// </summary>
+        internal static string SleepRecordedInTheLast30Days {
+            get {
+                return ResourceManager.GetString("SleepRecordedInTheLast30Days", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sleep recorded in the last year:.
+        /// </summary>
+        internal static string SleepRecordedInTheLastYear {
+            get {
+                return ResourceManager.GetString("SleepRecordedInTheLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string Start {
@@ -723,6 +777,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string TimeZone {
             get {
                 return ResourceManager.GetString("TimeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Total sleep recorded:.
+        /// </summary>
+        internal static string TotalSleepRecorded {
+            get {
+                return ResourceManager.GetString("TotalSleepRecorded", resourceCulture);
             }
         }
         

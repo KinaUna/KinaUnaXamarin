@@ -381,4 +381,25 @@
   <data name="ChartType" xml:space="preserve">
     <value>Diagramm Typ</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Anwenden</value>
+  </data>
+  <data name="AverageSleepPerDay" xml:space="preserve">
+    <value>Durchschnit pro Tag:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLast30Days" xml:space="preserve">
+    <value>Durschnit pro Tag in den letzten 30 Tage:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLastYear" xml:space="preserve">
+    <value>Durschnit pro Tag im letzten Jahr:</value>
+  </data>
+  <data name="SleepRecordedInTheLast30Days" xml:space="preserve">
+    <value>Schlaf in den letzten 30 Tage erfasst:</value>
+  </data>
+  <data name="SleepRecordedInTheLastYear" xml:space="preserve">
+    <value>Schlaf im letzten Jahr erfasst:</value>
+  </data>
+  <data name="TotalSleepRecorded" xml:space="preserve">
+    <value>Schlaf Gesamtaufnahme:</value>
+  </data>
 </root>

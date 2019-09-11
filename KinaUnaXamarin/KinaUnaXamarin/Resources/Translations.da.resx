@@ -381,4 +381,25 @@
   <data name="ChartType" xml:space="preserve">
     <value>Diagram type:</value>
   </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Anvend</value>
+  </data>
+  <data name="AverageSleepPerDay" xml:space="preserve">
+    <value>Gennemsnitlig søvn per dag:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLast30Days" xml:space="preserve">
+    <value>Gennemsnitlig søvn per dag de seneste 30 dage:</value>
+  </data>
+  <data name="AverageSleepPerDayInTheLastYear" xml:space="preserve">
+    <value>Gennemsnitlig søvn per dag i det seneste år:</value>
+  </data>
+  <data name="SleepRecordedInTheLast30Days" xml:space="preserve">
+    <value>Søvn noteret i de seneste 30 dage:</value>
+  </data>
+  <data name="SleepRecordedInTheLastYear" xml:space="preserve">
+    <value>Søvn noteret i det seneste år:</value>
+  </data>
+  <data name="TotalSleepRecorded" xml:space="preserve">
+    <value>Samlet søvn noteret:</value>
+  </data>
 </root>

@@ -38,17 +38,17 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="Total sleep recorded: " Margin="5"></Label>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate TotalSleepRecorded}" Margin="5"></Label>
                             <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="1" Grid.Column="0" Text="Average sleep per day: " Margin="5"></Label>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDay}" Margin="5"></Label>
                             <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="2" Grid.Column="0" Text="Sleep recorded in the last year: " Margin="5"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLastYear}" Margin="5"></Label>
                             <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="3" Grid.Column="0" Text="Average sleep per day in the last year: " Margin="5"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLastYear}" Margin="5"></Label>
                             <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="4" Grid.Column="0" Text="Sleep recorded in the last 30 days: " Margin="5"></Label>
+                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLast30Days}" Margin="5"></Label>
                             <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="5" Grid.Column="0" Text="Average sleep per day in the last 30 days: " Margin="5"></Label>
+                            <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLast30Days} " Margin="5"></Label>
                             <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}" Margin="5"></Label>
                         </Grid>
                     </Frame>
@@ -69,10 +69,9 @@
                 <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding LastDate}"></DatePicker>
                 <!--<Label Text="{i18n:Translate ChartType}"></Label>-->
                 <!--<Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>-->
-                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Save}"></Button>
+                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>
-        
     </ContentPage.Content>
 </ContentPage>
