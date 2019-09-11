@@ -32,6 +32,8 @@ namespace KinaUnaXamarin.ViewModels
         private DateTime _startDate;
         private DateTime _endDate;
         private DateTime _todayDate;
+        private DateTime _firstDate;
+        private DateTime _lastDate;
         private List<string> _chartTypeList;
         private double _maxValue;
         private double _minValue;
@@ -45,8 +47,8 @@ namespace KinaUnaXamarin.ViewModels
             ProgenyCollection = new ObservableCollection<Progeny>();
             SleepItems = new ObservableRangeCollection<Sleep>();
             SleepStats = new SleepStatsModel();
-            _todayDate = DateTime.Now;
-            _startDate = DateTime.Now - TimeSpan.FromDays(14);
+            _lastDate = _todayDate = DateTime.Now;
+            _firstDate = _startDate = DateTime.Now - TimeSpan.FromDays(14);
             _endDate = DateTime.Now;
             _maxValue = 24;
             _minValue = 0;
@@ -115,6 +117,18 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _endDate;
             set => SetProperty(ref _endDate, value);
+        }
+
+        public DateTime FirstDate
+        {
+            get => _firstDate;
+            set => SetProperty(ref _firstDate, value);
+        }
+
+        public DateTime LastDate
+        {
+            get => _lastDate;
+            set => SetProperty(ref _lastDate, value);
         }
 
         public TimeSpan SleepTotal {

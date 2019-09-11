@@ -244,6 +244,9 @@ namespace KinaUnaXamarin.Views
             
             double maxSleep = 0;
             double minSleep = 24;
+            DateTime firstSleepItem = _viewModel.EndDate;
+            DateTime lastSleepItem = _viewModel.StartDate;
+
             foreach (Sleep slp in _viewModel.SleepItems)
             {
                 if (slp.SleepStart >= StartDatePicker.Date && slp.SleepStart <= EndDatePicker.Date)
@@ -262,23 +265,33 @@ namespace KinaUnaXamarin.Views
                         minSleep = slp.SleepDurDouble;
                     }
                 }
-                
+                if (slp.SleepStart < firstSleepItem)
+                {
+                    firstSleepItem = slp.SleepStart;
+                }
+
+                if (slp.SleepStart > lastSleepItem)
+                {
+                    lastSleepItem = slp.SleepStart;
+                }
             }
 
             _viewModel.MinValue = Math.Floor(minSleep);
             _viewModel.MaxValue = Math.Ceiling(maxSleep);
+            _viewModel.FirstDate = firstSleepItem;
+            _viewModel.LastDate = lastSleepItem;
 
             LinearAxis durationAxis = new LinearAxis();
             durationAxis.Key = "DurationAxis";
             durationAxis.Minimum = 0; //_viewModel.MinValue -1;
             durationAxis.Maximum = _viewModel.MaxValue; // + 1;
             durationAxis.Position = AxisPosition.Left;
-            durationAxis.MajorStep = 5;
-            durationAxis.MinorStep = 1;
+            durationAxis.MajorStep = 1;
+            durationAxis.MinorStep = 0.5;
             durationAxis.MajorGridlineStyle = LineStyle.Solid;
             durationAxis.MinorGridlineStyle = LineStyle.Solid;
-            durationAxis.MajorGridlineColor = OxyColors.LightGreen;
-            durationAxis.MinorGridlineColor = OxyColors.LightBlue;
+            durationAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
+            durationAxis.MinorGridlineColor = OxyColor.FromRgb(230, 220, 200);
             durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
            
             DateTimeAxis dateAxis = new DateTimeAxis();

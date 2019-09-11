@@ -17,54 +17,60 @@
         <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
+        <Grid BackgroundColor="DarkGray">
             <ScrollView>
-                <StackLayout>
-                    <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                        <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-                    </StackLayout>
-                    <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
-                            BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-                    <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
-                        <Label Text="{i18n:Translate Start}"></Label>
-                        <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" MinimumDate="{Binding Progeny.BirthDay}" MaximumDate="{Binding Source={x:Reference EndDatePicker}, Path=Date}"></DatePicker>
-                        <Label Text="{i18n:Translate End}"></Label>
-                        <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding TodayDate}"></DatePicker>
-                        <Label Text="{i18n:Translate ChartType}"></Label>
-                        <!--<Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>-->
-                        <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Save}"></Button>
-                    </StackLayout>
-                    <Grid x:Name="SleepStatsGrid" Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition></ColumnDefinition>
-                            <ColumnDefinition></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="500"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Total sleep recorded: "></Label>
-                        <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}"></Label>
-                        <Label Grid.Row="1" Grid.Column="0" Text="Average sleep per day: "></Label>
-                        <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}"></Label>
-                        <Label Grid.Row="2" Grid.Column="0" Text="Sleep recorded in the last year: "></Label>
-                        <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}"></Label>
-                        <Label Grid.Row="3" Grid.Column="0" Text="Average sleep per day in the last year: "></Label>
-                        <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}"></Label>
-                        <Label Grid.Row="4" Grid.Column="0" Text="Sleep recorded in the last 30 days: "></Label>
-                        <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}"></Label>
-                        <Label Grid.Row="5" Grid.Column="0" Text="Average sleep per day in the last 30 days: "></Label>
-                        <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}"></Label>
-                        <oxy:PlotView Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Model="{Binding SleepPlotModel}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
-                    </Grid>
-                </StackLayout>
-                
+                <Grid x:Name="SleepStatsGrid" Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="500"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Frame Grid.Row="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition></ColumnDefinition>
+                                <ColumnDefinition></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Total sleep recorded: " Margin="5"></Label>
+                            <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="1" Grid.Column="0" Text="Average sleep per day: " Margin="5"></Label>
+                            <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="Sleep recorded in the last year: " Margin="5"></Label>
+                            <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="3" Grid.Column="0" Text="Average sleep per day in the last year: " Margin="5"></Label>
+                            <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="4" Grid.Column="0" Text="Sleep recorded in the last 30 days: " Margin="5"></Label>
+                            <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="5" Grid.Column="0" Text="Average sleep per day in the last 30 days: " Margin="5"></Label>
+                            <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}" Margin="5"></Label>
+                        </Grid>
+                    </Frame>
+                    <Frame Grid.Row="1">
+                        <oxy:PlotView  Model="{Binding SleepPlotModel}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
+                    </Frame>
+                </Grid>
             </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
+                <Label Text="{i18n:Translate Start}"></Label>
+                <DatePicker x:Name="StartDatePicker" Date="{Binding StartDate}" MinimumDate="{Binding FirstDate}" MaximumDate="{Binding Source={x:Reference EndDatePicker}, Path=Date}"></DatePicker>
+                <Label Text="{i18n:Translate End}"></Label>
+                <DatePicker x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding LastDate}"></DatePicker>
+                <!--<Label Text="{i18n:Translate ChartType}"></Label>-->
+                <!--<Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>-->
+                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Save}"></Button>
+            </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>
         
