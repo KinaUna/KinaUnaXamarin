@@ -221,93 +221,100 @@ namespace KinaUnaXamarin.Views
             _viewModel.SleepStats =
                 await ProgenyService.GetSleepStats(_viewChild, _viewModel.UserAccessLevel);
 
-            _viewModel.SleepTotal = _viewModel.SleepStats.SleepTotal;
-            _viewModel.TotalAverage = _viewModel.SleepStats.TotalAverage;
-            _viewModel.SleepLastMonth = _viewModel.SleepStats.SleepLastMonth;
-            _viewModel.LastMonthAverage = _viewModel.SleepStats.LastMonthAverage;
-            _viewModel.SleepLastYear = _viewModel.SleepStats.SleepLastYear;
-            _viewModel.LastYearAverage = _viewModel.SleepStats.LastYearAverage;
+            if (_viewModel.SleepStats != null)
+            {
+                _viewModel.SleepTotal = _viewModel.SleepStats.SleepTotal;
+                _viewModel.TotalAverage = _viewModel.SleepStats.TotalAverage;
+                _viewModel.SleepLastMonth = _viewModel.SleepStats.SleepLastMonth;
+                _viewModel.LastMonthAverage = _viewModel.SleepStats.LastMonthAverage;
+                _viewModel.SleepLastYear = _viewModel.SleepStats.SleepLastYear;
+                _viewModel.LastYearAverage = _viewModel.SleepStats.LastYearAverage;
+            }
+            
 
             List<Sleep> sleepList =
                 await ProgenyService.GetSleepChartData(_viewChild, _viewModel.UserAccessLevel);
             _viewModel.SleepItems.ReplaceRange(sleepList);
-            //List<Microcharts.Entry> chartsEntryList = new List<Entry>();
-            LineSeries sleepSeries = new LineSeries()
+            if (sleepList != null && sleepList.Count > 0)
             {
-                Color = OxyColors.DarkGreen,
-                MarkerType = MarkerType.Circle,
-                MarkerSize = 3,
-                MarkerStroke = OxyColors.White,
-                MarkerFill = OxyColors.Green,
-                MarkerStrokeThickness = 1.5
-            };
-            
-            double maxSleep = 0;
-            double minSleep = 24;
-            DateTime firstSleepItem = _viewModel.EndDate;
-            DateTime lastSleepItem = _viewModel.StartDate;
-
-            foreach (Sleep slp in _viewModel.SleepItems)
-            {
-                if (slp.SleepStart >= StartDatePicker.Date && slp.SleepStart <= EndDatePicker.Date)
+                LineSeries sleepSeries = new LineSeries()
                 {
-                    slp.SleepStart = slp.SleepStart.Date;
-                    slp.SleepDurDouble = slp.SleepDuration.TotalMinutes / 60.0;
-                    double startDateDouble = DateTimeAxis.ToDouble(slp.SleepStart.Date);
-                    sleepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
-                    if (slp.SleepDurDouble > maxSleep)
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5
+                };
+
+                double maxSleep = 0;
+                double minSleep = 24;
+                DateTime firstSleepItem = _viewModel.EndDate;
+                DateTime lastSleepItem = _viewModel.StartDate;
+
+                foreach (Sleep slp in _viewModel.SleepItems)
+                {
+                    if (slp.SleepStart >= StartDatePicker.Date && slp.SleepStart <= EndDatePicker.Date)
                     {
-                        maxSleep = slp.SleepDurDouble;
+                        slp.SleepStart = slp.SleepStart.Date;
+                        slp.SleepDurDouble = slp.SleepDuration.TotalMinutes / 60.0;
+                        double startDateDouble = DateTimeAxis.ToDouble(slp.SleepStart.Date);
+                        sleepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                        if (slp.SleepDurDouble > maxSleep)
+                        {
+                            maxSleep = slp.SleepDurDouble;
+                        }
+
+                        if (slp.SleepDurDouble < minSleep)
+                        {
+                            minSleep = slp.SleepDurDouble;
+                        }
+                    }
+                    if (slp.SleepStart < firstSleepItem)
+                    {
+                        firstSleepItem = slp.SleepStart;
                     }
 
-                    if (slp.SleepDurDouble < minSleep)
+                    if (slp.SleepStart > lastSleepItem)
                     {
-                        minSleep = slp.SleepDurDouble;
+                        lastSleepItem = slp.SleepStart;
                     }
                 }
-                if (slp.SleepStart < firstSleepItem)
-                {
-                    firstSleepItem = slp.SleepStart;
-                }
 
-                if (slp.SleepStart > lastSleepItem)
-                {
-                    lastSleepItem = slp.SleepStart;
-                }
+                _viewModel.MinValue = Math.Floor(minSleep);
+                _viewModel.MaxValue = Math.Ceiling(maxSleep);
+                _viewModel.FirstDate = firstSleepItem;
+                _viewModel.LastDate = lastSleepItem;
+
+                LinearAxis durationAxis = new LinearAxis();
+                durationAxis.Key = "DurationAxis";
+                durationAxis.Minimum = 0; //_viewModel.MinValue -1;
+                durationAxis.Maximum = _viewModel.MaxValue; // + 1;
+                durationAxis.Position = AxisPosition.Left;
+                durationAxis.MajorStep = 1;
+                durationAxis.MinorStep = 0.5;
+                durationAxis.MajorGridlineStyle = LineStyle.Solid;
+                durationAxis.MinorGridlineStyle = LineStyle.Solid;
+                durationAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
+                durationAxis.MinorGridlineColor = OxyColor.FromRgb(230, 220, 200);
+                durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+
+                DateTimeAxis dateAxis = new DateTimeAxis();
+                dateAxis.Key = "DateAxis";
+                dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
+                dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
+                dateAxis.Position = AxisPosition.Bottom;
+                dateAxis.IntervalType = DateTimeIntervalType.Days;
+                dateAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+                dateAxis.StringFormat = "dd-MMM-yyyy";
+
+                _viewModel.SleepPlotModel = new PlotModel();
+                _viewModel.SleepPlotModel.Background = OxyColors.White;
+                _viewModel.SleepPlotModel.Axes.Add(durationAxis);
+                _viewModel.SleepPlotModel.Axes.Add(dateAxis);
+                _viewModel.SleepPlotModel.Series.Add(sleepSeries);
             }
-
-            _viewModel.MinValue = Math.Floor(minSleep);
-            _viewModel.MaxValue = Math.Ceiling(maxSleep);
-            _viewModel.FirstDate = firstSleepItem;
-            _viewModel.LastDate = lastSleepItem;
-
-            LinearAxis durationAxis = new LinearAxis();
-            durationAxis.Key = "DurationAxis";
-            durationAxis.Minimum = 0; //_viewModel.MinValue -1;
-            durationAxis.Maximum = _viewModel.MaxValue; // + 1;
-            durationAxis.Position = AxisPosition.Left;
-            durationAxis.MajorStep = 1;
-            durationAxis.MinorStep = 0.5;
-            durationAxis.MajorGridlineStyle = LineStyle.Solid;
-            durationAxis.MinorGridlineStyle = LineStyle.Solid;
-            durationAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
-            durationAxis.MinorGridlineColor = OxyColor.FromRgb(230, 220, 200);
-            durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
-           
-            DateTimeAxis dateAxis = new DateTimeAxis();
-            dateAxis.Key = "DateAxis";
-            dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
-            dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
-            dateAxis.Position = AxisPosition.Bottom;
-            dateAxis.IntervalType = DateTimeIntervalType.Days;
-            dateAxis.AxislineColor = OxyColor.FromRgb(0, 0,0);
-            dateAxis.StringFormat = "dd-MMM-yyyy";
-
-            _viewModel.SleepPlotModel = new PlotModel();
-            _viewModel.SleepPlotModel.Background = OxyColors.White;
-            _viewModel.SleepPlotModel.Axes.Add(durationAxis);
-            _viewModel.SleepPlotModel.Axes.Add(dateAxis);
-            _viewModel.SleepPlotModel.Series.Add(sleepSeries);
+            
             
             _viewModel.IsBusy = false;
         }

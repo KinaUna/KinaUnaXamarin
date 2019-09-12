@@ -10,43 +10,48 @@
              Title="{i18n:Translate AddItem}"
              BackgroundColor="#3A2051">
     <ContentPage.Content>
-        <ScrollView>
-            <StackLayout Orientation="Vertical" Margin="10">
-                <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
-                <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="models:AddItemModel">
-                            <Grid Padding="10" Margin="0" >
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="30" />
-                                    <RowDefinition Height="30" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <BoxView Color="{Binding BackgroundColor}" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+        <Grid>
+            <ScrollView>
+                <StackLayout Orientation="Vertical" Margin="10">
+                    <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
+                    <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:AddItemModel">
+                                <Grid Padding="10" Margin="0" >
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30" />
+                                        <RowDefinition Height="30" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView Color="{Binding BackgroundColor}" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                    <Label Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                                        Text="{Binding Icon}" 
                                        FontFamily="{StaticResource MaterialFontFamily}"
                                        FontSize="32"
                                        TextColor="White"
                                        HorizontalTextAlignment="End"  VerticalTextAlignment="Center"/>
-                                <Label Grid.Row="0" Grid.Column="1"
+                                    <Label Grid.Row="0" Grid.Column="1"
                                    Text="{Binding Name}"
                                    FontAttributes="Bold"
                                    FontSize="16"
                                    TextColor="White"
                                    Margin="20, 10 , 0, 0"/>
-                                <Label Grid.Row="1" Grid.Column="1"
+                                    <Label Grid.Row="1" Grid.Column="1"
                                    Text="{Binding Description}"
                                    TextColor="DarkSlateGray"
                                    Margin="20, 0, 0, 0"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </StackLayout>
+            </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
-        </ScrollView>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -377,8 +377,11 @@ namespace KinaUnaXamarin.Views
 
         private async void CommentsClicked(object sender, EventArgs e)
         {
-            CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
-            await Shell.Current.Navigation.PushModalAsync(commentsPage);
+            if (_photoDetailViewModel.IsLoggedIn)
+            {
+                CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
+                await Shell.Current.Navigation.PushModalAsync(commentsPage);
+            }
         }
 
         private void FrameOnTap(object sender, EventArgs e)

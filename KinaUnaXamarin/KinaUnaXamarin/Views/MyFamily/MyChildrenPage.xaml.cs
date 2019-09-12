@@ -24,7 +24,10 @@ namespace KinaUnaXamarin.Views
         private string _filePath;
         private bool _reload;
         private int _selectedProgenyId;
-
+        private int _viewChild = Constants.DefaultChildId;
+        private UserInfo _userInfo;
+        private string _accessToken;
+       
         public MyChildrenPage()
         {
             InitializeComponent();
@@ -32,7 +35,7 @@ namespace KinaUnaXamarin.Views
             _myChildrenViewModel.AnyChildren = true;
             _reload = true;
             BindingContext = _myChildrenViewModel;
-            ProgenyCollectionView.ItemsSource = _myChildrenViewModel.ProgenyCollection;
+            ProgenyCollectionView.ItemsSource = _myChildrenViewModel.ProgenyAdminCollection;
             IReadOnlyCollection<TimeZoneInfo> timeZoneList = TimeZoneInfo.GetSystemTimeZones();
             foreach (TimeZoneInfo timeZoneInfo in timeZoneList)
             {
@@ -43,8 +46,21 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                OfflineStackLayout.IsVisible = false;
+                EditButton.IsEnabled = true;
+            }
+            else
+            {
+                OfflineStackLayout.IsVisible = true;
+                EditButton.IsEnabled = false;
+            }
+
             if (_reload)
             {
                 _reload = false;
@@ -68,11 +84,110 @@ namespace KinaUnaXamarin.Views
             }
         }
 
+        private async Task CheckAccount()
+        {
+            string userEmail = await UserService.GetUserEmail();
+            _accessToken = await UserService.GetAuthAccessToken();
+            bool accessTokenCurrent = false;
+            if (_accessToken != "")
+            {
+                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
+                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+
+                if (!accessTokenCurrent)
+                {
+                    bool loginSuccess = await UserService.LoginIdsAsync();
+                    if (loginSuccess)
+                    {
+                        _accessToken = await UserService.GetAuthAccessToken();
+                        accessTokenCurrent = true;
+                    }
+
+                    await Reload();
+                }
+            }
+
+            if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
+            {
+
+                _myChildrenViewModel.IsLoggedIn = false;
+                _myChildrenViewModel.LoggedOut = true;
+                EditButton.IsVisible = false;
+                _accessToken = "";
+                _userInfo = OfflineDefaultData.DefaultUserInfo;
+
+            }
+            else
+            {
+                _myChildrenViewModel.IsLoggedIn = true;
+                _myChildrenViewModel.LoggedOut = false;
+                EditButton.IsVisible = true;
+                _userInfo = await UserService.GetUserInfo(userEmail);
+            }
+
+            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+            bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
+            if (!viewchildParsed)
+            {
+                _viewChild = _userInfo.ViewChild;
+            }
+            if (_viewChild == 0)
+            {
+                if (_userInfo.ViewChild != 0)
+                {
+                    _viewChild = _userInfo.ViewChild;
+                }
+                else
+                {
+                    _viewChild = Constants.DefaultChildId;
+                }
+            }
+
+            if (String.IsNullOrEmpty(_userInfo.Timezone))
+            {
+                _userInfo.Timezone = Constants.DefaultTimeZone;
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
+            }
+            catch (Exception)
+            {
+                _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
+            }
+
+            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
+            }
+            catch (Exception)
+            {
+                progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
+            }
+            _myChildrenViewModel.Progeny = progeny;
+
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
+            _myChildrenViewModel.ProgenyCollection.Clear();
+            _myChildrenViewModel.CanUserAddItems = false;
+            foreach (Progeny prog in progenyList)
+            {
+                _myChildrenViewModel.ProgenyCollection.Add(prog);
+                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                {
+                    _myChildrenViewModel.CanUserAddItems = true;
+                }
+            }
+
+            _myChildrenViewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+        }
+
         private async Task Reload()
         {
             _myChildrenViewModel.IsBusy = true;
             _myChildrenViewModel.EditMode = false;
-            _myChildrenViewModel.ProgenyCollection.Clear();
+            _myChildrenViewModel.ProgenyAdminCollection.Clear();
+            await CheckAccount();
             await ProgenyService.GetProgenyList(await UserService.GetUserEmail());
             List<Progeny> progenyList = await ProgenyService.GetProgenyAdminList();
             if (progenyList.Any())
@@ -88,29 +203,29 @@ namespace KinaUnaXamarin.Views
                     {
                         progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
                     }
-                    _myChildrenViewModel.ProgenyCollection.Add(progeny);
+                    _myChildrenViewModel.ProgenyAdminCollection.Add(progeny);
                 }
 
                 if (_selectedProgenyId == 0)
                 {
                     string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                     bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                    Progeny viewProgeny = _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    Progeny viewProgeny = _myChildrenViewModel.ProgenyAdminCollection.SingleOrDefault(p => p.Id == viewChild);
                     if (viewProgeny != null)
                     {
                         ProgenyCollectionView.SelectedItem =
-                            _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                            _myChildrenViewModel.ProgenyAdminCollection.SingleOrDefault(p => p.Id == viewChild);
                         ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
                     }
                     else
                     {
-                        ProgenyCollectionView.SelectedItem = _myChildrenViewModel.ProgenyCollection[0];
+                        ProgenyCollectionView.SelectedItem = _myChildrenViewModel.ProgenyAdminCollection[0];
                     }
                 }
                 else
                 {
                     ProgenyCollectionView.SelectedItem =
-                        _myChildrenViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == _selectedProgenyId);
+                        _myChildrenViewModel.ProgenyAdminCollection.SingleOrDefault(p => p.Id == _selectedProgenyId);
                     ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
                 }
 
@@ -284,6 +399,5 @@ namespace KinaUnaXamarin.Views
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
-        
     }
 }

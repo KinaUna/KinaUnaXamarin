@@ -11,7 +11,7 @@ namespace KinaUnaXamarin
         public const string RegisterUserUrl = "https://auth.kinauna.com/api/register";
         public const string DefaultTimeZone = "Romance Standard Time";
         public const string DummyEmail = "testuser@niviaq.com";
-        public const string ProfilePicture = "https://web.kinauna.com/photodb/0/profile.jpg";
+        public const string ProfilePicture = "https://web.kinauna.com/photodb/profile.jpg";
 
         public const int DefaultChildId = 2;
 

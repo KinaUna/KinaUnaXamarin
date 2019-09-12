@@ -260,6 +260,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string commentsListString = await SecureStorage.GetAsync("CommentThread" + commentThread);
+                if (string.IsNullOrEmpty(commentsListString))
+                {
+                    return new List<Comment>();
+                }
                 List<Comment> commentsList = JsonConvert.DeserializeObject<List<Comment>>(commentsListString);
                 return commentsList;
             }
@@ -352,6 +356,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string progenyListString = await SecureStorage.GetAsync("ProgenyList" + userEmail);
+                if (string.IsNullOrEmpty(progenyListString))
+                {
+                    return new List<Progeny>();
+                }
                 List<Progeny> progenyList = JsonConvert.DeserializeObject<List<Progeny>>(progenyListString);
                 return progenyList;
             }
@@ -498,7 +506,6 @@ namespace KinaUnaXamarin.Services
                             picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value,
                                 TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         }
-
                     }
                     ImageService.Instance.LoadUrl(picture.PictureLink).Preload();
                     return picture;
@@ -532,7 +539,6 @@ namespace KinaUnaXamarin.Services
                             picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value,
                                 TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
                         }
-
                     }
                     ImageService.Instance.LoadUrl(picture.PictureLink).Preload();
                     return picture;
@@ -606,6 +612,10 @@ namespace KinaUnaXamarin.Services
             {
                 string eventListString =
                     await SecureStorage.GetAsync("UpcommingEvents" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(eventListString))
+                {
+                    return new List<CalendarItem>();
+                }
                 List<CalendarItem> evtList = JsonConvert.DeserializeObject<List<CalendarItem>>(eventListString);
                 return evtList;
             }
@@ -681,6 +691,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string timlineListString = await SecureStorage.GetAsync("Timeline" + progenyId + "Al" + accessLevel + "Cnt" + count + "Strt" + start);
+                if (string.IsNullOrEmpty(timlineListString))
+                {
+                    return new List<TimeLineItem>();
+                }
                 timeLineLatest = JsonConvert.DeserializeObject<List<TimeLineItem>>(timlineListString);
             }
             string currentDate = lastItemDateText;
@@ -832,6 +846,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string timlineListString = await SecureStorage.GetAsync("YearAgo" + progenyId + "Al" + accessLevel + "Date" + DateTime.Today.DayOfYear);
+                if (string.IsNullOrEmpty(timlineListString))
+                {
+                    return new List<TimeLineItem>();
+                }
                 timeLineYearAgo = JsonConvert.DeserializeObject<List<TimeLineItem>>(timlineListString);
             }
 
@@ -959,6 +977,10 @@ namespace KinaUnaXamarin.Services
                 {
                     string timelineString =
                         await SecureStorage.GetAsync("TimelineLatest" + progenyId + "Al" + accessLevel);
+                    if (string.IsNullOrEmpty(timelineString))
+                    {
+                        return new List<TimeLineItem>();
+                    }
                     timeLineLatest = JsonConvert.DeserializeObject<List<TimeLineItem>>(timelineString);
                 }
             }
@@ -985,6 +1007,10 @@ namespace KinaUnaXamarin.Services
                 {
                     string timelineString =
                         await SecureStorage.GetAsync("TimelineLatest" + progenyId + "Al" + accessLevel);
+                    if (string.IsNullOrEmpty(timelineString))
+                    {
+                        return new List<TimeLineItem>();
+                    }
                     timeLineLatest = JsonConvert.DeserializeObject<List<TimeLineItem>>(timelineString);
                 }
 
@@ -1138,6 +1164,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string picturestring = await SecureStorage.GetAsync("Picture" + pictureId);
+                if (string.IsNullOrEmpty(picturestring))
+                {
+                    return new Picture();
+                }
                 Picture picture = JsonConvert.DeserializeObject<Picture>(picturestring);
                 return picture;
             }
@@ -1305,6 +1335,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string picturePageString = await SecureStorage.GetAsync("PicturePage" + progenyId + "Page" + pageNumber + "Size" + pageSize);
+                if (string.IsNullOrEmpty(picturePageString))
+                {
+                    return new PicturePage();
+                }
                 PicturePage picturePage = JsonConvert.DeserializeObject<PicturePage>(picturePageString);
                 return picturePage;
             }
@@ -1388,6 +1422,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string pictureViewString = await SecureStorage.GetAsync("PictureViewModel" + pictureId);
+                if (string.IsNullOrEmpty(pictureViewString))
+                {
+                    return new PictureViewModel();
+                }
                 PictureViewModel pictureViewModel = JsonConvert.DeserializeObject<PictureViewModel>(pictureViewString);
                 return pictureViewModel;
             }
@@ -1458,6 +1496,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string videostring = await SecureStorage.GetAsync("Video" + videoId);
+                if (string.IsNullOrEmpty(videostring))
+                {
+                    return new Video();
+                }
                 Video video = JsonConvert.DeserializeObject<Video>(videostring);
                 return video;
             }
@@ -1474,67 +1516,81 @@ namespace KinaUnaXamarin.Services
                 userTimezone = TZConvert.WindowsToIana(userTimezone);
             }
 
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(Constants.MediaApiUrl);
-
-            string accessToken = await UserService.GetAuthAccessToken();
-
-            // If user is not logged in.
-            if (String.IsNullOrEmpty(accessToken))
+            if (Online())
             {
-                
-                string pageApiPath = "api/publicaccess/videopagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&sortBy=" + sortBy;
-                var result = await client.GetAsync(pageApiPath).ConfigureAwait(false); 
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
 
-                if (result.IsSuccessStatusCode)
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
                 {
-                    var videoPageString = await result.Content.ReadAsStringAsync();
-                    VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
-                    foreach (Video video in videoPage.VideosList)
+
+                    string pageApiPath = "api/publicaccess/videopagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&sortBy=" + sortBy;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
                     {
-                        if (video.VideoTime.HasValue)
+                        var videoPageString = await result.Content.ReadAsStringAsync();
+                        VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
+                        foreach (Video video in videoPage.VideosList)
                         {
-                            video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            if (video.VideoTime.HasValue)
+                            {
+                                video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+
+                            video.CommentsCount = video.Comments.Count;
                         }
-
-                        video.CommentsCount = video.Comments.Count;
+                        await SecureStorage.SetAsync("VideoPage" + pageNumber + "Size" + pageSize + "Progeny" + progenyId + "Al" + userAccessLevel + "TagFilter" + tagFilter + "SortBy" + sortBy, JsonConvert.SerializeObject(videoPage));
+                        return videoPage;
                     }
-
-                    return videoPage;
+                    else
+                    {
+                        return new VideoPage();
+                    }
                 }
-                else
+                else // User is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    string pageApiPath = "api/videos/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var videoPageString = await result.Content.ReadAsStringAsync();
+                        VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
+                        foreach (Video video in videoPage.VideosList)
+                        {
+                            if (video.VideoTime.HasValue)
+                            {
+                                video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+
+                            video.CommentsCount = video.Comments.Count;
+                        }
+                        await SecureStorage.SetAsync("VideoPage" + pageNumber + "Size" + pageSize + "Progeny" + progenyId + "Al" + userAccessLevel + "TagFilter" + tagFilter + "SortBy" + sortBy, JsonConvert.SerializeObject(videoPage));
+                        return videoPage;
+                    }
+                    else
+                    {
+                        return new VideoPage();
+                    }
+                }
+            }
+            else
+            {
+                string videoPageString = await SecureStorage.GetAsync("VideoPage" + pageNumber + "Size" + pageSize + "Progeny" + progenyId + "Al" + userAccessLevel + "TagFilter" + tagFilter + "SortBy" + sortBy);
+                if (string.IsNullOrEmpty(videoPageString))
                 {
                     return new VideoPage();
                 }
+                VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
+                return videoPage;
             }
-            else // User is logged in.
-            {
-                client.SetBearerToken(accessToken);
-
-                string pageApiPath = "api/videos/pagemobile?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + userAccessLevel + "&tagFilter=" + tagFilter + "&sortBy=" + sortBy;
-                var result = await client.GetAsync(pageApiPath).ConfigureAwait(false); 
-
-                if (result.IsSuccessStatusCode)
-                {
-                    var videoPageString = await result.Content.ReadAsStringAsync();
-                    VideoPage videoPage = JsonConvert.DeserializeObject<VideoPage>(videoPageString);
-                    foreach (Video video in videoPage.VideosList)
-                    {
-                        if (video.VideoTime.HasValue)
-                        {
-                            video.VideoTime = TimeZoneInfo.ConvertTimeFromUtc(video.VideoTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                        }
-
-                        video.CommentsCount = video.Comments.Count;
-                    }
-
-                    return videoPage;
-                }
-                else
-                {
-                    return new VideoPage();
-                }
-            }
+            
         }
 
         public static async Task<VideoViewModel> GetVideoViewModel(int videoId, int userAccessLevel, string userTimezone, int sortBy)
@@ -1614,6 +1670,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string videoViewString = await SecureStorage.GetAsync("VideoViewModel" + videoId);
+                if (string.IsNullOrEmpty(videoViewString))
+                {
+                    return  new VideoViewModel();
+                }
                 VideoViewModel videoViewModel = JsonConvert.DeserializeObject<VideoViewModel>(videoViewString);
                 return videoViewModel;
             }
@@ -1698,6 +1758,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string calendarString = await SecureStorage.GetAsync("CalendarItem" + calendarId);
+                if (string.IsNullOrEmpty(calendarString))
+                {
+                    return new CalendarItem();
+                }
                 CalendarItem calItem = JsonConvert.DeserializeObject<CalendarItem>(calendarString);
                 return calItem;
             }
@@ -1715,82 +1779,97 @@ namespace KinaUnaXamarin.Services
                 userTimeZone = TZConvert.WindowsToIana(userTimeZone);
             }
 
-            var client = new HttpClient();
-            client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
-
-            string accessToken = await UserService.GetAuthAccessToken();
-
-            // If user is not logged in.
-            if (String.IsNullOrEmpty(accessToken))
+            if (Online())
             {
-                
-                var result = await client.GetAsync("api/publicaccess/progenycalendarmobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false); 
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
 
-                if (result.IsSuccessStatusCode)
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
                 {
-                    var calendarString = await result.Content.ReadAsStringAsync();
-                    List<CalendarItem> calList = JsonConvert.DeserializeObject<List<CalendarItem>>(calendarString);
-                    if (calList.Any())
+
+                    var result = await client.GetAsync("api/publicaccess/progenycalendarmobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
                     {
-                        foreach (CalendarItem calItem in calList)
+                        var calendarString = await result.Content.ReadAsStringAsync();
+                        List<CalendarItem> calList = JsonConvert.DeserializeObject<List<CalendarItem>>(calendarString);
+                        if (calList.Any())
                         {
-                            if (calItem.StartTime != null)
+                            foreach (CalendarItem calItem in calList)
                             {
-                                calItem.StartTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.StartTime.Value,
-                                    TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                if (calItem.EndTime != null)
+                                if (calItem.StartTime != null)
                                 {
-                                    calItem.EndTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.EndTime.Value,
+                                    calItem.StartTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.StartTime.Value,
                                         TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                    calItem.StartString =
-                                        calItem.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " +
-                                        calItem.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
+                                    if (calItem.EndTime != null)
+                                    {
+                                        calItem.EndTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.EndTime.Value,
+                                            TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                        calItem.StartString =
+                                            calItem.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " +
+                                            calItem.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
+                                    }
                                 }
                             }
                         }
+                        await SecureStorage.SetAsync("CalendarList" + progenyId + "accessLevel" + accessLevel, JsonConvert.SerializeObject(calList));
+                        return calList;
                     }
-                    return calList;
+                    else
+                    {
+                        return new List<CalendarItem>();
+                    }
                 }
-                else
+                else // User is logged in.
                 {
-                    return new List<CalendarItem>();
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/calendar/progeny/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var calendarString = await result.Content.ReadAsStringAsync();
+                        List<CalendarItem> calList = JsonConvert.DeserializeObject<List<CalendarItem>>(calendarString);
+                        if (calList.Any())
+                        {
+                            foreach (CalendarItem calItem in calList)
+                            {
+                                if (calItem.StartTime != null)
+                                {
+                                    calItem.StartTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.StartTime.Value,
+                                        TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                    if (calItem.EndTime != null)
+                                    {
+                                        calItem.EndTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.EndTime.Value,
+                                            TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                        calItem.StartString =
+                                            calItem.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " +
+                                            calItem.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
+                                    }
+                                }
+                            }
+                        }
+                        await SecureStorage.SetAsync("CalendarList" + progenyId + "accessLevel" + accessLevel, JsonConvert.SerializeObject(calList));
+                        return calList;
+                    }
+                    else
+                    {
+                        return new List<CalendarItem>();
+                    }
                 }
             }
-            else // User is logged in.
+            else
             {
-                client.SetBearerToken(accessToken);
-                
-                var result = await client.GetAsync("api/calendar/progeny/" + progenyId + "/" + accessLevel).ConfigureAwait(false); 
-
-                if (result.IsSuccessStatusCode)
-                {
-                    var calendarString = await result.Content.ReadAsStringAsync();
-                    List<CalendarItem> calList = JsonConvert.DeserializeObject<List<CalendarItem>>(calendarString);
-                    if (calList.Any())
-                    {
-                        foreach (CalendarItem calItem in calList)
-                        {
-                            if (calItem.StartTime != null)
-                            {
-                                calItem.StartTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.StartTime.Value,
-                                    TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                if (calItem.EndTime != null)
-                                {
-                                    calItem.EndTime = TimeZoneInfo.ConvertTimeFromUtc(calItem.EndTime.Value,
-                                        TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                    calItem.StartString =
-                                        calItem.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " +
-                                        calItem.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
-                                }
-                            }
-                        }
-                    }
-                    return calList;
-                }
-                else
+                string calendarString = await SecureStorage.GetAsync("CalendarList" + progenyId + "accessLevel" + accessLevel);
+                if (string.IsNullOrEmpty(calendarString))
                 {
                     return new List<CalendarItem>();
                 }
+                List<CalendarItem> calItems = JsonConvert.DeserializeObject<List<CalendarItem>>(calendarString);
+                return calItems;
             }
         }
 
@@ -1858,6 +1937,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string locationString = await SecureStorage.GetAsync("LocationItem" + locationId);
+                if (string.IsNullOrEmpty(locationString))
+                {
+                    return new Location();
+                }
                 Location locItem = JsonConvert.DeserializeObject<Location>(locationString);
                 return locItem;
             }
@@ -1928,6 +2011,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string vocabularyString = await SecureStorage.GetAsync("VocabularyItem" + vocabularyId);
+                if (string.IsNullOrEmpty(vocabularyString))
+                {
+                    return new VocabularyItem();
+                }
                 VocabularyItem vocItem = JsonConvert.DeserializeObject<VocabularyItem>(vocabularyString);
                 return vocItem;
             }
@@ -1996,6 +2083,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string skillString = await SecureStorage.GetAsync("Skill" + skillId);
+                if (string.IsNullOrEmpty(skillString))
+                {
+                    return new Skill();
+                }
                 Skill skillItem = JsonConvert.DeserializeObject<Skill>(skillString);
                 return skillItem;
             }
@@ -2068,6 +2159,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string friendString = await SecureStorage.GetAsync("Friend" + frnId);
+                if (string.IsNullOrEmpty(friendString))
+                {
+                    return new Friend();
+                }
                 Friend friendItem = JsonConvert.DeserializeObject<Friend>(friendString);
                 return friendItem;
             }
@@ -2133,6 +2228,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string measurementString = await SecureStorage.GetAsync("Measurement" + mesId);
+                if (string.IsNullOrEmpty(measurementString))
+                {
+                    return new Measurement();
+                }
                 Measurement mesItem = JsonConvert.DeserializeObject<Measurement>(measurementString);
                 return mesItem;
             }
@@ -2213,6 +2312,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string sleepString = await SecureStorage.GetAsync("Sleep" + slpId);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new Sleep();
+                }
                 Sleep slpItem = JsonConvert.DeserializeObject<Sleep>(sleepString);
                 return slpItem;
             }
@@ -2328,6 +2431,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string sleepString = await SecureStorage.GetAsync("SleepList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new List<Sleep>();
+                }
                 List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
                 return sleepList;
             }
@@ -2383,6 +2490,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string sleepString = await SecureStorage.GetAsync("SleepStats" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new SleepStatsModel();
+                }
                 SleepStatsModel sleepList = JsonConvert.DeserializeObject<SleepStatsModel>(sleepString);
                 return sleepList;
             }
@@ -2438,6 +2549,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string sleepString = await SecureStorage.GetAsync("SleepChart" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new List<Sleep>();
+                }
                 List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
                 return sleepList;
             }
@@ -2505,6 +2620,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string noteString = await SecureStorage.GetAsync("Note" + nteId);
+                if (string.IsNullOrEmpty(noteString))
+                {
+                    return new Note();
+                }
                 Note nteItem = JsonConvert.DeserializeObject<Note>(noteString);
                 return nteItem;
             }
@@ -2574,6 +2693,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string contactString = await SecureStorage.GetAsync("Contact" + contId);
+                if (string.IsNullOrEmpty(contactString))
+                {
+                    return new Contact();
+                }
                 Contact contItem = JsonConvert.DeserializeObject<Contact>(contactString);
                 return contItem;
             }
@@ -2656,6 +2779,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string contactsString = await SecureStorage.GetAsync("ContactList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(contactsString))
+                {
+                    return new List<Contact>();
+                }
                 List<Contact> contList = JsonConvert.DeserializeObject<List<Contact>>(contactsString);
                 return contList;
             }
@@ -2718,6 +2845,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string vaccinationString = await SecureStorage.GetAsync("Vaccination" + vacId);
+                if (string.IsNullOrEmpty(vaccinationString))
+                {
+                    return new Vaccination();
+                }
                 Vaccination vacItem = JsonConvert.DeserializeObject<Vaccination>(vaccinationString);
                 return vacItem;
             }
@@ -2763,6 +2894,7 @@ namespace KinaUnaXamarin.Services
                         List<UserAccess> accessList = JsonConvert.DeserializeObject<List<UserAccess>>(accessListString);
                         if (accessList != null)
                         {
+                            await SecureStorage.SetAsync("AccessList" + Constants.DefaultChildId, JsonConvert.SerializeObject(accessList));
                             return accessList;
                         }
 
@@ -2788,6 +2920,10 @@ namespace KinaUnaXamarin.Services
             }
 
             string offlineListString = await SecureStorage.GetAsync("AccessList" + progenyId);
+            if (string.IsNullOrEmpty(offlineListString))
+            {
+                return new List<UserAccess>();
+            }
             List<UserAccess> offlineList = JsonConvert.DeserializeObject<List<UserAccess>>(offlineListString);
             return offlineList;
             
@@ -2846,7 +2982,7 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    var result = await client.GetAsync("api/sleep/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/sleep/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -2862,7 +2998,7 @@ namespace KinaUnaXamarin.Services
                                 TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
                             slpItem.SleepDuration = eOffset - sOffset;
                         }
-                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
+                        await SecureStorage.SetAsync("SleepListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
                         return sleepList;
                     }
                     else
@@ -2902,6 +3038,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string sleepString = await SecureStorage.GetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new SleepListPage();
+                }
                 SleepListPage sleepList = JsonConvert.DeserializeObject<SleepListPage>(sleepString);
                 return sleepList;
             }
@@ -2928,7 +3068,7 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    var result = await client.GetAsync("api/publicaccess/progenyfriendsmobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/publicaccess/progenyfriendsmobile/" + Constants.DefaultChildId + "/" + accessLevel).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -2944,7 +3084,7 @@ namespace KinaUnaXamarin.Services
                                 }
                             }
                         }
-                        await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        await SecureStorage.SetAsync("FriendList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
                         return frnList;
                     }
                     else
@@ -2984,6 +3124,10 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string friendsString = await SecureStorage.GetAsync("FriendList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(friendsString))
+                {
+                    return new List<Friend>();
+                }
                 List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
                 return frnList;
             }

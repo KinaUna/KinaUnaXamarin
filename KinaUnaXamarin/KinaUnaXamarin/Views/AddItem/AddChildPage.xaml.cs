@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
@@ -12,6 +10,7 @@ using KinaUnaXamarin.ViewModels.AddItem;
 using Plugin.Media;
 using Plugin.Multilingual;
 using TimeZoneConverter;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -20,6 +19,7 @@ namespace KinaUnaXamarin.Views.AddItem
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddChildPage : ContentPage
     {
+        private bool _online = true;
         private readonly AddChildViewModel _addChildViewModel;
         private string _filePath;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
@@ -42,11 +42,50 @@ namespace KinaUnaXamarin.Views.AddItem
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                _addChildViewModel.Online = true;
+                OfflineStackLayout.IsVisible = false;
+            }
+            else
+            {
+                _addChildViewModel.Online = false;
+                OfflineStackLayout.IsVisible = true;
+            }
+
             string userTimeZone = await UserService.GetUserTimezone();
             TimeZoneInfo userTimeZoneInfo =
                 _addChildViewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
             int timeZoneIndex = _addChildViewModel.TimeZoneList.IndexOf(userTimeZoneInfo);
             TimeZonePicker.SelectedIndex = timeZoneIndex;
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            var networkAccess = e.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess != _online)
+            {
+                _addChildViewModel.Online = false;
+                OfflineStackLayout.IsVisible = true;
+                SaveChildButton.IsEnabled = false;
+            }
+            else
+            {
+                _addChildViewModel.Online = true;
+                OfflineStackLayout.IsVisible = false;
+                SaveChildButton.IsEnabled = true;
+            }
         }
 
         private async void SelectImageButton_OnClicked(object sender, EventArgs e)
@@ -143,13 +182,20 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private void DisplayNameEntry_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            if (DisplayNameEntry.Text.Length < 2)
+            if (_addChildViewModel.Online)
             {
-                SaveChildButton.IsEnabled = false;
+                if (DisplayNameEntry.Text.Length < 2)
+                {
+                    SaveChildButton.IsEnabled = false;
+                }
+                else
+                {
+                    SaveChildButton.IsEnabled = true;
+                }
             }
             else
             {
-                SaveChildButton.IsEnabled = true;
+                SaveChildButton.IsEnabled = false;
             }
         }
     }

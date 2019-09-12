@@ -19,6 +19,8 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserAddItems;
         private List<string> _friendTypeList;
         private List<string> _sortByList;
+        private int _columns;
+
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
         public ObservableRangeCollection<Friend> FriendItems { get; set; }
 
@@ -29,6 +31,7 @@ namespace KinaUnaXamarin.ViewModels
             FriendItems = new ObservableRangeCollection<Friend>();
             _friendTypeList = new List<string>();
             _sortByList = new List<string>();
+            _columns = 2;
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
             if (ci == "da")
             {
@@ -109,7 +112,13 @@ namespace KinaUnaXamarin.ViewModels
             get => _userAccessLevel;
             set => SetProperty(ref _userAccessLevel, value);
         }
-        
+
+        public int Columns
+        {
+            get => _columns;
+            set => SetProperty(ref _columns, value);
+        }
+
         public bool IsLoggedIn
         {
             get => _isLoggedIn;

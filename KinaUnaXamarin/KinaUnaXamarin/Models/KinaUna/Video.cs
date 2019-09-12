@@ -34,5 +34,11 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         [JsonIgnore]
         public int CommentsCount { get; set; }
+
+        public Video()
+        {
+            Progeny = OfflineDefaultData.DefaultProgeny;
+            Comments = new List<Comment>();
+        }
     }
 }

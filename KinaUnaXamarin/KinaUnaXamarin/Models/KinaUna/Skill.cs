@@ -14,5 +14,10 @@ namespace KinaUnaXamarin.Models.KinaUna
         public int ProgenyId { get; set; }
         public Progeny Progeny { get; set; }
         public int AccessLevel { get; set; } // 0 = Hidden/Parents only, 1=Family, 2= Friends, 3=DefaultUSers, 4= public.
+
+        public Skill()
+        {
+            Progeny = OfflineDefaultData.DefaultProgeny;
+        }
     }
 }

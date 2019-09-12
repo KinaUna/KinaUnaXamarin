@@ -38,5 +38,11 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public bool Zoomed { get; set; }
 
+        public PictureViewModel()
+        {
+            Progeny = OfflineDefaultData.DefaultProgeny;
+            CommentsList = new List<Comment>();
+        }
+
     }
 }

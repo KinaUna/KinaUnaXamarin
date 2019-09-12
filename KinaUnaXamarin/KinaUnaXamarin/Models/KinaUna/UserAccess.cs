@@ -10,5 +10,11 @@
         public Progeny Progeny { get; set; }
         public ApplicationUser User { get; set; }
         public string AccessLevelString { get; set; }
+
+        public UserAccess()
+        {
+            Progeny = OfflineDefaultData.DefaultProgeny;
+            User = OfflineDefaultData.DefaultUser;
+        }
     }
 }

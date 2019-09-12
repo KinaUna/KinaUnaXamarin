@@ -24,80 +24,87 @@
                      Clicked="ProgenyToolBarItem_OnClicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
-            <Grid>
-                <StackLayout Orientation="Vertical" Margin="5" IsVisible="{Binding AnyChildren}">
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
-                                        <RowDefinition Height="60" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40" />
-                                        <ColumnDefinition Width="160" />
-                                    </Grid.ColumnDefinitions>
-                                    <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
+        <Grid x:Name="ContainerGrid" BackgroundColor="WhiteSmoke">
+            <ScrollView>
+                <Grid>
+                    <StackLayout Orientation="Vertical" Margin="5" IsVisible="{Binding AnyChildren}">
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20" />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
                                        Aspect="AspectFit"
                                        WidthRequest="40" />
-                                    <Label Grid.Row="0" Grid.Column="1"
+                                        <Label Grid.Row="0" Grid.Column="1"
                                        Text="{Binding NickName}"
                                        FontAttributes="Bold"
                                        FontSize="16"
                                        TextColor="Black"
                                        Margin="10, 0 , 0, 0"/>
-                                    <Label Grid.Row="1" Grid.Column="1"
+                                        <Label Grid.Row="1" Grid.Column="1"
                                        Text="{Binding Name}"
                                        TextColor="DarkSlateGray"
                                        Margin="10, 0, 0, 0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Name}"></Label>
-                        <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Name}" IsEnabled="{Binding EditMode}" ></Entry>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate DisplayName}"></Label>
-                        <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.NickName}" IsEnabled="{Binding EditMode}"></Entry>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Birthday}"></Label>
-                        <Label x:Name="BirthDayLabel" Text="{Binding ProgenyBirthDay, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}"></Label>
-                        <StackLayout Orientation="Horizontal" IsVisible="{Binding EditMode}">
-                            <DatePicker x:Name="BirthdayDatePicker"  Date="{Binding ProgenyBirthDay.Date}" Format="dd-MMM-yyyy"></DatePicker>
-                            <TimePicker x:Name="BirthdayTimePicker" Time="{Binding ProgenyBirthDay.TimeOfDay}" ></TimePicker>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Name}"></Label>
+                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Name}" IsEnabled="{Binding EditMode}" ></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate DisplayName}"></Label>
+                            <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.NickName}" IsEnabled="{Binding EditMode}"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Birthday}"></Label>
+                            <Label x:Name="BirthDayLabel" Text="{Binding ProgenyBirthDay, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <StackLayout Orientation="Horizontal" IsVisible="{Binding EditMode}">
+                                <DatePicker x:Name="BirthdayDatePicker"  Date="{Binding ProgenyBirthDay.Date}" Format="dd-MMM-yyyy"></DatePicker>
+                                <TimePicker x:Name="BirthdayTimePicker" Time="{Binding ProgenyBirthDay.TimeOfDay}" ></TimePicker>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate TimeZone}"></Label>
+                            <Picker HorizontalOptions="FillAndExpand"  x:Name="TimeZonePicker" ItemsSource="{Binding TimeZoneList}" ItemDisplayBinding="{Binding DisplayName}" IsEnabled="{Binding EditMode}" SelectedItem="{Binding SelectedTimeZone}" ></Picker>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate ProfilePicture}"></Label>
+                            <Image x:Name="ChildPicture" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="{Binding ProfilePicture}"></Image>
+                            <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Button>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Administrators}"></Label>
+                            <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges"  ></Editor>
+                        </StackLayout>
+                        <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+
+                        <StackLayout Orientation="Horizontal" Margin="5">
+                            <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                            <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                         </StackLayout>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate TimeZone}"></Label>
-                        <Picker HorizontalOptions="FillAndExpand"  x:Name="TimeZonePicker" ItemsSource="{Binding TimeZoneList}" ItemDisplayBinding="{Binding DisplayName}" IsEnabled="{Binding EditMode}" SelectedItem="{Binding SelectedTimeZone}" ></Picker>
+                    <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
+                        <Label Text="{i18n:Translate NoChildrenFound}"></Label>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate ProfilePicture}"></Label>
-                        <Image x:Name="ChildPicture" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="{Binding ProfilePicture}"></Image>
-                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Button>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Administrators}"></Label>
-                        <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges"  ></Editor>
-                    </StackLayout>
-                    <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-
-                    <StackLayout Orientation="Horizontal" Margin="5">
-                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
-                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
-                    </StackLayout>
-                </StackLayout>
-                <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
-                    <Label Text="{i18n:Translate NoChildrenFound}"></Label>
-                </StackLayout>
-                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-            </Grid>
-        </ScrollView>
+                    <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+                </Grid>
+            </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

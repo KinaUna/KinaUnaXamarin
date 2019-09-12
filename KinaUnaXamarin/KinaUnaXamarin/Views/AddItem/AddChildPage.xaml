@@ -43,6 +43,9 @@
                     </StackLayout>
                 </StackLayout>
             </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
             <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
         </Grid>
         

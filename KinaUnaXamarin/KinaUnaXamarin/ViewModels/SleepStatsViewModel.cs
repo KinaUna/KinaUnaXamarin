@@ -48,7 +48,7 @@ namespace KinaUnaXamarin.ViewModels
             SleepItems = new ObservableRangeCollection<Sleep>();
             SleepStats = new SleepStatsModel();
             _lastDate = _todayDate = DateTime.Now;
-            _firstDate = _startDate = DateTime.Now - TimeSpan.FromDays(14);
+            _firstDate = _startDate = DateTime.Now - TimeSpan.FromDays(30);
             _endDate = DateTime.Now;
             _maxValue = 24;
             _minValue = 0;

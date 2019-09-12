@@ -10,6 +10,12 @@ namespace KinaUnaXamarin.Models.KinaUna
         public List<Sleep> SleepList { get; set; }
         public Progeny Progeny { get; set; }
         public bool IsAdmin { get; set; }
+
+        public SleepListPage()
+        {
+            SleepList = new List<Sleep>();
+            Progeny = OfflineDefaultData.DefaultProgeny;
+        }
         
     }
 }

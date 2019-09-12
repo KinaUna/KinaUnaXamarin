@@ -5,6 +5,7 @@ using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
 using KinaUnaXamarin.Views.AddItem;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,6 +14,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AddItemPage : ContentPage
     {
+        private bool _online = true;
         private readonly AddItemViewModel _addItemModel;
         public AddItemPage()
         {
@@ -25,7 +27,19 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            
+
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                OfflineStackLayout.IsVisible = false;
+            }
+            else
+            {
+                OfflineStackLayout.IsVisible = true;
+            }
+
             string accessToken = await UserService.GetAuthAccessToken();
             if (string.IsNullOrEmpty(accessToken))
             {
@@ -41,6 +55,26 @@ namespace KinaUnaXamarin.Views
                 _addItemModel.CanAddItems = false;
             }
             _addItemModel.UpdateItemList();
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            var networkAccess = e.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess != _online)
+            {
+                OfflineStackLayout.IsVisible = true;
+            }
+            else
+            {
+                OfflineStackLayout.IsVisible = false;
+            }
         }
 
         private void AddItemListCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

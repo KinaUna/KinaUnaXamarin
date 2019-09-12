@@ -13,5 +13,11 @@ namespace KinaUnaXamarin.Models.KinaUna
         public bool IsAdmin { get; set; }
         public string TagFilter { get; set; }
         public string TagsList { get; set; }
+
+        public VideoPage()
+        {
+            VideosList = new List<Video>();
+            Progeny = OfflineDefaultData.DefaultProgeny;
+        }
     }
 }

@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
+using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels.MyFamily
 {
@@ -16,16 +19,24 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         private TimeZoneInfo _selectedTimeZone;
         private string _profilePicture;
         private bool _anyChildren;
+        private bool _isLoggedIn;
+        private bool _loggedOut;
+        private int _userAccessLevel;
+        private bool _showOptions;
+        private bool _canUserAddItems;
 
         public MyChildrenViewModel()
         {
+            LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
+            ProgenyAdminCollection = new ObservableCollection<Progeny>();
             TimeZoneList = new ObservableCollection<TimeZoneInfo>();
             _progeny = OfflineDefaultData.DefaultProgeny;
             _progenyBirthDay = new DateTime(2018, 02, 18, 18, 02, 00);
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+        public ObservableCollection<Progeny> ProgenyAdminCollection { get; set; }
         public ObservableCollection<TimeZoneInfo> TimeZoneList { get; set; }
 
         public Progeny Progeny
@@ -34,13 +45,42 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
             set
             {
                 SetProperty(ref _progeny, value);
-                if (_progeny.BirthDay.HasValue)
+                if (value.BirthDay.HasValue)
                 {
-                    ProgenyBirthDay = _progeny.BirthDay.Value;
+                    ProgenyBirthDay = value.BirthDay.Value;
+                }
+                else
+                {
+                    ProgenyBirthDay = new DateTime(2018, 02, 18, 18, 02, 00);
                 }
 
-                ProfilePicture = _progeny.PictureLink;
+                if (string.IsNullOrEmpty(value.PictureLink))
+                {
+                    ProfilePicture = Constants.ProfilePicture;
+                }
+                else
+                {
+                    ProfilePicture = _progeny.PictureLink;
+                }
             }
+        }
+
+        public bool CanUserAddItems
+        {
+            get => _canUserAddItems;
+            set => SetProperty(ref _canUserAddItems, value);
+        }
+
+        public bool ShowOptions
+        {
+            get => _showOptions;
+            set => SetProperty(ref _showOptions, value);
+        }
+
+        public int UserAccessLevel
+        {
+            get => _userAccessLevel;
+            set => SetProperty(ref _userAccessLevel, value);
         }
 
         public bool EditMode
@@ -71,6 +111,33 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         {
             get => _anyChildren;
             set => SetProperty(ref _anyChildren, value);
+        }
+
+        public bool LoggedOut
+        {
+            get => _loggedOut;
+            set => SetProperty(ref _loggedOut, value);
+        }
+
+        public ICommand LoginCommand
+        {
+            get;
+            private set;
+        }
+
+        public async void Login()
+        {
+            IsLoggedIn = await UserService.LoginIdsAsync();
+            if (IsLoggedIn)
+            {
+                LoggedOut = !IsLoggedIn;
+            }
+        }
+
+        public bool IsLoggedIn
+        {
+            get => _isLoggedIn;
+            set => SetProperty(ref _isLoggedIn, value);
         }
     }
 }
