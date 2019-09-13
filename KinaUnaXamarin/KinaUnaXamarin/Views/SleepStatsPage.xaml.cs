@@ -93,11 +93,11 @@ namespace KinaUnaXamarin.Views
             {
                 if (_viewModel.Progeny.BirthDay.HasValue)
                 {
-                    StartDatePicker.Date = DateTime.Now - TimeSpan.FromDays(14);
+                    StartDatePicker.Date = DateTime.Now - TimeSpan.FromDays(30);
                 }
 
                 EndDatePicker.Date = DateTime.Now;
-                // ChartTypePicker.SelectedIndex = 1;
+                ChartTypePicker.SelectedItem = _viewModel.ChartTypeList[0];
             }
 
             await UpdateSleep();
@@ -237,14 +237,38 @@ namespace KinaUnaXamarin.Views
             _viewModel.SleepItems.ReplaceRange(sleepList);
             if (sleepList != null && sleepList.Count > 0)
             {
-                LineSeries sleepSeries = new LineSeries()
+                LineSeries sleepLineSeries = new LineSeries()
                 {
                     Color = OxyColors.DarkGreen,
                     MarkerType = MarkerType.Circle,
                     MarkerSize = 3,
                     MarkerStroke = OxyColors.White,
                     MarkerFill = OxyColors.Green,
-                    MarkerStrokeThickness = 1.5
+                    MarkerStrokeThickness = 1.5,
+                    Title = this.Title
+                    
+                };
+
+                StairStepSeries sleepStairStepSeries = new StairStepSeries()
+                {
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5,
+                    Title = this.Title
+                };
+
+                StemSeries sleepStemSeries = new StemSeries()
+                {
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5,
+                    Title = this.Title
                 };
 
                 double maxSleep = 0;
@@ -259,7 +283,10 @@ namespace KinaUnaXamarin.Views
                         slp.SleepStart = slp.SleepStart.Date;
                         slp.SleepDurDouble = slp.SleepDuration.TotalMinutes / 60.0;
                         double startDateDouble = DateTimeAxis.ToDouble(slp.SleepStart.Date);
-                        sleepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                        sleepLineSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                        sleepStairStepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                        sleepStemSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+
                         if (slp.SleepDurDouble > maxSleep)
                         {
                             maxSleep = slp.SleepDurDouble;
@@ -280,7 +307,7 @@ namespace KinaUnaXamarin.Views
                         lastSleepItem = slp.SleepStart;
                     }
                 }
-
+                
                 _viewModel.MinValue = Math.Floor(minSleep);
                 _viewModel.MaxValue = Math.Ceiling(maxSleep);
                 _viewModel.FirstDate = firstSleepItem;
@@ -296,7 +323,7 @@ namespace KinaUnaXamarin.Views
                 durationAxis.MajorGridlineStyle = LineStyle.Solid;
                 durationAxis.MinorGridlineStyle = LineStyle.Solid;
                 durationAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
-                durationAxis.MinorGridlineColor = OxyColor.FromRgb(230, 220, 200);
+                durationAxis.MinorGridlineColor = OxyColor.FromRgb(250, 225, 205);
                 durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
 
                 DateTimeAxis dateAxis = new DateTimeAxis();
@@ -304,15 +331,42 @@ namespace KinaUnaXamarin.Views
                 dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
                 dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
                 dateAxis.Position = AxisPosition.Bottom;
-                dateAxis.IntervalType = DateTimeIntervalType.Days;
                 dateAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
                 dateAxis.StringFormat = "dd-MMM-yyyy";
+                dateAxis.MajorGridlineStyle = LineStyle.Solid;
+                dateAxis.MajorGridlineColor = OxyColor.FromRgb(230, 190, 190);
+                dateAxis.IntervalType = DateTimeIntervalType.Auto;
+                dateAxis.FirstDayOfWeek = DayOfWeek.Monday;
+                dateAxis.MinorIntervalType = DateTimeIntervalType.Auto;
 
                 _viewModel.SleepPlotModel = new PlotModel();
                 _viewModel.SleepPlotModel.Background = OxyColors.White;
                 _viewModel.SleepPlotModel.Axes.Add(durationAxis);
                 _viewModel.SleepPlotModel.Axes.Add(dateAxis);
-                _viewModel.SleepPlotModel.Series.Add(sleepSeries);
+                _viewModel.SleepPlotModel.LegendPosition = LegendPosition.BottomCenter;
+                _viewModel.SleepPlotModel.LegendBackground = OxyColors.LightYellow;
+
+                Func<double, double> averageFunc = (x) => _viewModel.SleepStats.TotalAverage.TotalMinutes / 60.0;
+                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepTitle.Text));
+
+                Func<double, double> averageYearFunc = (x) => _viewModel.SleepStats.LastYearAverage.TotalMinutes / 60.0;
+                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageYearFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepYearTitle.Text));
+
+                Func<double, double> averageMonthFunc = (x) => _viewModel.SleepStats.LastMonthAverage.TotalMinutes / 60.0;
+                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageMonthFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepMonthTitle.Text));
+
+                if (ChartTypePicker.SelectedIndex == 0)
+                {
+                    _viewModel.SleepPlotModel.Series.Add(sleepLineSeries);
+                }
+                if (ChartTypePicker.SelectedIndex == 1)
+                {
+                    _viewModel.SleepPlotModel.Series.Add(sleepStairStepSeries);
+                }
+                if (ChartTypePicker.SelectedIndex == 2)
+                {
+                    _viewModel.SleepPlotModel.Series.Add(sleepStemSeries);
+                }
             }
             
             

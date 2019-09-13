@@ -57,23 +57,23 @@ namespace KinaUnaXamarin.ViewModels
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
             if (ci == "da")
             {
-                _chartTypeList.Add("Søjlediagram");
-                _chartTypeList.Add("Punktdiagram");
                 _chartTypeList.Add("Linjediagram");
+                _chartTypeList.Add("Trappetrinsdiagram");
+                _chartTypeList.Add("Stammediagram");
             }
             else
             {
                 if (ci == "de")
                 {
-                    _chartTypeList.Add("Balkendiagramm");
-                    _chartTypeList.Add("Punktdiagramm");
                     _chartTypeList.Add("Liniendiagramm");
+                    _chartTypeList.Add("Treppenstufen-Diagramm");
+                    _chartTypeList.Add("Stammdiagramm");
                 }
                 else
                 {
-                    _chartTypeList.Add("Bar Chart");
-                    _chartTypeList.Add("Point Chart");
                     _chartTypeList.Add("Line Chart");
+                    _chartTypeList.Add("Stair Steps Chart");
+                    _chartTypeList.Add("Stem Chart");
                 }
             }
 
