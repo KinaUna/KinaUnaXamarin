@@ -3138,5 +3138,55 @@ namespace KinaUnaXamarin.Services
                 return frnList;
             }
         }
+
+        public static async Task<string> UploadFriendPicture(string fileName)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+
+                var fileBytes = File.ReadAllBytes(fileName);
+                MemoryStream stream = new MemoryStream(fileBytes);
+                HttpContent fileStreamContent = new StreamContent(stream);
+
+                fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
+                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                MultipartFormDataContent content = new MultipartFormDataContent();
+                content.Add(fileStreamContent);
+                var result = await client.PostAsync("api/pictures/uploadfriendpicture/", content).ConfigureAwait(false);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                    return pictureResultString;
+                }
+            }
+
+            return "";
+        }
+
+        public static async Task<Friend> SaveFriend(Friend friend)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/friends/", new StringContent(JsonConvert.SerializeObject(friend), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Friend resultFriend = JsonConvert.DeserializeObject<Friend>(resultString);
+                    return resultFriend;
+                }
+            }
+            
+            return friend;
+        }
     }
 }

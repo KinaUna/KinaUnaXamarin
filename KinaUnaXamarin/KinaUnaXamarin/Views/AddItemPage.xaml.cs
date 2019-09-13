@@ -93,6 +93,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddPhotoPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddFriendPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddUserPage());

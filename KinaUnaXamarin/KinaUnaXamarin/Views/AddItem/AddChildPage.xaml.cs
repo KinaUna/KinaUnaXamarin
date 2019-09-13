@@ -184,7 +184,7 @@ namespace KinaUnaXamarin.Views.AddItem
         {
             if (_addChildViewModel.Online)
             {
-                if (DisplayNameEntry.Text.Length < 2)
+                if (DisplayNameEntry.Text.Length <= 1)
                 {
                     SaveChildButton.IsEnabled = false;
                 }

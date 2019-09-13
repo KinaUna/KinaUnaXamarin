@@ -106,6 +106,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Friend.
+        /// </summary>
+        internal static string AddFriend {
+            get {
+                return ResourceManager.GetString("AddFriend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Friend for:.
+        /// </summary>
+        internal static string AddFriendFor {
+            get {
+                return ResourceManager.GetString("AddFriendFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Item.
         /// </summary>
         internal static string AddItem {
@@ -286,6 +304,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Context.
+        /// </summary>
+        internal static string Context {
+            get {
+                return ResourceManager.GetString("Context", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Context:.
         /// </summary>
         internal static string ContextColon {
@@ -349,6 +376,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Description.
+        /// </summary>
+        internal static string Description {
+            get {
+                return ResourceManager.GetString("Description", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Display Name.
         /// </summary>
         internal static string DisplayName {
@@ -381,6 +417,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorChildNotSaved {
             get {
                 return ResourceManager.GetString("ErrorChildNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Friend was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorFriendNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorFriendNotSaved", resourceCulture);
             }
         }
         
@@ -421,6 +466,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Friend saved successfully. Friend ID:.
+        /// </summary>
+        internal static string FriendSaved {
+            get {
+                return ResourceManager.GetString("FriendSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Friends since.
+        /// </summary>
+        internal static string FriendSince {
+            get {
+                return ResourceManager.GetString("FriendSince", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Friends Since:.
         /// </summary>
         internal static string FriendsSince {
@@ -435,6 +498,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string FriendType {
             get {
                 return ResourceManager.GetString("FriendType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type of friend.
+        /// </summary>
+        internal static string FriendTypeLabel {
+            get {
+                return ResourceManager.GetString("FriendTypeLabel", resourceCulture);
             }
         }
         
@@ -709,7 +781,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo saved success fully. Photo ID:.
+        ///   Looks up a localized string similar to Photo saved successfully. Photo ID:.
         /// </summary>
         internal static string PhotoSaved {
             get {

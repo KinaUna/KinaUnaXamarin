@@ -438,4 +438,28 @@
   <data name="ToyFriends" xml:space="preserve">
     <value>Legetøj/Dyr</value>
   </data>
+  <data name="AddFriend" xml:space="preserve">
+    <value>Tilføj ven</value>
+  </data>
+  <data name="AddFriendFor" xml:space="preserve">
+    <value>Tilføj ven for:</value>
+  </data>
+  <data name="Context" xml:space="preserve">
+    <value>Sammenhæng</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beskrivelse</value>
+  </data>
+  <data name="ErrorFriendNotSaved" xml:space="preserve">
+    <value>Fejl: Vennen blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="FriendSaved" xml:space="preserve">
+    <value>Vennen er nu tilføjet. Ven ID:</value>
+  </data>
+  <data name="FriendSince" xml:space="preserve">
+    <value>Venner siden</value>
+  </data>
+  <data name="FriendTypeLabel" xml:space="preserve">
+    <value>Vennetype</value>
+  </data>
 </root>

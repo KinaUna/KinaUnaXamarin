@@ -438,4 +438,28 @@
   <data name="ToyFriends" xml:space="preserve">
     <value>Spielzeuge/Tiere</value>
   </data>
+  <data name="AddFriend" xml:space="preserve">
+    <value>Freund hinzufügen</value>
+  </data>
+  <data name="AddFriendFor" xml:space="preserve">
+    <value>Freund hinzufügen für:</value>
+  </data>
+  <data name="Context" xml:space="preserve">
+    <value>Zusammenhang</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Beschreibung</value>
+  </data>
+  <data name="ErrorFriendNotSaved" xml:space="preserve">
+    <value>Fehler: Freund würde nicht gespeichert.</value>
+  </data>
+  <data name="FriendSaved" xml:space="preserve">
+    <value>Freund hinzugefügt. Freund ID:</value>
+  </data>
+  <data name="FriendSince" xml:space="preserve">
+    <value>Freunde zeit</value>
+  </data>
+  <data name="FriendTypeLabel" xml:space="preserve">
+    <value>Freundart</value>
+  </data>
 </root>

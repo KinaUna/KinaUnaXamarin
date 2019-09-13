@@ -226,7 +226,7 @@
     <value>Photos</value>
   </data>
   <data name="PhotoSaved" xml:space="preserve">
-    <value>Photo saved success fully. Photo ID:</value>
+    <value>Photo saved successfully. Photo ID:</value>
   </data>
   <data name="PhotoTaken" xml:space="preserve">
     <value>Photo Taken:</value>
@@ -437,5 +437,29 @@
   </data>
   <data name="ToyFriends" xml:space="preserve">
     <value>Toys/Animals</value>
+  </data>
+  <data name="AddFriend" xml:space="preserve">
+    <value>Add Friend</value>
+  </data>
+  <data name="AddFriendFor" xml:space="preserve">
+    <value>Add Friend for:</value>
+  </data>
+  <data name="Context" xml:space="preserve">
+    <value>Context</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+  </data>
+  <data name="ErrorFriendNotSaved" xml:space="preserve">
+    <value>Error: Friend was not saved. Try again later.</value>
+  </data>
+  <data name="FriendSaved" xml:space="preserve">
+    <value>Friend saved successfully. Friend ID:</value>
+  </data>
+  <data name="FriendSince" xml:space="preserve">
+    <value>Friends since</value>
+  </data>
+  <data name="FriendTypeLabel" xml:space="preserve">
+    <value>Type of friend</value>
   </data>
 </root>

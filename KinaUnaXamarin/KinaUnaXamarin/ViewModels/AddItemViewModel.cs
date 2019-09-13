@@ -68,6 +68,24 @@ namespace KinaUnaXamarin.ViewModels
                 addPhoto.BackgroundColor = "#9c27b0";
                 ItemList.Add(addPhoto);
 
+                AddItemModel addFriendItem = new AddItemModel();
+                addFriendItem.ItemType = (int)KinaUnaTypes.TimeLineType.Friend;
+                addFriendItem.Name = "Friend";
+                addFriendItem.Description = "Add Friend";
+                if (ci == "da")
+                {
+                    addFriendItem.Name = "Ven";
+                    addFriendItem.Description = "Tilføj ven";
+                }
+                if (ci == "de")
+                {
+                    addFriendItem.Name = "Freund";
+                    addFriendItem.Description = "Freund hinzufügen";
+                }
+                addFriendItem.Icon = IconFont.EmoticonWink;
+                addFriendItem.BackgroundColor = "BlueViolet";
+                ItemList.Add(addFriendItem);
+
                 AddItemModel addUser = new AddItemModel();
                 addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;
                 addUser.Name = "User";
@@ -79,7 +97,7 @@ namespace KinaUnaXamarin.ViewModels
                 }
                 if (ci == "de")
                 {
-                    addUser.Name = "Foto";
+                    addUser.Name = "Benutzer";
                     addUser.Description = "Benutzer hinzufügen";
                 }
                 addUser.Icon = IconFont.AccountPlus;
