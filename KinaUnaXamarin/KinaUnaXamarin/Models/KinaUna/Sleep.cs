@@ -23,10 +23,5 @@ namespace KinaUnaXamarin.Models.KinaUna
         public double SleepDurDouble { get; set; }
 
         public int SleepNumber { get; set; }
-
-        public Sleep()
-        {
-            Progeny = OfflineDefaultData.DefaultProgeny;
-        }
     }
 }

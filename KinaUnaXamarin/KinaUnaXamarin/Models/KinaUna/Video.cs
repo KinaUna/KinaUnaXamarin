@@ -37,7 +37,6 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public Video()
         {
-            Progeny = OfflineDefaultData.DefaultProgeny;
             Comments = new List<Comment>();
         }
     }

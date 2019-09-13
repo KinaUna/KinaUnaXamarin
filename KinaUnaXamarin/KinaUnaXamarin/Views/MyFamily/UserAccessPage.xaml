@@ -71,7 +71,7 @@
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Label Grid.Row="0" Grid.Column="0" Text="{Binding User.UserName}" FontAttributes="Bold"></Label>
-                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding User.Email}" ></Label>
+                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding UserId}" ></Label>
                                 <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
                                     <Label  Text="{Binding User.FirstName}" ></Label>
                                     <Label  Text="{Binding User.MiddleName}" ></Label>

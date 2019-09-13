@@ -14,7 +14,6 @@ namespace KinaUnaXamarin.Models.KinaUna
         public SleepListPage()
         {
             SleepList = new List<Sleep>();
-            Progeny = OfflineDefaultData.DefaultProgeny;
         }
         
     }

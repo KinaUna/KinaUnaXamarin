@@ -40,7 +40,6 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public PictureViewModel()
         {
-            Progeny = OfflineDefaultData.DefaultProgeny;
             CommentsList = new List<Comment>();
         }
 

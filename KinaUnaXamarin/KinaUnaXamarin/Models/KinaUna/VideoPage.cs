@@ -17,7 +17,6 @@ namespace KinaUnaXamarin.Models.KinaUna
         public VideoPage()
         {
             VideosList = new List<Video>();
-            Progeny = OfflineDefaultData.DefaultProgeny;
         }
     }
 }

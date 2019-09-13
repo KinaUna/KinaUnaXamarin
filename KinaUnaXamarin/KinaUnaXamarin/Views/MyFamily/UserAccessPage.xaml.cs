@@ -103,24 +103,23 @@ namespace KinaUnaXamarin.Views
                 {
                     ProgenyCollectionView.SelectedItem =
                         _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == _selectedProgenyId);
-                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
                 }
 
-                _viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
+                //_viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
                 
-                _selectedProgenyId = _viewModel.Progeny.Id;
+                //_selectedProgenyId = _viewModel.Progeny.Id;
                 
-                List<UserAccess> userAccessList = await ProgenyService.GetProgenyAccessList(_selectedProgenyId);
-                _viewModel.UserAccessCollection.Clear();
-                foreach (UserAccess ua in userAccessList)
-                {
-                    ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
-                    if (string.IsNullOrEmpty(ua.User.UserName))
-                    {
-                        ua.User.UserName = ua.User.Email;
-                    }
-                    _viewModel.UserAccessCollection.Add(ua);
-                }
+                //List<UserAccess> userAccessList = await ProgenyService.GetProgenyAccessList(_selectedProgenyId);
+                //_viewModel.UserAccessCollection.Clear();
+                //foreach (UserAccess ua in userAccessList)
+                //{
+                //    ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
+                //    if (string.IsNullOrEmpty(ua.User.UserName))
+                //    {
+                //        ua.User.UserName = ua.User.Email;
+                //    }
+                //    _viewModel.UserAccessCollection.Add(ua);
+                //}
             }
             else
             {
@@ -138,27 +137,6 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             _viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
             ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-            _selectedProgenyId = _viewModel.Progeny.Id;
-
-            if (_selectedProgenyId == 0)
-            {
-                string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-                bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-                if (viewProgeny != null)
-                {
-                    ProgenyCollectionView.SelectedItem =
-                        _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
-                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-                }
-                else
-                {
-                    ProgenyCollectionView.SelectedItem = _viewModel.ProgenyCollection[0];
-                    _viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
-                    ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-                }
-            }
-            
             _selectedProgenyId = _viewModel.Progeny.Id;
             
             List<UserAccess> userAccessList = await ProgenyService.GetProgenyAccessList(_selectedProgenyId);

@@ -32,10 +32,6 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         [JsonIgnore]
         public string FullName { get; set; }
-
-        public Contact()
-        {
-            Progeny = OfflineDefaultData.DefaultProgeny;
-        }
+        
     }
 }

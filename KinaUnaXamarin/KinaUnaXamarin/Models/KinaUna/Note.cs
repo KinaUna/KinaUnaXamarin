@@ -15,9 +15,5 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public Progeny Progeny { get; set; }
 
-        public Note()
-        {
-            Progeny = OfflineDefaultData.DefaultProgeny;
-        }
     }
 }

@@ -17,7 +17,6 @@ namespace KinaUnaXamarin.Models.KinaUna
         public PicturePage()
         {
             PicturesList = new List<Picture>();
-            Progeny = OfflineDefaultData.DefaultProgeny;
         }
     }
 }

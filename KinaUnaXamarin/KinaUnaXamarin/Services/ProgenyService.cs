@@ -2913,6 +2913,12 @@ namespace KinaUnaXamarin.Services
                         if (accessList != null)
                         {
                                 await SecureStorage.SetAsync("AccessList" + progenyId, JsonConvert.SerializeObject(accessList));
+                                foreach (UserAccess uAccess in accessList)
+                                {
+                                    Console.WriteLine("TEST UA: + UserName: " + uAccess.User.UserName);
+                                    Console.WriteLine("TEST UA: + UserId: " + uAccess.User.Id);
+                                    Console.WriteLine("TEST UA: + UserName: " + uAccess.User.Email);
+                            }
                                 return accessList;
                         }
                     }

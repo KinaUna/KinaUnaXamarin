@@ -17,10 +17,5 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string Author { get; set; }
 
         public Progeny Progeny { get; set; }
-
-        public Measurement()
-        {
-            Progeny = OfflineDefaultData.DefaultProgeny;
-        }
     }
 }

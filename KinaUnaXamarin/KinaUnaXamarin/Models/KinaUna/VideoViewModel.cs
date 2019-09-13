@@ -46,8 +46,7 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public VideoViewModel()
         {
-            Progeny = OfflineDefaultData.DefaultProgeny;
-            CommentsList = new List<Comment>();
+           CommentsList = new List<Comment>();
             ProgenyLocations = new List<Location>();
         }
     }
