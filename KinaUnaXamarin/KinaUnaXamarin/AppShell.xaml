@@ -138,6 +138,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Contacts}" x:Name="ContactsFlyoutItem"
+                Icon="{x:Static models:IconFont.ContactMail}">
+        <Tab>
+            <ShellContent x:Name="ContactsMenuItem"
+                          Title="{i18n:Translate Contacts}"
+                          Icon="{x:Static models:IconFont.ContactMail}"
+                          Route="contacts"
+                          ContentTemplate="{DataTemplate views:ContactsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

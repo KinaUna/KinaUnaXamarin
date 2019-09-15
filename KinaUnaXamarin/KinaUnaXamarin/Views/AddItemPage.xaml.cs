@@ -98,6 +98,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddFriendPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddContactPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddUserPage());

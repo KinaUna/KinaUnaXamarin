@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using KinaUnaXamarin.Models;
@@ -85,6 +86,24 @@ namespace KinaUnaXamarin.ViewModels
                 addFriendItem.Icon = IconFont.EmoticonWink;
                 addFriendItem.BackgroundColor = "BlueViolet";
                 ItemList.Add(addFriendItem);
+
+                AddItemModel addContactItem = new AddItemModel();
+                addContactItem.ItemType = (int)KinaUnaTypes.TimeLineType.Contact;
+                addContactItem.Name = "Contact";
+                addContactItem.Description = "Add Contact";
+                if (ci == "da")
+                {
+                    addContactItem.Name = "Kontakt";
+                    addContactItem.Description = "Tilføj Kontakt";
+                }
+                if (ci == "de")
+                {
+                    addContactItem.Name = "Kontakte";
+                    addContactItem.Description = "Kontakte hinzufügen";
+                }
+                addContactItem.Icon = IconFont.ContactMail;
+                addContactItem.BackgroundColor = "Purple";
+                ItemList.Add(addContactItem);
 
                 AddItemModel addUser = new AddItemModel();
                 addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;

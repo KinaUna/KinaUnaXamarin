@@ -2751,7 +2751,7 @@ namespace KinaUnaXamarin.Services
                 {
                     client.SetBearerToken(accessToken);
 
-                    var result = await client.GetAsync("api/contacts/progeny/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/contacts/progenymobile/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -3187,6 +3187,76 @@ namespace KinaUnaXamarin.Services
             }
             
             return friend;
+        }
+
+        public static async Task<string> UploadContactPicture(string fileName)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+
+                var fileBytes = File.ReadAllBytes(fileName);
+                MemoryStream stream = new MemoryStream(fileBytes);
+                HttpContent fileStreamContent = new StreamContent(stream);
+
+                fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
+                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                MultipartFormDataContent content = new MultipartFormDataContent();
+                content.Add(fileStreamContent);
+                var result = await client.PostAsync("api/pictures/uploadcontactpicture/", content).ConfigureAwait(false);
+
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                    return pictureResultString;
+                }
+            }
+
+            return "";
+        }
+
+        public static async Task<Address> SaveAddress(Address address)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/addresses/", new StringContent(JsonConvert.SerializeObject(address), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Address resultAddress = JsonConvert.DeserializeObject<Address>(resultString);
+                    return resultAddress;
+                }
+            }
+
+            return address;
+        }
+
+        public static async Task<Contact> SaveContact(Contact contact)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/contacts/", new StringContent(JsonConvert.SerializeObject(contact), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Contact resultContact = JsonConvert.DeserializeObject<Contact>(resultString);
+                    return resultContact;
+                }
+            }
+
+            return contact;
         }
     }
 }

@@ -462,4 +462,52 @@
   <data name="FriendTypeLabel" xml:space="preserve">
     <value>Vennetype</value>
   </data>
+  <data name="AddContact" xml:space="preserve">
+    <value>Tilføj kontakt</value>
+  </data>
+  <data name="AddContactFor" xml:space="preserve">
+    <value>Tilføj kontakt for:</value>
+  </data>
+  <data name="AddressLine1" xml:space="preserve">
+    <value>Adresse linie 1</value>
+  </data>
+  <data name="AddressLine2" xml:space="preserve">
+    <value>Adresse linie 2</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>By</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Kontakter</value>
+  </data>
+  <data name="Country" xml:space="preserve">
+    <value>Land</value>
+  </data>
+  <data name="FirstName" xml:space="preserve">
+    <value>Fornavn</value>
+  </data>
+  <data name="LastName" xml:space="preserve">
+    <value>Efternavn</value>
+  </data>
+  <data name="MiddleName" xml:space="preserve">
+    <value>Mellemnavn</value>
+  </data>
+  <data name="Mobile" xml:space="preserve">
+    <value>Mobil</value>
+  </data>
+  <data name="MobileNumber" xml:space="preserve">
+    <value>Mobilnummer</value>
+  </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefon</value>
+  </data>
+  <data name="PhoneNumber" xml:space="preserve">
+    <value>Telefonnummer</value>
+  </data>
+  <data name="PostalCode" xml:space="preserve">
+    <value>Postnummer</value>
+  </data>
+  <data name="StateOrRegion" xml:space="preserve">
+    <value>Amt/Region</value>
+  </data>
 </root>

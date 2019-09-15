@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             x:Class="KinaUnaXamarin.Views.AddItem.AddContactPage"
+             Title="{i18n:Translate AddContact}"
+             Visual="Material">
+    <ContentPage.Content>
+        <Grid>
+            <ScrollView>
+                <Grid>
+                    <StackLayout Orientation="Vertical" Margin="5">
+                        <Label Text="{i18n:Translate AddContactFor}"></Label>
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20" />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
+                                       Aspect="AspectFit"
+                                       WidthRequest="40" />
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding NickName}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="Black"
+                                       Margin="10, 0 , 0, 0"/>
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       TextColor="DarkSlateGray"
+                                       Margin="10, 0, 0, 0"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate FirstName}"></Label>
+                            <Entry x:Name="FirstNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate MiddleName}"></Label>
+                            <Entry x:Name="MiddleNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate LastName}"></Label>
+                            <Entry x:Name="LastNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate DisplayName}"></Label>
+                            <Entry x:Name="DisplayNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate AddressLine1}"></Label>
+                            <Entry x:Name="AddressLine1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate AddressLine2}"></Label>
+                            <Entry x:Name="AddressLine2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate City}"></Label>
+                            <Entry x:Name="CityEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate StateOrRegion}"></Label>
+                            <Entry x:Name="StateEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate PostalCode}"></Label>
+                            <Entry x:Name="PostalCodeEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Country}"></Label>
+                            <Entry x:Name="CountryEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="Email 1"></Label>
+                            <Entry x:Name="Email1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="Email 2"></Label>
+                            <Entry x:Name="Email2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate PhoneNumber}"></Label>
+                            <Entry x:Name="PhoneNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate MobileNumber}"></Label>
+                            <Entry x:Name="MobileNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="Website"></Label>
+                            <Entry x:Name="WebsiteEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Context}"></Label>
+                            <Entry x:Name="ContextEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                        </StackLayout>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Notes}"></Label>
+                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" ></Editor>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="Tags"></Label>
+                            <Entry x:Name="TagsEntry" HorizontalOptions="FillAndExpand" ></Entry>
+                        </StackLayout>
+                        <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
+                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate AccessLevel}"></Label>
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                        </StackLayout>
+                        <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+                        <StackLayout Orientation="Horizontal">
+                            <Button x:Name="SaveContactButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveContactButton_OnClicked" IsEnabled="False"></Button>
+                            <Button x:Name="CancelContactButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelContactButton_OnClicked"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                </Grid>
+            </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

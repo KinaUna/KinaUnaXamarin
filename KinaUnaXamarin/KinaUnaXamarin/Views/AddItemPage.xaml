@@ -32,7 +32,9 @@
                                        FontFamily="{StaticResource MaterialFontFamily}"
                                        FontSize="32"
                                        TextColor="White"
-                                       HorizontalTextAlignment="End"  VerticalTextAlignment="Center"/>
+                                       HorizontalTextAlignment="End"
+                                       VerticalTextAlignment="Center"
+                                       HorizontalOptions="CenterAndExpand"/>
                                     <Label Grid.Row="0" Grid.Column="1"
                                    Text="{Binding Name}"
                                    FontAttributes="Bold"

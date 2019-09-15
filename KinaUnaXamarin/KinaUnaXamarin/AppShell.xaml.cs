@@ -39,6 +39,7 @@ namespace KinaUnaXamarin
             _routes.Add("videos", typeof(VideosPage));
             _routes.Add("sleep", typeof(SleepPage));
             _routes.Add("friends", typeof(FriendsPage));
+            _routes.Add("contacts", typeof(FriendsPage));
             _routes.Add("sleepstats", typeof(SleepStatsPage));
             _routes.Add("language", typeof(LanguagePage));
             _routes.Add("mychildren", typeof(MyChildrenPage));
@@ -67,6 +68,7 @@ namespace KinaUnaXamarin
             SleepStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
             SleepTabItem.Title = resmgr.Value.GetString("Sleep", ci);
             FriendsFlyoutItem.Title = FriendsMenuItem.Title = resmgr.Value.GetString("Friends", ci);
+            ContactsFlyoutItem.Title = ContactsMenuItem.Title = resmgr.Value.GetString("Contacts", ci);
         }
     }
 }

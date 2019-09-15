@@ -32,6 +32,8 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         [JsonIgnore]
         public string FullName { get; set; }
-        
+
+        public Address Address { get; set; }
+
     }
 }
