@@ -4,10 +4,10 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.SleepStatsPage"
+             x:Class="KinaUnaXamarin.Views.MeasurementsStatsPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
-             Title="{i18n:Translate Sleep}"
+             Title="{i18n:Translate Measurements}"
              Visual="Material">
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
@@ -19,42 +19,19 @@
     <ContentPage.Content>
         <Grid BackgroundColor="DarkGray">
             <ScrollView>
-                <Grid x:Name="SleepStatsGrid" Margin="5">
+                <Grid x:Name="MeasurementsStatsGrid" Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="500"></RowDefinition>
                         <RowDefinition Height="500"></RowDefinition>
                     </Grid.RowDefinitions>
                     <Frame Grid.Row="0">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition></ColumnDefinition>
-                                <ColumnDefinition></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate TotalSleepRecorded}" Margin="5"></Label>
-                            <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepTitle" Grid.Row="1" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDay}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLastYear}" Margin="5"></Label>
-                            <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepYearTitle" Grid.Row="3" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLastYear}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLast30Days}" Margin="5"></Label>
-                            <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepMonthTitle" Grid.Row="5" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLast30Days} " Margin="5"></Label>
-                            <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                        </Grid>
+                        <oxy:PlotView  Model="{Binding PlotModelHeight}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
                     </Frame>
                     <Frame Grid.Row="1">
-                        <oxy:PlotView  Model="{Binding SleepPlotModel}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
+                        <oxy:PlotView  Model="{Binding PlotModelWeight}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
                     </Frame>
+                    <Label x:Name="HeightLabel" Grid.Row="0" Text="{i18n:Translate Height}" VerticalOptions="Start" Margin="5, 5, 0, 0"></Label>
+                    <Label x:Name="WeightLabel" Grid.Row="1" Text="{i18n:Translate Weight}" VerticalOptions="Start" Margin="5, 5, 0, 0"></Label>
                 </Grid>
             </ScrollView>
             <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">

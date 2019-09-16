@@ -510,4 +510,13 @@
   <data name="StateOrRegion" xml:space="preserve">
     <value>Amt/Region</value>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Dato</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Varighed</value>
+  </data>
+  <data name="Measurements" xml:space="preserve">
+    <value>Målinger</value>
+  </data>
 </root>

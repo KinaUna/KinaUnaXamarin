@@ -149,6 +149,21 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Measurements}" x:Name="MeasurementsFlyoutItem"
+                Icon="{x:Static models:IconFont.Ruler}">
+        <Tab Title="{i18n:Translate Measurements}" x:Name="MeasurementsTabItem"
+             Icon="measurementsicon.png"
+             Route="measurements">
+            <ShellContent ContentTemplate="{DataTemplate views:MeasurementsPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate Statistics}" x:Name="MeasurementsStatsTabItem"
+             Icon="measurementsicon.png"
+             Route="measurementsstats">
+            <ShellContent ContentTemplate="{DataTemplate views:MeasurementsStatsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

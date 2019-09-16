@@ -364,7 +364,7 @@
     <value>You don't have administrator rights for any children.</value>
   </data>
   <data name="VideoLocation" xml:space="preserve">
-    <value>Photo Location:</value>
+    <value>Video Location:</value>
   </data>
   <data name="Videos" xml:space="preserve">
     <value>Videos</value>
@@ -509,5 +509,14 @@
   </data>
   <data name="StateOrRegion" xml:space="preserve">
     <value>State/Region</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+  </data>
+  <data name="Measurements" xml:space="preserve">
+    <value>Measurements</value>
   </data>
 </root>

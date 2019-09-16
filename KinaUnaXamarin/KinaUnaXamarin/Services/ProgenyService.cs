@@ -3004,7 +3004,7 @@ namespace KinaUnaXamarin.Services
                                 TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
                             slpItem.SleepDuration = eOffset - sOffset;
                         }
-                        await SecureStorage.SetAsync("SleepListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
+                        await SecureStorage.SetAsync("SleepListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
                         return sleepList;
                     }
                     else
@@ -3032,7 +3032,7 @@ namespace KinaUnaXamarin.Services
                                 TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
                             slpItem.SleepDuration = eOffset - sOffset;
                         }
-                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel, JsonConvert.SerializeObject(sleepList));
+                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
                         return sleepList;
                     }
                     else
@@ -3043,7 +3043,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string sleepString = await SecureStorage.GetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel);
+                string sleepString = await SecureStorage.GetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
                 if (string.IsNullOrEmpty(sleepString))
                 {
                     return new SleepListPage();
@@ -3257,6 +3257,138 @@ namespace KinaUnaXamarin.Services
             }
 
             return contact;
+        }
+
+        public static async Task<MeasurementsListPage> GetMeasurementsListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, string timezone, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/measurements/getmeasurementslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var measurementsString = await result.Content.ReadAsStringAsync();
+                        MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
+                        foreach (Measurement mesItem in measurementsList.MeasurementsList)
+                        {
+                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                        }
+                        await SecureStorage.SetAsync("MeasurementsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        return measurementsList;
+                    }
+                    else
+                    {
+                        return new MeasurementsListPage();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/measurements/getmeasurementslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var measurementsString = await result.Content.ReadAsStringAsync();
+                        MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
+                        foreach (Measurement mesItem in measurementsList.MeasurementsList)
+                        {
+                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                        }
+                        await SecureStorage.SetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        return measurementsList;
+                    }
+                    else
+                    {
+                        return new MeasurementsListPage();
+                    }
+                }
+            }
+            else
+            {
+                string measurementsString = await SecureStorage.GetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
+                if (string.IsNullOrEmpty(measurementsString))
+                {
+                    return new MeasurementsListPage();
+                }
+                MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
+                return measurementsList;
+            }
+        }
+
+        public static async Task<List<Measurement>> GetMeasurementsList(int progenyId, int accessLevel, string timeZone)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/measurements/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var measurementsString = await result.Content.ReadAsStringAsync();
+                        List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
+                        foreach (Measurement mesItem in measurementsList)
+                        {
+                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
+                        }
+                        await SecureStorage.SetAsync("MeasurementsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        return measurementsList;
+                    }
+                    else
+                    {
+                        return new List<Measurement>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/measurements/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var measurementsString = await result.Content.ReadAsStringAsync();
+                        List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
+                        foreach (Measurement mesItem in measurementsList)
+                        {
+                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
+                        }
+                        await SecureStorage.SetAsync("MeasurementsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        return measurementsList;
+                    }
+                    else
+                    {
+                        return new List<Measurement>();
+                    }
+                }
+            }
+            else
+            {
+                string measurementsString = await SecureStorage.GetAsync("MeasurementsList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(measurementsString))
+                {
+                    return new List<Measurement>();
+                }
+                List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
+                return measurementsList;
+            }
         }
     }
 }

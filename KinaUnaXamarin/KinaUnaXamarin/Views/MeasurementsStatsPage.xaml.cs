@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -18,16 +19,16 @@ namespace KinaUnaXamarin.Views
     // Uses OxyPlot, see: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepStatsPage : ContentPage
+    public partial class MeasurementsStatsPage : ContentPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private SleepStatsViewModel _viewModel;
+        private MeasurementsStatsViewModel _viewModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
         
-        public SleepStatsPage()
+        public MeasurementsStatsPage()
         {
             InitializeComponent();
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
@@ -47,9 +48,9 @@ namespace KinaUnaXamarin.Views
 
             if (_reload)
             {
-                _viewModel = new SleepStatsViewModel();
+                _viewModel = new MeasurementsStatsViewModel();
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
-                SleepStatsGrid.BindingContext = _viewModel;
+                MeasurementsStatsGrid.BindingContext = _viewModel;
                 BindingContext = _viewModel;
             }
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
@@ -88,14 +89,14 @@ namespace KinaUnaXamarin.Views
             {
                 if (_viewModel.Progeny.BirthDay.HasValue)
                 {
-                    StartDatePicker.Date = DateTime.Now - TimeSpan.FromDays(30);
+                    _viewModel.StartDate = _viewModel.FirstDate = _viewModel.Progeny.BirthDay.Value.Date;
                 }
 
-                EndDatePicker.Date = DateTime.Now;
+                _viewModel.EndDate = _viewModel.LastDate = EndDatePicker.Date = DateTime.Now.Date;
                 ChartTypePicker.SelectedItem = _viewModel.ChartTypeList[0];
             }
 
-            await UpdateSleep();
+            await UpdateMeasurements();
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)
@@ -208,31 +209,23 @@ namespace KinaUnaXamarin.Views
             _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
         }
 
-        private async Task UpdateSleep()
+        private async Task UpdateMeasurements()
         {
             _viewModel.IsBusy = true;
             _viewModel.TodayDate = DateTime.Now;
             
-            _viewModel.SleepStats =
-                await ProgenyService.GetSleepStats(_viewChild, _viewModel.UserAccessLevel);
+           // _viewModel.MeasurementsList = await ProgenyService.GetMeasurementsList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
 
-            if (_viewModel.SleepStats != null)
-            {
-                _viewModel.SleepTotal = _viewModel.SleepStats.SleepTotal;
-                _viewModel.TotalAverage = _viewModel.SleepStats.TotalAverage;
-                _viewModel.SleepLastMonth = _viewModel.SleepStats.SleepLastMonth;
-                _viewModel.LastMonthAverage = _viewModel.SleepStats.LastMonthAverage;
-                _viewModel.SleepLastYear = _viewModel.SleepStats.SleepLastYear;
-                _viewModel.LastYearAverage = _viewModel.SleepStats.LastYearAverage;
-            }
             
 
-            List<Sleep> sleepList =
-                await ProgenyService.GetSleepChartData(_viewChild, _viewModel.UserAccessLevel);
-            _viewModel.SleepItems.ReplaceRange(sleepList);
-            if (sleepList != null && sleepList.Count > 0)
+            List<Measurement> measurementsList =
+                await ProgenyService.GetMeasurementsList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            
+
+            if (measurementsList != null && measurementsList.Count > 0)
             {
-                LineSeries sleepLineSeries = new LineSeries()
+                measurementsList = measurementsList.OrderBy(m => m.Date).ToList();
+                LineSeries heightLineSeries = new LineSeries()
                 {
                     Color = OxyColors.DarkGreen,
                     MarkerType = MarkerType.Circle,
@@ -240,11 +233,11 @@ namespace KinaUnaXamarin.Views
                     MarkerStroke = OxyColors.White,
                     MarkerFill = OxyColors.Green,
                     MarkerStrokeThickness = 1.5,
-                    Title = this.Title
+                    Title = HeightLabel.Text
                     
                 };
 
-                StairStepSeries sleepStairStepSeries = new StairStepSeries()
+                StairStepSeries heightStairStepSeries = new StairStepSeries()
                 {
                     Color = OxyColors.DarkGreen,
                     MarkerType = MarkerType.Circle,
@@ -252,10 +245,10 @@ namespace KinaUnaXamarin.Views
                     MarkerStroke = OxyColors.White,
                     MarkerFill = OxyColors.Green,
                     MarkerStrokeThickness = 1.5,
-                    Title = this.Title
+                    Title = HeightLabel.Text
                 };
 
-                StemSeries sleepStemSeries = new StemSeries()
+                StemSeries heightStemSeries = new StemSeries()
                 {
                     Color = OxyColors.DarkGreen,
                     MarkerType = MarkerType.Circle,
@@ -263,66 +256,133 @@ namespace KinaUnaXamarin.Views
                     MarkerStroke = OxyColors.White,
                     MarkerFill = OxyColors.Green,
                     MarkerStrokeThickness = 1.5,
-                    Title = this.Title
+                    Title = HeightLabel.Text
                 };
 
-                double maxSleep = 0;
-                double minSleep = 24;
-                DateTime firstSleepItem = _viewModel.EndDate;
-                DateTime lastSleepItem = _viewModel.StartDate;
-
-                foreach (Sleep slp in _viewModel.SleepItems)
+                LineSeries weightLineSeries = new LineSeries()
                 {
-                    if (slp.SleepStart >= StartDatePicker.Date && slp.SleepStart <= EndDatePicker.Date)
-                    {
-                        slp.SleepStart = slp.SleepStart.Date;
-                        slp.SleepDurDouble = slp.SleepDuration.TotalMinutes / 60.0;
-                        double startDateDouble = DateTimeAxis.ToDouble(slp.SleepStart.Date);
-                        sleepLineSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
-                        sleepStairStepSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
-                        sleepStemSeries.Points.Add(new DataPoint(startDateDouble, slp.SleepDurDouble));
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5,
+                    Title = WeightLabel.Text
 
-                        if (slp.SleepDurDouble > maxSleep)
+                };
+
+                StairStepSeries weightStairStepSeries = new StairStepSeries()
+                {
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5,
+                    Title = WeightLabel.Text
+                };
+
+                StemSeries weightStemSeries = new StemSeries()
+                {
+                    Color = OxyColors.DarkGreen,
+                    MarkerType = MarkerType.Circle,
+                    MarkerSize = 3,
+                    MarkerStroke = OxyColors.White,
+                    MarkerFill = OxyColors.Green,
+                    MarkerStrokeThickness = 1.5,
+                    Title = WeightLabel.Text
+                };
+
+                double maxHeight = 0;
+                double maxWeight = 0;
+                double minHeight = 1000;
+                double minWeight = 1000;
+                DateTime firstMeasurementItem = _viewModel.EndDate;
+                DateTime lastMeasurementItem = _viewModel.StartDate;
+
+                foreach (Measurement mes in measurementsList)
+                {
+                    if (mes.Date >= StartDatePicker.Date && mes.Date <= EndDatePicker.Date)
+                    {
+                        double dateDouble = DateTimeAxis.ToDouble(mes.Date.Date);
+                        if (mes.Height > 0)
                         {
-                            maxSleep = slp.SleepDurDouble;
+                            heightLineSeries.Points.Add(new DataPoint(dateDouble, mes.Height));
+                            heightStairStepSeries.Points.Add(new DataPoint(dateDouble, mes.Height));
+                            heightStemSeries.Points.Add(new DataPoint(dateDouble, mes.Height));
+                            if (mes.Height > maxHeight)
+                            {
+                                maxHeight = mes.Height;
+                            }
+
+                            if (mes.Height < minHeight)
+                            {
+                                minHeight = mes.Height;
+                            }
                         }
 
-                        if (slp.SleepDurDouble < minSleep)
+                        if (mes.Weight > 0)
                         {
-                            minSleep = slp.SleepDurDouble;
+                            weightLineSeries.Points.Add(new DataPoint(dateDouble, mes.Weight));
+                            weightStairStepSeries.Points.Add(new DataPoint(dateDouble, mes.Weight));
+                            weightStemSeries.Points.Add(new DataPoint(dateDouble, mes.Weight));
+                            if (mes.Weight > maxWeight)
+                            {
+                                maxWeight = mes.Weight;
+                            }
+
+                            if (mes.Weight < minWeight)
+                            {
+                                minWeight = mes.Weight;
+                            }
                         }
                     }
-                    if (slp.SleepStart < firstSleepItem)
+                    if (mes.Date < firstMeasurementItem)
                     {
-                        firstSleepItem = slp.SleepStart;
+                        firstMeasurementItem = mes.Date;
                     }
 
-                    if (slp.SleepStart > lastSleepItem)
+                    if (mes.Date > lastMeasurementItem)
                     {
-                        lastSleepItem = slp.SleepStart;
+                        lastMeasurementItem = mes.Date;
                     }
                 }
                 
-                _viewModel.MinValue = Math.Floor(minSleep);
-                _viewModel.MaxValue = Math.Ceiling(maxSleep);
-                _viewModel.FirstDate = firstSleepItem;
-                _viewModel.LastDate = lastSleepItem;
+                _viewModel.HeightMinValue = Math.Floor(minHeight);
+                _viewModel.HeightMaxValue = Math.Ceiling(maxHeight);
+                _viewModel.WeightMinValue = Math.Floor(minWeight);
+                _viewModel.WeightMaxValue = Math.Ceiling(maxWeight);
+                _viewModel.FirstDate = firstMeasurementItem;
+                _viewModel.LastDate = lastMeasurementItem;
 
-                LinearAxis durationAxis = new LinearAxis();
-                durationAxis.Key = "DurationAxis";
-                durationAxis.Minimum = 0; //_viewModel.MinValue -1;
-                durationAxis.Maximum = _viewModel.MaxValue; // + 1;
-                durationAxis.Position = AxisPosition.Left;
-                durationAxis.MajorStep = 1;
-                durationAxis.MinorStep = 0.5;
-                durationAxis.MajorGridlineStyle = LineStyle.Solid;
-                durationAxis.MinorGridlineStyle = LineStyle.Solid;
-                durationAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
-                durationAxis.MinorGridlineColor = OxyColor.FromRgb(250, 225, 205);
-                durationAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+                LinearAxis heightAxis = new LinearAxis();
+                heightAxis.Key = "HeightAxis";
+                heightAxis.Minimum = _viewModel.HeightMinValue * 0.9;
+                heightAxis.Maximum = _viewModel.HeightMaxValue * 1.1;
+                heightAxis.Position = AxisPosition.Left;
+                heightAxis.MajorStep = 10;
+                heightAxis.MinorStep = 5;
+                heightAxis.MajorGridlineStyle = LineStyle.Solid;
+                heightAxis.MinorGridlineStyle = LineStyle.Solid;
+                heightAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
+                heightAxis.MinorGridlineColor = OxyColor.FromRgb(250, 225, 205);
+                heightAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+
+                LinearAxis weightAxis = new LinearAxis();
+                weightAxis.Key = "WeightAxis";
+                weightAxis.Minimum = _viewModel.WeightMinValue * 0.9;
+                weightAxis.Maximum = _viewModel.WeightMaxValue * 1.1;
+                weightAxis.Position = AxisPosition.Left;
+                weightAxis.MajorStep = 2;
+                weightAxis.MinorStep = 1;
+                weightAxis.MajorGridlineStyle = LineStyle.Solid;
+                weightAxis.MinorGridlineStyle = LineStyle.Solid;
+                weightAxis.MajorGridlineColor = OxyColor.FromRgb(200, 190, 170);
+                weightAxis.MinorGridlineColor = OxyColor.FromRgb(250, 225, 205);
+                weightAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
 
                 DateTimeAxis dateAxis = new DateTimeAxis();
-                dateAxis.Key = "DateAxis";
+                dateAxis.Key = "DateAxisHeight";
                 dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
                 dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
                 dateAxis.Position = AxisPosition.Bottom;
@@ -334,33 +394,48 @@ namespace KinaUnaXamarin.Views
                 dateAxis.FirstDayOfWeek = DayOfWeek.Monday;
                 dateAxis.MinorIntervalType = DateTimeIntervalType.Auto;
 
-                _viewModel.SleepPlotModel = new PlotModel();
-                _viewModel.SleepPlotModel.Background = OxyColors.White;
-                _viewModel.SleepPlotModel.Axes.Add(durationAxis);
-                _viewModel.SleepPlotModel.Axes.Add(dateAxis);
-                _viewModel.SleepPlotModel.LegendPosition = LegendPosition.BottomCenter;
-                _viewModel.SleepPlotModel.LegendBackground = OxyColors.LightYellow;
+                DateTimeAxis dateAxisWeight = new DateTimeAxis();
+                dateAxisWeight.Key = "DateAxisWeight";
+                dateAxisWeight.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
+                dateAxisWeight.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
+                dateAxisWeight.Position = AxisPosition.Bottom;
+                dateAxisWeight.AxislineColor = OxyColor.FromRgb(0, 0, 0);
+                dateAxisWeight.StringFormat = "dd-MMM-yyyy";
+                dateAxisWeight.MajorGridlineStyle = LineStyle.Solid;
+                dateAxisWeight.MajorGridlineColor = OxyColor.FromRgb(230, 190, 190);
+                dateAxisWeight.IntervalType = DateTimeIntervalType.Auto;
+                dateAxisWeight.FirstDayOfWeek = DayOfWeek.Monday;
+                dateAxisWeight.MinorIntervalType = DateTimeIntervalType.Auto;
 
-                Func<double, double> averageFunc = (x) => _viewModel.SleepStats.TotalAverage.TotalMinutes / 60.0;
-                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepTitle.Text));
+                _viewModel.PlotModelHeight = new PlotModel();
+                _viewModel.PlotModelHeight.Background = OxyColors.White;
+                _viewModel.PlotModelHeight.Axes.Add(heightAxis);
+                _viewModel.PlotModelHeight.Axes.Add(dateAxis);
+                _viewModel.PlotModelHeight.LegendPosition = LegendPosition.BottomCenter;
+                _viewModel.PlotModelHeight.LegendBackground = OxyColors.LightYellow;
 
-                Func<double, double> averageYearFunc = (x) => _viewModel.SleepStats.LastYearAverage.TotalMinutes / 60.0;
-                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageYearFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepYearTitle.Text));
+                _viewModel.PlotModelWeight = new PlotModel();
+                _viewModel.PlotModelWeight.Background = OxyColors.White;
+                _viewModel.PlotModelWeight.Axes.Add(weightAxis);
+                _viewModel.PlotModelWeight.Axes.Add(dateAxisWeight);
+                _viewModel.PlotModelWeight.LegendPosition = LegendPosition.BottomCenter;
+                _viewModel.PlotModelWeight.LegendBackground = OxyColors.LightYellow;
 
-                Func<double, double> averageMonthFunc = (x) => _viewModel.SleepStats.LastMonthAverage.TotalMinutes / 60.0;
-                _viewModel.SleepPlotModel.Series.Add(new FunctionSeries(averageMonthFunc, dateAxis.Minimum, dateAxis.Maximum, (int)(dateAxis.Maximum - dateAxis.Minimum), AverageSleepMonthTitle.Text));
 
                 if (ChartTypePicker.SelectedIndex == 0)
                 {
-                    _viewModel.SleepPlotModel.Series.Add(sleepLineSeries);
+                    _viewModel.PlotModelHeight.Series.Add(heightLineSeries);
+                    _viewModel.PlotModelWeight.Series.Add(weightLineSeries);
                 }
                 if (ChartTypePicker.SelectedIndex == 1)
                 {
-                    _viewModel.SleepPlotModel.Series.Add(sleepStairStepSeries);
+                    _viewModel.PlotModelHeight.Series.Add(heightStairStepSeries);
+                    _viewModel.PlotModelWeight.Series.Add(weightStairStepSeries);
                 }
                 if (ChartTypePicker.SelectedIndex == 2)
                 {
-                    _viewModel.SleepPlotModel.Series.Add(sleepStemSeries);
+                    _viewModel.PlotModelHeight.Series.Add(heightStemSeries);
+                    _viewModel.PlotModelWeight.Series.Add(weightStemSeries);
                 }
             }
             

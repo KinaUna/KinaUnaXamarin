@@ -385,6 +385,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Date.
+        /// </summary>
+        internal static string Date {
+            get {
+                return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to days.
         /// </summary>
         internal static string Days {
@@ -453,6 +462,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string DisplayName {
             get {
                 return ResourceManager.GetString("DisplayName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Duration.
+        /// </summary>
+        internal static string Duration {
+            get {
+                return ResourceManager.GetString("Duration", resourceCulture);
             }
         }
         
@@ -678,6 +696,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string LogOut {
             get {
                 return ResourceManager.GetString("LogOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measurements.
+        /// </summary>
+        internal static string Measurements {
+            get {
+                return ResourceManager.GetString("Measurements", resourceCulture);
             }
         }
         
@@ -1150,7 +1177,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo Location:.
+        ///   Looks up a localized string similar to Video Location:.
         /// </summary>
         internal static string VideoLocation {
             get {

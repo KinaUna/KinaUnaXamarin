@@ -4,12 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.SleepPage"
+             x:Class="KinaUnaXamarin.Views.MeasurementsPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             Title="{i18n:Translate Sleep}"
+             Title="{i18n:Translate Measurements}"
              Visual="Material">
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
@@ -29,7 +29,7 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>
-                <CollectionView x:Name="SleepListView" ItemsSource="{Binding SleepItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="SleepListView_OnSelectionChanged" SelectionMode="Single" >
+                <CollectionView x:Name="MeasurementsListView" ItemsSource="{Binding MeasurementItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="MeasurementsListView_OnSelectionChanged" SelectionMode="Single" >
                     <CollectionView.Header>
                         <Grid BackgroundColor="LightGray">
                             <Grid.ColumnDefinitions>
@@ -38,21 +38,21 @@
                                 <ColumnDefinition Width="*"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Label Grid.Column="0" Margin="5,0,0,0"
-                                   Text="{i18n:Translate Start}"
+                                   Text="{i18n:Translate Date}"
                                    FontSize="Small"
                                    FontAttributes="Bold" />
                             <Label Grid.Column="1" Margin="0,0,0,0"
-                                   Text="{i18n:Translate End}"
+                                   Text="{i18n:Translate Height}"
                                    FontSize="Small"
                                    FontAttributes="Bold" />
                             <Label Grid.Column="2" Margin="0,0,0,0"
-                                   Text="{i18n:Translate Duration}"
+                                   Text="{i18n:Translate Weight}"
                                    FontSize="Small"
                                    FontAttributes="Bold" />
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate x:DataType="modelsKinaUna:Sleep">
+                        <DataTemplate x:DataType="modelsKinaUna:Measurement">
                             <Grid Padding="5" BackgroundColor="White">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
@@ -65,15 +65,16 @@
                                 </Grid.ColumnDefinitions>
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="End" HorizontalOptions="FillAndExpand" HeightRequest="2" Color="LightGray"></BoxView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                    <Label Text="{Binding SleepStart, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
-                                    <Label Text="{Binding SleepStart, StringFormat='{0:HH:mm}'}" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding Date, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
+                                    
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                                    <Label Text="{Binding SleepEnd, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
-                                    <Label Text="{Binding SleepEnd, StringFormat='{0:HH:mm}'}" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding Height}"></Label>
+                                    
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                    <Label Text="{Binding SleepDuration, StringFormat=\{0:h\\:mm\}}" VerticalOptions="End"></Label>
+                                    <Label Text="{Binding Weight}"></Label>
+                                    
                                 </StackLayout>
                             </Grid>
                         </DataTemplate>

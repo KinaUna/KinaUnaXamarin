@@ -44,6 +44,12 @@
     <Compile Update="Views\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MeasurementsPage.xaml.cs">
+      <DependentUpon>MeasurementsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\MeasurementsStatsPage.xaml.cs">
+      <DependentUpon>MeasurementsStatsPage.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <ItemGroup>
