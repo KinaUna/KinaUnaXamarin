@@ -151,6 +151,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Measurement.
+        /// </summary>
+        internal static string AddMeasurement {
+            get {
+                return ResourceManager.GetString("AddMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Measurement for:.
+        /// </summary>
+        internal static string AddMeasurementFor {
+            get {
+                return ResourceManager.GetString("AddMeasurementFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Photo.
         /// </summary>
         internal static string AddPhoto {
@@ -183,6 +201,24 @@ namespace KinaUnaXamarin.Resources {
         internal static string AddressLine2 {
             get {
                 return ResourceManager.GetString("AddressLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Skill.
+        /// </summary>
+        internal static string AddSkill {
+            get {
+                return ResourceManager.GetString("AddSkill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Skill for:.
+        /// </summary>
+        internal static string AddSkillFor {
+            get {
+                return ResourceManager.GetString("AddSkillFor", resourceCulture);
             }
         }
         
@@ -295,6 +331,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category.
+        /// </summary>
+        internal static string Category {
+            get {
+                return ResourceManager.GetString("Category", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Note: When changing language, some text may appear in the previously selected language until the app is restarted..
         /// </summary>
         internal static string ChangeLanguageWarning {
@@ -331,6 +376,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Circumference.
+        /// </summary>
+        internal static string Circumference {
+            get {
+                return ResourceManager.GetString("Circumference", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to City.
         /// </summary>
         internal static string City {
@@ -354,6 +408,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Contacts {
             get {
                 return ResourceManager.GetString("Contacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Contact saved successfully. Contact ID:.
+        /// </summary>
+        internal static string ContactSaved {
+            get {
+                return ResourceManager.GetString("ContactSaved", resourceCulture);
             }
         }
         
@@ -502,11 +565,29 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Contact was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorContactNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorContactNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Friend was not saved. Try again later..
         /// </summary>
         internal static string ErrorFriendNotSaved {
             get {
                 return ResourceManager.GetString("ErrorFriendNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Measurement not saved. Try againg later..
+        /// </summary>
+        internal static string ErrorMeasurementNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorMeasurementNotSaved", resourceCulture);
             }
         }
         
@@ -520,11 +601,38 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Skill was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorSkillNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorSkillNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Sleep was not saved. Try againg later..
+        /// </summary>
+        internal static string ErrorSleepNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorSleepNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Adding user failed. Try again later..
         /// </summary>
         internal static string ErrorUserNotSaved {
             get {
                 return ResourceManager.GetString("ErrorUserNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Eye Color.
+        /// </summary>
+        internal static string EyeColor {
+            get {
+                return ResourceManager.GetString("EyeColor", resourceCulture);
             }
         }
         
@@ -543,6 +651,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string FirstName {
             get {
                 return ResourceManager.GetString("FirstName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to First Observation.
+        /// </summary>
+        internal static string FirstObservation {
+            get {
+                return ResourceManager.GetString("FirstObservation", resourceCulture);
             }
         }
         
@@ -606,6 +723,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string FullName {
             get {
                 return ResourceManager.GetString("FullName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hair Color.
+        /// </summary>
+        internal static string HairColor {
+            get {
+                return ResourceManager.GetString("HairColor", resourceCulture);
             }
         }
         
@@ -705,6 +831,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Measurements {
             get {
                 return ResourceManager.GetString("Measurements", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Measurement saved successfully. Measurement ID:.
+        /// </summary>
+        internal static string MeasurementSaved {
+            get {
+                return ResourceManager.GetString("MeasurementSaved", resourceCulture);
             }
         }
         
@@ -1042,6 +1177,33 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Skill title or name.
+        /// </summary>
+        internal static string SkillName {
+            get {
+                return ResourceManager.GetString("SkillName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skills.
+        /// </summary>
+        internal static string Skills {
+            get {
+                return ResourceManager.GetString("Skills", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Skill saved successfully. Skill ID:.
+        /// </summary>
+        internal static string SkillSaved {
+            get {
+                return ResourceManager.GetString("SkillSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sleep.
         /// </summary>
         internal static string Sleep {
@@ -1065,6 +1227,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string SleepRecordedInTheLastYear {
             get {
                 return ResourceManager.GetString("SleepRecordedInTheLastYear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sleep saved successfully. Sleep ID:.
+        /// </summary>
+        internal static string SleepSaved {
+            get {
+                return ResourceManager.GetString("SleepSaved", resourceCulture);
             }
         }
         

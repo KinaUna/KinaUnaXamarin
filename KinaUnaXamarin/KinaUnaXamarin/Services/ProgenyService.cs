@@ -3390,5 +3390,105 @@ namespace KinaUnaXamarin.Services
                 return measurementsList;
             }
         }
+
+        public static async Task<Measurement> SaveMeasurement(Measurement measurement)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/measurements/", new StringContent(JsonConvert.SerializeObject(measurement), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Measurement resultMeasurement = JsonConvert.DeserializeObject<Measurement>(resultString);
+                    return resultMeasurement;
+                }
+            }
+
+            return measurement;
+        }
+
+        public static async Task<SkillsListPage> GetSkillsListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/skills/getskillslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var skillsString = await result.Content.ReadAsStringAsync();
+                        SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsString);
+                        
+                        await SecureStorage.SetAsync("SkillsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        return skillsListPage;
+                    }
+                    else
+                    {
+                        return new SkillsListPage();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/skills/getskillslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var skillsString = await result.Content.ReadAsStringAsync();
+                        SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsString);
+
+                        await SecureStorage.SetAsync("SkillsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        return skillsListPage;
+                    }
+                    else
+                    {
+                        return new SkillsListPage();
+                    }
+                }
+            }
+            else
+            {
+                string skillsListPageString = await SecureStorage.GetAsync("SkillsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
+                if (string.IsNullOrEmpty(skillsListPageString))
+                {
+                    return new SkillsListPage();
+                }
+                SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsListPageString);
+                return skillsListPage;
+            }
+        }
+
+        public static async Task<Skill> SaveSkill(Skill skill)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/skills/", new StringContent(JsonConvert.SerializeObject(skill), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Skill resultSkill = JsonConvert.DeserializeObject<Skill>(resultString);
+                    return resultSkill;
+                }
+            }
+
+            return skill;
+        }
     }
 }

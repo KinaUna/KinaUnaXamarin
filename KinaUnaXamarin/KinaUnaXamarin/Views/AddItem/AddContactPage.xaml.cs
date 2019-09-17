@@ -173,7 +173,7 @@ namespace KinaUnaXamarin.Views.AddItem
             if (newContact.ContactId == 0)
             {
                 var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                ErrorLabel.Text = resmgr.Value.GetString("ErrorFriendNotSaved", ci); // Todo: Contact instead of friend
+                ErrorLabel.Text = resmgr.Value.GetString("ErrorContactNotSaved", ci);
                 ErrorLabel.BackgroundColor = Color.Red;
                 SaveContactButton.IsEnabled = true;
                 CancelContactButton.IsEnabled = true;
@@ -182,7 +182,7 @@ namespace KinaUnaXamarin.Views.AddItem
             else
             {
                 var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                ErrorLabel.Text = resmgr.Value.GetString("FriendSaved", ci) + newContact.ContactId; // Todo: Contact instead of friend
+                ErrorLabel.Text = resmgr.Value.GetString("ContactSaved", ci) + newContact.ContactId;
                 ErrorLabel.BackgroundColor = Color.Green;
                 SaveContactButton.IsVisible = false;
                 CancelContactButton.Text = "Ok";

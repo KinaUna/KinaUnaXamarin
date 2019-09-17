@@ -156,7 +156,7 @@
             </DataTemplate>
             <DataTemplate x:Key="SkillTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#6A4071" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="skillsicon.png"></Image>

@@ -2,9 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels.AddItem;
+using Plugin.Multilingual;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -15,6 +19,8 @@ namespace KinaUnaXamarin.Views.AddItem
     public partial class AddSleepPage : ContentPage
     {
         private readonly AddSleepViewModel _addSleepViewModel;
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
         public AddSleepPage()
         {
@@ -168,18 +174,25 @@ namespace KinaUnaXamarin.Views.AddItem
                 saveSleep.SleepEnd = end;
                 saveSleep.SleepNotes = _addSleepViewModel.Notes;
                 saveSleep.Progeny = progeny;
+                string userEmail = await UserService.GetUserEmail();
+                UserInfo userinfo = await UserService.GetUserInfo(userEmail);
+                saveSleep.Author = userinfo.UserId;
+                
                 if (ProgenyService.Online())
                 {
+                    // Todo: Translate messages.
                     saveSleep = await ProgenyService.SaveSleep(saveSleep);
                     if (saveSleep.SleepId == 0)
                     {
-                        ErrorLabel.Text = "Error: Sleep was not saved. Try again later.";
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        ErrorLabel.Text = resmgr.Value.GetString("ErrorSleepNotSaved", ci);
                         ErrorLabel.BackgroundColor = Color.Red;
 
                     }
                     else
                     {
-                        ErrorLabel.Text = $"Sleep for {progeny.NickName} saved successfully. Sleep Id: {saveSleep.SleepId} ";
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        ErrorLabel.Text = resmgr.Value.GetString("SleepSaved", ci) + saveSleep.SleepId;
                         ErrorLabel.BackgroundColor = Color.Green;
                         SaveSleepButton.IsVisible = false;
                         CancelSleepButton.Text = "Ok";
@@ -188,6 +201,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 }
                 else
                 {
+                    // Todo: Translate message.
                     ErrorLabel.Text = $"Error: No internet connection. Sleep for {progeny.NickName} was not saved. Try again later.";
                     ErrorLabel.BackgroundColor = Color.Red;
                 }

@@ -40,9 +40,10 @@ namespace KinaUnaXamarin
             _routes.Add("sleep", typeof(SleepPage));
             _routes.Add("measurements", typeof(MeasurementsPage));
             _routes.Add("friends", typeof(FriendsPage));
-            _routes.Add("contacts", typeof(FriendsPage));
+            _routes.Add("contacts", typeof(ContactsPage));
             _routes.Add("sleepstats", typeof(SleepStatsPage));
             _routes.Add("measurementsstats", typeof(MeasurementsStatsPage));
+            _routes.Add("skills", typeof(SkillsPage));
             _routes.Add("language", typeof(LanguagePage));
             _routes.Add("mychildren", typeof(MyChildrenPage));
             _routes.Add("useraccess", typeof(UserAccessPage));
@@ -74,6 +75,7 @@ namespace KinaUnaXamarin
             MeasurementsFlyoutItem.Title = resmgr.Value.GetString("Measurements", ci);
             MeasurementsStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
             MeasurementsTabItem.Title = resmgr.Value.GetString("Measurements", ci);
+            SkillsFlyoutItem.Title = SkillsMenuItem.Title = resmgr.Value.GetString("Skills", ci);
         }
     }
 }

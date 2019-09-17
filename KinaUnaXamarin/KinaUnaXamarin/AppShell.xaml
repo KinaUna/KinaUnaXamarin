@@ -121,7 +121,7 @@
             </ShellContent>
         </Tab>
         <Tab Title="{i18n:Translate Statistics}" x:Name="SleepStatsTabItem"
-             Icon="measurementsicon.png"
+             Icon="charticon.png"
              Route="sleepstats">
             <ShellContent ContentTemplate="{DataTemplate views:SleepStatsPage}">
             </ShellContent>
@@ -158,9 +158,20 @@
             </ShellContent>
         </Tab>
         <Tab Title="{i18n:Translate Statistics}" x:Name="MeasurementsStatsTabItem"
-             Icon="measurementsicon.png"
+             Icon="charticon.png"
              Route="measurementsstats">
             <ShellContent ContentTemplate="{DataTemplate views:MeasurementsStatsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Skills}" x:Name="SkillsFlyoutItem"
+                Icon="{x:Static models:IconFont.School}">
+        <Tab>
+            <ShellContent x:Name="SkillsMenuItem"
+                          Title="{i18n:Translate Skills}"
+                          Icon="{x:Static models:IconFont.School}"
+                          Route="skills"
+                          ContentTemplate="{DataTemplate views:SkillsPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>

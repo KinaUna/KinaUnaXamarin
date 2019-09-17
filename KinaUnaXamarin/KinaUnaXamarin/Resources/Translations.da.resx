@@ -519,4 +519,61 @@
   <data name="Measurements" xml:space="preserve">
     <value>Målinger</value>
   </data>
+  <data name="AddMeasurement" xml:space="preserve">
+    <value>Tilføj måling</value>
+  </data>
+  <data name="AddMeasurementFor" xml:space="preserve">
+    <value>Tilføj måling for:</value>
+  </data>
+  <data name="AddSkill" xml:space="preserve">
+    <value>Tilføj færdighed</value>
+  </data>
+  <data name="AddSkillFor" xml:space="preserve">
+    <value>Tilføj færdighed for:</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Kategori</value>
+  </data>
+  <data name="Circumference" xml:space="preserve">
+    <value>Hoved-omkreds</value>
+  </data>
+  <data name="ContactSaved" xml:space="preserve">
+    <value>Kontakten er nu tilføjet. Kontakt ID:</value>
+  </data>
+  <data name="ErrorContactNotSaved" xml:space="preserve">
+    <value>Fejl: Kontakten blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ErrorMeasurementNotSaved" xml:space="preserve">
+    <value>Fejl: Målingen blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ErrorSkillNotSaved" xml:space="preserve">
+    <value>Fejl: Færdigheden blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ErrorSleepNotSaved" xml:space="preserve">
+    <value>Fejl: Søvnen blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="EyeColor" xml:space="preserve">
+    <value>Øjenfarve</value>
+  </data>
+  <data name="FirstObservation" xml:space="preserve">
+    <value>Første observation</value>
+  </data>
+  <data name="HairColor" xml:space="preserve">
+    <value>Hårfarve</value>
+  </data>
+  <data name="MeasurementSaved" xml:space="preserve">
+    <value>Målingen er nu tilføjet. Måling ID:</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>Færdighedsnavn eller titel</value>
+  </data>
+  <data name="Skills" xml:space="preserve">
+    <value>Færdigheder</value>
+  </data>
+  <data name="SkillSaved" xml:space="preserve">
+    <value>Færdigheden er nu tilføjet. Færdighed ID:</value>
+  </data>
+  <data name="SleepSaved" xml:space="preserve">
+    <value>Søvnen er nu tilføjet. Søvn ID:</value>
+  </data>
 </root>

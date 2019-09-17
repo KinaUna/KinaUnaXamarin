@@ -105,6 +105,42 @@ namespace KinaUnaXamarin.ViewModels
                 addContactItem.BackgroundColor = "Purple";
                 ItemList.Add(addContactItem);
 
+                AddItemModel addMeasurementItem = new AddItemModel();
+                addMeasurementItem.ItemType = (int)KinaUnaTypes.TimeLineType.Measurement;
+                addMeasurementItem.Name = "Measurement";
+                addMeasurementItem.Description = "Add Measurement";
+                if (ci == "da")
+                {
+                    addMeasurementItem.Name = "Måling";
+                    addMeasurementItem.Description = "Tilføj Måling";
+                }
+                if (ci == "de")
+                {
+                    addMeasurementItem.Name = "Mässung";
+                    addMeasurementItem.Description = "Mässung hinzufügen";
+                }
+                addMeasurementItem.Icon = IconFont.Ruler;
+                addMeasurementItem.BackgroundColor = "DarkRed";
+                ItemList.Add(addMeasurementItem);
+
+                AddItemModel addSkillItem = new AddItemModel();
+                addSkillItem.ItemType = (int)KinaUnaTypes.TimeLineType.Skill;
+                addSkillItem.Name = "Skill";
+                addSkillItem.Description = "Add Skill";
+                if (ci == "da")
+                {
+                    addSkillItem.Name = "Færdighed";
+                    addSkillItem.Description = "Tilføj Færdighed";
+                }
+                if (ci == "de")
+                {
+                    addSkillItem.Name = "Fähigkeit";
+                    addSkillItem.Description = "Fähigkeit hinzufügen";
+                }
+                addSkillItem.Icon = IconFont.School;
+                addSkillItem.BackgroundColor = "#6A4071";
+                ItemList.Add(addSkillItem);
+
                 AddItemModel addUser = new AddItemModel();
                 addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;
                 addUser.Name = "User";
@@ -120,7 +156,7 @@ namespace KinaUnaXamarin.ViewModels
                     addUser.Description = "Benutzer hinzufügen";
                 }
                 addUser.Icon = IconFont.AccountPlus;
-                addUser.BackgroundColor = "#ff9800";
+                addUser.BackgroundColor = "#dd6800";
                 ItemList.Add(addUser);
             }
 

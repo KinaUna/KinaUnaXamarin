@@ -519,4 +519,61 @@
   <data name="Measurements" xml:space="preserve">
     <value>Messungen</value>
   </data>
+  <data name="AddMeasurement" xml:space="preserve">
+    <value>Mässung hinzufügen</value>
+  </data>
+  <data name="AddMeasurementFor" xml:space="preserve">
+    <value>Mässung hinzufügen für:</value>
+  </data>
+  <data name="AddSkill" xml:space="preserve">
+    <value>Fähigkeit hinzufügen</value>
+  </data>
+  <data name="AddSkillFor" xml:space="preserve">
+    <value>Fähigkeit hinzufügen für:</value>
+  </data>
+  <data name="Category" xml:space="preserve">
+    <value>Kategorie</value>
+  </data>
+  <data name="Circumference" xml:space="preserve">
+    <value>Kopfgröße</value>
+  </data>
+  <data name="ContactSaved" xml:space="preserve">
+    <value>Kontakte hinzugefügt. Kontakte ID:</value>
+  </data>
+  <data name="ErrorContactNotSaved" xml:space="preserve">
+    <value>Fehler: Kontakte würde nicht gespeichert.</value>
+  </data>
+  <data name="ErrorMeasurementNotSaved" xml:space="preserve">
+    <value>Fehler: Mässung würde nicht gespeichert.</value>
+  </data>
+  <data name="ErrorSkillNotSaved" xml:space="preserve">
+    <value>Fehler: Fähigkeit würde nicht gespeichert.</value>
+  </data>
+  <data name="ErrorSleepNotSaved" xml:space="preserve">
+    <value>Fehler: Schlaf würde nicht gespeichert.</value>
+  </data>
+  <data name="EyeColor" xml:space="preserve">
+    <value>Augenfarbe</value>
+  </data>
+  <data name="FirstObservation" xml:space="preserve">
+    <value>Erste Beobachtung</value>
+  </data>
+  <data name="HairColor" xml:space="preserve">
+    <value>Haarfarbe</value>
+  </data>
+  <data name="MeasurementSaved" xml:space="preserve">
+    <value>Mässung hinzugefügt. Mässung ID:</value>
+  </data>
+  <data name="SkillName" xml:space="preserve">
+    <value>Fähigkeits Name oder Titel</value>
+  </data>
+  <data name="Skills" xml:space="preserve">
+    <value>Fähigkeiten</value>
+  </data>
+  <data name="SkillSaved" xml:space="preserve">
+    <value>Fähigkeit hinzugefügt: Fähigkeit ID:</value>
+  </data>
+  <data name="SleepSaved" xml:space="preserve">
+    <value>Schlaf hinzugefügt. Schlaf ID:</value>
+  </data>
 </root>
