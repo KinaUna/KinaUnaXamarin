@@ -576,4 +576,13 @@
   <data name="SleepSaved" xml:space="preserve">
     <value>Schlaf hinzugefügt. Schlaf ID:</value>
   </data>
+  <data name="SoundsLike" xml:space="preserve">
+    <value>Lautschrift</value>
+  </data>
+  <data name="Vocabulary" xml:space="preserve">
+    <value>Wortschatz</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>Wort</value>
+  </data>
 </root>

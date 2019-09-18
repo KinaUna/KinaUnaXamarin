@@ -76,6 +76,9 @@ namespace KinaUnaXamarin
             MeasurementsStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
             MeasurementsTabItem.Title = resmgr.Value.GetString("Measurements", ci);
             SkillsFlyoutItem.Title = SkillsMenuItem.Title = resmgr.Value.GetString("Skills", ci);
+            VocabularyFlyoutItem.Title = resmgr.Value.GetString("Vocabulary", ci);
+            VocabularyStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
+            VocabularyTabItem.Title = resmgr.Value.GetString("Vocabulary", ci);
         }
     }
 }

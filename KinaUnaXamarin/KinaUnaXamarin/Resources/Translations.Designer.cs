@@ -1249,6 +1249,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sounds Like.
+        /// </summary>
+        internal static string SoundsLike {
+            get {
+                return ResourceManager.GetString("SoundsLike", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start.
         /// </summary>
         internal static string Start {
@@ -1375,6 +1384,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Vocabulary.
+        /// </summary>
+        internal static string Vocabulary {
+            get {
+                return ResourceManager.GetString("Vocabulary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to was.
         /// </summary>
         internal static string Was {
@@ -1416,6 +1434,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string WillBe {
             get {
                 return ResourceManager.GetString("WillBe", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Word.
+        /// </summary>
+        internal static string Word {
+            get {
+                return ResourceManager.GetString("Word", resourceCulture);
             }
         }
         

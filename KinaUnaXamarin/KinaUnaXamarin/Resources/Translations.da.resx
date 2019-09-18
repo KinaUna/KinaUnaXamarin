@@ -576,4 +576,13 @@
   <data name="SleepSaved" xml:space="preserve">
     <value>Søvnen er nu tilføjet. Søvn ID:</value>
   </data>
+  <data name="SoundsLike" xml:space="preserve">
+    <value>Lyder som</value>
+  </data>
+  <data name="Vocabulary" xml:space="preserve">
+    <value>Ord</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>Ord</value>
+  </data>
 </root>

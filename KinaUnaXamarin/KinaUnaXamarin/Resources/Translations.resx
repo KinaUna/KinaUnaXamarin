@@ -576,4 +576,13 @@
   <data name="SleepSaved" xml:space="preserve">
     <value>Sleep saved successfully. Sleep ID:</value>
   </data>
+  <data name="SoundsLike" xml:space="preserve">
+    <value>Sounds Like</value>
+  </data>
+  <data name="Vocabulary" xml:space="preserve">
+    <value>Vocabulary</value>
+  </data>
+  <data name="Word" xml:space="preserve">
+    <value>Word</value>
+  </data>
 </root>

@@ -175,6 +175,21 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Vocabulary}" x:Name="VocabularyFlyoutItem"
+                Icon="{x:Static models:IconFont.MessageProcessing}">
+        <Tab Title="{i18n:Translate Vocabulary}" x:Name="VocabularyTabItem"
+             Icon="vocabularyicon.png"
+             Route="vocabulary">
+            <ShellContent ContentTemplate="{DataTemplate views:VocabularyPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate Statistics}" x:Name="VocabularyStatsTabItem"
+             Icon="charticon.png"
+             Route="vocabularystats">
+            <ShellContent ContentTemplate="{DataTemplate views:VocabularyStatsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

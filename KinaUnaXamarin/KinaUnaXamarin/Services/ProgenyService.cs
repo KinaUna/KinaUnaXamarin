@@ -3490,5 +3490,137 @@ namespace KinaUnaXamarin.Services
 
             return skill;
         }
+
+        public static async Task<VocabularyListPage> GetVocabularyListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/vocabulary/getvocabularylistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vocabularyString = await result.Content.ReadAsStringAsync();
+                        VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyString);
+
+                        await SecureStorage.SetAsync("VocabularyListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        return vocabularyListPage;
+                    }
+                    else
+                    {
+                        return new VocabularyListPage();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/vocabulary/getvocabularylistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vocabularyString = await result.Content.ReadAsStringAsync();
+                        VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyString);
+
+                        await SecureStorage.SetAsync("VocabularyListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        return vocabularyListPage;
+                    }
+                    else
+                    {
+                        return new VocabularyListPage();
+                    }
+                }
+            }
+            else
+            {
+                string vocabularyListPageString = await SecureStorage.GetAsync("VocabularyListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
+                if (string.IsNullOrEmpty(vocabularyListPageString))
+                {
+                    return new VocabularyListPage();
+                }
+                VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyListPageString);
+                return vocabularyListPage;
+            }
+        }
+
+        public static async Task<List<VocabularyItem>> GetVocabularyList(int progenyId, int accessLevel, string timeZone)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/vocabulary/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vocabularyString = await result.Content.ReadAsStringAsync();
+                        List<VocabularyItem> vocabularyList = JsonConvert.DeserializeObject<List<VocabularyItem>>(vocabularyString);
+                        foreach (VocabularyItem vocabItem in vocabularyList)
+                        {
+                            if (vocabItem.Date.HasValue)
+                            {
+                                vocabItem.Date = TimeZoneInfo.ConvertTimeFromUtc(vocabItem.Date.Value, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
+                            }
+                        }
+                        await SecureStorage.SetAsync("VocabularyList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        return vocabularyList;
+                    }
+                    else
+                    {
+                        return new List<VocabularyItem>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/vocabulary/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vocabularyString = await result.Content.ReadAsStringAsync();
+                        List<VocabularyItem> vocabularyList = JsonConvert.DeserializeObject<List<VocabularyItem>>(vocabularyString);
+                        foreach (VocabularyItem vocabItem in vocabularyList)
+                        {
+                            if (vocabItem.Date.HasValue)
+                            {
+                                vocabItem.Date = TimeZoneInfo.ConvertTimeFromUtc(vocabItem.Date.Value, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
+                            }
+                        }
+                        await SecureStorage.SetAsync("VocabularyList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        return vocabularyList;
+                    }
+                    else
+                    {
+                        return new List<VocabularyItem>();
+                    }
+                }
+            }
+            else
+            {
+                string vocabularyString = await SecureStorage.GetAsync("VocabularyList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(vocabularyString))
+                {
+                    return new List<VocabularyItem>();
+                }
+                List<VocabularyItem> vocabularyList = JsonConvert.DeserializeObject<List<VocabularyItem>>(vocabularyString);
+                return vocabularyList;
+            }
+        }
     }
 }

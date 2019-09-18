@@ -108,6 +108,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddMeasurementPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Skill)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddSkillPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddUserPage());
