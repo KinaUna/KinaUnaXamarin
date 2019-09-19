@@ -160,7 +160,7 @@
     <value>End</value>
   </data>
   <data name="ErrorPhotoNotSaved" xml:space="preserve">
-    <value>Error: Photo was not saved. Try again later.</value>
+    <value>Error: The Photo was not saved. Try again later.</value>
   </data>
   <data name="FullName" xml:space="preserve">
     <value>Name</value>
@@ -226,7 +226,7 @@
     <value>Photos</value>
   </data>
   <data name="PhotoSaved" xml:space="preserve">
-    <value>Photo saved successfully. Photo ID:</value>
+    <value>The Photo was successfully saved. Photo ID:</value>
   </data>
   <data name="PhotoTaken" xml:space="preserve">
     <value>Photo Taken:</value>
@@ -322,7 +322,7 @@
     <value>Name</value>
   </data>
   <data name="ChildSaved" xml:space="preserve">
-    <value>Child saved successfully. Child ID:</value>
+    <value>The Child was successfully saved. Child ID:</value>
   </data>
   <data name="ErrorChildNotSaved" xml:space="preserve">
     <value>Error: Add child failed. Try again later.</value>
@@ -352,7 +352,7 @@
     <value>User Access</value>
   </data>
   <data name="UserSaved" xml:space="preserve">
-    <value>User saved successfully. Access ID:</value>
+    <value>The User Access was successfully saved. Access ID:</value>
   </data>
   <data name="DeleteAccess" xml:space="preserve">
     <value>Delete Access</value>
@@ -451,10 +451,10 @@
     <value>Description</value>
   </data>
   <data name="ErrorFriendNotSaved" xml:space="preserve">
-    <value>Error: Friend was not saved. Try again later.</value>
+    <value>Error: The Friend was not saved. Try again later.</value>
   </data>
   <data name="FriendSaved" xml:space="preserve">
-    <value>Friend saved successfully. Friend ID:</value>
+    <value>The Friend was successfully saved. Friend ID:</value>
   </data>
   <data name="FriendSince" xml:space="preserve">
     <value>Friends since</value>
@@ -538,19 +538,19 @@
     <value>Circumference</value>
   </data>
   <data name="ContactSaved" xml:space="preserve">
-    <value>Contact saved successfully. Contact ID:</value>
+    <value>The Contact was successfully saved. Contact ID:</value>
   </data>
   <data name="ErrorContactNotSaved" xml:space="preserve">
-    <value>Error: Contact was not saved. Try again later.</value>
+    <value>Error: The Contact was not saved. Try again later.</value>
   </data>
   <data name="ErrorMeasurementNotSaved" xml:space="preserve">
-    <value>Error: Measurement not saved. Try againg later.</value>
+    <value>Error: The Measurement not saved. Try againg later.</value>
   </data>
   <data name="ErrorSkillNotSaved" xml:space="preserve">
-    <value>Error: Skill was not saved. Try again later.</value>
+    <value>Error: The Skill was not saved. Try again later.</value>
   </data>
   <data name="ErrorSleepNotSaved" xml:space="preserve">
-    <value>Error: Sleep was not saved. Try againg later.</value>
+    <value>Error: The Sleep was not saved. Try againg later.</value>
   </data>
   <data name="EyeColor" xml:space="preserve">
     <value>Eye Color</value>
@@ -562,7 +562,7 @@
     <value>Hair Color</value>
   </data>
   <data name="MeasurementSaved" xml:space="preserve">
-    <value>Measurement saved successfully. Measurement ID:</value>
+    <value>The Measurement was successfully saved. Measurement ID:</value>
   </data>
   <data name="SkillName" xml:space="preserve">
     <value>Skill title or name</value>
@@ -571,10 +571,10 @@
     <value>Skills</value>
   </data>
   <data name="SkillSaved" xml:space="preserve">
-    <value>Skill saved successfully. Skill ID:</value>
+    <value>The Skill was successfully saved. Skill ID:</value>
   </data>
   <data name="SleepSaved" xml:space="preserve">
-    <value>Sleep saved successfully. Sleep ID:</value>
+    <value>The Sleep was successfully saved. Sleep ID:</value>
   </data>
   <data name="SoundsLike" xml:space="preserve">
     <value>Sounds Like</value>
@@ -584,5 +584,38 @@
   </data>
   <data name="Word" xml:space="preserve">
     <value>Word</value>
+  </data>
+  <data name="AddVideo" xml:space="preserve">
+    <value>Add Video</value>
+  </data>
+  <data name="AddVideoFor" xml:space="preserve">
+    <value>Add Video for:</value>
+  </data>
+  <data name="AddVocabulary" xml:space="preserve">
+    <value>Add Word (Vocabulary)</value>
+  </data>
+  <data name="AddVocabularyFor" xml:space="preserve">
+    <value>Add Word for:</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Date and Time</value>
+  </data>
+  <data name="ErrorVideoNotSaved" xml:space="preserve">
+    <value>Error: The Video was not saved. Try again later.</value>
+  </data>
+  <data name="ErrorWordNotSaved" xml:space="preserve">
+    <value>Error: The Word was not saved. Try again later.</value>
+  </data>
+  <data name="PasteVideoLink" xml:space="preserve">
+    <value>Paste the link or embed code here</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>seconds</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>The Video was successfully saved. Video ID:</value>
+  </data>
+  <data name="WordSaved" xml:space="preserve">
+    <value>The Word was successfully saved. Word ID:</value>
   </data>
 </root>

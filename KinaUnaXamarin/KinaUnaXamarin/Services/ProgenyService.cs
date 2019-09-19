@@ -3622,5 +3622,45 @@ namespace KinaUnaXamarin.Services
                 return vocabularyList;
             }
         }
+
+        public static async Task<VocabularyItem> SaveVocabularyItem(VocabularyItem vocabularyItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/vocabulary/", new StringContent(JsonConvert.SerializeObject(vocabularyItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    VocabularyItem resultVocabularyItem = JsonConvert.DeserializeObject<VocabularyItem>(resultString);
+                    return resultVocabularyItem;
+                }
+            }
+
+            return vocabularyItem;
+        }
+
+        public static async Task<Video> SaveVideo(Video video)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/videos/", new StringContent(JsonConvert.SerializeObject(video), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Video resultVideo = JsonConvert.DeserializeObject<Video>(resultString);
+                    return resultVideo;
+                }
+            }
+
+            return video;
+        }
     }
 }

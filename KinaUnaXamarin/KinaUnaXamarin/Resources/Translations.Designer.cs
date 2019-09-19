@@ -259,6 +259,42 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Video.
+        /// </summary>
+        internal static string AddVideo {
+            get {
+                return ResourceManager.GetString("AddVideo", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Video for:.
+        /// </summary>
+        internal static string AddVideoFor {
+            get {
+                return ResourceManager.GetString("AddVideoFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Word (Vocabulary).
+        /// </summary>
+        internal static string AddVocabulary {
+            get {
+                return ResourceManager.GetString("AddVocabulary", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Word for:.
+        /// </summary>
+        internal static string AddVocabularyFor {
+            get {
+                return ResourceManager.GetString("AddVocabularyFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrators.
         /// </summary>
         internal static string Administrators {
@@ -367,7 +403,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Child saved successfully. Child ID:.
+        ///   Looks up a localized string similar to The Child was successfully saved. Child ID:.
         /// </summary>
         internal static string ChildSaved {
             get {
@@ -412,7 +448,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Contact saved successfully. Contact ID:.
+        ///   Looks up a localized string similar to The Contact was successfully saved. Contact ID:.
         /// </summary>
         internal static string ContactSaved {
             get {
@@ -453,6 +489,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Date {
             get {
                 return ResourceManager.GetString("Date", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Date and Time.
+        /// </summary>
+        internal static string DateAndTime {
+            get {
+                return ResourceManager.GetString("DateAndTime", resourceCulture);
             }
         }
         
@@ -565,7 +610,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Contact was not saved. Try again later..
+        ///   Looks up a localized string similar to Error: The Contact was not saved. Try again later..
         /// </summary>
         internal static string ErrorContactNotSaved {
             get {
@@ -574,7 +619,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Friend was not saved. Try again later..
+        ///   Looks up a localized string similar to Error: The Friend was not saved. Try again later..
         /// </summary>
         internal static string ErrorFriendNotSaved {
             get {
@@ -583,7 +628,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Measurement not saved. Try againg later..
+        ///   Looks up a localized string similar to Error: The Measurement not saved. Try againg later..
         /// </summary>
         internal static string ErrorMeasurementNotSaved {
             get {
@@ -592,7 +637,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Photo was not saved. Try again later..
+        ///   Looks up a localized string similar to Error: The Photo was not saved. Try again later..
         /// </summary>
         internal static string ErrorPhotoNotSaved {
             get {
@@ -601,7 +646,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Skill was not saved. Try again later..
+        ///   Looks up a localized string similar to Error: The Skill was not saved. Try again later..
         /// </summary>
         internal static string ErrorSkillNotSaved {
             get {
@@ -610,7 +655,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Sleep was not saved. Try againg later..
+        ///   Looks up a localized string similar to Error: The Sleep was not saved. Try againg later..
         /// </summary>
         internal static string ErrorSleepNotSaved {
             get {
@@ -624,6 +669,24 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorUserNotSaved {
             get {
                 return ResourceManager.GetString("ErrorUserNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: The Video was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorVideoNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorVideoNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: The Word was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorWordNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorWordNotSaved", resourceCulture);
             }
         }
         
@@ -673,7 +736,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Friend saved successfully. Friend ID:.
+        ///   Looks up a localized string similar to The Friend was successfully saved. Friend ID:.
         /// </summary>
         internal static string FriendSaved {
             get {
@@ -835,7 +898,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Measurement saved successfully. Measurement ID:.
+        ///   Looks up a localized string similar to The Measurement was successfully saved. Measurement ID:.
         /// </summary>
         internal static string MeasurementSaved {
             get {
@@ -1015,6 +1078,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Paste the link or embed code here.
+        /// </summary>
+        internal static string PasteVideoLink {
+            get {
+                return ResourceManager.GetString("PasteVideoLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Personal Friends.
         /// </summary>
         internal static string PersonalFriends {
@@ -1069,7 +1141,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Photo saved successfully. Photo ID:.
+        ///   Looks up a localized string similar to The Photo was successfully saved. Photo ID:.
         /// </summary>
         internal static string PhotoSaved {
             get {
@@ -1119,6 +1191,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to seconds.
+        /// </summary>
+        internal static string Seconds {
+            get {
+                return ResourceManager.GetString("Seconds", resourceCulture);
             }
         }
         
@@ -1195,7 +1276,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skill saved successfully. Skill ID:.
+        ///   Looks up a localized string similar to The Skill was successfully saved. Skill ID:.
         /// </summary>
         internal static string SkillSaved {
             get {
@@ -1231,7 +1312,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Sleep saved successfully. Sleep ID:.
+        ///   Looks up a localized string similar to The Sleep was successfully saved. Sleep ID:.
         /// </summary>
         internal static string SleepSaved {
             get {
@@ -1348,7 +1429,7 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User saved successfully. Access ID:.
+        ///   Looks up a localized string similar to The User Access was successfully saved. Access ID:.
         /// </summary>
         internal static string UserSaved {
             get {
@@ -1371,6 +1452,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Videos {
             get {
                 return ResourceManager.GetString("Videos", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Video was successfully saved. Video ID:.
+        /// </summary>
+        internal static string VideoSaved {
+            get {
+                return ResourceManager.GetString("VideoSaved", resourceCulture);
             }
         }
         
@@ -1443,6 +1533,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Word {
             get {
                 return ResourceManager.GetString("Word", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Word was successfully saved. Word ID:.
+        /// </summary>
+        internal static string WordSaved {
+            get {
+                return ResourceManager.GetString("WordSaved", resourceCulture);
             }
         }
         

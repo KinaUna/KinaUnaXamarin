@@ -585,4 +585,37 @@
   <data name="Word" xml:space="preserve">
     <value>Wort</value>
   </data>
+  <data name="AddVideo" xml:space="preserve">
+    <value>Video hinzufügen</value>
+  </data>
+  <data name="AddVideoFor" xml:space="preserve">
+    <value>Video hinzufügen für:</value>
+  </data>
+  <data name="AddVocabulary" xml:space="preserve">
+    <value>Wort hinzufügen (Wortschatz)</value>
+  </data>
+  <data name="AddVocabularyFor" xml:space="preserve">
+    <value>Wort hinzufügen für:</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Datum und Zeit</value>
+  </data>
+  <data name="ErrorVideoNotSaved" xml:space="preserve">
+    <value>Fehler: Video würde nicht gespeichert.</value>
+  </data>
+  <data name="ErrorWordNotSaved" xml:space="preserve">
+    <value>Fehler: Wort würde nicht gespeichert.</value>
+  </data>
+  <data name="PasteVideoLink" xml:space="preserve">
+    <value>Link oder embed code</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>Sekunden</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>Video hinzugefügt. Video ID:</value>
+  </data>
+  <data name="WordSaved" xml:space="preserve">
+    <value>Wort hinzugefügt: Wort ID:</value>
+  </data>
 </root>

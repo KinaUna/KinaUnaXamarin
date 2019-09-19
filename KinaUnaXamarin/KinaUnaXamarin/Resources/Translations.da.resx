@@ -585,4 +585,37 @@
   <data name="Word" xml:space="preserve">
     <value>Ord</value>
   </data>
+  <data name="AddVideo" xml:space="preserve">
+    <value>Tilføj video</value>
+  </data>
+  <data name="AddVideoFor" xml:space="preserve">
+    <value>Tilføj video for:</value>
+  </data>
+  <data name="AddVocabulary" xml:space="preserve">
+    <value>Tilføj ord (ordforråd)</value>
+  </data>
+  <data name="AddVocabularyFor" xml:space="preserve">
+    <value>Tilføj ord for:</value>
+  </data>
+  <data name="DateAndTime" xml:space="preserve">
+    <value>Dato og tid</value>
+  </data>
+  <data name="ErrorVideoNotSaved" xml:space="preserve">
+    <value>Fejl: Videoen blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ErrorWordNotSaved" xml:space="preserve">
+    <value>Fejl: Ordet blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="PasteVideoLink" xml:space="preserve">
+    <value>Indsæt link eller embed kode her</value>
+  </data>
+  <data name="Seconds" xml:space="preserve">
+    <value>sekunder</value>
+  </data>
+  <data name="VideoSaved" xml:space="preserve">
+    <value>Videoen er nu tilføjet. Video ID:</value>
+  </data>
+  <data name="WordSaved" xml:space="preserve">
+    <value>Ordet er nu tilføjet. Ord ID:</value>
+  </data>
 </root>

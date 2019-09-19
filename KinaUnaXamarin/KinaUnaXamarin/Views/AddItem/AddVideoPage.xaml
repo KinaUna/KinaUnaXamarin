@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             x:Class="KinaUnaXamarin.Views.AddItem.AddVideoPage"
+             Title="{i18n:Translate AddVideo}"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <StackLayout Orientation="Vertical" Margin="5">
+                    <Label Text="{i18n:Translate AddVideoFor}"></Label>
+                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="60" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="160" />
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
+                                       Aspect="AspectFit"
+                                       WidthRequest="40" />
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding NickName}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="Black"
+                                       Margin="10, 0 , 0, 0"/>
+                                    <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       TextColor="DarkSlateGray"
+                                       Margin="10, 0, 0, 0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate PasteVideoLink}"></Label>
+                        <Entry x:Name="LinkEntry"></Entry>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White" Orientation="Vertical">
+                        <Label Text="{i18n:Translate Duration}"></Label>
+                        <StackLayout Orientation="Vertical" Margin="5, 0, 5, 0">
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
+                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
+                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
+                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate DateAndTime}"></Label>
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="VideoDatePicker" Format="dd MMM yyyy" ></DatePicker>
+                            <TimePicker x:Name="VideoTimePicker" Format="HH:mm"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Button x:Name="SaveVideoButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveVideoButton_OnClicked"></Button>
+                        <Button x:Name="CancelVideoButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelVideoButton_OnClicked"></Button>
+                    </StackLayout>
+                </StackLayout>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

@@ -69,6 +69,24 @@ namespace KinaUnaXamarin.ViewModels
                 addPhoto.BackgroundColor = "#9c27b0";
                 ItemList.Add(addPhoto);
 
+                AddItemModel addVideo = new AddItemModel();
+                addVideo.ItemType = (int)KinaUnaTypes.TimeLineType.Video;
+                addVideo.Name = "Video";
+                addVideo.Description = "Add Video";
+                if (ci == "da")
+                {
+                    addVideo.Name = "Video";
+                    addVideo.Description = "Tilføj Video";
+                }
+                if (ci == "de")
+                {
+                    addVideo.Name = "Video";
+                    addVideo.Description = "Video hinzufügen";
+                }
+                addVideo.Icon = IconFont.Video;
+                addVideo.BackgroundColor = "MediumVioletRed";
+                ItemList.Add(addVideo);
+
                 AddItemModel addFriendItem = new AddItemModel();
                 addFriendItem.ItemType = (int)KinaUnaTypes.TimeLineType.Friend;
                 addFriendItem.Name = "Friend";
@@ -140,6 +158,24 @@ namespace KinaUnaXamarin.ViewModels
                 addSkillItem.Icon = IconFont.School;
                 addSkillItem.BackgroundColor = "#6A4071";
                 ItemList.Add(addSkillItem);
+
+                AddItemModel addVocabularyItem = new AddItemModel();
+                addVocabularyItem.ItemType = (int)KinaUnaTypes.TimeLineType.Vocabulary;
+                addVocabularyItem.Name = "Word";
+                addVocabularyItem.Description = "Add a Word to Vocabulary";
+                if (ci == "da")
+                {
+                    addVocabularyItem.Name = "Ord";
+                    addVocabularyItem.Description = "Tilføj et ord til ordforråd";
+                }
+                if (ci == "de")
+                {
+                    addVocabularyItem.Name = "Wort";
+                    addVocabularyItem.Description = "Wort hinzufügen";
+                }
+                addVocabularyItem.Icon = IconFont.MessageProcessing;
+                addVocabularyItem.BackgroundColor = "#6A4071";
+                ItemList.Add(addVocabularyItem);
 
                 AddItemModel addUser = new AddItemModel();
                 addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;

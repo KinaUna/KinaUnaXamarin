@@ -93,6 +93,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddPhotoPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Video)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddVideoPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddFriendPage());
@@ -111,6 +116,11 @@ namespace KinaUnaXamarin.Views
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Skill)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddSkillPage());
+                }
+
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Vocabulary)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddVocabularyPage());
                 }
 
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
