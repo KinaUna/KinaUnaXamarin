@@ -39,6 +39,9 @@
     <Compile Update="Views\AddItem\AddFriendPage.xaml.cs">
       <DependentUpon>AddFriendPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\AddItem\AddVaccinationPage.xaml.cs">
+      <DependentUpon>AddVaccinationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddItem\AddVideoPage.xaml.cs">
       <DependentUpon>AddVideoPage.xaml</DependentUpon>
     </Compile>
@@ -53,6 +56,9 @@
     </Compile>
     <Compile Update="Views\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\VaccinationsPage.xaml.cs">
+      <DependentUpon>VaccinationsPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\VocabularyStatsPage.xaml.cs">
       <DependentUpon>VocabularyStatsPage.xaml</DependentUpon>

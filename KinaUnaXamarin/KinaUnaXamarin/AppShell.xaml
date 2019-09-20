@@ -190,6 +190,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Vaccinations}" x:Name="VaccinationsFlyoutItem"
+                Icon="{x:Static models:IconFont.Needle}">
+        <Tab>
+            <ShellContent x:Name="VaccinationsMenuItem"
+                          Title="{i18n:Translate Vaccinations}"
+                          Icon="{x:Static models:IconFont.Needle}"
+                          Route="contacts"
+                          ContentTemplate="{DataTemplate views:VaccinationsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

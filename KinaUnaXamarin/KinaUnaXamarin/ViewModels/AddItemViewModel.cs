@@ -156,7 +156,7 @@ namespace KinaUnaXamarin.ViewModels
                     addSkillItem.Description = "Fähigkeit hinzufügen";
                 }
                 addSkillItem.Icon = IconFont.School;
-                addSkillItem.BackgroundColor = "#6A4071";
+                addSkillItem.BackgroundColor = "#787864";
                 ItemList.Add(addSkillItem);
 
                 AddItemModel addVocabularyItem = new AddItemModel();
@@ -174,8 +174,26 @@ namespace KinaUnaXamarin.ViewModels
                     addVocabularyItem.Description = "Wort hinzufügen";
                 }
                 addVocabularyItem.Icon = IconFont.MessageProcessing;
-                addVocabularyItem.BackgroundColor = "#6A4071";
+                addVocabularyItem.BackgroundColor = "#641e1e";
                 ItemList.Add(addVocabularyItem);
+
+                AddItemModel addVaccinationItem = new AddItemModel();
+                addVaccinationItem.ItemType = (int)KinaUnaTypes.TimeLineType.Vaccination;
+                addVaccinationItem.Name = "Vaccination";
+                addVaccinationItem.Description = "Add Vaccination";
+                if (ci == "da")
+                {
+                    addVaccinationItem.Name = "Vaccination";
+                    addVaccinationItem.Description = "Tilføj vaccination";
+                }
+                if (ci == "de")
+                {
+                    addVaccinationItem.Name = "Impfung";
+                    addVaccinationItem.Description = "Impfung hinzufügen";
+                }
+                addVaccinationItem.Icon = IconFont.Needle;
+                addVaccinationItem.BackgroundColor = "#c800c8";
+                ItemList.Add(addVaccinationItem);
 
                 AddItemModel addUser = new AddItemModel();
                 addUser.ItemType = (int)KinaUnaTypes.TimeLineType.User;

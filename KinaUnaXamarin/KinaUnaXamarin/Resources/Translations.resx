@@ -618,4 +618,22 @@
   <data name="WordSaved" xml:space="preserve">
     <value>The Word was successfully saved. Word ID:</value>
   </data>
+  <data name="AddVaccination" xml:space="preserve">
+    <value>Add Vaccination</value>
+  </data>
+  <data name="AddVaccinationFor" xml:space="preserve">
+    <value>Add Vaccination for:</value>
+  </data>
+  <data name="ErrorVaccinationNotSaved" xml:space="preserve">
+    <value>Error: The Vaccination was not saved. Try again later.</value>
+  </data>
+  <data name="VaccinationName" xml:space="preserve">
+    <value>Vaccination Name</value>
+  </data>
+  <data name="Vaccinations" xml:space="preserve">
+    <value>Vaccinations</value>
+  </data>
+  <data name="VaccinationSaved" xml:space="preserve">
+    <value>The Vaccination was successfully saved. Vaccination ID:</value>
+  </data>
 </root>

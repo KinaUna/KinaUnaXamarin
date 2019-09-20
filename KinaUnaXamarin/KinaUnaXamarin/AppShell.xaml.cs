@@ -79,6 +79,7 @@ namespace KinaUnaXamarin
             VocabularyFlyoutItem.Title = resmgr.Value.GetString("Vocabulary", ci);
             VocabularyStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
             VocabularyTabItem.Title = resmgr.Value.GetString("Vocabulary", ci);
+            VaccinationsFlyoutItem.Title = VaccinationsMenuItem.Title = resmgr.Value.GetString("Contacts", ci);
         }
     }
 }

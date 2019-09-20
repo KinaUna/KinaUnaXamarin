@@ -123,6 +123,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddVocabularyPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddVaccinationPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.User)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddUserPage());

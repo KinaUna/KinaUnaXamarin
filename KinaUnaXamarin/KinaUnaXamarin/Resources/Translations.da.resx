@@ -618,4 +618,22 @@
   <data name="WordSaved" xml:space="preserve">
     <value>Ordet er nu tilføjet. Ord ID:</value>
   </data>
+  <data name="AddVaccination" xml:space="preserve">
+    <value>Tilføj vaccination</value>
+  </data>
+  <data name="AddVaccinationFor" xml:space="preserve">
+    <value>Tilføj vaccination for:</value>
+  </data>
+  <data name="ErrorVaccinationNotSaved" xml:space="preserve">
+    <value>Fejl: Vaccinationen blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="VaccinationName" xml:space="preserve">
+    <value>Vaccinationsnavn</value>
+  </data>
+  <data name="Vaccinations" xml:space="preserve">
+    <value>Vaccinationer</value>
+  </data>
+  <data name="VaccinationSaved" xml:space="preserve">
+    <value>Vaccination er nu tilføjet. Vaccination ID:</value>
+  </data>
 </root>

@@ -3662,5 +3662,83 @@ namespace KinaUnaXamarin.Services
 
             return video;
         }
+
+        public static async Task<List<Vaccination>> GetVaccinationsList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/vaccinations/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vaccinationsString = await result.Content.ReadAsStringAsync();
+                        List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
+                        await SecureStorage.SetAsync("VaccinationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        return vaccinationsList;
+                    }
+                    else
+                    {
+                        return new List<Vaccination>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/vaccinations/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var vaccinationsString = await result.Content.ReadAsStringAsync();
+                        List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
+                        await SecureStorage.SetAsync("VaccinationsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        return vaccinationsList;
+                    }
+                    else
+                    {
+                        return new List<Vaccination>();
+                    }
+                }
+            }
+            else
+            {
+                string vaccinationsString = await SecureStorage.GetAsync("VaccinationsList" + progenyId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(vaccinationsString))
+                {
+                    return new List<Vaccination>();
+                }
+                List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
+                return vaccinationsList;
+            }
+        }
+
+        public static async Task<Vaccination> SaveVaccination(Vaccination vaccination)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/vaccinations/", new StringContent(JsonConvert.SerializeObject(vaccination), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Vaccination resultVaccination = JsonConvert.DeserializeObject<Vaccination>(resultString);
+                    return resultVaccination;
+                }
+            }
+
+            return vaccination;
+        }
     }
 }

@@ -259,6 +259,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Vaccination.
+        /// </summary>
+        internal static string AddVaccination {
+            get {
+                return ResourceManager.GetString("AddVaccination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Vaccination for:.
+        /// </summary>
+        internal static string AddVaccinationFor {
+            get {
+                return ResourceManager.GetString("AddVaccinationFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Video.
         /// </summary>
         internal static string AddVideo {
@@ -669,6 +687,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorUserNotSaved {
             get {
                 return ResourceManager.GetString("ErrorUserNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: The Vaccination was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorVaccinationNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorVaccinationNotSaved", resourceCulture);
             }
         }
         
@@ -1434,6 +1461,33 @@ namespace KinaUnaXamarin.Resources {
         internal static string UserSaved {
             get {
                 return ResourceManager.GetString("UserSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vaccination Name.
+        /// </summary>
+        internal static string VaccinationName {
+            get {
+                return ResourceManager.GetString("VaccinationName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Vaccinations.
+        /// </summary>
+        internal static string Vaccinations {
+            get {
+                return ResourceManager.GetString("Vaccinations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Vaccination was successfully saved. Vaccination ID:.
+        /// </summary>
+        internal static string VaccinationSaved {
+            get {
+                return ResourceManager.GetString("VaccinationSaved", resourceCulture);
             }
         }
         

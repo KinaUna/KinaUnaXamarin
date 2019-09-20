@@ -618,4 +618,22 @@
   <data name="WordSaved" xml:space="preserve">
     <value>Wort hinzugefügt: Wort ID:</value>
   </data>
+  <data name="AddVaccination" xml:space="preserve">
+    <value>Impfung hinzufügen</value>
+  </data>
+  <data name="AddVaccinationFor" xml:space="preserve">
+    <value>Impfung hinzufügen für:</value>
+  </data>
+  <data name="ErrorVaccinationNotSaved" xml:space="preserve">
+    <value>Fehler: Impfun würde nicht gespeichert.</value>
+  </data>
+  <data name="VaccinationName" xml:space="preserve">
+    <value>Impfungsname</value>
+  </data>
+  <data name="Vaccinations" xml:space="preserve">
+    <value>Impfungen</value>
+  </data>
+  <data name="VaccinationSaved" xml:space="preserve">
+    <value>Impfung hinzugefügt. Impfung ID:</value>
+  </data>
 </root>
