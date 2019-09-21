@@ -88,6 +88,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add Calendar Event.
+        /// </summary>
+        internal static string AddCalendarEvent {
+            get {
+                return ResourceManager.GetString("AddCalendarEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add Calendar Event for:.
+        /// </summary>
+        internal static string AddCalendarEventFor {
+            get {
+                return ResourceManager.GetString("AddCalendarEventFor", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Child.
         /// </summary>
         internal static string AddChild {
@@ -318,6 +336,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Administrators {
             get {
                 return ResourceManager.GetString("Administrators", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to All Day.
+        /// </summary>
+        internal static string AllDay {
+            get {
+                return ResourceManager.GetString("AllDay", resourceCulture);
             }
         }
         
@@ -637,6 +664,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: The Calendar Event was not saved. Try again later..
+        /// </summary>
+        internal static string ErrorEventNotSaved {
+            get {
+                return ResourceManager.GetString("ErrorEventNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: The Friend was not saved. Try again later..
         /// </summary>
         internal static string ErrorFriendNotSaved {
@@ -714,6 +750,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string ErrorWordNotSaved {
             get {
                 return ResourceManager.GetString("ErrorWordNotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The Calendar Event was successfully saved. Event ID:.
+        /// </summary>
+        internal static string EventSaved {
+            get {
+                return ResourceManager.GetString("EventSaved", resourceCulture);
             }
         }
         
@@ -885,6 +930,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string LatestPosts {
             get {
                 return ResourceManager.GetString("LatestPosts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Location.
+        /// </summary>
+        internal static string Location {
+            get {
+                return ResourceManager.GetString("Location", resourceCulture);
             }
         }
         
@@ -1407,6 +1461,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string TimeZone {
             get {
                 return ResourceManager.GetString("TimeZone", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Title.
+        /// </summary>
+        internal static string Title {
+            get {
+                return ResourceManager.GetString("Title", resourceCulture);
             }
         }
         

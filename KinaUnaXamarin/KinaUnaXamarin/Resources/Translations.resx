@@ -636,4 +636,25 @@
   <data name="VaccinationSaved" xml:space="preserve">
     <value>The Vaccination was successfully saved. Vaccination ID:</value>
   </data>
+  <data name="AddCalendarEvent" xml:space="preserve">
+    <value>Add Calendar Event</value>
+  </data>
+  <data name="AddCalendarEventFor" xml:space="preserve">
+    <value>Add Calendar Event for:</value>
+  </data>
+  <data name="AllDay" xml:space="preserve">
+    <value>All Day</value>
+  </data>
+  <data name="ErrorEventNotSaved" xml:space="preserve">
+    <value>Error: The Calendar Event was not saved. Try again later.</value>
+  </data>
+  <data name="EventSaved" xml:space="preserve">
+    <value>The Calendar Event was successfully saved. Event ID:</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Location</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Title</value>
+  </data>
 </root>

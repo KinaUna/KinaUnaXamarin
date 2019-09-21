@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             x:Class="KinaUnaXamarin.Views.AddItem.AddCalendarEventPage"
+             Title="{i18n:Translate AddCalendarEvent}"
+             Visual="Material">
+    <ContentPage.Content>
+        <ScrollView>
+            <Grid>
+                <StackLayout Orientation="Vertical" Margin="5">
+                    <Label Text="{i18n:Translate AddCalendarEventFor}"></Label>
+                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Padding="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="20" />
+                                        <RowDefinition Height="60" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="40" />
+                                        <ColumnDefinition Width="160" />
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
+                                       Aspect="AspectFit"
+                                       WidthRequest="40" />
+                                    <Label Grid.Row="0" Grid.Column="1"
+                                       Text="{Binding NickName}"
+                                       FontAttributes="Bold"
+                                       FontSize="16"
+                                       TextColor="Black"
+                                       Margin="10, 0 , 0, 0"/>
+                                    <Label Grid.Row="1" Grid.Column="1"
+                                       Text="{Binding Name}"
+                                       TextColor="DarkSlateGray"
+                                       Margin="10, 0, 0, 0"/>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Title}"></Label>
+                        <Entry x:Name="TitleEntry" Text=""></Entry>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Start}"></Label>
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="CalendarEventStartDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventStartDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="CalendarEventStartTimePicker" Format="HH:mm" PropertyChanged="CalendarEventStartTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate End}"></Label>
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="CalendarEventEndDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventEndDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="CalendarEventEndTimePicker" Format="HH:mm" PropertyChanged="CalendarEventEndTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Notes}"></Label>
+                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Location}"></Label>
+                        <Entry x:Name="LocationEntry" Text=""></Entry>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Context}"></Label>
+                        <Entry x:Name="ContextEntry" Text=""></Entry>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate AllDay}"></Label>
+                        <CheckBox x:Name="AllDayCheckBox"></CheckBox>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+                    <StackLayout Orientation="Horizontal">
+                        <Button x:Name="SaveEventButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveEventButton_OnClicked"></Button>
+                        <Button x:Name="CancelEventButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelEventButton_OnClicked"></Button>
+                    </StackLayout>
+                </StackLayout>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+            </Grid>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

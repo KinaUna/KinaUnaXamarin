@@ -98,6 +98,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddVideoPage());
                 }
 
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Calendar)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddCalendarEventPage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddFriendPage());

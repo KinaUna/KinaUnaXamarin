@@ -87,6 +87,24 @@ namespace KinaUnaXamarin.ViewModels
                 addVideo.BackgroundColor = "MediumVioletRed";
                 ItemList.Add(addVideo);
 
+                AddItemModel addCalendarItem = new AddItemModel();
+                addCalendarItem.ItemType = (int)KinaUnaTypes.TimeLineType.Calendar;
+                addCalendarItem.Name = "Event";
+                addCalendarItem.Description = "Add Event to calendar";
+                if (ci == "da")
+                {
+                    addCalendarItem.Name = "Begivenhed";
+                    addCalendarItem.Description = "Tilføj Begivenhed til kalender";
+                }
+                if (ci == "de")
+                {
+                    addCalendarItem.Name = "Event";
+                    addCalendarItem.Description = "Event hinzufügen";
+                }
+                addCalendarItem.Icon = IconFont.Calendar;
+                addCalendarItem.BackgroundColor = "#3A2051";
+                ItemList.Add(addCalendarItem);
+
                 AddItemModel addFriendItem = new AddItemModel();
                 addFriendItem.ItemType = (int)KinaUnaTypes.TimeLineType.Friend;
                 addFriendItem.Name = "Friend";

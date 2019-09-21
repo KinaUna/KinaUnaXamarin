@@ -39,6 +39,9 @@
     <Compile Update="Views\AddItem\AddFriendPage.xaml.cs">
       <DependentUpon>AddFriendPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\AddItem\AddCalendarEventPage.xaml.cs">
+      <DependentUpon>AddCalendarEventPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddItem\AddVaccinationPage.xaml.cs">
       <DependentUpon>AddVaccinationPage.xaml</DependentUpon>
     </Compile>

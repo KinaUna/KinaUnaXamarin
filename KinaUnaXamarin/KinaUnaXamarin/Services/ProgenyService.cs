@@ -3740,5 +3740,25 @@ namespace KinaUnaXamarin.Services
 
             return vaccination;
         }
+
+        public static async Task<CalendarItem> SaveCalendarEvent(CalendarItem calendarItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/calendar/", new StringContent(JsonConvert.SerializeObject(calendarItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    CalendarItem resultEvent = JsonConvert.DeserializeObject<CalendarItem>(resultString);
+                    return resultEvent;
+                }
+            }
+
+            return calendarItem;
+        }
     }
 }

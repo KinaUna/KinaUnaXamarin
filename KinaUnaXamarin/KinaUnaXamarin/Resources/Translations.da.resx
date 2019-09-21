@@ -636,4 +636,25 @@
   <data name="VaccinationSaved" xml:space="preserve">
     <value>Vaccination er nu tilføjet. Vaccination ID:</value>
   </data>
+  <data name="AddCalendarEvent" xml:space="preserve">
+    <value>Tilføj begivenhed</value>
+  </data>
+  <data name="AddCalendarEventFor" xml:space="preserve">
+    <value>Tilføj begivenhed for:</value>
+  </data>
+  <data name="AllDay" xml:space="preserve">
+    <value>Hele dagen</value>
+  </data>
+  <data name="ErrorEventNotSaved" xml:space="preserve">
+    <value>Fejl: Begivenheden blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="EventSaved" xml:space="preserve">
+    <value>Begivenheden er nu tilføjet. Begivenhed ID:</value>
+  </data>
+  <data name="Location" xml:space="preserve">
+    <value>Sted</value>
+  </data>
+  <data name="Title" xml:space="preserve">
+    <value>Titel</value>
+  </data>
 </root>
