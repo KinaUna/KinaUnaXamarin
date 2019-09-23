@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="46" android:versionName="0.1.46 Beta" package="com.kinauna.xamarin" android:installLocation="auto">
-	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="28" />
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="47" android:versionName="0.1.47 Beta" package="com.kinauna.xamarin" android:installLocation="auto">
+	<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="28" />
 	<application android:label="KinaUna Xamarin" android:icon="@drawable/iconbeta">
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.kinauna.xamarin.fileprovider" android:exported="false" android:grantUriPermissions="true">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
@@ -14,4 +14,7 @@
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+  <uses-feature android:name="android.hardware.location" android:required="false" />
+  <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+  <uses-feature android:name="android.hardware.location.network" android:required="false" />
 </manifest>

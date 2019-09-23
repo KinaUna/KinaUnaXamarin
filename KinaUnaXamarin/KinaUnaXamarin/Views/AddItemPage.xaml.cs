@@ -83,6 +83,12 @@ namespace KinaUnaXamarin.Views
             {
                 // Reset the selected item.
                 AddItemListCollectionView.SelectedItem = null;
+
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Note)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddNotePage());
+                }
+
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddSleepPage());
@@ -126,6 +132,11 @@ namespace KinaUnaXamarin.Views
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Vocabulary)
                 {
                     Shell.Current.Navigation.PushModalAsync(new AddVocabularyPage());
+                }
+
+                if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Location)
+                {
+                    Shell.Current.Navigation.PushModalAsync(new AddLocationPage());
                 }
 
                 if (model.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)

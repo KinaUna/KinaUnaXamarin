@@ -33,6 +33,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Translations.resx</DependentUpon>
     </Compile>
+    <Compile Update="Views\AddItem\AddLocationPage.xaml.cs">
+      <DependentUpon>AddLocationPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\AddItem\AddContactPage.xaml.cs">
       <DependentUpon>AddContactPage.xaml</DependentUpon>
     </Compile>
@@ -47,6 +50,9 @@
     </Compile>
     <Compile Update="Views\AddItem\AddVideoPage.xaml.cs">
       <DependentUpon>AddVideoPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\AddItem\AddNotePage.xaml.cs">
+      <DependentUpon>AddNotePage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AddItem\AddVocabularyPage.xaml.cs">
       <DependentUpon>AddVocabularyPage.xaml</DependentUpon>

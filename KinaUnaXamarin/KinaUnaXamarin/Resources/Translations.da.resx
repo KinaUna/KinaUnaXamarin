@@ -508,7 +508,7 @@
     <value>Postnummer</value>
   </data>
   <data name="StateOrRegion" xml:space="preserve">
-    <value>Amt/Region</value>
+    <value>Stat/Region</value>
   </data>
   <data name="Date" xml:space="preserve">
     <value>Dato</value>
@@ -656,5 +656,56 @@
   </data>
   <data name="Title" xml:space="preserve">
     <value>Titel</value>
+  </data>
+  <data name="AddLocation" xml:space="preserve">
+    <value>Tilføj sted</value>
+  </data>
+  <data name="AddLocationFor" xml:space="preserve">
+    <value>Tilføj sted for:</value>
+  </data>
+  <data name="AddNote" xml:space="preserve">
+    <value>Tilføj note</value>
+  </data>
+  <data name="AddNoteFor" xml:space="preserve">
+    <value>Tilføj note for:</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Indhold</value>
+  </data>
+  <data name="County" xml:space="preserve">
+    <value>Amt</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>Distrikt</value>
+  </data>
+  <data name="ErrorLocationNotSaved" xml:space="preserve">
+    <value>Fejl: Stedet blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="ErrorNoteNotSaved" xml:space="preserve">
+    <value>Fejl: Noten blev ikke gemt. Prøv igen senere.</value>
+  </data>
+  <data name="HouseNumber" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Længdegrad</value>
+  </data>
+  <data name="LocationSaved" xml:space="preserve">
+    <value>Stedet er nu tilføjet. Sted ID:</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Højdegrad</value>
+  </data>
+  <data name="NameOrLabel" xml:space="preserve">
+    <value>Navn</value>
+  </data>
+  <data name="NoteSaved" xml:space="preserve">
+    <value>Noten er nu tilføjet. Note ID:</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Gade eller vej</value>
+  </data>
+  <data name="GetLocation" xml:space="preserve">
+    <value>Brug min position</value>
   </data>
 </root>

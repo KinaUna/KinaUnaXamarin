@@ -45,7 +45,7 @@
                 IsPanSwipeEnabled ="{Binding IsNotZoomed}"
                 IsVerticalSwipeEnabled="False"
                 IsPanInteractionEnabled="{Binding IsNotZoomed}"
-                IsViewReusingEnabled="False">
+                IsViewReusingEnabled="True">
                     <x:Arguments>
                         <processors:BaseCoverFlowFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0.25" />
                         <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />

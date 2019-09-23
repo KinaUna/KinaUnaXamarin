@@ -39,7 +39,7 @@
                 ItemAppearing="CardsView_OnItemAppearing"
                 IsCyclical="False"
                 IsVerticalSwipeEnabled="False"
-                IsViewReusingEnabled="False">
+                IsViewReusingEnabled="True">
                     <x:Arguments>
                         <processors:BaseCoverFlowFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0.25" />
                         <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />

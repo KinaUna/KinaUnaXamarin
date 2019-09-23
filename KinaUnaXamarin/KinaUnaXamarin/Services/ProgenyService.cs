@@ -3760,5 +3760,45 @@ namespace KinaUnaXamarin.Services
 
             return calendarItem;
         }
+
+        public static async Task<Note> SaveNote(Note note)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/notes/", new StringContent(JsonConvert.SerializeObject(note), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Note resultNote = JsonConvert.DeserializeObject<Note>(resultString);
+                    return resultNote;
+                }
+            }
+
+            return note;
+        }
+
+        public static async Task<Location> SaveLocation(Location location)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PostAsync("api/locations/", new StringContent(JsonConvert.SerializeObject(location), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Location resultLocation = JsonConvert.DeserializeObject<Location>(resultString);
+                    return resultLocation;
+                }
+            }
+
+            return location;
+        }
     }
 }

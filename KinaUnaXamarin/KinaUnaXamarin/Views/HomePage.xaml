@@ -104,7 +104,7 @@
             </DataTemplate>
             <DataTemplate x:Key="CalendarTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#5A4071" Margin="10" Padding="10">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>

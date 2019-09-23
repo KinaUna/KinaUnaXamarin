@@ -657,4 +657,55 @@
   <data name="Title" xml:space="preserve">
     <value>Titel</value>
   </data>
+  <data name="AddLocation" xml:space="preserve">
+    <value>Ort hinzufügen</value>
+  </data>
+  <data name="AddLocationFor" xml:space="preserve">
+    <value>Ort hinzufügen für:</value>
+  </data>
+  <data name="AddNote" xml:space="preserve">
+    <value>Notiz hinzufügen</value>
+  </data>
+  <data name="AddNoteFor" xml:space="preserve">
+    <value>Notiz hinzufügen für:</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="County" xml:space="preserve">
+    <value>Bezirk</value>
+  </data>
+  <data name="District" xml:space="preserve">
+    <value>Kreis</value>
+  </data>
+  <data name="ErrorLocationNotSaved" xml:space="preserve">
+    <value>Fehler: Ort würde nicht gespeichert.</value>
+  </data>
+  <data name="ErrorNoteNotSaved" xml:space="preserve">
+    <value>Fehler: Notiz würde nicht gespeichert.</value>
+  </data>
+  <data name="HouseNumber" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Breite</value>
+  </data>
+  <data name="LocationSaved" xml:space="preserve">
+    <value>Ort hinzugefügt. Ort ID:</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Längengrad</value>
+  </data>
+  <data name="NameOrLabel" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="NoteSaved" xml:space="preserve">
+    <value>Notiz hinzugefügt. Notiz ID:</value>
+  </data>
+  <data name="Street" xml:space="preserve">
+    <value>Straße</value>
+  </data>
+  <data name="GetLocation" xml:space="preserve">
+    <value>Meinen aktuellen Standort abrufen</value>
+  </data>
 </root>

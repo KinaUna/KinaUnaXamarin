@@ -33,6 +33,24 @@ namespace KinaUnaXamarin.ViewModels
 
             if (_canAddItems)
             {
+                AddItemModel addNoteItem = new AddItemModel();
+                addNoteItem.ItemType = (int)KinaUnaTypes.TimeLineType.Note;
+                addNoteItem.Name = "Note";
+                addNoteItem.Description = "Add Note";
+                if (ci == "da")
+                {
+                    addNoteItem.Name = "Note";
+                    addNoteItem.Description = "Tilføj note";
+                }
+                if (ci == "de")
+                {
+                    addNoteItem.Name = "Notiz";
+                    addNoteItem.Description = "Notiz hinzufügen";
+                }
+                addNoteItem.Icon = IconFont.Note;
+                addNoteItem.BackgroundColor = "DarkOliveGreen";
+                ItemList.Add(addNoteItem);
+
                 AddItemModel addSleepItem = new AddItemModel();
                 addSleepItem.ItemType = (int)KinaUnaTypes.TimeLineType.Sleep;
                 addSleepItem.Name = "Sleep";
@@ -102,7 +120,7 @@ namespace KinaUnaXamarin.ViewModels
                     addCalendarItem.Description = "Event hinzufügen";
                 }
                 addCalendarItem.Icon = IconFont.Calendar;
-                addCalendarItem.BackgroundColor = "#3A2051";
+                addCalendarItem.BackgroundColor = "#5A4071";
                 ItemList.Add(addCalendarItem);
 
                 AddItemModel addFriendItem = new AddItemModel();
@@ -140,6 +158,24 @@ namespace KinaUnaXamarin.ViewModels
                 addContactItem.Icon = IconFont.ContactMail;
                 addContactItem.BackgroundColor = "Purple";
                 ItemList.Add(addContactItem);
+
+                AddItemModel addLocationItem = new AddItemModel();
+                addLocationItem.ItemType = (int)KinaUnaTypes.TimeLineType.Location;
+                addLocationItem.Name = "Location";
+                addLocationItem.Description = "Add Location";
+                if (ci == "da")
+                {
+                    addLocationItem.Name = "Sted";
+                    addLocationItem.Description = "Tilføj sted";
+                }
+                if (ci == "de")
+                {
+                    addLocationItem.Name = "Ort";
+                    addLocationItem.Description = "Ort hinzufügen";
+                }
+                addLocationItem.Icon = IconFont.MapMarkerCheck;
+                addLocationItem.BackgroundColor = "#221021";
+                ItemList.Add(addLocationItem);
 
                 AddItemModel addMeasurementItem = new AddItemModel();
                 addMeasurementItem.ItemType = (int)KinaUnaTypes.TimeLineType.Measurement;
