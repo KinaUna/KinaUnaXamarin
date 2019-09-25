@@ -130,6 +130,7 @@ namespace KinaUnaXamarin.Views.AddItem
             location.County = CountyEntry?.Text ?? "";
             location.State = StateEntry?.Text ?? "";
             location.Country = CountryEntry?.Text ?? "";
+            location.DateAdded = DateTime.UtcNow;
             double lat;
             double lon;
             bool latParsed = double.TryParse(LatitudeEntry.Text, out lat);

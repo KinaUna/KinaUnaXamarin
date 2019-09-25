@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.NotesPage"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             Title="{i18n:Translate Notes}"
+             Visual="Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
+                     Clicked="ReloadToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
+            <StackLayout>
+                <ListView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" HasUnevenRows="True" ItemSelected="NotesListView_OnItemSelected"  SelectionMode="Single">
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:Note">
+                            <ViewCell>
+                                <Grid Margin="0">
+                                    <Frame CornerRadius="5" BackgroundColor="DarkOliveGreen" Margin="5" Padding="0" VerticalOptions="FillAndExpand">
+                                        <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" MinimumHeightRequest="500">
+                                            <Frame BackgroundColor="ForestGreen" Padding="0" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
+                                                <Label Text="{Binding Title}" Margin="5" FontAttributes="Bold" FontSize="16" TextColor="White" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
+                                            </Frame>
+                                            <Frame BackgroundColor="White" Padding="5" Margin="5">
+                                                <controls:HtmlLabel Html="{Binding Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5" BackgroundColor="White"></controls:HtmlLabel>
+                                            </Frame>
+                                            <!--<WebView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" HeightRequest="500">
+                                            <WebView.Source>
+                                                <HtmlWebViewSource Html="{Binding Content}"></HtmlWebViewSource>
+                                            </WebView.Source>
+                                        </WebView>-->
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label Text="{i18n:Translate Category}" Margin="5"></Label>
+                                                <Label Text="{Binding Category}" TextColor="Azure" Margin="5"></Label>
+                                            </StackLayout>
+                                            <Label Text="{Binding CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" HorizontalOptions="End" TextColor="Azure" Margin="5" HorizontalTextAlignment="End" FontSize="10"></Label>
+                                            
+                                        </StackLayout>
+
+                                    </Frame>
+                                </Grid>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                        
+                </ListView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="140"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0"></Label>
+                        <Label Text="{Binding PageNumber}"></Label>
+                        <Label Text="{i18n:Translate Of} "></Label>
+                        <Label Text="{Binding PageCount}"></Label>
+                    </StackLayout>
+                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
+                </Grid>
+            </StackLayout>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
+            </StackLayout>
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

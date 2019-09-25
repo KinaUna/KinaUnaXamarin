@@ -112,6 +112,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Notes}" x:Name="NotesFlyoutItem"
+                Icon="{x:Static models:IconFont.Note}">
+        <Tab>
+            <ShellContent x:Name="NotesMenuItem"
+                          Title="{i18n:Translate Notes}"
+                          Icon="{x:Static models:IconFont.Note}"
+                          Route="notes"
+                          ContentTemplate="{DataTemplate views:NotesPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Sleep}" x:Name="SleepFlyoutItem"
                 Icon="{x:Static models:IconFont.Sleep}">
         <Tab Title="{i18n:Translate Sleep}" x:Name="SleepTabItem"

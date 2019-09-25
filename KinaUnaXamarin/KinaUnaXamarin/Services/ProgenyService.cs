@@ -3800,5 +3800,65 @@ namespace KinaUnaXamarin.Services
 
             return location;
         }
+
+        public static async Task<NotesListPage> GetNotesPage(int pageNumber, int pageSize, int progenyId, int accessLevel, string timezone, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/notes/getnoteslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var notesString = await result.Content.ReadAsStringAsync();
+                        NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesString);
+
+                        await SecureStorage.SetAsync("NotesListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        return notesListPage;
+                    }
+                    else
+                    {
+                        return new NotesListPage();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/notes/getnoteslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + progenyId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var notesString = await result.Content.ReadAsStringAsync();
+                        NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesString);
+
+                        await SecureStorage.SetAsync("NotesListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        return notesListPage;
+                    }
+                    else
+                    {
+                        return new NotesListPage();
+                    }
+                }
+            }
+            else
+            {
+                string notesListPageString = await SecureStorage.GetAsync("NotesListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
+                if (string.IsNullOrEmpty(notesListPageString))
+                {
+                    return new NotesListPage();
+                }
+                NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesListPageString);
+                return notesListPage;
+            }
+        }
     }
 }

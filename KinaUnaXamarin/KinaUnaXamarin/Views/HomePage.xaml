@@ -10,6 +10,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.HomePage"
              Title="Home"
              Visual="Material">
@@ -243,11 +244,12 @@
                                 <Label Text="{Binding NoteObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
-                            <WebView HeightRequest="170">
+                            <controls:HtmlLabel Html="{Binding NoteObject.Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5" BackgroundColor="White"></controls:HtmlLabel>
+                            <!--<WebView HeightRequest="170">
                                 <WebView.Source>
                                     <HtmlWebViewSource Html="{Binding NoteObject.Content}"></HtmlWebViewSource>
                                 </WebView.Source>
-                            </WebView>
+                            </WebView>-->
                         </StackLayout>
                     </Frame>
                 </ViewCell>

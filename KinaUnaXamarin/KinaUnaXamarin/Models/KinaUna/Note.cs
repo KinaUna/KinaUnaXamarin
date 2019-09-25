@@ -14,6 +14,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string Owner { get; set; }
 
         public Progeny Progeny { get; set; }
+        public int NoteNumber { get; set; }
 
     }
 }
