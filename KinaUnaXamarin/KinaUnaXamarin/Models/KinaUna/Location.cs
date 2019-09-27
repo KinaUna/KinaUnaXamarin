@@ -23,5 +23,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string Tags { get; set; }
         public DateTime? DateAdded { get; set; }
         public string Author { get; set; }
+
+        public int LocationNumber { get; set; }
     }
 }

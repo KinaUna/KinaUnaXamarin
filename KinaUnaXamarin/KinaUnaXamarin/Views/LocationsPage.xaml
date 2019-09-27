@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.LocationsPage"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             Title="{i18n:Translate Locations}"
+             Visual="Material">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
+                     Clicked="ReloadToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png"
+                     Clicked="AddItemToolbarButton_OnClicked" />
+        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png"
+                     Clicked="OptionsToolBarItem_OnClicked" />
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png"
+                     Clicked="ProgenyToolBarItem_OnClicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
+            <StackLayout>
+                <CollectionView x:Name="LocationCollectionView" ItemsSource="{Binding LocationItems}"
+                                SelectionChanged="LocationCollectionView_OnSelectionChanged" SelectionMode="Single">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:Location">
+                            <Grid Margin="0">
+                                <Frame CornerRadius="5" BackgroundColor="White" Margin="5" Padding="0,0,0,5"
+                                       VerticalOptions="FillAndExpand">
+                                    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand"
+                                                 MinimumHeightRequest="500">
+                                        <Frame BackgroundColor="Green" Padding="0" Margin="0"
+                                               HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                                            <Label Text="{Binding Name}" Margin="5" FontAttributes="Bold" FontSize="16"
+                                                   TextColor="White" HorizontalOptions="FillAndExpand"
+                                                   HorizontalTextAlignment="Start" />
+                                        </Frame>
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                                <RowDefinition />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Street}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="0" Grid.Column="1" Text="{Binding StreetName}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Number}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="1" Grid.Column="1" Text="{Binding HouseNumber}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate District}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="2" Grid.Column="1" Text="{Binding District}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate PostalCode}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="3" Grid.Column="1" Text="{Binding PostalCode}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate City}" Margin="5" />
+                                            <Label Grid.Row="4" Grid.Column="1" Text="{Binding City}" TextColor="Black"
+                                                   Margin="5" />
+                                            <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate County}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="5" Grid.Column="1" Text="{Binding County}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate State}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="6" Grid.Column="1" Text="{Binding State}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate Country}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="7" Grid.Column="1" Text="{Binding Country}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="8" Grid.Column="0" Text="{i18n:Translate Notes}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="8" Grid.Column="1" Text="{Binding Notes}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="9" Grid.Column="0" Text="{i18n:Translate Latitude}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="9" Grid.Column="1" Text="{Binding Latitude}"
+                                                   TextColor="Black" Margin="5" />
+                                            <Label Grid.Row="10" Grid.Column="0" Text="{i18n:Translate Longitude}"
+                                                   Margin="5" />
+                                            <Label Grid.Row="10" Grid.Column="1" Text="{Binding Longitude}"
+                                                   TextColor="Black" Margin="5" />
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="140" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}"
+                            BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked" />
+                    <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
+                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0" />
+                        <Label Text="{Binding PageNumber}" />
+                        <Label Text="{i18n:Translate Of} " />
+                        <Label Text="{Binding PageCount}" />
+                    </StackLayout>
+                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}"
+                            BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked" />
+                </Grid>
+            </StackLayout>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red"
+                         HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16"
+                       HorizontalOptions="Center" />
+            </StackLayout>
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}"
+                    Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}"
+                         BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5" />
+            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

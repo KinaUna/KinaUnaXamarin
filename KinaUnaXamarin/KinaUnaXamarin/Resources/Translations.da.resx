@@ -708,4 +708,13 @@
   <data name="GetLocation" xml:space="preserve">
     <value>Brug min position</value>
   </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Steder</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Nummer</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>Stat</value>
+  </data>
 </root>

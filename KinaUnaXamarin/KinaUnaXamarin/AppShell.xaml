@@ -160,6 +160,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Locations}" x:Name="LocationsFlyoutItem"
+                Icon="{x:Static models:IconFont.Map}">
+        <Tab>
+            <ShellContent x:Name="LocationsMenuItem"
+                          Title="{i18n:Translate Locations}"
+                          Icon="{x:Static models:IconFont.Map}"
+                          Route="locations"
+                          ContentTemplate="{DataTemplate views:LocationsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Measurements}" x:Name="MeasurementsFlyoutItem"
                 Icon="{x:Static models:IconFont.Ruler}">
         <Tab Title="{i18n:Translate Measurements}" x:Name="MeasurementsTabItem"

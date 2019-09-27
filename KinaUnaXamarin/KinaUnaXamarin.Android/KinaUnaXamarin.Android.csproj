@@ -75,7 +75,7 @@
       <Version>1.0.7</Version>
     </PackageReference>
     <PackageReference Include="glidex.forms">
-      <Version>1.0.4</Version>
+      <Version>2.0.0.336</Version>
     </PackageReference>
     <PackageReference Include="OxyPlot.Xamarin.Forms">
       <Version>1.1.0-unstable0011</Version>

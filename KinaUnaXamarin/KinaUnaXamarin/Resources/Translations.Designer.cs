@@ -1060,6 +1060,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Locations.
+        /// </summary>
+        internal static string Locations {
+            get {
+                return ResourceManager.GetString("Locations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Location was successfully saved. Location ID:.
         /// </summary>
         internal static string LocationSaved {
@@ -1245,6 +1254,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string NoteSaved {
             get {
                 return ResourceManager.GetString("NoteSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Number.
+        /// </summary>
+        internal static string Number {
+            get {
+                return ResourceManager.GetString("Number", resourceCulture);
             }
         }
         
@@ -1569,6 +1587,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Start {
             get {
                 return ResourceManager.GetString("Start", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to State.
+        /// </summary>
+        internal static string State {
+            get {
+                return ResourceManager.GetString("State", resourceCulture);
             }
         }
         

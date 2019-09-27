@@ -708,4 +708,13 @@
   <data name="GetLocation" xml:space="preserve">
     <value>Get my current location</value>
   </data>
+  <data name="Locations" xml:space="preserve">
+    <value>Locations</value>
+  </data>
+  <data name="Number" xml:space="preserve">
+    <value>Number</value>
+  </data>
+  <data name="State" xml:space="preserve">
+    <value>State</value>
+  </data>
 </root>
