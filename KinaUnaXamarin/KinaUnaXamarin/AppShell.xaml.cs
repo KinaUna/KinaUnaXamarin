@@ -49,6 +49,7 @@ namespace KinaUnaXamarin
             _routes.Add("mychildren", typeof(MyChildrenPage));
             _routes.Add("useraccess", typeof(UserAccessPage));
             _routes.Add("locations", typeof(LocationsPage));
+            _routes.Add("photolocations", typeof(PhotoLocationsPage));
             foreach (var item in _routes)
             {
                 Routing.RegisterRoute(item.Key, item.Value);
@@ -84,6 +85,7 @@ namespace KinaUnaXamarin
             VocabularyTabItem.Title = resmgr.Value.GetString("Vocabulary", ci);
             VaccinationsFlyoutItem.Title = VaccinationsMenuItem.Title = resmgr.Value.GetString("Contacts", ci);
             LocationsFlyoutItem.Title = LocationsMenuItem.Title = resmgr.Value.GetString("Locations", ci);
+            PhotoLocationsTabItem.Title = resmgr.Value.GetString("PhotoLocations", ci);
         }
     }
 }

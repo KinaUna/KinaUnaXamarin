@@ -717,4 +717,7 @@
   <data name="State" xml:space="preserve">
     <value>State</value>
   </data>
+  <data name="PhotoLocations" xml:space="preserve">
+    <value>Photo Locations</value>
+  </data>
 </root>

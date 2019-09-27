@@ -1375,6 +1375,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo Locations.
+        /// </summary>
+        internal static string PhotoLocations {
+            get {
+                return ResourceManager.GetString("PhotoLocations", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Photos.
         /// </summary>
         internal static string Photos {

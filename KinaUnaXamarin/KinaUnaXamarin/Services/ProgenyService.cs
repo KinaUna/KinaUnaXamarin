@@ -4019,5 +4019,96 @@ namespace KinaUnaXamarin.Services
                 return locationsList;
             }
         }
+
+        public static async Task<List<Picture>> GetPicturesList(int progenyId, int userAccessLevel, string userTimezone)
+        {
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
+            }
+            catch (Exception)
+            {
+                userTimezone = TZConvert.WindowsToIana(userTimezone);
+            }
+
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                // If user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    string pageApiPath = "api/publicaccess/picturelist/" + progenyId + "?accessLevel=" + userAccessLevel;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var pictureListString = await result.Content.ReadAsStringAsync();
+                        List<Picture> pictureList = JsonConvert.DeserializeObject<List<Picture>>(pictureListString);
+                        foreach (Picture picture in pictureList)
+                        {
+                            if (picture.PictureTime.HasValue)
+                            {
+                                picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+
+                            picture.CommentsCount = picture.Comments.Count;
+                            //ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true);
+                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                        }
+                        await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        return pictureList;
+                    }
+                    else
+                    {
+                        return new List<Picture>();
+                    }
+                }
+                else // If user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    string pageApiPath = "api/pictures/progeny/" + progenyId + "/" + userAccessLevel;
+                    var result = await client.GetAsync(pageApiPath).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var pictureListString = await result.Content.ReadAsStringAsync();
+                        List<Picture> pictureList = JsonConvert.DeserializeObject<List<Picture>>(pictureListString);
+                        foreach (Picture picture in pictureList)
+                        {
+                            if (picture.PictureTime.HasValue)
+                            {
+                                picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                            }
+                            picture.CommentsCount = picture.Comments.Count;
+                            //ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true);
+                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                        }
+
+                        await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        return pictureList;
+                    }
+                    else
+                    {
+                        return new List<Picture>();
+                    }
+                }
+            }
+            else
+            {
+                string pictureListString = await SecureStorage.GetAsync("PictureList" + progenyId + "Al" + userAccessLevel);
+                if (string.IsNullOrEmpty(pictureListString))
+                {
+                    return new List<Picture>();
+                }
+                List<Picture> pictureList = JsonConvert.DeserializeObject<List<Picture>>(pictureListString);
+                return pictureList;
+            }
+        }
     }
 }

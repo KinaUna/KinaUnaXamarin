@@ -19,18 +19,18 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationsPage : ContentPage
+    public partial class PhotoLocationsPage : ContentPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private LocationsViewModel _viewModel;
+        private PhotoLocationsViewModel _viewModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
         private double _screenWidth;
         private double _screenHeight;
 
-        public LocationsPage()
+        public PhotoLocationsPage()
         {
             InitializeComponent();
 
@@ -53,7 +53,7 @@ namespace KinaUnaXamarin.Views
 
             if (_reload)
             {
-                _viewModel = new LocationsViewModel();
+                _viewModel = new PhotoLocationsViewModel();
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
                 ContainerGrid.BindingContext = _viewModel;
                 BindingContext = _viewModel;
@@ -212,31 +212,39 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.PageNumber = 1;
             }
-
-            List<Location> allLocations = await ProgenyService.GetLocationsList(_viewChild, _viewModel.UserAccessLevel);
-            allLocations = allLocations.OrderByDescending(l => l.Date).ToList();
-            if (allLocations != null && allLocations.Count > 0)
+            _viewModel.PictureItems.Clear();
+            List<Picture> allPictures = await ProgenyService.GetPicturesList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            // List<Picture> validPictures = new List<Picture>();
+            if (allPictures != null && allPictures.Count > 0)
             {
                 List<double> latitudes = new List<double>();
                 List<double> longitudes = new List<double>();
 
-                foreach (Location location in allLocations)
+                foreach (Picture picture in allPictures)
                 {
-                    if (location.Date.HasValue)
+                    
+                    if (!string.IsNullOrEmpty(picture.Latitude) && !string.IsNullOrEmpty(picture.Longtitude))
                     {
-                        location.Date = TimeZoneInfo.ConvertTimeFromUtc(location.Date.Value,
-                            TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
-                    }
+                        double lat;
+                        bool validLat = double.TryParse(picture.Latitude, out lat);
+                        double lon;
+                        bool validLon = double.TryParse(picture.Longtitude, out lon);
 
-                    if (location.Position != null)
-                    {
-                        Pin pin = new Pin();
-                        pin.Position = location.Position;
-                        pin.Label = location.Name;
-                        pin.Type = PinType.SavedPin;
-                        LocationsMap.Pins.Add(pin);
-                        latitudes.Add(pin.Position.Latitude);
-                        longitudes.Add(pin.Position.Longitude);
+                        if (validLat && validLon)
+                        {
+                            Position position = new Position(lat, lon);
+                            Pin pin = new Pin();
+                            pin.Position = position;
+                            pin.Label = picture.Location;
+                            pin.Type = PinType.Place;
+                            pin.Tag = picture;
+                            LocationsMap.Pins.Add(pin);
+                            latitudes.Add(pin.Position.Latitude);
+                            longitudes.Add(pin.Position.Longitude);
+                            //validPictures.Add(picture);
+                            _viewModel.PictureItems.Add(picture);
+                        }
+                        
                     }
                 }
 
@@ -253,24 +261,14 @@ namespace KinaUnaXamarin.Views
                     LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
                         Distance.FromKilometers(distance)));
 
-                    _viewModel.LocationItems.ReplaceRange(allLocations);
+                    //_viewModel.PictureItems.ReplaceRange(validPictures);
                 }
-                
+
             }
 
             _viewModel.IsBusy = false;
         }
-
-        private void PinOnClicked(object sender, EventArgs e)
-        {
-            Pin clickedPin = sender as Pin;
-            if (clickedPin != null)
-            {
-                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == (sender as Pin).Label);
-                LocationCollectionView.ScrollTo(clickedLocation, position:ScrollToPosition.Start);
-            }
-        }
-
+        
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
         {
             SelectProgenyPage selProPage = new SelectProgenyPage(_viewModel.ProgenyCollection);
@@ -303,9 +301,15 @@ namespace KinaUnaXamarin.Views
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
 
-        private void LocationCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void LocationCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Todo: Navigate to LocationDetailsPage.
+            if (LocationCollectionView.SelectedItem is Picture selectedPicture)
+            {
+                PhotoDetailPage photoPage = new PhotoDetailPage(selectedPicture.PictureId);
+                // Reset selection
+                LocationCollectionView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(photoPage);
+            }
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -336,10 +340,36 @@ namespace KinaUnaXamarin.Views
             
             if (e.Pin != null)
             {
-                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == (e.Pin).Label);
-                if (clickedLocation != null)
+                LocationCollectionView.ScrollTo(0);
+                _viewModel.NearbyPictures.Clear();
+                Picture clickedPicture = e.Pin.Tag as Picture;
+                if (clickedPicture != null)
                 {
-                    LocationCollectionView.ScrollTo(clickedLocation, position: ScrollToPosition.Start);
+                    double clickedLat;
+                    bool clickedLatValid = double.TryParse(clickedPicture.Latitude, out clickedLat);
+                    double clickedLon;
+                    bool clickedLonValid = double.TryParse(clickedPicture.Longtitude, out clickedLon);
+
+                    if (clickedLatValid && clickedLonValid)
+                    {
+                        foreach (Picture picture in _viewModel.PictureItems)
+                        {
+                            double lat;
+                            bool validLat = double.TryParse(picture.Latitude, out lat);
+                            double lon;
+                            bool validLon = double.TryParse(picture.Longtitude, out lon);
+                            if (validLat && validLon)
+                            {
+                                Position position = new Position(lat, lon);
+                                var distance = DistanceCalculation.GeoCodeCalc.CalcDistance(clickedLat, clickedLon, lat,
+                                    lon, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
+                                if (distance < 0.5)
+                                {
+                                    _viewModel.NearbyPictures.Add(picture);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }

@@ -92,12 +92,17 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Photos}" x:Name="PhotosFlyoutItem"
                 Icon="{x:Static models:IconFont.ImageMultiple}">
-        <Tab>
-            <ShellContent x:Name="PhotosMenuItem"
-                          Title="{i18n:Translate Photos}"
-                          Icon="{x:Static models:IconFont.ImageMultiple}"
-                          Route="photos"
+        <Tab x:Name="PhotosMenuItem" Title="{i18n:Translate Photos}"
+             Icon="photosicon.png"
+             Route="photos">
+            <ShellContent 
                           ContentTemplate="{DataTemplate views:PhotosPage}">
+            </ShellContent>
+        </Tab>
+        <Tab Title="{i18n:Translate PhotoLocations}" x:Name="PhotoLocationsTabItem"
+             Icon="locationsicon.png"
+             Route="photolocations">
+            <ShellContent ContentTemplate="{DataTemplate views:PhotoLocationsPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
