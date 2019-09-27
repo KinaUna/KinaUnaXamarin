@@ -11,6 +11,7 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              Title="{i18n:Translate Locations}"
              Visual="Material">
     <ContentPage.ToolbarItems>
@@ -25,7 +26,14 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
-            <StackLayout>
+            <StackLayout x:Name="ContainerStackLayout">
+                <maps:Map x:Name="LocationsMap" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                          PinClicked="LocationsMap_OnPinClicked"
+                          MapType="Street"
+                          HeightRequest="300"
+                          WidthRequest="300"
+                          >
+                </maps:Map>
                 <CollectionView x:Name="LocationCollectionView" ItemsSource="{Binding LocationItems}"
                                 SelectionChanged="LocationCollectionView_OnSelectionChanged" SelectionMode="Single">
                     <CollectionView.ItemTemplate>
@@ -109,26 +117,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="40" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="140" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}"
-                            BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked" />
-                    <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0" />
-                        <Label Text="{Binding PageNumber}" />
-                        <Label Text="{i18n:Translate Of} " />
-                        <Label Text="{Binding PageCount}" />
-                    </StackLayout>
-                    <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}"
-                            BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked" />
-                </Grid>
             </StackLayout>
             <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red"
                          HorizontalOptions="FillAndExpand" VerticalOptions="Start">

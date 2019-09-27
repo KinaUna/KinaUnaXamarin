@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 using Location = KinaUnaXamarin.Models.KinaUna.Location;
 
 namespace KinaUnaXamarin.Services
@@ -3874,12 +3875,22 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    var result = await client.GetAsync("api/locations/getlocationslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/locations/getlocationslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false); // Todo: Change to PublicAccess API
 
                     if (result.IsSuccessStatusCode)
                     {
                         var locationsString = await result.Content.ReadAsStringAsync();
                         LocationsListPage locationsListPage = JsonConvert.DeserializeObject<LocationsListPage>(locationsString);
+                        if (locationsListPage != null && locationsListPage.LocationsList.Count > 0)
+                        {
+                            foreach (Location location in locationsListPage.LocationsList)
+                            {
+                                if (location.Latitude != 0 && location.Longitude != 0)
+                                {
+                                    location.Position = new Position(location.Latitude, location.Longitude);
+                                }
+                            }
+                        }
 
                         await SecureStorage.SetAsync("LocationsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
                         return locationsListPage;
@@ -3899,7 +3910,16 @@ namespace KinaUnaXamarin.Services
                     {
                         var locationsString = await result.Content.ReadAsStringAsync();
                         LocationsListPage locationsListPage = JsonConvert.DeserializeObject<LocationsListPage>(locationsString);
-
+                        if (locationsListPage != null && locationsListPage.LocationsList.Count > 0)
+                        {
+                            foreach(Location location in locationsListPage.LocationsList)
+                            {
+                                if (location.Latitude != 0 && location.Longitude != 0)
+                                {
+                                    location.Position = new Position(location.Latitude, location.Longitude);
+                                }
+                            }
+                        }
                         await SecureStorage.SetAsync("LocationsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
                         return locationsListPage;
                     }
@@ -3918,6 +3938,85 @@ namespace KinaUnaXamarin.Services
                 }
                 LocationsListPage locationsListPage = JsonConvert.DeserializeObject<LocationsListPage>(locationsListPageString);
                 return locationsListPage;
+            }
+        }
+
+        public static async Task<List<Location>> GetLocationsList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/locations/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false); // Todo: Change to PublicAccess API
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var locationsString = await result.Content.ReadAsStringAsync();
+                        List<Location> locationsList = JsonConvert.DeserializeObject<List<Location>>(locationsString);
+                        if (locationsList != null && locationsList.Count > 0)
+                        {
+                            foreach (Location location in locationsList)
+                            {
+                                if (location.Latitude != 0 && location.Longitude != 0)
+                                {
+                                    location.Position = new Position(location.Latitude, location.Longitude);
+                                }
+                            }
+                        }
+
+                        await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        return locationsList;
+                    }
+                    else
+                    {
+                        return new List<Location>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/locations/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var locationsString = await result.Content.ReadAsStringAsync();
+                        List<Location> locationsList = JsonConvert.DeserializeObject<List<Location>>(locationsString);
+                        if (locationsList != null && locationsList.Count > 0)
+                        {
+                            foreach (Location location in locationsList)
+                            {
+                                if (location.Latitude != 0 && location.Longitude != 0)
+                                {
+                                    location.Position = new Position(location.Latitude, location.Longitude);
+                                }
+                            }
+                        }
+                        await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        return locationsList;
+                    }
+                    else
+                    {
+                        return new List<Location>();
+                    }
+                }
+            }
+            else
+            {
+                string locationsListString = await SecureStorage.GetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel);
+                if (string.IsNullOrEmpty(locationsListString))
+                {
+                    return new List<Location>();
+                }
+                List<Location> locationsList = JsonConvert.DeserializeObject<List<Location>>(locationsListString);
+                return locationsList;
             }
         }
     }

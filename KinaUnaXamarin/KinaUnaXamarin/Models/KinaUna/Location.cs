@@ -1,4 +1,6 @@
 ﻿using System;
+using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {
@@ -25,5 +27,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string Author { get; set; }
 
         public int LocationNumber { get; set; }
+
+        public Position Position { get; set; }
     }
 }

@@ -7,7 +7,9 @@ using Android.Widget;
 using FFImageLoading.Forms.Platform;
 using PanCardView.Droid;
 using Plugin.CurrentActivity;
+using Xamarin;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps.Android;
 using Configuration = FFImageLoading.Config.Configuration;
 
 namespace KinaUnaXamarin.Droid
@@ -28,6 +30,7 @@ namespace KinaUnaXamarin.Droid
                 "CollectionView_Experimental", "FastRenderers_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);  // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/map
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //Android.Glide.Forms.Init(); // https://github.com/jonathanpeppers/glidex
             FFImageLoading.Forms.Platform.CachedImageRenderer

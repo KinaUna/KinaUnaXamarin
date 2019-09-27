@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using KinaUnaXamarin.Extensions;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
@@ -11,6 +12,7 @@ using KinaUnaXamarin.ViewModels;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.Xaml;
 using Location = KinaUnaXamarin.Models.KinaUna.Location;
 
@@ -25,11 +27,13 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
+        private double _screenWidth;
+        private double _screenHeight;
 
         public LocationsPage()
         {
             InitializeComponent();
-            
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;
@@ -53,8 +57,8 @@ namespace KinaUnaXamarin.Views
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
                 ContainerGrid.BindingContext = _viewModel;
                 BindingContext = _viewModel;
-                
             }
+
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -70,7 +74,6 @@ namespace KinaUnaXamarin.Views
             if (_reload)
             {
                 await Reload();
-
             }
 
             _reload = false;
@@ -81,12 +84,12 @@ namespace KinaUnaXamarin.Views
             base.OnDisappearing();
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
-        
+
         private async Task Reload()
         {
             _viewModel.IsBusy = true;
             await CheckAccount();
-            
+
             await UpdateLocations();
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -101,6 +104,7 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
+
             _viewModel.IsBusy = false;
         }
 
@@ -129,12 +133,10 @@ namespace KinaUnaXamarin.Views
 
             if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
             {
-
                 _viewModel.IsLoggedIn = false;
                 _viewModel.LoggedOut = true;
                 _accessToken = "";
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
-
             }
             else
             {
@@ -149,6 +151,7 @@ namespace KinaUnaXamarin.Views
             {
                 _viewChild = _userInfo.ViewChild;
             }
+
             if (_viewChild == 0)
             {
                 if (_userInfo.ViewChild != 0)
@@ -165,6 +168,7 @@ namespace KinaUnaXamarin.Views
             {
                 _userInfo.Timezone = Constants.DefaultTimeZone;
             }
+
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
@@ -183,6 +187,7 @@ namespace KinaUnaXamarin.Views
             {
                 progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
             }
+
             _viewModel.Progeny = progeny;
 
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
@@ -208,46 +213,58 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PageNumber = 1;
             }
 
-            LocationsListPage locationsListPage = await ProgenyService.GetLocationsPage(_viewModel.PageNumber, 10, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            List<Location> allLocations = await ProgenyService.GetLocationsList(_viewChild, _viewModel.UserAccessLevel);
 
-            if (locationsListPage.LocationsList != null && locationsListPage.LocationsList.Count > 0)
+            if (allLocations != null && allLocations.Count > 0)
             {
-                foreach (Location location in locationsListPage.LocationsList)
+                List<double> latitudes = new List<double>();
+                List<double> longitudes = new List<double>();
+
+                foreach (Location location in allLocations)
                 {
                     if (location.Date.HasValue)
                     {
                         location.Date = TimeZoneInfo.ConvertTimeFromUtc(location.Date.Value,
                             TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
                     }
+
+                    if (location.Position != null)
+                    {
+                        Pin pin = new Pin();
+                        pin.Position = location.Position;
+                        pin.Label = location.Name;
+                        pin.Type = PinType.SavedPin;
+                        LocationsMap.Pins.Add(pin);
+                        latitudes.Add(pin.Position.Latitude);
+                        longitudes.Add(pin.Position.Longitude);
+                    }
                 }
-                _viewModel.LocationItems.ReplaceRange(locationsListPage.LocationsList);
-                _viewModel.PageNumber = locationsListPage.PageNumber;
-                _viewModel.PageCount = locationsListPage.TotalPages;
-                
+
+                double lowestLat = latitudes.Min();
+                double highestLat = latitudes.Max();
+                double lowestLong = longitudes.Min();
+                double highestLong = longitudes.Max();
+                double finalLat = (lowestLat + highestLat) / 2;
+                double finalLong = (lowestLong + highestLong) / 2;
+                double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat,
+                    highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
+                LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
+                    Distance.FromKilometers(distance)));
+
+                _viewModel.LocationItems.ReplaceRange(allLocations);
             }
-            
+
             _viewModel.IsBusy = false;
         }
 
-        private async void NewerButton_OnClicked(object sender, EventArgs e)
+        private void PinOnClicked(object sender, EventArgs e)
         {
-
-            _viewModel.PageNumber--;
-            if (_viewModel.PageNumber < 1)
+            Pin clickedPin = sender as Pin;
+            if (clickedPin != null)
             {
-                _viewModel.PageNumber = _viewModel.PageCount;
+                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == (sender as Pin).Label);
+                LocationCollectionView.ScrollTo(clickedLocation, position:ScrollToPosition.Start);
             }
-            await UpdateLocations();
-        }
-
-        private async void OlderButton_OnClicked(object sender, EventArgs e)
-        {
-            _viewModel.PageNumber++;
-            if (_viewModel.PageNumber > _viewModel.PageCount)
-            {
-                _viewModel.PageNumber = 1;
-            }
-            await UpdateLocations();
         }
 
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
@@ -281,10 +298,46 @@ namespace KinaUnaXamarin.Views
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
-        
+
         private void LocationCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             // Todo: Navigate to LocationDetailsPage.
+        }
+
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height); //must be called
+            if (_screenWidth != width || _screenHeight != height)
+            {
+                _screenWidth = width;
+                _screenHeight = height;
+
+                if (width > height)
+                {
+                    LocationsMap.HeightRequest = _screenHeight - 15;
+                    LocationsMap.WidthRequest = _screenWidth / 2.5;
+                    ContainerStackLayout.Orientation = StackOrientation.Horizontal;
+                }
+                else
+                {
+                    LocationsMap.HeightRequest = _screenHeight / 2.5;
+                    LocationsMap.WidthRequest = _screenWidth - 15;
+                    ContainerStackLayout.Orientation = StackOrientation.Vertical;
+                }
+            }
+        }
+
+        private void LocationsMap_OnPinClicked(object sender, PinClickedEventArgs e)
+        {
+            
+            if (e.Pin != null)
+            {
+                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == (e.Pin).Label);
+                if (clickedLocation != null)
+                {
+                    LocationCollectionView.ScrollTo(clickedLocation, position: ScrollToPosition.Start);
+                }
+            }
         }
     }
 }
