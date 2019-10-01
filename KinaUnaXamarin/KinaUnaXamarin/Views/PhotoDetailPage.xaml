@@ -32,7 +32,7 @@
                 <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-                <panCardView:CoverFlowView
+                <panCardView:CarouselView
                 x:Name="PhotoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
@@ -46,11 +46,7 @@
                 IsVerticalSwipeEnabled="False"
                 IsPanInteractionEnabled="{Binding IsNotZoomed}"
                 IsViewReusingEnabled="True">
-                    <x:Arguments>
-                        <processors:BaseCoverFlowFrontViewProcessor ScaleFactor="0.5" OpacityFactor="0.25" />
-                        <processors:BaseCoverFlowBackViewProcessor  ScaleFactor="0.5" OpacityFactor="0.25" />
-                    </x:Arguments>
-                    <panCardView:CoverFlowView.ItemTemplate>
+                    <panCardView:CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:PictureViewModel">
                             <ContentView>
                                 <Grid Margin="0" IsClippedToBounds="True">
@@ -93,7 +89,6 @@
                                     </Frame>
                                     <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
                                         <Frame.GestureRecognizers>
-                                            <!--<ClickGestureRecognizer Clicked="CommentsClicked"></ClickGestureRecognizer>-->
                                             <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
                                         </Frame.GestureRecognizers>
                                         <StackLayout Orientation="Horizontal">
@@ -104,11 +99,11 @@
                                 </Grid>
                             </ContentView>
                         </DataTemplate>
-                    </panCardView:CoverFlowView.ItemTemplate>
+                    </panCardView:CarouselView.ItemTemplate>
                     <panCardViewControls:LeftArrowControl/>
                     <panCardViewControls:RightArrowControl/>
                     <panCardViewControls:IndicatorsControl/>
-                </panCardView:CoverFlowView>
+                </panCardView:CarouselView>
                 <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
             </Grid>
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
