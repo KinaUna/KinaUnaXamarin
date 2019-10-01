@@ -269,7 +269,7 @@ namespace KinaUnaXamarin.Views
             await UpdateVocabulary();
         }
 
-        private async void VocabularyListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void VocabularyListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (VocabularyListView.SelectedItem is VocabularyItem selectedVocabularyItem)
             {

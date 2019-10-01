@@ -243,7 +243,7 @@ namespace KinaUnaXamarin.Views
         }
         
 
-        private async void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (VaccinationsListView.SelectedItem is Vaccination selectedVaccination)
             {

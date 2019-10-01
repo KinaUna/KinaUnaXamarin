@@ -14,6 +14,7 @@ using PanCardView.EventArgs;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.Xaml;
 
 namespace KinaUnaXamarin.Views
@@ -233,6 +234,21 @@ namespace KinaUnaXamarin.Views
             base.OnSizeAllocated(width, height); //must be called
             _viewModel.ImageHeight = height;
             _viewModel.ImageWidth = width;
+
+            if (height > width)
+            {
+                LocationMap.WidthRequest = width * 0.9;
+                DataStackLayout.WidthRequest = width * 0.9;
+                InfoStackLayout.Orientation = StackOrientation.Vertical;
+                _detailsHeight = LocationMap.Height + DataStackLayout.Height;
+            }
+            else
+            {
+                LocationMap.WidthRequest = width * 0.45;
+                DataStackLayout.WidthRequest = width * 0.45;
+                InfoStackLayout.Orientation = StackOrientation.Horizontal;
+                _detailsHeight = LocationMap.Height;
+            }
         }
 
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
@@ -267,10 +283,36 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PicHours = picTime.CalcHours();
                 _viewModel.PicMinutes = picTime.CalcMinutes();
             }
+
+            LocationMap.Pins.Clear();
+            if (!string.IsNullOrEmpty(_viewModel.CurrentVideoViewModel.Latitude) &&
+                !string.IsNullOrEmpty(_viewModel.CurrentVideoViewModel.Longtitude))
+            {
+                LocationMap.IsVisible = true;
+                double lat;
+                double lon;
+                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, out lat);
+                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, out lon);
+                if (latParsed && lonParsed)
+                {
+                    Position position = new Position(lat, lon);
+                    Pin pin = new Pin();
+                    pin.Position = position;
+                    pin.Label = _viewModel.CurrentVideoViewModel.Location;
+                    pin.Type = PinType.SavedPin;
+                    LocationMap.Pins.Add(pin);
+                    LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
+                }
+            }
+            else
+            {
+                LocationMap.IsVisible = false;
+            }
             _viewModel.IsBusy = false;
         }
 
         private double y;
+        private double _detailsHeight;
 
         private void FrameOnPanUpdated(object sender, PanUpdatedEventArgs e)
         {
@@ -320,7 +362,7 @@ namespace KinaUnaXamarin.Views
         private double getClosestLockState(double TranslationY)
         {
             //Play with these values to adjust the locking motions - this will change depending on the amount of content ona  apge
-            var lockStates = new double[] { 0, .1, .2, .3, .4, .5, .6, .85 };
+            var lockStates = new double[] { 0, .1, .2, .3, .4, .5, .6, .7, .8, .9 };
 
             //get the current proportion of the sheet in relation to the screen
             var distance = Math.Abs(TranslationY);
@@ -365,12 +407,12 @@ namespace KinaUnaXamarin.Views
             y = BottomSheetFrame.TranslationY;
             if (Math.Abs(y) < Height / 10)
             {
-                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(Height / 3)));
-                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringIn);
+                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(_detailsHeight + 15)));
+                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 350, Easing.SpringIn);
             }
             else
             {
-                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, 0, 250, Easing.SpringOut);
+                BottomSheetFrame.TranslateTo(BottomSheetFrame.X, 0, 350, Easing.SpringOut);
             }
 
 

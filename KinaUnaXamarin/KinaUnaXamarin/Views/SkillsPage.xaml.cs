@@ -269,7 +269,7 @@ namespace KinaUnaXamarin.Views
             await UpdateSkills();
         }
 
-        private async void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SkillsListView.SelectedItem is Skill selectedSkill)
             {

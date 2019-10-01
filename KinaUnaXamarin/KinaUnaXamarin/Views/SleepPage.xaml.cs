@@ -266,7 +266,7 @@ namespace KinaUnaXamarin.Views
             await UpdateSleep();
         }
 
-        private async void SleepListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SleepListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SleepListView.SelectedItem is Sleep selectedSleep)
             {

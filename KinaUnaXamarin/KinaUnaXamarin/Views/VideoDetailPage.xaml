@@ -11,6 +11,7 @@
              x:Class="KinaUnaXamarin.Views.VideoDetailPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              Visual="Material">
     <ContentPage.Content>
         <RelativeLayout BackgroundColor="Black">
@@ -100,58 +101,66 @@
                 </Frame.GestureRecognizers>
                 <StackLayout Spacing="5">
                     <BoxView HeightRequest="8" CornerRadius="4" WidthRequest="60" BackgroundColor="Gray" HorizontalOptions="Center"/>
-                    <StackLayout Orientation="Vertical">
-                        <FlexLayout Wrap="Wrap">
-                            <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
-                            <Label Text="{Binding CurrentVideoViewModel.Tags}" TextColor="White" />
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label Text="{i18n:Translate VideoLocation}" Margin="0,0,5,0" TextColor="Azure" />
-                            <Label Text="{Binding CurrentVideoViewModel.Location}" TextColor="White" />
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label Text="{i18n:Translate VideoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
-                            <Label Text="{Binding CurrentVideoViewModel.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="White" />
-                            <Label Text="{i18n:Translate YearsOld}" Margin="5, 0" TextColor="Azure"/>
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="White" />
-                            <Label Text="{i18n:Translate MonthsOld}" Margin="5, 0" TextColor="Azure"/>
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="White" />
-                            <Label Text="{i18n:Translate WeeksAnd}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="White" />
-                            <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="White" />
-                            <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="White" />
-                            <Label Text="{i18n:Translate HoursOld}" Margin="5, 0" TextColor="Azure"/>
-                        </FlexLayout>
-                        <FlexLayout Wrap="Wrap">
-                            <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="White" />
-                            <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                            <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="White" />
-                            <Label Text="{i18n:Translate MinutesOld}" Margin="5, 0" TextColor="Azure" />
-                        </FlexLayout>
+                    <StackLayout x:Name="InfoStackLayout" Orientation="Vertical" Margin="0, 10, 0, 0">
+                        <StackLayout x:Name="DataStackLayout" Orientation="Vertical" MinimumWidthRequest="350">
+                            <FlexLayout Wrap="Wrap">
+                                <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
+                                <Label Text="{Binding CurrentVideoViewModel.Tags}" TextColor="White" />
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label Text="{i18n:Translate VideoLocation}" Margin="0,0,5,0" TextColor="Azure" />
+                                <Label Text="{Binding CurrentVideoViewModel.Location}" TextColor="White" />
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label Text="{i18n:Translate VideoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
+                                <Label Text="{Binding CurrentVideoViewModel.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="White" />
+                                <Label Text="{i18n:Translate YearsOld}" Margin="5, 0" TextColor="Azure"/>
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="White" />
+                                <Label Text="{i18n:Translate MonthsOld}" Margin="5, 0" TextColor="Azure"/>
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="White" />
+                                <Label Text="{i18n:Translate WeeksAnd}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="White" />
+                                <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="White" />
+                                <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="White" />
+                                <Label Text="{i18n:Translate HoursOld}" Margin="5, 0" TextColor="Azure"/>
+                            </FlexLayout>
+                            <FlexLayout Wrap="Wrap">
+                                <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="White" />
+                                <Label Text="{i18n:Translate MinutesOld}" Margin="5, 0" TextColor="Azure" />
+                            </FlexLayout>
+                        </StackLayout>
+                        <googleMaps:Map x:Name="LocationMap" Margin="5"
+                                        MapType="Street"
+                                        HeightRequest="200"
+                                        WidthRequest="200">
+                        </googleMaps:Map>
                     </StackLayout>
+                    
                 </StackLayout>
             </Frame>
         </RelativeLayout>
