@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -202,15 +201,27 @@ namespace KinaUnaXamarin.Views
             {
                 _photosViewModel.PageNumber = 1;
             }
-
-            PicturePage photoPage = await ProgenyService.GetPicturePage(_photosViewModel.PageNumber, 8, _viewChild, _photosViewModel.UserAccessLevel, _userInfo.Timezone, 1, "");
+            _photosViewModel.TagsCollection.Clear();
+            
+            PicturePage photoPage = await ProgenyService.GetPicturePage(_photosViewModel.PageNumber, 8, _viewChild, _photosViewModel.UserAccessLevel, _userInfo.Timezone, 1, _photosViewModel.TagFilter);
             if (photoPage.PicturesList != null)
             {
                 _photosViewModel.PhotoItems.ReplaceRange(photoPage.PicturesList);
                 _photosViewModel.PageNumber = photoPage.PageNumber;
                 _photosViewModel.PageCount = photoPage.TotalPages;
                 PhotosListView.ScrollTo(0);
+
+                if (!string.IsNullOrEmpty(photoPage.TagsList))
+                {
+                    List<string> tagsList = photoPage.TagsList.Split(',').ToList();
+                    tagsList.Sort();
+                    foreach (string tagString in tagsList)
+                    {
+                        _photosViewModel.TagsCollection.Add(tagString);
+                    }
+                }
             }
+
             _photosViewModel.IsBusy = false;
         }
         
@@ -277,6 +288,31 @@ namespace KinaUnaXamarin.Views
                 await Shell.Current.Navigation.PushModalAsync(photoPage);
             }
 
+        }
+
+        private async void SetTagsFilterButton_OnClicked(object sender, EventArgs e)
+        {
+            OptionsStackLayout.IsVisible = false;
+            _photosViewModel.PageNumber = 1;
+            if (TagFilterPicker.SelectedIndex == -1)
+            {
+                _photosViewModel.TagFilter = "";
+            }
+            else
+            {
+                string selectedTag = TagFilterPicker.SelectedItem.ToString();
+                _photosViewModel.TagFilter = selectedTag;
+            }
+
+            await Reload();
+        }
+
+        private async void ClearTagFilterButton_OnClicked(object sender, EventArgs e)
+        {
+            OptionsStackLayout.IsVisible = false;
+            _photosViewModel.PageNumber = 1;
+            _photosViewModel.TagFilter = "";
+            await Reload();
         }
     }
 }

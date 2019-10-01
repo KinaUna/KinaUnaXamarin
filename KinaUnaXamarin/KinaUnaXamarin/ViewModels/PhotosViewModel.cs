@@ -18,14 +18,22 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private string _tagFilter = "";
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
-
+        public ObservableCollection<string> TagsCollection { get; set; }
         public PhotosViewModel()
         {
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             PhotoItems = new ObservableRangeCollection<Picture>();
+            TagsCollection = new ObservableCollection<string>();
+        }
+
+        public string TagFilter
+        {
+            get => _tagFilter;
+            set => SetProperty(ref _tagFilter, value);
         }
 
         public int PageNumber

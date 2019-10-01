@@ -26,9 +26,7 @@
                 </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-                <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
-                    
-                </StackLayout>
+                
                     <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
                         <CollectionView.ItemsLayout >
                             <GridItemsLayout Orientation="Vertical"
@@ -85,6 +83,13 @@
                     </StackLayout>
                     <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
                 </Grid>
+            </StackLayout>
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}"
+                         BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
+                <Label Text="Filter by tag"></Label>
+                <Picker x:Name="TagFilterPicker" ItemsSource="{Binding TagsCollection}"></Picker>
+                <Button x:Name="SetTagsFilterButton" Text="Set" Clicked="SetTagsFilterButton_OnClicked"></Button>
+                <Button x:Name="ClearTagFilterButton" Text="Clear" Clicked="ClearTagFilterButton_OnClicked"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>
