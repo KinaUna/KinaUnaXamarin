@@ -212,6 +212,9 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.PageNumber = 1;
             }
+
+            LocationsMap.Pins.Clear();
+            _viewModel.PictureItems.Clear();
             _viewModel.PictureItems.Clear();
             List<Picture> allPictures = await ProgenyService.GetPicturesList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
             // List<Picture> validPictures = new List<Picture>();
@@ -238,32 +241,46 @@ namespace KinaUnaXamarin.Views
                             pin.Label = picture.Location;
                             pin.Type = PinType.Place;
                             pin.Tag = picture;
-                            LocationsMap.Pins.Add(pin);
-                            latitudes.Add(pin.Position.Latitude);
-                            longitudes.Add(pin.Position.Longitude);
+                            bool nearAnotherPin = false;
+                            foreach (Pin mapPin in LocationsMap.Pins)
+                            {
+                                if (DistanceCalculation.GeoCodeCalc.CalcDistance(pin.Position.Latitude,
+                                        pin.Position.Longitude, mapPin.Position.Latitude, mapPin.Position.Longitude,
+                                        DistanceCalculation.GeoCodeCalcMeasurement.Kilometers) < _viewModel.NearbyDistance + 0.005)
+                                {
+                                    nearAnotherPin = true;
+                                    break;
+                                }
+                            }
+
+                            if (!nearAnotherPin)
+                            {
+                                LocationsMap.Pins.Add(pin);
+                                latitudes.Add(pin.Position.Latitude);
+                                longitudes.Add(pin.Position.Longitude);
+
+                                if (latitudes.Any() && longitudes.Any())
+                                {
+                                    double lowestLat = latitudes.Min();
+                                    double highestLat = latitudes.Max();
+                                    double lowestLong = longitudes.Min();
+                                    double highestLong = longitudes.Max();
+                                    double finalLat = (lowestLat + highestLat) / 2;
+                                    double finalLong = (lowestLong + highestLong) / 2;
+                                    double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat,
+                                        highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
+                                    LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
+                                        Distance.FromKilometers(distance)));
+
+                                    //_viewModel.PictureItems.ReplaceRange(validPictures);
+                                }
+                            }
+                            
                             //validPictures.Add(picture);
                             _viewModel.PictureItems.Add(picture);
                         }
-                        
                     }
                 }
-
-                if (latitudes.Any() && longitudes.Any())
-                {
-                    double lowestLat = latitudes.Min();
-                    double highestLat = latitudes.Max();
-                    double lowestLong = longitudes.Min();
-                    double highestLong = longitudes.Max();
-                    double finalLat = (lowestLat + highestLat) / 2;
-                    double finalLong = (lowestLong + highestLong) / 2;
-                    double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat,
-                        highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
-                    LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
-                        Distance.FromKilometers(distance)));
-
-                    //_viewModel.PictureItems.ReplaceRange(validPictures);
-                }
-
             }
 
             _viewModel.IsBusy = false;
@@ -363,7 +380,7 @@ namespace KinaUnaXamarin.Views
                                 Position position = new Position(lat, lon);
                                 var distance = DistanceCalculation.GeoCodeCalc.CalcDistance(clickedLat, clickedLon, lat,
                                     lon, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
-                                if (distance < 0.5)
+                                if (distance < _viewModel.NearbyDistance)
                                 {
                                     _viewModel.NearbyPictures.Add(picture);
                                 }

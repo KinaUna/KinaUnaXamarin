@@ -212,7 +212,8 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.PageNumber = 1;
             }
-
+            _viewModel.LocationItems.Clear();
+            LocationsMap.Pins.Clear();
             List<Location> allLocations = await ProgenyService.GetLocationsList(_viewChild, _viewModel.UserAccessLevel);
             allLocations = allLocations.OrderByDescending(l => l.Date).ToList();
             if (allLocations != null && allLocations.Count > 0)

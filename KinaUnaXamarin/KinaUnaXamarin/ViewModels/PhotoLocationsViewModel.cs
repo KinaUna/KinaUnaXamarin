@@ -19,6 +19,7 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private double _nearbyDistance;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
         public ObservableRangeCollection<Picture> PictureItems { get; set; }
@@ -27,10 +28,17 @@ namespace KinaUnaXamarin.ViewModels
 
         public PhotoLocationsViewModel()
         {
+            _nearbyDistance = 0.1;
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             PictureItems = new ObservableRangeCollection<Picture>();
             NearbyPictures = new ObservableRangeCollection<Picture>();
+        }
+
+        public double NearbyDistance
+        {
+            get => _nearbyDistance;
+            set => SetProperty(ref _nearbyDistance, value);
         }
 
         public int PageNumber

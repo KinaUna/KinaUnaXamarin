@@ -214,15 +214,18 @@ namespace KinaUnaXamarin.Views
                 foreach (Note note in notesList.NotesList)
                 {
                     
-                    //note.Content = Regex.Replace(note.Content, @"<[^>]*(>|$)|&nbsp;|&zwnj;|&raquo;|&laquo;", string.Empty).Trim();
-                    //note.Content = "<html><body>" + note.Content + "</body></html>";
                     note.CreatedDate = TimeZoneInfo.ConvertTimeFromUtc(note.CreatedDate,
                         TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
                 }
                 _viewModel.NoteItems.ReplaceRange(notesList.NotesList);
                 _viewModel.PageNumber = notesList.PageNumber;
                 _viewModel.PageCount = notesList.TotalPages;
-                // NotesCollectionView.ScrollTo(0);
+                
+                Note firstNote = _viewModel.NoteItems.FirstOrDefault();
+                if (firstNote != null)
+                {
+                    NotesListView.ScrollTo(firstNote, ScrollToPosition.MakeVisible, true);
+                }
             }
             
             _viewModel.IsBusy = false;

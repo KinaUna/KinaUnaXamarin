@@ -21,7 +21,7 @@
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
+        <Grid BackgroundColor="LightGray">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -56,11 +56,14 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemSizingStrategy="MeasureFirstItem" IsVisible="{Binding AnyChildren}">
+            <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged" 
+                            HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemSizingStrategy="MeasureFirstItem" IsVisible="{Binding AnyChildren}">
+                <CollectionView.ItemsLayout>
+                    <ListItemsLayout ItemSpacing="5" Orientation="Vertical"></ListItemsLayout></CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="modelsKinaUna:UserAccess">
-                        <Frame Margin="2" Padding="2" >
-                            <Grid Margin="0" Padding="5" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand">
+                        <Frame Margin="5" Padding="5" >
+                            <Grid Margin="0" Padding="5" BackgroundColor="White" HorizontalOptions="FillAndExpand">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"></RowDefinition>
                                     <RowDefinition Height="30"></RowDefinition>
