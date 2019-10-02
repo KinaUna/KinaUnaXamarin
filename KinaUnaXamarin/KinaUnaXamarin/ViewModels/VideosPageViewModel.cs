@@ -17,6 +17,9 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private string _tagFilter = "";
+
+        public ObservableCollection<string> TagsCollection { get; set; }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -25,6 +28,13 @@ namespace KinaUnaXamarin.ViewModels
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             VideoItems = new ObservableRangeCollection<Video>();
+            TagsCollection = new ObservableCollection<string>();
+        }
+
+        public string TagFilter
+        {
+            get => _tagFilter;
+            set => SetProperty(ref _tagFilter, value);
         }
 
         public int PageNumber

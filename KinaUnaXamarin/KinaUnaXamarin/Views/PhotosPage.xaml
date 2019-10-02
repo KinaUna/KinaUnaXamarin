@@ -11,6 +11,11 @@
              x:Class="KinaUnaXamarin.Views.PhotosPage"
              Title="{i18n:Translate Photos}"
              Visual="Material">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
@@ -26,11 +31,14 @@
                 </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-                
-                    <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
-                        <CollectionView.ItemsLayout >
-                            <GridItemsLayout Orientation="Vertical"
-                                         Span="2" />
+                <StackLayout Margin="0" Orientation="Horizontal" BackgroundColor="LightBlue" IsVisible="{Binding TagFilter, Converter={StaticResource TextNotEmptyConverter}}" HorizontalOptions="FillAndExpand">
+                    <Label Text="Tag filter: " FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" Margin="10, 0, 0, 0"></Label>
+                    <Label x:Name="TagFilterLabel" Text="{Binding TagFilter}" FontAttributes="Bold" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" Margin="5,0,35,0"></Label>
+                    <Button Text="{i18n:Translate Reset}" Clicked="ClearTagFilterButton_OnClicked" HorizontalOptions="End"></Button>
+                </StackLayout>
+                <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
+                    <CollectionView.ItemsLayout >
+                        <GridItemsLayout Orientation="Vertical" Span="2" />
                         </CollectionView.ItemsLayout>
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="modelsKinaUna:Picture">
@@ -89,7 +97,7 @@
                 <Label Text="Filter by tag"></Label>
                 <Picker x:Name="TagFilterPicker" ItemsSource="{Binding TagsCollection}"></Picker>
                 <Button x:Name="SetTagsFilterButton" Text="Set" Clicked="SetTagsFilterButton_OnClicked"></Button>
-                <Button x:Name="ClearTagFilterButton" Text="Clear" Clicked="ClearTagFilterButton_OnClicked"></Button>
+                <Button x:Name="ClearTagFilterButton" Text="{i18n:Translate Reset}" Clicked="ClearTagFilterButton_OnClicked"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>

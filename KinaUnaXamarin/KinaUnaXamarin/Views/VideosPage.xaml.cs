@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -202,13 +203,25 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PageNumber = 1;
             }
 
-            VideoPage videosPage = await ProgenyService.GetVideoPage(_viewModel.PageNumber, 8, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1, "");
+            _viewModel.TagsCollection.Clear();
+
+            VideoPage videosPage = await ProgenyService.GetVideoPage(_viewModel.PageNumber, 8, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1, _viewModel.TagFilter);
             if (videosPage.VideosList != null)
             {
                 _viewModel.VideoItems.ReplaceRange(videosPage.VideosList);
                 _viewModel.PageNumber = videosPage.PageNumber;
                 _viewModel.PageCount = videosPage.TotalPages;
                 VideosListView.ScrollTo(0);
+
+                if (!string.IsNullOrEmpty(videosPage.TagsList))
+                {
+                    List<string> tagsList = videosPage.TagsList.Split(',').ToList();
+                    tagsList.Sort();
+                    foreach (string tagString in tagsList)
+                    {
+                        _viewModel.TagsCollection.Add(tagString);
+                    }
+                }
             }
             _viewModel.IsBusy = false;
         }
@@ -276,6 +289,31 @@ namespace KinaUnaXamarin.Views
                 await Shell.Current.Navigation.PushModalAsync(videoPage);
             }
 
+        }
+
+        private async void SetTagsFilterButton_OnClicked(object sender, EventArgs e)
+        {
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
+            if (TagFilterPicker.SelectedIndex == -1)
+            {
+                _viewModel.TagFilter = "";
+            }
+            else
+            {
+                string selectedTag = TagFilterPicker.SelectedItem.ToString();
+                _viewModel.TagFilter = selectedTag;
+            }
+
+            await Reload();
+        }
+
+        private async void ClearTagFilterButton_OnClicked(object sender, EventArgs e)
+        {
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
+            _viewModel.TagFilter = "";
+            await Reload();
         }
     }
 }

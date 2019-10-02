@@ -117,6 +117,7 @@
     <Compile Include="MainActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="OidcCallbackActivity.cs" />
+    <Compile Include="Renderers\ExtendedWebViewRenderer.cs" />
     <Compile Include="Renderers\HtmlLabelRenderer.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

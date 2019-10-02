@@ -5,6 +5,7 @@ using System.Windows.Input;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
 {
@@ -35,7 +36,7 @@ namespace KinaUnaXamarin.ViewModels
         }
 
         public ObservableRangeCollection<VideoViewModel> VideoItems { get; set; }
-
+        
         public VideoViewModel CurrentVideoViewModel
         {
             get => _currentVideosViewModel;

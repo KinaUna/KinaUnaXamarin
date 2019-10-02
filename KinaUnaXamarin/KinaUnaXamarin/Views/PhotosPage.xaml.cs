@@ -292,7 +292,7 @@ namespace KinaUnaXamarin.Views
 
         private async void SetTagsFilterButton_OnClicked(object sender, EventArgs e)
         {
-            OptionsStackLayout.IsVisible = false;
+            _photosViewModel.ShowOptions = false;
             _photosViewModel.PageNumber = 1;
             if (TagFilterPicker.SelectedIndex == -1)
             {
@@ -309,7 +309,7 @@ namespace KinaUnaXamarin.Views
 
         private async void ClearTagFilterButton_OnClicked(object sender, EventArgs e)
         {
-            OptionsStackLayout.IsVisible = false;
+            _photosViewModel.ShowOptions = false;
             _photosViewModel.PageNumber = 1;
             _photosViewModel.TagFilter = "";
             await Reload();

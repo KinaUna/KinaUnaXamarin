@@ -1629,7 +1629,16 @@ namespace KinaUnaXamarin.Services
                         }
 
                         videoViewModel.CommentsCount = videoViewModel.CommentsList.Count;
-                        
+                        if (videoViewModel.VideoType == 2)
+                        {
+                            string[] linkSplit = videoViewModel.VideoLink.Split('/');
+                            if (linkSplit.Count() > 1)
+                            {
+                                videoViewModel.VideoLink = linkSplit.LastOrDefault();
+
+                                videoViewModel.VideoLink = "https://web.kinauna.com/videos/youtube?link=" + videoViewModel.VideoLink;
+                            }
+                        }
                         await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
 
 
@@ -1657,6 +1666,16 @@ namespace KinaUnaXamarin.Services
                         }
 
                         videoViewModel.CommentsCount = videoViewModel.CommentsList.Count;
+                        if (videoViewModel.VideoType == 2)
+                        {
+                            string[] linkSplit = videoViewModel.VideoLink.Split('/');
+                            if (linkSplit.Count() > 1)
+                            {
+                                videoViewModel.VideoLink = linkSplit.LastOrDefault();
+                                
+                                videoViewModel.VideoLink = "https://web.kinauna.com/videos/youtube?link=" + videoViewModel.VideoLink;
+                            }
+                        }
                         await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
 
 

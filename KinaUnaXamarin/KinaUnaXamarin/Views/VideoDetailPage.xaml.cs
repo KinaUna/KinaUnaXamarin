@@ -232,8 +232,8 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            _viewModel.ImageHeight = height;
-            _viewModel.ImageWidth = width;
+            _viewModel.ImageHeight = height * 0.8;
+            _viewModel.ImageWidth = width * 0.9;
 
             if (height > width)
             {

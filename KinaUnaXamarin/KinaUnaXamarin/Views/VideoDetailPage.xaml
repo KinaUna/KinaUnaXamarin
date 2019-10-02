@@ -12,7 +12,9 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
-             Visual="Material">
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             Visual="Material"
+             x:Name="VideoDetailContentPage">
     <ContentPage.Content>
         <RelativeLayout BackgroundColor="Black">
             <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
@@ -53,9 +55,9 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <WebView Source="{Binding VideoLink}" BackgroundColor="Black" Grid.Row="1" Grid.Column="0">
-                                        
-                                    </WebView>
+                                    <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+
+                                    </controls:ExtendedWebView>
                                     <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
                                         <Label Text="Video" TextColor="WhiteSmoke"></Label>
                                         <Label Text="{Binding VideoNumber}" TextColor="WhiteSmoke"></Label>

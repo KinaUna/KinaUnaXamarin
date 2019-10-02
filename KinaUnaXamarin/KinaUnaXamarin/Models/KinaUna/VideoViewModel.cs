@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Xamarin.Forms;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {
@@ -44,6 +45,7 @@ namespace KinaUnaXamarin.Models.KinaUna
         public int PrevVideo { get; set; }
         public int NextVideo { get; set; }
 
+        
         public VideoViewModel()
         {
            CommentsList = new List<Comment>();

@@ -720,4 +720,7 @@
   <data name="PhotoLocations" xml:space="preserve">
     <value>Foto-steder</value>
   </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Nulstil</value>
+  </data>
 </root>
