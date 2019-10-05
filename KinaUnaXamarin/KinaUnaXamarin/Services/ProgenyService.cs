@@ -2938,7 +2938,8 @@ namespace KinaUnaXamarin.Services
                                     Console.WriteLine("TEST UA: + UserName: " + uAccess.User.UserName);
                                     Console.WriteLine("TEST UA: + UserId: " + uAccess.User.Id);
                                     Console.WriteLine("TEST UA: + UserName: " + uAccess.User.Email);
-                            }
+
+                                }
                                 return accessList;
                         }
                     }
@@ -4128,6 +4129,115 @@ namespace KinaUnaXamarin.Services
                 List<Picture> pictureList = JsonConvert.DeserializeObject<List<Picture>>(pictureListString);
                 return pictureList;
             }
+        }
+
+        public static async Task<List<Sleep>> GetSleepDetails(int sleepId, int accessLevel, string timezone, int sortOrder)
+        {
+            bool online = Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    var result = await client.GetAsync("api/sleep/getsleepdetails?sleepId=" + sleepId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var sleepString = await result.Content.ReadAsStringAsync();
+                        List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
+                        foreach (Sleep slpItem in sleepList)
+                        {
+                            slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
+                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
+                            slpItem.SleepDuration = eOffset - sOffset;
+                        }
+                        await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        return sleepList;
+                    }
+                    else
+                    {
+                        return new List<Sleep>();
+                    }
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/sleep/getsleepdetails/" + sleepId + "/" + accessLevel + "/" + sortOrder).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var sleepString = await result.Content.ReadAsStringAsync();
+                        List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
+                        foreach (Sleep slpItem in sleepList)
+                        {
+                            slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
+                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
+                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
+                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
+                            slpItem.SleepDuration = eOffset - sOffset;
+                        }
+                        await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        return sleepList;
+                    }
+                    else
+                    {
+                        return new List<Sleep>();
+                    }
+                }
+            }
+            else
+            {
+                string sleepString = await SecureStorage.GetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder);
+                if (string.IsNullOrEmpty(sleepString))
+                {
+                    return new List<Sleep>();
+                }
+                List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
+                return sleepList;
+            }
+        }
+
+        public static async Task<Sleep> UpdateSleep(Sleep sleep)
+        {
+            if (Online())
+            {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone);
+                }
+                catch (Exception)
+                {
+                    sleep.Progeny.TimeZone = TZConvert.WindowsToIana(sleep.Progeny.TimeZone);
+                }
+                sleep.SleepStart = TimeZoneInfo.ConvertTimeToUtc(sleep.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone));
+                sleep.SleepEnd = TimeZoneInfo.ConvertTimeToUtc(sleep.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(sleep.Progeny.TimeZone));
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/sleep/" + sleep.SleepId, new StringContent(JsonConvert.SerializeObject(sleep), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Sleep resultSleep = JsonConvert.DeserializeObject<Sleep>(resultString);
+                    return resultSleep;
+                }
+            }
+
+            return sleep;
         }
     }
 }

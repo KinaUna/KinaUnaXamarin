@@ -140,7 +140,7 @@ namespace KinaUnaXamarin.Views.AddItem
             if (start > end)
             {
                 SaveSleepButton.IsEnabled = false;
-                ErrorLabel.Text = "Error: Start is after End.";
+                ErrorLabel.Text = "Error: Start is after End."; // Todo: Translate
                 ErrorLabel.BackgroundColor = Color.Red;
                 ErrorLabel.IsVisible = true;
             }
@@ -202,7 +202,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 else
                 {
                     // Todo: Translate message.
-                    ErrorLabel.Text = $"Error: No internet connection. Sleep for {progeny.NickName} was not saved. Try again later.";
+                    ErrorLabel.Text = $"Error: No internet connection. Sleep for {progeny.NickName} was not saved. Try again later."; // Todo: Translate
                     ErrorLabel.BackgroundColor = Color.Red;
                 }
                 

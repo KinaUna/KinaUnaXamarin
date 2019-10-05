@@ -366,6 +366,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(videoPage);
                 }
+
+                if (timeLineItem.ItemObject is Sleep sleep)
+                {
+                    SleepDetailPage sleepDetailPage = new SleepDetailPage(sleep.SleepId);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
+                }
             }
         }
     }

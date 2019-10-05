@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.SleepDetailPage"
+             Visual="Material">
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="WhiteSmoke">
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <ScrollView>
+                <Grid x:Name="DetailsGrid" Margin="10" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Start}"
+                       FontAttributes="Bold"
+                       FontSize="15"/>
+                    <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{i18n:Translate End}"
+                       FontAttributes="Bold"
+                       FontSize="15" />
+                    <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Duration}"
+                       FontSize="14"/>
+                    <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Rating}"
+                       FontSize="14"/>
+                    <Label Grid.Row="4"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Notes}"
+                       FontSize="14" />
+                    <Label Grid.Row="0"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding CurrentSleep.SleepStart, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding CurrentSleep.SleepEnd, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="2"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding Duration, StringFormat=\{0:h\\:mm\}}"
+                       FontSize="14"
+                       TextColor="Black"/>
+                    <Label Grid.Row="3"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding Rating}"
+                       FontSize="14"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="4"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding CurrentSleep.SleepNotes}"
+                       FontSize="14"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="SleepStartDatePicker" Format="dd MMM yyyy" DateSelected="SleepStartDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="SleepStartTimePicker" Format="HH:mm" PropertyChanged="SleepStartTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="SleepEndDatePicker" Format="dd MMM yyyy" DateSelected="SleepEndDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="SleepEndTimePicker" Format="HH:mm" PropertyChanged="SleepEndTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Text="{Binding Rating}" TextColor="Black" Margin="15, 0, 0, 0"></Label>
+                        <Stepper x:Name="RatingStepper" Minimum="1" Maximum="5" Increment="1" Value="{Binding Rating}" ></Stepper>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding CurrentSleep.SleepNotes}"></Editor>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
+                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                    </StackLayout>
+                    <Label Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -266,14 +266,14 @@ namespace KinaUnaXamarin.Views
             await UpdateSleep();
         }
 
-        private void SleepListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SleepListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SleepListView.SelectedItem is Sleep selectedSleep)
             {
-                //SleepDetailPage sleepDetailPage = new SleepDetailPage(selectedSleep.SleepId);
-                //// Reset selection
-                //SleepListView.SelectedItem = null;
-                //await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
+                SleepDetailPage sleepDetailPage = new SleepDetailPage(selectedSleep.SleepId);
+                // Reset selection
+                SleepListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
             }
 
         }
