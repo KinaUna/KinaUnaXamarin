@@ -7,7 +7,7 @@
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.SleepDetailPage"
+             x:Class="KinaUnaXamarin.Views.EventDetailPage"
              Visual="Material">
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
@@ -29,6 +29,8 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -36,38 +38,46 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Row="0"
                        Grid.Column="0"
-                       Text="{i18n:Translate Start}"
+                       Text="{i18n:Translate Title}"
                        FontAttributes="Bold"
                        FontSize="15"/>
                     <Label Grid.Row="1"
                        Grid.Column="0"
-                       Text="{i18n:Translate End}"
+                       Text="{i18n:Translate Start}"
                        FontAttributes="Bold"
                        FontSize="15" />
                     <Label Grid.Row="2"
                        Grid.Column="0"
-                       Text="{i18n:Translate Duration}"
+                       Text="{i18n:Translate End}"
                        FontSize="14"/>
                     <Label Grid.Row="3"
                        Grid.Column="0"
-                       Text="{i18n:Translate Rating}"
+                       Text="{i18n:Translate Notes}"
                        FontSize="14"/>
                     <Label Grid.Row="4"
                        Grid.Column="0"
-                       Text="{i18n:Translate Notes}"
+                       Text="{i18n:Translate Location}"
                        FontSize="14" />
+                    <Label Grid.Row="5"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Context}"
+                           FontSize="14" />
+                    <Label Grid.Row="6"
+                           Grid.Column="0"
+                           Text="{i18n:Translate AllDay}"
+                           FontSize="14" />
                     <Label Grid.Row="0"
-                       Grid.Column="1"
-                       Margin="5"
-                       Text="{Binding CurrentSleep.SleepStart, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
-                       FontAttributes="Bold"
-                       FontSize="15"
-                       TextColor="Black"
-                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                           Grid.Column="1"
+                           Text="{Binding EventTitle}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
                     <Label Grid.Row="1"
                        Grid.Column="1"
                        Margin="5"
-                       Text="{Binding CurrentSleep.SleepEnd, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                       Text="{Binding CurrentEvent.StartTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
                        FontAttributes="Bold"
                        FontSize="15"
                        TextColor="Black"
@@ -75,54 +85,71 @@
                     <Label Grid.Row="2"
                        Grid.Column="1"
                        Margin="5"
-                       Text="{Binding Duration, StringFormat=\{0:h\\:mm\}}"
-                       FontSize="14"
-                       TextColor="Black"/>
+                       Text="{Binding CurrentEvent.EndTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
                     <Label Grid.Row="3"
                        Grid.Column="1"
                        Margin="5"
-                       Text="{Binding Rating}"
+                       Text="{Binding Notes}"
                        FontSize="14"
-                       TextColor="Black"
-                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                       TextColor="Black"/>
                     <Label Grid.Row="4"
                        Grid.Column="1"
                        Margin="5"
-                       Text="{Binding CurrentSleep.SleepNotes}"
+                       Text="{Binding Location}"
                        FontSize="14"
                        TextColor="Black"
                        IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="5"
+                       Grid.Column="1"
+                       Margin="5"
+                       Text="{Binding Context}"
+                       FontSize="14"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <CheckBox Grid.Row="6" Grid.Column="1" x:Name="AllDayCheckBox" IsChecked="{Binding AllDay}" IsEnabled="False" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></CheckBox>
                     <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="SleepStartDatePicker" Format="dd MMM yyyy" DateSelected="SleepStartDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="SleepStartTimePicker" Format="HH:mm" PropertyChanged="SleepStartTimePicker_OnPropertyChanged"></TimePicker>
-                        </StackLayout>
+                        <Entry x:Name="TitleEntry" Text="{Binding EventTitle}"></Entry>
                     </StackLayout>
                     <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                         <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="SleepEndDatePicker" Format="dd MMM yyyy" DateSelected="SleepEndDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="SleepEndTimePicker" Format="HH:mm" PropertyChanged="SleepEndTimePicker_OnPropertyChanged"></TimePicker>
+                            <DatePicker x:Name="EventStartDatePicker" Format="dd MMM yyyy" DateSelected="EventStartDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="EventStartTimePicker" Format="HH:mm" PropertyChanged="EventStartTimePicker_OnPropertyChanged"></TimePicker>
                         </StackLayout>
                     </StackLayout>
-                    <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <Label Text="{Binding Rating}" TextColor="Black" Margin="15, 0, 0, 0"></Label>
-                        <Stepper x:Name="RatingStepper" Minimum="1" Maximum="5" Increment="1" Value="{Binding Rating}" ></Stepper>
+                    <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="EventEndDatePicker" Format="dd MMM yyyy" DateSelected="EventEndDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="EventEndTimePicker" Format="HH:mm" PropertyChanged="EventEndTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout  Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding CurrentSleep.SleepNotes}"></Editor>
+                    <StackLayout  Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
                     </StackLayout>
-                    <StackLayout  Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                    <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="LocationEntry" Text="{Binding Location}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="ContextEntry" Text="{Binding Context}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <CheckBox IsChecked="{Binding AllDay}"></CheckBox>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                         <Label Text="{i18n:Translate AccessLevel}"></Label>
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                     </StackLayout>
-                    <StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
+                    <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
                         <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
                         <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                     </StackLayout>
-                    <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="End">
+                    <StackLayout Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="End">
                         <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
                     </StackLayout>
-                    <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                    <Label Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
                 </Grid>
             </ScrollView>
         </Grid>

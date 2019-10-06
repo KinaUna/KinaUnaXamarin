@@ -723,4 +723,16 @@
   <data name="Reset" xml:space="preserve">
     <value>Nulstil</value>
   </data>
+  <data name="DeleteEvent" xml:space="preserve">
+    <value>Slet begivenhed</value>
+  </data>
+  <data name="DeleteEventMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette denne begivenhed</value>
+  </data>
+  <data name="DeleteSleep" xml:space="preserve">
+    <value>Slet søvn</value>
+  </data>
+  <data name="DeleteSleepMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette denne søvn</value>
+  </data>
 </root>

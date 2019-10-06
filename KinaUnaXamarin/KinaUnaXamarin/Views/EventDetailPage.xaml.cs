@@ -20,9 +20,9 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepDetailPage : ContentPage
+    public partial class EventDetailPage : ContentPage
     {
-        private readonly SleepDetailViewModel _viewModel = new SleepDetailViewModel();
+        private readonly EventDetailViewModel _viewModel = new EventDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -31,11 +31,11 @@ namespace KinaUnaXamarin.Views
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
-        public SleepDetailPage(int sleepId)
+        public EventDetailPage(int eventId)
         {
-            _viewModel = new SleepDetailViewModel();
+            _viewModel = new EventDetailViewModel();
             InitializeComponent();
-            _viewModel.CurrentSleepId = sleepId;
+            _viewModel.CurrentEventId = eventId;
             BindingContext = _viewModel;
             
         }
@@ -63,6 +63,7 @@ namespace KinaUnaXamarin.Views
         {
             base.OnDisappearing();
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
@@ -168,37 +169,33 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.IsBusy = true;
             await CheckAccount();
+            _viewModel.CurrentEvent =
+                await ProgenyService.GetCalendarItem(_viewModel.CurrentEventId, _accessToken, _userInfo.Timezone);
 
-            List<Sleep> sleepList = await ProgenyService.GetSleepDetails(_viewModel.CurrentSleepId, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            if (sleepList.Any())
+            _viewModel.AccessLevel = _viewModel.CurrentEvent.AccessLevel;
+            _viewModel.CurrentEvent.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentEvent.ProgenyId);
+
+            if (_viewModel.CurrentEvent.StartTime.HasValue)
             {
-                _viewModel.CurrentSleep = sleepList[0];
-                _viewModel.AccessLevel = _viewModel.CurrentSleep.AccessLevel;
-                _viewModel.Rating = _viewModel.CurrentSleep.SleepRating;
-                _viewModel.CurrentSleep.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSleep.ProgenyId);
-                _viewModel.Duration = _viewModel.CurrentSleep.SleepDuration;
+                _viewModel.StartYear = _viewModel.CurrentEvent.StartTime.Value.Year;
+                _viewModel.StartMonth = _viewModel.CurrentEvent.StartTime.Value.Month;
+                _viewModel.StartDay = _viewModel.CurrentEvent.StartTime.Value.Day;
+                _viewModel.StartHours = _viewModel.CurrentEvent.StartTime.Value.Hour;
+                _viewModel.StartMinutes = _viewModel.CurrentEvent.StartTime.Value.Minute;
 
-                sleepList = sleepList.OrderByDescending(s => s.SleepStart).ToList();
-                _viewModel.SleepItems.Add(sleepList[0]);
-                _viewModel.SleepItems.Add(sleepList[1]);
-                _viewModel.SleepItems.Add(sleepList[2]);
-                
-                _viewModel.StartYear = _viewModel.CurrentSleep.SleepStart.Year;
-                _viewModel.StartMonth = _viewModel.CurrentSleep.SleepStart.Month;
-                _viewModel.StartDay = _viewModel.CurrentSleep.SleepStart.Day;
-                _viewModel.StartHours = _viewModel.CurrentSleep.SleepStart.Hour;
-                _viewModel.StartMinutes = _viewModel.CurrentSleep.SleepStart.Minute;
-
-                _viewModel.EndYear = _viewModel.CurrentSleep.SleepEnd.Year;
-                _viewModel.EndMonth = _viewModel.CurrentSleep.SleepEnd.Month;
-                _viewModel.EndDay = _viewModel.CurrentSleep.SleepEnd.Day;
-                _viewModel.EndHours = _viewModel.CurrentSleep.SleepEnd.Hour;
-                _viewModel.EndMinutes = _viewModel.CurrentSleep.SleepEnd.Minute;
-                SleepStartTimePicker.Time = new TimeSpan(_viewModel.CurrentSleep.SleepStart.Hour, _viewModel.CurrentSleep.SleepStart.Minute, 0);
-                SleepEndTimePicker.Time = new TimeSpan(_viewModel.CurrentSleep.SleepEnd.Hour, _viewModel.CurrentSleep.SleepEnd.Minute, 0);
+                if (_viewModel.CurrentEvent.EndTime.HasValue)
+                {
+                    _viewModel.EndYear = _viewModel.CurrentEvent.EndTime.Value.Year;
+                    _viewModel.EndMonth = _viewModel.CurrentEvent.EndTime.Value.Month;
+                    _viewModel.EndDay = _viewModel.CurrentEvent.EndTime.Value.Day;
+                    _viewModel.EndHours = _viewModel.CurrentEvent.EndTime.Value.Hour;
+                    _viewModel.EndMinutes = _viewModel.CurrentEvent.EndTime.Value.Minute;
+                    EventStartTimePicker.Time = new TimeSpan(_viewModel.CurrentEvent.StartTime.Value.Hour, _viewModel.CurrentEvent.StartTime.Value.Minute, 0);
+                    EventEndTimePicker.Time = new TimeSpan(_viewModel.CurrentEvent.EndTime.Value.Hour, _viewModel.CurrentEvent.EndTime.Value.Minute, 0);
+                }
             }
 
-            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentSleep.ProgenyId);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentEvent.ProgenyId);
             if (_viewModel.UserAccessLevel == 0)
             {
                 _viewModel.CanUserEditItems = true;
@@ -207,6 +204,12 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.CanUserEditItems = false;
             }
+
+            _viewModel.AllDay = _viewModel.CurrentEvent.AllDay;
+            _viewModel.EventTitle = _viewModel.CurrentEvent.Title;
+            _viewModel.Context = _viewModel.CurrentEvent.Context;
+            _viewModel.Location = _viewModel.CurrentEvent.Location;
+            _viewModel.Notes = _viewModel.CurrentEvent.Notes;
 
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -235,20 +238,22 @@ namespace KinaUnaXamarin.Views
 
                 DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
-                _viewModel.CurrentSleep.SleepStart = start;
-                _viewModel.CurrentSleep.SleepEnd = end;
-                _viewModel.CurrentSleep.AccessLevel = _viewModel.AccessLevel;
-                _viewModel.CurrentSleep.SleepRating = _viewModel.Rating;
-                _viewModel.CurrentSleep.SleepNotes = NotesEditor.Text;
-                // Todo: Add timezone selection: Use progeny timezone or user timezone, if they are not the same?
+                _viewModel.CurrentEvent.StartTime = start;
+                _viewModel.CurrentEvent.EndTime = end;
+                _viewModel.CurrentEvent.Title = _viewModel.EventTitle;
+                _viewModel.CurrentEvent.Notes = NotesEditor.Text;
+                _viewModel.CurrentEvent.Location = _viewModel.Location;
+                _viewModel.CurrentEvent.Context = _viewModel.Context;
+                _viewModel.CurrentEvent.AllDay = _viewModel.AllDay;
+                _viewModel.CurrentEvent.AccessLevel = _viewModel.AccessLevel;
 
                 // Save changes.
-                Sleep resultSleep = await ProgenyService.UpdateSleep(_viewModel.CurrentSleep);
+                CalendarItem resultEvent = await ProgenyService.UpdateCalendarItem(_viewModel.CurrentEvent);
                 _viewModel.IsBusy = false;
                 EditButton.Text = IconFont.AccountEdit;
-                if (resultSleep != null)  // Todo: Error message if update fails.
+                if (resultEvent != null)  // Todo: Error message if update fails.
                 {
-                    MessageLabel.Text = "Sleep Updated"; // Todo: Translate
+                    MessageLabel.Text = "Calendar Item Updated"; // Todo: Translate
                     MessageLabel.BackgroundColor = Color.DarkGreen;
                     MessageLabel.IsVisible = true;
                     await Reload();
@@ -269,43 +274,38 @@ namespace KinaUnaXamarin.Views
             await Reload();
         }
 
-        private void SleepStartDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
+        private void EventStartDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.StartYear = SleepStartDatePicker.Date.Year;
-            _viewModel.StartMonth = SleepStartDatePicker.Date.Month;
-            _viewModel.StartDay = SleepStartDatePicker.Date.Day;
-            _viewModel.StartHours = SleepStartDatePicker.Date.Hour;
-            _viewModel.StartMinutes = SleepStartDatePicker.Date.Minute;
+            _viewModel.StartYear = EventStartDatePicker.Date.Year;
+            _viewModel.StartMonth = EventStartDatePicker.Date.Month;
+            _viewModel.StartDay = EventStartDatePicker.Date.Day;
+            _viewModel.StartHours = EventStartDatePicker.Date.Hour;
+            _viewModel.StartMinutes = EventStartDatePicker.Date.Minute;
             CheckDates();
-            CalculateDuration();
         }
 
-        private void SleepStartTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void EventStartTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _viewModel.StartHours = SleepStartTimePicker.Time.Hours;
-            _viewModel.StartMinutes = SleepStartTimePicker.Time.Minutes;
+            _viewModel.StartHours = EventStartTimePicker.Time.Hours;
+            _viewModel.StartMinutes = EventStartTimePicker.Time.Minutes;
             CheckDates();
-            CalculateDuration();
         }
 
-        private void SleepEndDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
+        private void EventEndDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.EndYear = SleepEndDatePicker.Date.Year;
-            _viewModel.EndMonth = SleepEndDatePicker.Date.Month;
-            _viewModel.EndDay = SleepEndDatePicker.Date.Day;
-            _viewModel.EndHours = SleepEndDatePicker.Date.Hour;
-            _viewModel.EndMinutes = SleepEndDatePicker.Date.Minute;
+            _viewModel.EndYear = EventEndDatePicker.Date.Year;
+            _viewModel.EndMonth = EventEndDatePicker.Date.Month;
+            _viewModel.EndDay = EventEndDatePicker.Date.Day;
+            _viewModel.EndHours = EventEndDatePicker.Date.Hour;
+            _viewModel.EndMinutes = EventEndDatePicker.Date.Minute;
             CheckDates();
-            CalculateDuration();
         }
 
-        private void SleepEndTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void EventEndTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _viewModel.EndHours = SleepEndTimePicker.Time.Hours;
-            _viewModel.EndMinutes = SleepEndTimePicker.Time.Minutes;
+            _viewModel.EndHours = EventEndTimePicker.Time.Hours;
+            _viewModel.EndMinutes = EventEndTimePicker.Time.Minutes;
             CheckDates();
-            CalculateDuration();
-
         }
 
         private void CheckDates()
@@ -328,37 +328,11 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void CalculateDuration()
-        {
-            DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
-            DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
-            _viewModel.CurrentSleep.SleepStart = start;
-            _viewModel.CurrentSleep.SleepEnd = end;
-            if (_userInfo != null)
-            {
-                try
-                {
-                    TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
-                }
-                catch (Exception)
-                {
-                    _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
-                }
-
-                DateTimeOffset sOffset = new DateTimeOffset(_viewModel.CurrentSleep.SleepStart,
-                    TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone).GetUtcOffset(_viewModel.CurrentSleep.SleepStart));
-                DateTimeOffset eOffset = new DateTimeOffset(_viewModel.CurrentSleep.SleepEnd,
-                    TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone).GetUtcOffset(_viewModel.CurrentSleep.SleepEnd));
-                _viewModel.CurrentSleep.SleepDuration = eOffset - sOffset;
-            }
-            
-        }
-
         private async void DeleteButton_OnClickedButton_OnClicked(object sender, EventArgs e)
         {
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
-            string confirmTitle = resmgr.Value.GetString("DeleteSleep", ci);
-            string confirmMessage = resmgr.Value.GetString("DeleteSleepMessage", ci) + " ? ";
+            string confirmTitle = resmgr.Value.GetString("DeleteEvent", ci);
+            string confirmMessage = resmgr.Value.GetString("DeleteEventMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
             string no = resmgr.Value.GetString("No", ci); ;
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
@@ -366,12 +340,12 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.IsBusy = true;
                 _viewModel.EditMode = false;
-                Sleep deletedSleep = await ProgenyService.DeleteSleep(_viewModel.CurrentSleep);
-                if (deletedSleep.SleepId == 0)
+                CalendarItem deletedEvent = await ProgenyService.DeleteCalendarItem(_viewModel.CurrentEvent);
+                if (deletedEvent.EventId == 0)
                 {
                     _viewModel.EditMode = false;
                     // Todo: Show success message
-                    
+
                 }
                 else
                 {

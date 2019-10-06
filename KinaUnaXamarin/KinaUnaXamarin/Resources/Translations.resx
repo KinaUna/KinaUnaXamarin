@@ -723,4 +723,16 @@
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
+  <data name="DeleteEvent" xml:space="preserve">
+    <value>Delete Event</value>
+  </data>
+  <data name="DeleteEventMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this calendar event</value>
+  </data>
+  <data name="DeleteSleep" xml:space="preserve">
+    <value>Delete Sleep</value>
+  </data>
+  <data name="DeleteSleepMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this sleep record</value>
+  </data>
 </root>

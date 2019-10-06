@@ -723,4 +723,16 @@
   <data name="Reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
+  <data name="DeleteEvent" xml:space="preserve">
+    <value>Event löschen</value>
+  </data>
+  <data name="DeleteEventMessage" xml:space="preserve">
+    <value>Möchten Sie diese Event wirklich löschen</value>
+  </data>
+  <data name="DeleteSleep" xml:space="preserve">
+    <value>Schlaf löschen</value>
+  </data>
+  <data name="DeleteSleepMessage" xml:space="preserve">
+    <value>Möchten Sie diese Schlaf wirklich löschen</value>
+  </data>
 </root>

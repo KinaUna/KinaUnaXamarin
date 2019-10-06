@@ -177,7 +177,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 string userEmail = await UserService.GetUserEmail();
                 UserInfo userinfo = await UserService.GetUserInfo(userEmail);
                 saveSleep.Author = userinfo.UserId;
-                
+                // Todo: Add timezone selection: Use progeny timezone or user timezone, if they are not the same?
                 if (ProgenyService.Online())
                 {
                     // Todo: Translate messages.

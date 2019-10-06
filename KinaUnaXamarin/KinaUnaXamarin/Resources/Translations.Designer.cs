@@ -655,6 +655,42 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Event.
+        /// </summary>
+        internal static string DeleteEvent {
+            get {
+                return ResourceManager.GetString("DeleteEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this calendar event.
+        /// </summary>
+        internal static string DeleteEventMessage {
+            get {
+                return ResourceManager.GetString("DeleteEventMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Delete Sleep.
+        /// </summary>
+        internal static string DeleteSleep {
+            get {
+                return ResourceManager.GetString("DeleteSleep", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this sleep record.
+        /// </summary>
+        internal static string DeleteSleepMessage {
+            get {
+                return ResourceManager.GetString("DeleteSleepMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {

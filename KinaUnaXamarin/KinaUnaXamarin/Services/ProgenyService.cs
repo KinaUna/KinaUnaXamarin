@@ -4182,11 +4182,7 @@ namespace KinaUnaXamarin.Services
                         {
                             slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                             slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
-                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
-                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
-                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
-                            slpItem.SleepDuration = eOffset - sOffset;
+                            
                         }
                         await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
                         return sleepList;
@@ -4238,6 +4234,81 @@ namespace KinaUnaXamarin.Services
             }
 
             return sleep;
+        }
+
+        public static async Task<CalendarItem> UpdateCalendarItem(CalendarItem calendarItem)
+        {
+            if (Online())
+            {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone);
+                }
+                catch (Exception)
+                {
+                    calendarItem.Progeny.TimeZone = TZConvert.WindowsToIana(calendarItem.Progeny.TimeZone);
+                }
+
+                if (calendarItem.StartTime.HasValue && calendarItem.EndTime.HasValue)
+                {
+                    calendarItem.StartTime = TimeZoneInfo.ConvertTimeToUtc(calendarItem.StartTime.Value, TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone));
+                    calendarItem.EndTime = TimeZoneInfo.ConvertTimeToUtc(calendarItem.EndTime.Value, TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone));
+                }
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/calendar/" + calendarItem.EventId, new StringContent(JsonConvert.SerializeObject(calendarItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    CalendarItem resultCalendarItem = JsonConvert.DeserializeObject<CalendarItem>(resultString);
+                    return resultCalendarItem;
+                }
+            }
+
+            return calendarItem;
+        }
+
+        public static async Task<Sleep> DeleteSleep(Sleep sleep)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/sleep/" + sleep.SleepId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Sleep deletedSleep = new Sleep();
+                    deletedSleep.SleepId = 0;
+                    return deletedSleep;
+                }
+            }
+
+            return sleep;
+        }
+
+        public static async Task<CalendarItem> DeleteCalendarItem(CalendarItem calendarItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/calendar/" + calendarItem.EventId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    CalendarItem deletedCalendarItem = new CalendarItem();
+                    deletedCalendarItem.EventId = 0;
+                    return deletedCalendarItem;
+                }
+            }
+
+            return calendarItem;
         }
     }
 }

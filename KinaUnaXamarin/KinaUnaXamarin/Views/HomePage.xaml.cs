@@ -472,6 +472,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is CalendarItem calendarItem)
+                {
+                    EventDetailPage eventDetailPage = new EventDetailPage(calendarItem.EventId);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(eventDetailPage);
+                }
             }
         }
 
