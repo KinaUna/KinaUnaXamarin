@@ -270,7 +270,7 @@ namespace KinaUnaXamarin.Views
         {
             if (SleepListView.SelectedItem is Sleep selectedSleep)
             {
-                SleepDetailPage sleepDetailPage = new SleepDetailPage(selectedSleep.SleepId);
+                SleepDetailPage sleepDetailPage = new SleepDetailPage(selectedSleep);
                 // Reset selection
                 SleepListView.SelectedItem = null;
                 await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);

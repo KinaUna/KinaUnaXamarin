@@ -723,6 +723,9 @@
   <data name="Reset" xml:space="preserve">
     <value>Reset</value>
   </data>
+  <data name="Altitude" xml:space="preserve">
+    <value>Altitude</value>
+  </data>
   <data name="DeleteEvent" xml:space="preserve">
     <value>Delete Event</value>
   </data>
@@ -734,5 +737,8 @@
   </data>
   <data name="DeleteSleepMessage" xml:space="preserve">
     <value>Are you sure you want to delete this sleep record</value>
+  </data>
+  <data name="NoCommentsToDisplay" xml:space="preserve">
+    <value>No comments for this photo</value>
   </data>
 </root>

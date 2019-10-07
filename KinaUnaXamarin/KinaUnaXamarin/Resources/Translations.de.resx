@@ -723,6 +723,9 @@
   <data name="Reset" xml:space="preserve">
     <value>Zurücksetzen</value>
   </data>
+  <data name="Altitude" xml:space="preserve">
+    <value>Höhe</value>
+  </data>
   <data name="DeleteEvent" xml:space="preserve">
     <value>Event löschen</value>
   </data>
@@ -734,5 +737,8 @@
   </data>
   <data name="DeleteSleepMessage" xml:space="preserve">
     <value>Möchten Sie diese Schlaf wirklich löschen</value>
+  </data>
+  <data name="NoCommentsToDisplay" xml:space="preserve">
+    <value>Keine Kommentare für dieses Foto</value>
   </data>
 </root>

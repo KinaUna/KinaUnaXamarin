@@ -1174,6 +1174,54 @@ namespace KinaUnaXamarin.Services
             }
         }
 
+        public static async Task<Picture> GetPictureWithOriginalImageLink(int pictureId, string accessToken, string userTimezone)
+        {
+            bool online = Online();
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
+            }
+            catch (Exception)
+            {
+                userTimezone = TZConvert.WindowsToIana(userTimezone);
+            }
+
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new Picture();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/pictures/" + pictureId).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var pictureString = await result.Content.ReadAsStringAsync();
+                        Picture picture = JsonConvert.DeserializeObject<Picture>(pictureString);
+                        if (picture.PictureTime.HasValue)
+                        {
+                            picture.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(picture.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                        }
+                        return picture;
+                    }
+                    else
+                    {
+                        return new Picture();
+                    }
+                }
+            }
+            
+            return new Picture();
+        }
+
         public static async Task<string> UploadPictureFile(int progenyId, string fileName)
         {
             if (Online())
@@ -4150,16 +4198,7 @@ namespace KinaUnaXamarin.Services
                     {
                         var sleepString = await result.Content.ReadAsStringAsync();
                         List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
-                        foreach (Sleep slpItem in sleepList)
-                        {
-                            slpItem.SleepStart = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepStart, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                            slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                            DateTimeOffset sOffset = new DateTimeOffset(slpItem.SleepStart,
-                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepStart));
-                            DateTimeOffset eOffset = new DateTimeOffset(slpItem.SleepEnd,
-                                TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
-                            slpItem.SleepDuration = eOffset - sOffset;
-                        }
+                        
                         await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
                         return sleepList;
                     }
@@ -4309,6 +4348,115 @@ namespace KinaUnaXamarin.Services
             }
 
             return calendarItem;
+        }
+
+        public static async Task<Picture> UpdatePicture(Picture picture)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/pictures/" + picture.PictureId, new StringContent(JsonConvert.SerializeObject(picture), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Picture resultPicture = JsonConvert.DeserializeObject<Picture>(resultString);
+                    return resultPicture;
+                }
+            }
+
+            return new Picture();
+        }
+
+        public static async Task<TimeLineItem> GetTimeLineItemByItemId(int itemId, KinaUnaTypes.TimeLineType timeLineType)
+        {
+            bool online = Online();
+            
+            if (online)
+            {
+                string accessToken = await UserService.GetAuthAccessToken();
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new TimeLineItem();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/timeline/gettimelineitembyitemid/" + itemId + "/" + (int)timeLineType).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var timeLineItemString = await result.Content.ReadAsStringAsync();
+                        TimeLineItem timeLineItem = JsonConvert.DeserializeObject<TimeLineItem>(timeLineItemString);
+                        await SecureStorage.SetAsync("TimeLineItem" + itemId + "Type" + (int)timeLineType,
+                            JsonConvert.SerializeObject(timeLineItem));
+                        return timeLineItem;
+                    }
+                    else
+                    {
+                        return new TimeLineItem();
+                    }
+                }
+            }
+            else
+            {
+                string timeLineItemString = await SecureStorage.GetAsync("TimeLineItem" + itemId + "Type" + (int)timeLineType);
+                if (string.IsNullOrEmpty(timeLineItemString))
+                {
+                    return new TimeLineItem();
+                }
+                TimeLineItem timeLineItem = JsonConvert.DeserializeObject<TimeLineItem>(timeLineItemString);
+                return timeLineItem;
+            }
+        }
+
+        public static async Task<TimeLineItem> UpdateTimeLineItem(TimeLineItem timeLineItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/timeline/" + timeLineItem.TimeLineId, new StringContent(JsonConvert.SerializeObject(timeLineItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    TimeLineItem resultTimeLineItem = JsonConvert.DeserializeObject<TimeLineItem>(resultString);
+                    return resultTimeLineItem;
+                }
+            }
+
+            return new TimeLineItem();
+        }
+
+        public static async Task<Picture> DeletePicture(int pictureId)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/pictures/" + pictureId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Picture deletedPicture = new Picture();
+                    deletedPicture.PictureId = 0;
+                    return deletedPicture;
+                }
+            }
+
+            Picture failPicture = new Picture();
+            failPicture.PictureId = pictureId;
+            return failPicture;
         }
     }
 }

@@ -369,14 +369,14 @@ namespace KinaUnaXamarin.Views
 
                 if (timeLineItem.ItemObject is Sleep sleep)
                 {
-                    SleepDetailPage sleepDetailPage = new SleepDetailPage(sleep.SleepId);
+                    SleepDetailPage sleepDetailPage = new SleepDetailPage(sleep);
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
                 }
 
                 if (timeLineItem.ItemObject is CalendarItem calendarItem)
                 {
-                    EventDetailPage eventDetailPage = new EventDetailPage(calendarItem.EventId);
+                    EventDetailPage eventDetailPage = new EventDetailPage(calendarItem);
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(eventDetailPage);
                 }

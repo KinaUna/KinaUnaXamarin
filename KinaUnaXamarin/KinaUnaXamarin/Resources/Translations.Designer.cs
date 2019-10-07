@@ -385,6 +385,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Altitude.
+        /// </summary>
+        internal static string Altitude {
+            get {
+                return ResourceManager.GetString("Altitude", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Apply.
         /// </summary>
         internal static string Apply {
@@ -1272,6 +1281,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string NoChildrenFound {
             get {
                 return ResourceManager.GetString("NoChildrenFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No comments for this photo.
+        /// </summary>
+        internal static string NoCommentsToDisplay {
+            get {
+                return ResourceManager.GetString("NoCommentsToDisplay", resourceCulture);
             }
         }
         

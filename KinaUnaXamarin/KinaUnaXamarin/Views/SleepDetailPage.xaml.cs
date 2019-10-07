@@ -31,11 +31,16 @@ namespace KinaUnaXamarin.Views
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
-        public SleepDetailPage(int sleepId)
+        public SleepDetailPage(Sleep sleep)
         {
             _viewModel = new SleepDetailViewModel();
             InitializeComponent();
-            _viewModel.CurrentSleepId = sleepId;
+            _viewModel.CurrentSleepId = sleep.SleepId;
+            _viewModel.CurrentSleep = sleep;
+            _viewModel.AccessLevel = sleep.AccessLevel;
+            _viewModel.Duration = sleep.SleepDuration;
+            _viewModel.Rating = sleep.SleepRating;
+            
             BindingContext = _viewModel;
             
         }
@@ -221,7 +226,7 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
-
+            CalculateDuration();
             _viewModel.IsBusy = false;
 
         }
@@ -350,6 +355,7 @@ namespace KinaUnaXamarin.Views
                 DateTimeOffset eOffset = new DateTimeOffset(_viewModel.CurrentSleep.SleepEnd,
                     TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone).GetUtcOffset(_viewModel.CurrentSleep.SleepEnd));
                 _viewModel.CurrentSleep.SleepDuration = eOffset - sOffset;
+                _viewModel.Duration = eOffset - sOffset;
             }
             
         }

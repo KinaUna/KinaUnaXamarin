@@ -116,7 +116,7 @@
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                     </StackLayout>
                     <StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
-                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
                         <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                     </StackLayout>
                     <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="End">

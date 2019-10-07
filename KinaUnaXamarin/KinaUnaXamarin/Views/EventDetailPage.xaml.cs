@@ -31,11 +31,18 @@ namespace KinaUnaXamarin.Views
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
-        public EventDetailPage(int eventId)
+        public EventDetailPage(CalendarItem calendarItem)
         {
             _viewModel = new EventDetailViewModel();
             InitializeComponent();
-            _viewModel.CurrentEventId = eventId;
+            _viewModel.CurrentEventId = calendarItem.EventId;
+            _viewModel.AllDay = calendarItem.AllDay;
+            _viewModel.AccessLevel = calendarItem.AccessLevel;
+            _viewModel.CurrentEvent = calendarItem;
+            _viewModel.EventTitle = calendarItem.Title;
+            _viewModel.Location = calendarItem.Location;
+            _viewModel.Notes = calendarItem.Notes;
+
             BindingContext = _viewModel;
             
         }

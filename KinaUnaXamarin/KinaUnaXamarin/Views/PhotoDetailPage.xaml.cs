@@ -1,14 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Reflection;
+using System.Resources;
 using System.Threading.Tasks;
 using FFImageLoading.Forms;
 using KinaUnaXamarin.Behaviors;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
 using PanCardView;
 using PanCardView.EventArgs;
+using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -20,20 +26,24 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PhotoDetailPage : ContentPage
     {
-        private readonly PhotoDetailViewModel _photoDetailViewModel = new PhotoDetailViewModel();
+        private readonly PhotoDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
         private bool _online = true;
         private bool _modalShowing;
+        private bool _dataChanged;
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
+        private CommentsPageViewModel _commentsPageViewModel;
 
         public PhotoDetailPage(int pictureId)
         {
             InitializeComponent();
-            _photoDetailViewModel = new PhotoDetailViewModel();
-            _photoDetailViewModel.CurrentPictureId = pictureId;
-            BindingContext = _photoDetailViewModel;
-            ContentGrid.BindingContext = _photoDetailViewModel;
+            _viewModel = new PhotoDetailViewModel();
+            _viewModel.CurrentPictureId = pictureId;
+            BindingContext = _viewModel;
+            ContentGrid.BindingContext = _viewModel;
         }
 
         protected override async void OnAppearing()
@@ -70,13 +80,14 @@ namespace KinaUnaXamarin.Views
 
         private async Task Reload()
         {
-            _photoDetailViewModel.IsBusy = true;
+            _viewModel.IsBusy = true;
             await CheckAccount();
+            _viewModel.PhotoItems.Clear();
 
             PictureViewModel pictureViewModel = await ProgenyService.GetPictureViewModel(
-                _photoDetailViewModel.CurrentPictureId, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            _photoDetailViewModel.PhotoItems.Add(pictureViewModel);
-            _photoDetailViewModel.CurrentPictureViewModel = pictureViewModel;
+                _viewModel.CurrentPictureId, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            _viewModel.PhotoItems.Add(pictureViewModel);
+            _viewModel.CurrentPictureViewModel = pictureViewModel;
 
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -92,44 +103,44 @@ namespace KinaUnaXamarin.Views
                 OfflineStackLayout.IsVisible = true;
             }
             
-            _photoDetailViewModel.IsBusy = false;
+            _viewModel.IsBusy = false;
 
         }
 
         private async Task LoadNewer()
         {
-            _photoDetailViewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _photoDetailViewModel.PhotoItems.FirstOrDefault();
+            _viewModel.CanLoadMore = false;
+            PictureViewModel pictureViewModel = _viewModel.PhotoItems.FirstOrDefault();
             if (pictureViewModel != null)
             {
                 PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.PrevPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _photoDetailViewModel.PhotoItems.Insert(0, pictureViewModel2);
-                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                    pictureViewModel.PrevPicture, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.PhotoItems.Insert(0, pictureViewModel2);
+                if (_viewModel.PhotoItems.Count > 10)
                 {
-                    _photoDetailViewModel.PhotoItems.RemoveAt(_photoDetailViewModel.PhotoItems.Count -1);
+                    _viewModel.PhotoItems.RemoveAt(_viewModel.PhotoItems.Count -1);
                 }
             }
 
-            _photoDetailViewModel.CanLoadMore = true;
+            _viewModel.CanLoadMore = true;
         }
 
         private async Task LoadOlder()
         {
-            _photoDetailViewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _photoDetailViewModel.PhotoItems.LastOrDefault();
+            _viewModel.CanLoadMore = false;
+            PictureViewModel pictureViewModel = _viewModel.PhotoItems.LastOrDefault();
             if (pictureViewModel != null)
             {
                 PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.NextPicture, _photoDetailViewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _photoDetailViewModel.PhotoItems.Add(pictureViewModel2);
-                if (_photoDetailViewModel.PhotoItems.Count > 10)
+                    pictureViewModel.NextPicture, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.PhotoItems.Add(pictureViewModel2);
+                if (_viewModel.PhotoItems.Count > 10)
                 {
-                    _photoDetailViewModel.PhotoItems.RemoveAt(0);
+                    _viewModel.PhotoItems.RemoveAt(0);
                 }
             }
 
-            _photoDetailViewModel.CanLoadMore = true;
+            _viewModel.CanLoadMore = true;
         }
 
         private async Task CheckAccount()
@@ -158,16 +169,16 @@ namespace KinaUnaXamarin.Views
             if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
             {
 
-                _photoDetailViewModel.IsLoggedIn = false;
-                _photoDetailViewModel.LoggedOut = true;
+                _viewModel.IsLoggedIn = false;
+                _viewModel.LoggedOut = true;
                 _accessToken = "";
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
 
             }
             else
             {
-                _photoDetailViewModel.IsLoggedIn = true;
-                _photoDetailViewModel.LoggedOut = false;
+                _viewModel.IsLoggedIn = true;
+                _viewModel.LoggedOut = false;
                 _userInfo = await UserService.GetUserInfo(userEmail);
             }
 
@@ -211,9 +222,14 @@ namespace KinaUnaXamarin.Views
             {
                 progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
             }
-            _photoDetailViewModel.Progeny = progeny;
+            _viewModel.Progeny = progeny;
 
-            _photoDetailViewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            if (_viewModel.UserAccessLevel == 0)
+            {
+                _viewModel.CanUserEditItems = true;
+            }
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
@@ -230,8 +246,8 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            _photoDetailViewModel.ImageHeight = height;
-            _photoDetailViewModel.ImageWidth = width;
+            _viewModel.ImageHeight = height;
+            _viewModel.ImageWidth = width;
             
             if (height > width)
             {
@@ -251,84 +267,93 @@ namespace KinaUnaXamarin.Views
 
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
-            _photoDetailViewModel.IsZoomed = false;
-            _photoDetailViewModel.IsBusy = true;
+            _viewModel.IsZoomed = false;
+            _viewModel.IsBusy = true;
             // var ciView = view.CurrentView..SingleOrDefault(c => c.GetType() == typeof(CachedImage));
-            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-            if (ciView != null)
+            if (view.CurrentView != null)
             {
-
-                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
+                if (ciView != null)
                 {
-                    mtb.OnAppearing();
+
+                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                    {
+                        mtb.OnAppearing();
+                    }
                 }
             }
 
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex < 1)
-            {
-                await LoadNewer();
-
-            }
-
-            if (_photoDetailViewModel.CanLoadMore && _photoDetailViewModel.CurrentIndex > _photoDetailViewModel.PhotoItems.Count - 2)
-            {
-                await LoadOlder();
-
-            }
-
-            _photoDetailViewModel.CurrentPictureViewModel = _photoDetailViewModel.PhotoItems[_photoDetailViewModel.CurrentIndex];
             
-            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
-            if (_photoDetailViewModel.CurrentPictureViewModel.PictureTime != null && _photoDetailViewModel.Progeny.BirthDay.HasValue)
-            {
-                DateTime picTimeBirthday = new DateTime(_photoDetailViewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                picTime = new PictureTime(picTimeBirthday, _photoDetailViewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_photoDetailViewModel.Progeny.TimeZone));
-                _photoDetailViewModel.PicTimeValid = true;
-                _photoDetailViewModel.PicYears = picTime.CalcYears();
-                _photoDetailViewModel.PicMonths = picTime.CalcMonths();
-                _photoDetailViewModel.PicWeeks = picTime.CalcWeeks();
-                _photoDetailViewModel.PicDays = picTime.CalcDays();
-                _photoDetailViewModel.PicHours = picTime.CalcHours();
-                _photoDetailViewModel.PicMinutes = picTime.CalcMinutes();
-            }
-
-            LocationMap.Pins.Clear();
-            if (!string.IsNullOrEmpty(_photoDetailViewModel.CurrentPictureViewModel.Latitude) &&
-                !string.IsNullOrEmpty(_photoDetailViewModel.CurrentPictureViewModel.Longtitude))
+            if (_viewModel.PhotoItems.Any())
             {
-                LocationMap.IsVisible = true;
-                double lat;
-                double lon;
-                bool latParsed = double.TryParse(_photoDetailViewModel.CurrentPictureViewModel.Latitude, out lat);
-                bool lonParsed = double.TryParse(_photoDetailViewModel.CurrentPictureViewModel.Longtitude, out lon);
-                if (latParsed && lonParsed)
+                if (_viewModel.CanLoadMore && _viewModel.CurrentIndex < 1)
                 {
-                    Position position = new Position(lat, lon);
-                    Pin pin = new Pin();
-                    pin.Position = position;
-                    pin.Label = _photoDetailViewModel.CurrentPictureViewModel.Location;
-                    pin.Type = PinType.SavedPin;
-                    LocationMap.Pins.Add(pin);
-                    LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
+                    await LoadNewer();
+                }
+
+                if (_viewModel.CanLoadMore && _viewModel.CurrentIndex > _viewModel.PhotoItems.Count - 2)
+                {
+                    await LoadOlder();
+                }
+                _viewModel.CurrentPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex];
+
+                PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                if (_viewModel.CurrentPictureViewModel.PictureTime != null && _viewModel.Progeny.BirthDay.HasValue)
+                {
+                    DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
+
+                    picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                    _viewModel.PicTimeValid = true;
+                    _viewModel.PicYears = picTime.CalcYears();
+                    _viewModel.PicMonths = picTime.CalcMonths();
+                    _viewModel.PicWeeks = picTime.CalcWeeks();
+                    _viewModel.PicDays = picTime.CalcDays();
+                    _viewModel.PicHours = picTime.CalcHours();
+                    _viewModel.PicMinutes = picTime.CalcMinutes();
+                }
+
+                LocationMap.Pins.Clear();
+                if (!string.IsNullOrEmpty(_viewModel.CurrentPictureViewModel.Latitude) &&
+                    !string.IsNullOrEmpty(_viewModel.CurrentPictureViewModel.Longtitude))
+                {
+                    LocationMap.IsVisible = true;
+                    double lat;
+                    double lon;
+                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
+                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                    if (latParsed && lonParsed)
+                    {
+                        Position position = new Position(lat, lon);
+                        Pin pin = new Pin();
+                        pin.Position = position;
+                        pin.Label = _viewModel.CurrentPictureViewModel.Location;
+                        pin.Type = PinType.SavedPin;
+                        LocationMap.Pins.Add(pin);
+                        LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
+                    }
+                }
+                else
+                {
+                    LocationMap.IsVisible = false;
                 }
             }
-            else
-            {
-                LocationMap.IsVisible = false;
-            }
-            _photoDetailViewModel.IsBusy = false;
+            
+            _viewModel.IsBusy = false;
         }
 
         private async void PhotoCarousel_OnItemDisappearing(CardsView view, ItemDisappearingEventArgs args)
         {
-            CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-            if (ciView != null)
+            if (view.CurrentView != null)
             {
-
-                if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
+                if (ciView != null)
                 {
-                    await mtb.OnDisAppearing();
+
+                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                    {
+                        await mtb.OnDisAppearing();
+                    }
                 }
             }
         }
@@ -417,10 +442,65 @@ namespace KinaUnaXamarin.Views
 
         private async void CommentsClicked(object sender, EventArgs e)
         {
-            if (_photoDetailViewModel.IsLoggedIn)
+            if (_viewModel.IsLoggedIn)
             {
-                CommentsPage commentsPage = new CommentsPage(_photoDetailViewModel.CurrentPictureViewModel.CommentThreadNumber);
-                await Shell.Current.Navigation.PushModalAsync(commentsPage);
+                //CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+                //await Shell.Current.Navigation.PushModalAsync(commentsPage);
+
+                _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+                CommentsCollectionView.ItemsSource = _commentsPageViewModel.CommentsCollection;
+                await GetComments();
+                _viewModel.ShowComments = true;
+            }
+        }
+
+        private async Task GetComments()
+        {
+            _commentsPageViewModel.CommentsCollection.Clear();
+            List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+            if (commentsList.Any())
+            {
+                foreach (var comment in commentsList)
+                {
+                    _commentsPageViewModel.CommentsCollection.Add(comment);
+                }
+
+                _viewModel.CurrentPictureViewModel.CommentsCount = commentsList.Count;
+            }
+        }
+
+        private async void AddCommentButton_OnClicked(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(AddCommentEditor.Text))
+            {
+                AddCommentButton.IsEnabled = false;
+                await ProgenyService.AddComment(_viewModel.CurrentPictureViewModel.CommentThreadNumber, AddCommentEditor.Text);
+                AddCommentEditor.Text = "";
+                await GetComments();
+                AddCommentButton.IsEnabled = true;
+            }
+        }
+
+        private async void DeleteCommentButton_OnClicked(object sender, EventArgs e)
+        {
+            Button deleteButton = (Button)sender;
+            string commentIdString = deleteButton.CommandParameter.ToString();
+            int.TryParse(commentIdString, out int commentId);
+            Comment comment = _commentsPageViewModel.CommentsCollection.SingleOrDefault(c => c.CommentId == commentId);
+            if (comment != null)
+            {
+                var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                string deleteTitle = resmgr.Value.GetString("DeleteTitle", ci);
+                string areYouSure = resmgr.Value.GetString("ConfirmCommentDelete", ci);
+                string yes = resmgr.Value.GetString("Yes", ci);
+                string no = resmgr.Value.GetString("No", ci);
+                var confirmDelete = await DisplayAlert(deleteTitle, areYouSure, yes, no);
+                if (confirmDelete)
+                {
+                    await ProgenyService.DeleteComment(comment);
+                    await GetComments();
+                }
+
             }
         }
 
@@ -439,6 +519,195 @@ namespace KinaUnaXamarin.Views
 
 
             y = BottomSheetFrame.TranslationY;
+        }
+
+        private void EditClicked(object sender, EventArgs e)
+        {
+            MessageLabel.Text = "";
+            MessageLabel.IsVisible = false;
+            CancelButton.BackgroundColor = Color.DimGray;
+
+            TagsEditor.Text = _viewModel.CurrentPictureViewModel.Tags;
+            if (_viewModel.CurrentPictureViewModel.PictureTime.HasValue)
+            {
+                PhotoDatePicker.Date = _viewModel.CurrentPictureViewModel.PictureTime.Value.Date;
+                PhotoTimePicker.Time = _viewModel.CurrentPictureViewModel.PictureTime.Value.TimeOfDay;
+            }
+
+            LocationEntry.Text = _viewModel.CurrentPictureViewModel.Location;
+            LatitudeEntry.Text = _viewModel.CurrentPictureViewModel.Latitude;
+            LongitudeEntry.Text = _viewModel.CurrentPictureViewModel.Longtitude;
+            AltitudeEntry.Text = _viewModel.CurrentPictureViewModel.Altitude;
+            AccessLevelPicker.SelectedIndex = _viewModel.CurrentPictureViewModel.AccessLevel;
+
+            DeleteButton.IsVisible = true;
+            CancelButton.IsVisible = true;
+            CancelButton.Text = IconFont.Cancel;
+            SaveButton.IsVisible = true;
+            _dataChanged = false;
+            _viewModel.EditMode = true;
+        }
+
+        private async void CancelButton_OnClicked(object sender, EventArgs e)
+        {
+            DeleteButton.IsVisible = true;
+            _viewModel.EditMode = false;
+            if (_dataChanged)
+            {
+                await Reload();
+            }
+            
+        }
+
+        private async void SaveButton_OnClicked(object sender, EventArgs e)
+        {
+            Picture updatedPicture = await ProgenyService.GetPictureWithOriginalImageLink(_viewModel.CurrentPictureViewModel.PictureId, _accessToken, _userInfo.Timezone);
+            updatedPicture.Progeny = _viewModel.Progeny;
+            updatedPicture.Tags = TagsEditor.Text;
+            updatedPicture.Location = LocationEntry.Text;
+            updatedPicture.Latitude = LatitudeEntry.Text.Replace(',', '.');
+            updatedPicture.Longtitude = LongitudeEntry.Text.Replace(',', '.');
+            updatedPicture.Altitude = AltitudeEntry.Text.Replace(',', '.');
+            updatedPicture.AccessLevel = AccessLevelPicker.SelectedIndex;
+            int pictureSeconds = 0;
+            if (updatedPicture.PictureTime.HasValue)
+            {
+                pictureSeconds = updatedPicture.PictureTime.Value.Second;
+            }
+
+            DateTime newPictureTime = new DateTime(PhotoDatePicker.Date.Year, PhotoDatePicker.Date.Month, PhotoDatePicker.Date.Day, PhotoTimePicker.Time.Hours, PhotoTimePicker.Time.Minutes, pictureSeconds);
+            updatedPicture.PictureTime = TimeZoneInfo.ConvertTimeToUtc(newPictureTime, TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
+
+            Picture savedPicture = await ProgenyService.UpdatePicture(updatedPicture);
+
+            if (savedPicture != null && savedPicture.PictureId != 0)
+            {
+                _dataChanged = true;
+                TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(savedPicture.PictureId, KinaUnaTypes.TimeLineType.Photo);
+                if (tItem != null && tItem.TimeLineId != 0)
+                {
+                    tItem.AccessLevel = savedPicture.AccessLevel;
+                    if (savedPicture.PictureTime.HasValue)
+                    {
+                        tItem.ProgenyTime = savedPicture.PictureTime.Value;
+                    }
+                    else
+                    {
+                        tItem.ProgenyTime = DateTime.UtcNow;
+                    }
+
+                    TimeLineItem updatedTimeLineItem = await ProgenyService.UpdateTimeLineItem(tItem);
+                    if (updatedTimeLineItem != null && updatedTimeLineItem.TimeLineId != 0)
+                    {
+                        MessageLabel.IsVisible = true;
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        MessageLabel.Text = resmgr.Value.GetString("PhotoSaved", ci) + savedPicture.PictureId;
+                        MessageLabel.BackgroundColor = Color.Green;
+                        SaveButton.IsVisible = false;
+                        DeleteButton.IsVisible = false;
+                        CancelButton.Text = "Ok";
+                        CancelButton.BackgroundColor = Color.FromHex("#4caf50");
+                        CancelButton.IsEnabled = true;
+                        await Reload();
+                    }
+                    else
+                    {
+                        MessageLabel.IsVisible = true;
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        MessageLabel.Text = resmgr.Value.GetString("ErrorPhotoNotSaved", ci);
+                        MessageLabel.BackgroundColor = Color.Red;
+                        SaveButton.IsEnabled = true;
+                        CancelButton.IsEnabled = true;
+                        DeleteButton.IsVisible = true;
+                    }
+                }
+            }
+        }
+
+        private async void DeleteButton_OnClicked(object sender, EventArgs e)
+        {
+            var ci = CrossMultilingual.Current.CurrentCultureInfo;
+            string confirmTitle = resmgr.Value.GetString("DeletePhoto", ci);
+            string confirmMessage = resmgr.Value.GetString("DeletePhotoMessage", ci) + " ? ";
+            string yes = resmgr.Value.GetString("Yes", ci);
+            string no = resmgr.Value.GetString("No", ci); ;
+            bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
+            if (confirmDelete)
+            {
+                _viewModel.IsBusy = true;
+                _viewModel.EditMode = false;
+                Picture deletedPicture = await ProgenyService.DeletePicture(_viewModel.CurrentPictureViewModel.PictureId);
+                if (deletedPicture.PictureId == 0)
+                {
+                    _dataChanged = true;
+                    if (_viewModel.PhotoItems.Count > 1)
+                    {
+                        if (_viewModel.PhotoItems.Count < _viewModel.CurrentIndex + 1)
+                        {
+                            PictureViewModel thisPictureViewModel = _viewModel.CurrentPictureViewModel;
+                            PictureViewModel nextPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex + 1];
+                            _viewModel.CurrentPictureId = nextPictureViewModel.PictureId;
+                            _viewModel.CurrentIndex = _viewModel.CurrentIndex + 1;
+                            _viewModel.PhotoItems.Remove(thisPictureViewModel);
+                        }
+                        else
+                        {
+                            if (_viewModel.PhotoItems.Count > _viewModel.CurrentIndex - 1)
+                            {
+                                PictureViewModel thisPictureViewModel = _viewModel.CurrentPictureViewModel;
+                                PictureViewModel nextPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex - 1];
+                                _viewModel.CurrentPictureId = nextPictureViewModel.PictureId;
+                                _viewModel.CurrentIndex = _viewModel.CurrentIndex - 1;
+                                _viewModel.PhotoItems.Remove(thisPictureViewModel);
+                            }
+                        }
+                    }
+                    
+                    // Todo: Translate success message
+                    MessageLabel.Text = "Photo deleted.";
+                    MessageLabel.IsVisible = true;
+                    SaveButton.IsVisible = false;
+                    DeleteButton.IsVisible = false;
+                    CancelButton.Text = "Ok";
+                    CancelButton.BackgroundColor = Color.FromHex("#4caf50");
+                    CancelButton.IsEnabled = true;
+                }
+                else
+                {
+                    // Todo: Translate failed message
+                    MessageLabel.Text = "Photo deletion failed.";
+                    MessageLabel.IsVisible = true;
+                    MessageLabel.BackgroundColor = Color.Red;
+                    SaveButton.IsEnabled = true;
+                    DeleteButton.IsVisible = true;
+                    CancelButton.IsEnabled = true;
+                }
+
+                
+                
+                _viewModel.IsBusy = false;
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (_viewModel.ShowComments)
+            {
+                _viewModel.ShowComments = false;
+            }
+            else
+            {
+                if (_viewModel.EditMode)
+                {
+                    _viewModel.EditMode = false;
+                }
+                else
+                {
+                    return base.OnBackButtonPressed();
+                }
+            }
+
+            return true;
         }
     }
 }
