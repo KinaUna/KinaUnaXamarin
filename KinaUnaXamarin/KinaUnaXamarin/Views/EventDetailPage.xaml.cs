@@ -197,6 +197,8 @@ namespace KinaUnaXamarin.Views
                     _viewModel.EndDay = _viewModel.CurrentEvent.EndTime.Value.Day;
                     _viewModel.EndHours = _viewModel.CurrentEvent.EndTime.Value.Hour;
                     _viewModel.EndMinutes = _viewModel.CurrentEvent.EndTime.Value.Minute;
+                    EventStartDatePicker.Date = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay);
+                    EventEndDatePicker.Date = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay);
                     EventStartTimePicker.Time = new TimeSpan(_viewModel.CurrentEvent.StartTime.Value.Hour, _viewModel.CurrentEvent.StartTime.Value.Minute, 0);
                     EventEndTimePicker.Time = new TimeSpan(_viewModel.CurrentEvent.EndTime.Value.Hour, _viewModel.CurrentEvent.EndTime.Value.Minute, 0);
                 }

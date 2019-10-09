@@ -9,6 +9,7 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              Title="{i18n:Translate OnThisDay}"
              Visual="Material"
              x:Class="KinaUnaXamarin.Views.YearAgoPage">
@@ -70,7 +71,6 @@
                                                RetryCount="3"
                                                Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
-                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
@@ -174,7 +174,6 @@
                                 <Label Text="{Binding FriendObject.FriendSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding FriendObject.Name}" TextColor="White"></Label>
-                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
@@ -241,11 +240,9 @@
                                 <Label Text="{Binding NoteObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
-                            <WebView HeightRequest="170">
-                                <WebView.Source>
-                                    <HtmlWebViewSource Html="{Binding NoteObject.Content}"></HtmlWebViewSource>
-                                </WebView.Source>
-                            </WebView>
+                            <StackLayout Padding="5" Margin="5" BackgroundColor="White">
+                                <controls:HtmlLabel Html="{Binding NoteObject.Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White"></controls:HtmlLabel>
+                            </StackLayout>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
@@ -259,7 +256,6 @@
                                 <Label Text="{Binding ContactObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding ContactObject.DisplayName}" TextColor="White"></Label>
-                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"

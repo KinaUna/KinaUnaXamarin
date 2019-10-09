@@ -4458,5 +4458,69 @@ namespace KinaUnaXamarin.Services
             failPicture.PictureId = pictureId;
             return failPicture;
         }
+
+        public static async Task<Video> UpdateVideo(Video video)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/videos/" + video.VideoId, new StringContent(JsonConvert.SerializeObject(video), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Video resultVideo = JsonConvert.DeserializeObject<Video>(resultString);
+                    return resultVideo;
+                }
+            }
+
+            return new Video();
+        }
+
+        public static async Task<Video> DeleteVideo(int videoId)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/videos/" + videoId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Video deletedVideo = new Video();
+                    deletedVideo.VideoId = 0;
+                    return deletedVideo;
+                }
+            }
+
+            Video failVideo = new Video();
+            failVideo.VideoId = videoId;
+            return failVideo;
+        }
+
+        public static async Task<TimeLineItem> DeleteTimeLineItem(TimeLineItem timeLineItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/timeline/" + timeLineItem.TimeLineId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    TimeLineItem deletedTimeLineItem = new TimeLineItem();
+                    deletedTimeLineItem.TimeLineId = 0;
+                    return deletedTimeLineItem;
+                }
+            }
+
+            TimeLineItem failTimeLineItem = new TimeLineItem();
+            failTimeLineItem.TimeLineId = timeLineItem.TimeLineId;
+            return failTimeLineItem;
+        }
     }
 }

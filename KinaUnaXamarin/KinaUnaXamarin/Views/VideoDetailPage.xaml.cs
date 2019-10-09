@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
-using System.Text;
+using System.Reflection;
+using System.Resources;
 using System.Threading.Tasks;
-using FFImageLoading.Forms;
-using KinaUnaXamarin.Behaviors;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
 using PanCardView;
 using PanCardView.EventArgs;
+using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -28,6 +30,10 @@ namespace KinaUnaXamarin.Views
         private int _viewChild = Constants.DefaultChildId;
         private bool _online = true;
         private bool _modalShowing;
+        private bool _dataChanged;
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
+        private CommentsPageViewModel _commentsPageViewModel;
 
         public VideoDetailPage(int videoId)
         {
@@ -73,6 +79,7 @@ namespace KinaUnaXamarin.Views
         private async Task Reload()
         {
             _viewModel.IsBusy = true;
+            _dataChanged = false;
             await CheckAccount();
 
             VideoViewModel videoViewModel = await ProgenyService.GetVideoViewModel(
@@ -216,6 +223,10 @@ namespace KinaUnaXamarin.Views
             _viewModel.Progeny = progeny;
 
             _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            if (_viewModel.UserAccessLevel == 0)
+            {
+                _viewModel.CanUserEditItems = true;
+            }
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
@@ -269,6 +280,9 @@ namespace KinaUnaXamarin.Views
             }
 
             _viewModel.CurrentVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex];
+            _viewModel.CurrentVideoId = _viewModel.CurrentVideoViewModel.VideoId;
+            UpdateEditInfo();
+
             PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
             if (_viewModel.CurrentVideoViewModel.VideoTime != null && _viewModel.Progeny.BirthDay.HasValue)
             {
@@ -291,8 +305,8 @@ namespace KinaUnaXamarin.Views
                 LocationMap.IsVisible = true;
                 double lat;
                 double lon;
-                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, out lat);
-                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, out lon);
+                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
+                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
                 if (latParsed && lonParsed)
                 {
                     Position position = new Position(lat, lon);
@@ -397,8 +411,63 @@ namespace KinaUnaXamarin.Views
         {
             if (_viewModel.IsLoggedIn)
             {
-                CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
-                await Shell.Current.Navigation.PushModalAsync(commentsPage);
+                //CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
+                //await Shell.Current.Navigation.PushModalAsync(commentsPage);
+
+                _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
+                CommentsCollectionView.ItemsSource = _commentsPageViewModel.CommentsCollection;
+                await GetComments();
+                _viewModel.ShowComments = true;
+            }
+        }
+
+        private async Task GetComments()
+        {
+            _commentsPageViewModel.CommentsCollection.Clear();
+            List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
+            if (commentsList.Any())
+            {
+                foreach (var comment in commentsList)
+                {
+                    _commentsPageViewModel.CommentsCollection.Add(comment);
+                }
+
+                _viewModel.CurrentVideoViewModel.CommentsCount = commentsList.Count;
+            }
+        }
+
+        private async void AddCommentButton_OnClicked(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(AddCommentEditor.Text))
+            {
+                AddCommentButton.IsEnabled = false;
+                await ProgenyService.AddComment(_viewModel.CurrentVideoViewModel.CommentThreadNumber, AddCommentEditor.Text);
+                AddCommentEditor.Text = "";
+                await GetComments();
+                AddCommentButton.IsEnabled = true;
+            }
+        }
+
+        private async void DeleteCommentButton_OnClicked(object sender, EventArgs e)
+        {
+            Button deleteButton = (Button)sender;
+            string commentIdString = deleteButton.CommandParameter.ToString();
+            int.TryParse(commentIdString, out int commentId);
+            Comment comment = _commentsPageViewModel.CommentsCollection.SingleOrDefault(c => c.CommentId == commentId);
+            if (comment != null)
+            {
+                var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                string deleteTitle = resmgr.Value.GetString("DeleteTitle", ci);
+                string areYouSure = resmgr.Value.GetString("ConfirmCommentDelete", ci);
+                string yes = resmgr.Value.GetString("Yes", ci);
+                string no = resmgr.Value.GetString("No", ci);
+                var confirmDelete = await DisplayAlert(deleteTitle, areYouSure, yes, no);
+                if (confirmDelete)
+                {
+                    await ProgenyService.DeleteComment(comment);
+                    await GetComments();
+                }
+
             }
         }
 
@@ -417,6 +486,235 @@ namespace KinaUnaXamarin.Views
 
 
             y = BottomSheetFrame.TranslationY;
+        }
+
+        private void EditClicked(object sender, EventArgs e)
+        {
+            UpdateEditInfo();
+            _viewModel.EditMode = true;
+        }
+
+        private void UpdateEditInfo()
+        {
+            MessageLabel.Text = "";
+            MessageLabel.IsVisible = false;
+            CancelButton.BackgroundColor = Color.DimGray;
+
+            TagsEditor.Text = _viewModel.CurrentVideoViewModel.Tags;
+            if (_viewModel.CurrentVideoViewModel.VideoTime.HasValue)
+            {
+                PhotoDatePicker.Date = _viewModel.CurrentVideoViewModel.VideoTime.Value.Date;
+                PhotoTimePicker.Time = _viewModel.CurrentVideoViewModel.VideoTime.Value.TimeOfDay;
+            }
+
+            if (_viewModel.CurrentVideoViewModel.Duration.HasValue)
+            {
+                _viewModel.VideoHours = _viewModel.CurrentVideoViewModel.Duration.Value.Hours;
+                _viewModel.VideoMinutes = _viewModel.CurrentVideoViewModel.Duration.Value.Minutes;
+                _viewModel.VideoSeconds = _viewModel.CurrentVideoViewModel.Duration.Value.Seconds;
+            }
+
+            LocationEntry.Text = _viewModel.CurrentVideoViewModel.Location;
+            LatitudeEntry.Text = _viewModel.CurrentVideoViewModel.Latitude;
+            LongitudeEntry.Text = _viewModel.CurrentVideoViewModel.Longtitude;
+            AltitudeEntry.Text = _viewModel.CurrentVideoViewModel.Altitude;
+            AccessLevelPicker.SelectedIndex = _viewModel.CurrentVideoViewModel.AccessLevel;
+
+            DeleteButton.IsVisible = true;
+            CancelButton.IsVisible = true;
+            CancelButton.Text = IconFont.Cancel;
+            SaveButton.IsVisible = true;
+            _dataChanged = false;
+        }
+
+        private async void CancelButton_OnClicked(object sender, EventArgs e)
+        {
+            DeleteButton.IsVisible = true;
+            _viewModel.EditMode = false;
+            if (_dataChanged)
+            {
+                await Reload();
+            }
+
+        }
+
+        private async void SaveButton_OnClicked(object sender, EventArgs e)
+        {
+            Video updatedVideo = await ProgenyService.GetVideo(_viewModel.CurrentVideoViewModel.VideoId, _accessToken, _userInfo.Timezone);
+            updatedVideo.Progeny = _viewModel.Progeny;
+            updatedVideo.Tags = TagsEditor.Text;
+            updatedVideo.Location = LocationEntry.Text;
+            if (!string.IsNullOrEmpty(LatitudeEntry.Text))
+            {
+                updatedVideo.Latitude = LatitudeEntry.Text.Replace(',', '.');
+            }
+
+            if (!string.IsNullOrEmpty(LongitudeEntry.Text))
+            {
+                updatedVideo.Longtitude = LongitudeEntry.Text.Replace(',', '.');
+            }
+
+            if (!string.IsNullOrEmpty(AltitudeEntry.Text))
+            {
+                updatedVideo.Altitude = AltitudeEntry.Text.Replace(',', '.');
+            }
+
+            updatedVideo.AccessLevel = AccessLevelPicker.SelectedIndex;
+            int videoSeconds = 0;
+            if (updatedVideo.VideoTime.HasValue)
+            {
+                videoSeconds = updatedVideo.VideoTime.Value.Second;
+            }
+
+            DateTime newVideoTime = new DateTime(PhotoDatePicker.Date.Year, PhotoDatePicker.Date.Month, PhotoDatePicker.Date.Day, PhotoTimePicker.Time.Hours, PhotoTimePicker.Time.Minutes, videoSeconds);
+            updatedVideo.VideoTime = TimeZoneInfo.ConvertTimeToUtc(newVideoTime, TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
+
+            Int32.TryParse(VideoHoursEntry.Text, out var durHours);
+            Int32.TryParse(VideoMinutesEntry.Text, out var durMins);
+            Int32.TryParse(VideoSecondsEntry.Text, out var durSecs);
+            if (durHours + durMins + durSecs != 0)
+            {
+                updatedVideo.Duration = new TimeSpan(durHours, durMins, durSecs);
+            }
+
+            Video savedVideo = await ProgenyService.UpdateVideo(updatedVideo);
+
+            if (savedVideo != null && savedVideo.VideoId != 0)
+            {
+                _dataChanged = true;
+                TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(savedVideo.VideoId, KinaUnaTypes.TimeLineType.Video);
+                if (tItem != null && tItem.TimeLineId != 0)
+                {
+                    tItem.AccessLevel = savedVideo.AccessLevel;
+                    if (savedVideo.VideoTime.HasValue)
+                    {
+                        tItem.ProgenyTime = savedVideo.VideoTime.Value;
+                    }
+                    else
+                    {
+                        tItem.ProgenyTime = DateTime.UtcNow;
+                    }
+
+                    TimeLineItem updatedTimeLineItem = await ProgenyService.UpdateTimeLineItem(tItem);
+                    if (updatedTimeLineItem != null && updatedTimeLineItem.TimeLineId != 0)
+                    {
+                        MessageLabel.IsVisible = true;
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        MessageLabel.Text = resmgr.Value.GetString("VideoSaved", ci) + savedVideo.VideoId;
+                        MessageLabel.BackgroundColor = Color.Green;
+                        SaveButton.IsVisible = false;
+                        DeleteButton.IsVisible = false;
+                        CancelButton.Text = "Ok";
+                        CancelButton.BackgroundColor = Color.FromHex("#4caf50");
+                        CancelButton.IsEnabled = true;
+                        await Reload();
+                    }
+                    else
+                    {
+                        MessageLabel.IsVisible = true;
+                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
+                        MessageLabel.Text = resmgr.Value.GetString("ErrorVideoNotSaved", ci);
+                        MessageLabel.BackgroundColor = Color.Red;
+                        SaveButton.IsEnabled = true;
+                        CancelButton.IsEnabled = true;
+                        DeleteButton.IsVisible = true;
+                    }
+                }
+            }
+        }
+
+        private async void DeleteButton_OnClicked(object sender, EventArgs e)
+        {
+            var ci = CrossMultilingual.Current.CurrentCultureInfo;
+            string confirmTitle = resmgr.Value.GetString("DeletePhoto", ci);
+            string confirmMessage = resmgr.Value.GetString("DeletePhotoMessage", ci) + " ? ";
+            string yes = resmgr.Value.GetString("Yes", ci);
+            string no = resmgr.Value.GetString("No", ci); ;
+            bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
+            if (confirmDelete)
+            {
+                _viewModel.IsBusy = true;
+                int deleteId =_viewModel.CurrentVideoViewModel.VideoId;
+                _viewModel.EditMode = false;
+                Video deletedVideo = await ProgenyService.DeleteVideo(_viewModel.CurrentVideoViewModel.VideoId);
+                if (deletedVideo.VideoId == 0)
+                {
+                    _dataChanged = true;
+
+                    TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(deleteId, KinaUnaTypes.TimeLineType.Video);
+                    if (tItem != null && tItem.TimeLineId != 0)
+                    {
+                        TimeLineItem updatedTimeLineItem = await ProgenyService.DeleteTimeLineItem(tItem);
+                    }
+
+                    if (_viewModel.VideoItems.Count > 1)
+                    {
+                        if (_viewModel.VideoItems.Count < _viewModel.CurrentIndex + 1)
+                        {
+                            VideoViewModel thisVideoViewModel = _viewModel.CurrentVideoViewModel;
+                            VideoViewModel nextVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex + 1];
+                            _viewModel.CurrentVideoId = nextVideoViewModel.VideoId;
+                            _viewModel.CurrentIndex = _viewModel.CurrentIndex + 1;
+                            _viewModel.VideoItems.Remove(thisVideoViewModel);
+                        }
+                        else
+                        {
+                            if (_viewModel.VideoItems.Count > _viewModel.CurrentIndex - 1)
+                            {
+                                VideoViewModel thisVideoViewModel = _viewModel.CurrentVideoViewModel;
+                                VideoViewModel nextVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex - 1];
+                                _viewModel.CurrentVideoId = nextVideoViewModel.VideoId;
+                                _viewModel.CurrentIndex = _viewModel.CurrentIndex - 1;
+                                _viewModel.VideoItems.Remove(thisVideoViewModel);
+                            }
+                        }
+                    }
+
+                    // Todo: Translate success message
+                    MessageLabel.Text = "Video deleted.";
+                    MessageLabel.IsVisible = true;
+                    SaveButton.IsVisible = false;
+                    DeleteButton.IsVisible = false;
+                    CancelButton.Text = "Ok";
+                    CancelButton.BackgroundColor = Color.FromHex("#4caf50");
+                    CancelButton.IsEnabled = true;
+                }
+                else
+                {
+                    // Todo: Translate failed message
+                    MessageLabel.Text = "Video deletion failed.";
+                    MessageLabel.IsVisible = true;
+                    MessageLabel.BackgroundColor = Color.Red;
+                    SaveButton.IsEnabled = true;
+                    DeleteButton.IsVisible = true;
+                    CancelButton.IsEnabled = true;
+                }
+
+
+
+                _viewModel.IsBusy = false;
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            if (_viewModel.ShowComments)
+            {
+                _viewModel.ShowComments = false;
+            }
+            else
+            {
+                if (_viewModel.EditMode)
+                {
+                    _viewModel.EditMode = false;
+                }
+                else
+                {
+                    return base.OnBackButtonPressed();
+                }
+            }
+
+            return true;
         }
     }
 }

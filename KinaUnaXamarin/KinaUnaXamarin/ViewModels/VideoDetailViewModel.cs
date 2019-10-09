@@ -5,6 +5,7 @@ using System.Windows.Input;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using Plugin.Multilingual;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
@@ -29,10 +30,49 @@ namespace KinaUnaXamarin.ViewModels
         private string _picHours;
         private string _picMinutes;
         private bool _picTimeValid;
+        private bool _editMode;
+        private bool _canUserEditItems;
+        private List<string> _accessLevelList;
+        private bool _showComments;
+        private int _videoHours;
+        private int _videoMinutes;
+        private int _videoSeconds;
 
         public VideoDetailViewModel()
         {
             VideoItems = new ObservableRangeCollection<VideoViewModel>();
+            _accessLevelList = new List<string>();
+            var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
+            if (ci == "da")
+            {
+                _accessLevelList.Add("Administratorer");
+                _accessLevelList.Add("Familie");
+                _accessLevelList.Add("Omsorgspersoner/Speciel adgang");
+                _accessLevelList.Add("Venner");
+                _accessLevelList.Add("Registrerede brugere");
+                _accessLevelList.Add("Offentlig/alle");
+            }
+            else
+            {
+                if (ci == "de")
+                {
+                    _accessLevelList.Add("Administratoren");
+                    _accessLevelList.Add("Familie");
+                    _accessLevelList.Add("Betreuer/Spezial");
+                    _accessLevelList.Add("Freunde");
+                    _accessLevelList.Add("Registrierte Benutzer");
+                    _accessLevelList.Add("Allen zugänglich");
+                }
+                else
+                {
+                    _accessLevelList.Add("Hidden/Private");
+                    _accessLevelList.Add("Family");
+                    _accessLevelList.Add("Caretakers/Special Access");
+                    _accessLevelList.Add("Friends");
+                    _accessLevelList.Add("Registered Users");
+                    _accessLevelList.Add("Public/Anyone");
+                }
+            }
         }
 
         public ObservableRangeCollection<VideoViewModel> VideoItems { get; set; }
@@ -52,6 +92,30 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _currentIndex;
             set => SetProperty(ref _currentIndex, value);
+        }
+
+        public List<string> AccessLevelList
+        {
+            get => _accessLevelList;
+            set => SetProperty(ref _accessLevelList, value);
+        }
+
+        public bool CanUserEditItems
+        {
+            get => _canUserEditItems;
+            set => SetProperty(ref _canUserEditItems, value);
+        }
+
+        public bool EditMode
+        {
+            get => _editMode;
+            set => SetProperty(ref _editMode, value);
+        }
+
+        public bool ShowComments
+        {
+            get => _showComments;
+            set => SetProperty(ref _showComments, value);
         }
 
         public bool LoggedOut
@@ -147,6 +211,24 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _picTimeValid;
             set => SetProperty(ref _picTimeValid, value);
+        }
+
+        public int VideoHours
+        {
+            get => _videoHours;
+            set => SetProperty(ref _videoHours, value);
+        }
+
+        public int VideoMinutes
+        {
+            get => _videoMinutes;
+            set => SetProperty(ref _videoMinutes, value);
+        }
+
+        public int VideoSeconds
+        {
+            get => _videoSeconds;
+            set => SetProperty(ref _videoSeconds, value);
         }
     }
 }

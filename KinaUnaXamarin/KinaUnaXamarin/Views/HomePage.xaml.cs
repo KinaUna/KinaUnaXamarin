@@ -32,7 +32,9 @@ namespace KinaUnaXamarin.Views
         public HomePage()
         {
             InitializeComponent();
-            
+
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+
             MessagingCenter.Subscribe<HomeFeedViewModel>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -78,7 +80,6 @@ namespace KinaUnaXamarin.Views
                 BindingContext = _feedModel;
             }
 
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
@@ -103,12 +104,22 @@ namespace KinaUnaXamarin.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            // Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
         
         private async Task Reload()
         {
             _feedModel.IsBusy = true;
+            UpcomingEventsStatckLayout.IsVisible = false;
+            EventFrame0.IsVisible = false;
+            EventFrame1.IsVisible = false;
+            EventFrame2.IsVisible = false;
+            EventFrame3.IsVisible = false;
+            EventFrame4.IsVisible = false;
+            AgeInfoStackLayout.IsVisible = false;
+            RandomPictureStackLayout.IsVisible = false;
+            LatestPostsStackLayout.IsVisible = false;
+
             await CheckAccount();
             await UpdateProgenyData();
             await UpdateEvents();
@@ -229,6 +240,8 @@ namespace KinaUnaXamarin.Views
 
         private async Task UpdateProgenyData()
         {
+            AgeInfoStackLayout.IsVisible = false;
+            RandomPictureStackLayout.IsVisible = false;
             _feedModel.CurrentTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             BirthTime progBirthTime;
             if (!String.IsNullOrEmpty(_feedModel.Progeny.NickName) && _feedModel.Progeny.BirthDay.HasValue && _feedModel.UserAccessLevel < 5)
@@ -283,19 +296,22 @@ namespace KinaUnaXamarin.Views
             _feedModel.PicDays = picTime.CalcDays();
             _feedModel.PicHours = picTime.CalcHours();
             _feedModel.PicMinutes = picTime.CalcMinutes();
+            AgeInfoStackLayout.IsVisible = true;
+            RandomPictureStackLayout.IsVisible = true;
         }
 
         private async Task UpdateEvents()
         {
-            _feedModel.EventsList = new List<CalendarItem>();
-            List<CalendarItem> eventsList = await ProgenyService.GetUpcommingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
-            int eventListCurrent = 0;
             UpcomingEventsStatckLayout.IsVisible = false;
             EventFrame0.IsVisible = false;
             EventFrame1.IsVisible = false;
             EventFrame2.IsVisible = false;
             EventFrame3.IsVisible = false;
             EventFrame4.IsVisible = false;
+            _feedModel.EventsList = new List<CalendarItem>();
+            List<CalendarItem> eventsList = await ProgenyService.GetUpcommingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
+            int eventListCurrent = 0;
+            
             if (eventsList.Any())
             {
                 
@@ -348,12 +364,12 @@ namespace KinaUnaXamarin.Views
 
         private async Task UpdateTimeLine()
         {
+            LatestPostsStackLayout.IsVisible = false;
             _feedModel.LatestPosts = new List<TimeLineItem>();
             _feedModel.TimeLineItems.Clear();
             _feedModel.LatestPosts = await ProgenyService.GetLatestPosts(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _userInfo.Timezone);
             
 
-            LatestPostsStackLayout.IsVisible = false;
             if (_feedModel.LatestPosts.Any())
             {
                 LatestPostsStackLayout.IsVisible = true;

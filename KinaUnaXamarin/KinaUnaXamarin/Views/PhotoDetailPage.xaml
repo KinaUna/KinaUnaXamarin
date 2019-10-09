@@ -116,7 +116,7 @@
                     <panCardViewControls:RightArrowControl/>
                     <panCardViewControls:IndicatorsControl/>
                 </panCardView:CarouselView>
-                <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAF5F5F5" Margin="0">
+                <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
                     <Grid Margin="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
@@ -252,7 +252,7 @@
                     </StackLayout>
                 </StackLayout>
             </Frame>
-            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAF5F5F5" VerticalOptions="End">
+            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End">
                 <Grid VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>

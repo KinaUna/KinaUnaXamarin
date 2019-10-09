@@ -15,6 +15,9 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              Visual="Material"
              x:Name="VideoDetailContentPage">
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
     <ContentPage.Content>
         <RelativeLayout BackgroundColor="Black">
             <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
@@ -70,13 +73,21 @@
                                     <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
                                         <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
                                     </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="0" HasShadow="False">
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
                                         </Frame.GestureRecognizers>
                                         <StackLayout Orientation="Horizontal">
-                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="5,0,0,0" ></Label>
-                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" Margin="0, 0, 5, 0" ></Label>
+                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="5,0,0,0" ></Label>
+                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="0, 0, 5, 0" ></Label>
+                                        </StackLayout>
+                                    </Frame>
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="End" BackgroundColor="DeepSkyBlue" Padding="10" Margin="1" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.CanUserEditItems}">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer Tapped="EditClicked"></TapGestureRecognizer>
+                                        </Frame.GestureRecognizers>
+                                        <StackLayout Orientation="Horizontal">
+                                            <Label  Text="{x:Static models:IconFont.Pencil}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="20" Margin="5,0,0,0" ></Label>
                                         </StackLayout>
                                     </Frame>
                                 </Grid>
@@ -87,6 +98,84 @@
                     <panCardViewControls:RightArrowControl/>
                     <panCardViewControls:IndicatorsControl/>
                 </panCardView:CarouselView>
+                <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
+                    <Grid Margin="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="2*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="5"></Label>
+                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White">
+                            <Entry x:Name="TagsEditor" ></Entry>
+                        </StackLayout>
+                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Duration}"></Label>
+                        <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5, 0, 5, 0" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
+                            <StackLayout Orientation="Horizontal">
+                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
+                            </StackLayout>
+                            <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
+                            <StackLayout Orientation="Horizontal">
+                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
+                            </StackLayout>
+                            <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
+                            <StackLayout Orientation="Horizontal">
+                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
+                            </StackLayout>
+                        </StackLayout>
+                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
+                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                            <StackLayout Orientation="Horizontal">
+                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
+                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker>
+                                <!--Todo: Add Seconds to timePicker-->
+                            </StackLayout>
+                        </StackLayout>
+                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
+                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
+                            <Entry x:Name="LocationEntry" ></Entry>
+                        </StackLayout>
+                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
+                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
+                            <Entry x:Name="LatitudeEntry" ></Entry>
+                        </StackLayout>
+                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
+                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
+                            <Entry x:Name="LongitudeEntry" ></Entry>
+                        </StackLayout>
+                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
+                        <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White">
+                            <Entry x:Name="AltitudeEntry" ></Entry>
+                        </StackLayout>
+                        <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
+                        <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" >
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"></Picker>
+                        </StackLayout>
+                        <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
+                            <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>
+                            <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="20" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                            </StackLayout>
+                        </StackLayout>
+                        <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                    </Grid>
+                </ScrollView>
                 <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
             </Grid>
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
@@ -96,7 +185,8 @@
                    RelativeLayout.WidthConstraint="{ConstraintExpression
                         Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression
-                        Type=RelativeToParent,Property=Height,Factor=1,Constant=0}">
+                        Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
+                   IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}">
                 <Frame.GestureRecognizers>
                     <PanGestureRecognizer PanUpdated="FrameOnPanUpdated" />
                     <TapGestureRecognizer Tapped="FrameOnTap" NumberOfTapsRequired="2"></TapGestureRecognizer>
@@ -162,9 +252,83 @@
                                         WidthRequest="200">
                         </googleMaps:Map>
                     </StackLayout>
-                    
                 </StackLayout>
             </Frame>
+            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End">
+                <Grid VerticalOptions="End">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <CollectionView x:Name="CommentsCollectionView" ItemsLayout="VerticalList" Margin="5" VerticalOptions="Start" Grid.Row="0">
+                        <CollectionView.EmptyView>
+                            <StackLayout>
+                                <Label Text="{i18n:Translate NoCommentsToDisplay}" TextColor="DarkSlateGray"
+                                   Margin="0,25,0,0"
+                                   FontAttributes="Bold"
+                                   FontSize="18"
+                                   HorizontalOptions="Fill"
+                                   HorizontalTextAlignment="Center"
+                                   BackgroundColor="WhiteSmoke"/>
+                            </StackLayout>
+                        </CollectionView.EmptyView>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="modelsKinaUna:Comment">
+                                <Grid Padding="5" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="30"></RowDefinition>
+                                        <RowDefinition Height="*"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="55"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView Color="Lavender" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" CornerRadius="5"/>
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding AuthorImage}"
+                                   Aspect="AspectFit"
+                                   HeightRequest="50"
+                                   WidthRequest="50"
+                                   HorizontalOptions="End"/>
+                                    <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                                        <Label Text="{Binding DisplayName}" TextColor="DarkSlateGray" FontSize="16" VerticalTextAlignment="Center"></Label>
+                                        <Label Text="{Binding Created, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="DarkOliveGreen" FontSize="12" VerticalTextAlignment="Center" Margin="5, 0, 0, 0"></Label>
+                                    </StackLayout>
+
+                                    <Label Text="{Binding CommentText}" Grid.Row="1" Grid.Column="1" TextColor="Black" FontSize="15"></Label>
+                                    <Button x:Name="DeleteCommentButton"
+                                        Grid.Row="2" Grid.Column="1"
+                                        Text="{i18n:Translate Delete}"
+                                        IsVisible="{Binding IsAuthor}"
+                                        BackgroundColor="#f44336"
+                                        TextColor="White"
+                                        HorizontalOptions="End"
+                                        CornerRadius="5"
+                                        Margin="5"
+                                        Padding="0"
+                                        IsEnabled="{Binding IsAuthor}"
+                                        Clicked="DeleteCommentButton_OnClicked"
+                                        CommandParameter="{Binding CommentId}"></Button>
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                    <Grid VerticalOptions="End" Grid.Row="1" Margin="0,5,0,0" BackgroundColor="Black">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="30"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{i18n:Translate AddComment}" Grid.Row="0" Grid.Column="0" TextColor="Honeydew" VerticalTextAlignment="Center"></Label>
+                        <Editor x:Name="AddCommentEditor" AutoSize="TextChanges" BackgroundColor="White" Grid.Row="1" Grid.Column="0" TextColor="Black"></Editor>
+                        <Button x:Name="AddCommentButton" Text=">" BackgroundColor="DarkGreen" TextColor="White" FontSize="16" Grid.Row="1" Grid.Column="1" Margin="0, 0, 5, 0" Padding="0" Clicked="AddCommentButton_OnClicked" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Button>
+                    </Grid>
+                </Grid>
+            </RelativeLayout>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

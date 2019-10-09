@@ -47,7 +47,6 @@
                                                RetryCount="3"
                                                Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
-                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
@@ -73,7 +72,6 @@
                                                RetryCount="3"
                                                Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
-                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>
@@ -177,7 +175,6 @@
                                 <Label Text="{Binding FriendObject.FriendSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding FriendObject.Name}" TextColor="White"></Label>
-                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
@@ -244,12 +241,9 @@
                                 <Label Text="{Binding NoteObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
-                            <controls:HtmlLabel Html="{Binding NoteObject.Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5" BackgroundColor="White"></controls:HtmlLabel>
-                            <!--<WebView HeightRequest="170">
-                                <WebView.Source>
-                                    <HtmlWebViewSource Html="{Binding NoteObject.Content}"></HtmlWebViewSource>
-                                </WebView.Source>
-                            </WebView>-->
+                            <StackLayout Padding="5" Margin="5" BackgroundColor="White">
+                                <controls:HtmlLabel Html="{Binding NoteObject.Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White"></controls:HtmlLabel>
+                            </StackLayout>
                         </StackLayout>
                     </Frame>
                 </ViewCell>
@@ -263,7 +257,6 @@
                                 <Label Text="{Binding ContactObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding ContactObject.DisplayName}" TextColor="White"></Label>
-                            <!--<Image Source="{Binding ItemObject.PictureLink}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                             <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
@@ -327,9 +320,6 @@
     <ContentPage.Content>
         <Grid>
             <StackLayout Orientation="Vertical" Spacing="0">
-                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-                </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
                 <ScrollView BackgroundColor="DarkGray">
@@ -360,7 +350,7 @@
                                 </StackLayout>
 
                             </Grid>
-                            <StackLayout BackgroundColor="White" Padding="10">
+                            <StackLayout x:Name="AgeInfoStackLayout" BackgroundColor="White" Padding="10" IsVisible="False">
                                 <FlexLayout Wrap="Wrap">
                                     <Label x:Name="ProgenyNameYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
                                     <Label Text="{i18n:Translate IsNow}" Margin="5, 0" />
@@ -428,7 +418,7 @@
                                     <Label x:Name="ProgenyMilestoneMinutes1" Text="{Binding MinutesMileStone[1]}" TextColor="Green" />
                                 </FlexLayout>
                             </StackLayout>
-                            <StackLayout BackgroundColor="White" Padding="10">
+                            <StackLayout x:Name="RandomPictureStackLayout" BackgroundColor="White" Padding="10" IsVisible="False">
                                 <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10"
                                        Aspect="AspectFit"
                                        DownsampleToViewSize="True"
@@ -437,6 +427,10 @@
                                         <TapGestureRecognizer Tapped="RandomPhotoClickGestureRecognizer_OnClicked"></TapGestureRecognizer>
                                     </forms:CachedImage.GestureRecognizers>
                                 </forms:CachedImage>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="Tags:" Margin="0,0,5,0" />
+                                    <Label Text="{Binding Tags}" TextColor="Green" />
+                                </FlexLayout>
                                 <FlexLayout Wrap="Wrap">
                                     <Label Text="{i18n:Translate PhotoLocation}" Margin="0,0,5,0" />
                                     <Label Text="{Binding Location}" TextColor="Green" />
@@ -557,8 +551,7 @@
                                     </Frame>
                                 </Grid>
                             </StackLayout>
-                            <StackLayout x:Name="LatestPostsStackLayout" IsVisible="False" VerticalOptions="FillAndExpand"
-                                 BackgroundColor="White">
+                            <StackLayout x:Name="LatestPostsStackLayout" IsVisible="False" VerticalOptions="FillAndExpand" BackgroundColor="White">
                                 <Label Text="{i18n:Translate LatestPosts}" HorizontalOptions="Center" VerticalTextAlignment="Center" FontSize="16" Margin="0, 5, 0, 0"/>
                                 <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}"
                                   ItemsSource="{Binding TimeLineItems}" Margin="10, 10, 10, 20" HasUnevenRows="True"
@@ -568,6 +561,9 @@
                         </StackLayout>
                     </StackLayout>
                 </ScrollView>
+            </StackLayout>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <ActivityIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />
         </Grid>

@@ -81,6 +81,7 @@ namespace KinaUnaXamarin.Views
         private async Task Reload()
         {
             _viewModel.IsBusy = true;
+            _dataChanged = false;
             await CheckAccount();
             _viewModel.PhotoItems.Clear();
 
@@ -104,7 +105,6 @@ namespace KinaUnaXamarin.Views
             }
             
             _viewModel.IsBusy = false;
-
         }
 
         private async Task LoadNewer()
@@ -297,6 +297,8 @@ namespace KinaUnaXamarin.Views
                     await LoadOlder();
                 }
                 _viewModel.CurrentPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex];
+                _viewModel.CurrentPictureId = _viewModel.CurrentPictureViewModel.PictureId;
+                UpdateEditInfo();
 
                 PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
                 if (_viewModel.CurrentPictureViewModel.PictureTime != null && _viewModel.Progeny.BirthDay.HasValue)
@@ -523,6 +525,12 @@ namespace KinaUnaXamarin.Views
 
         private void EditClicked(object sender, EventArgs e)
         {
+            UpdateEditInfo();
+            _viewModel.EditMode = true;
+        }
+
+        private void UpdateEditInfo()
+        {
             MessageLabel.Text = "";
             MessageLabel.IsVisible = false;
             CancelButton.BackgroundColor = Color.DimGray;
@@ -545,7 +553,6 @@ namespace KinaUnaXamarin.Views
             CancelButton.Text = IconFont.Cancel;
             SaveButton.IsVisible = true;
             _dataChanged = false;
-            _viewModel.EditMode = true;
         }
 
         private async void CancelButton_OnClicked(object sender, EventArgs e)
@@ -564,10 +571,20 @@ namespace KinaUnaXamarin.Views
             Picture updatedPicture = await ProgenyService.GetPictureWithOriginalImageLink(_viewModel.CurrentPictureViewModel.PictureId, _accessToken, _userInfo.Timezone);
             updatedPicture.Progeny = _viewModel.Progeny;
             updatedPicture.Tags = TagsEditor.Text;
-            updatedPicture.Location = LocationEntry.Text;
-            updatedPicture.Latitude = LatitudeEntry.Text.Replace(',', '.');
-            updatedPicture.Longtitude = LongitudeEntry.Text.Replace(',', '.');
-            updatedPicture.Altitude = AltitudeEntry.Text.Replace(',', '.');
+            if (!string.IsNullOrEmpty(LatitudeEntry.Text))
+            {
+                updatedPicture.Latitude = LatitudeEntry.Text.Replace(',', '.');
+            }
+
+            if (!string.IsNullOrEmpty(LongitudeEntry.Text))
+            {
+                updatedPicture.Longtitude = LongitudeEntry.Text.Replace(',', '.');
+            }
+
+            if (!string.IsNullOrEmpty(AltitudeEntry.Text))
+            {
+                updatedPicture.Altitude = AltitudeEntry.Text.Replace(',', '.');
+            }
             updatedPicture.AccessLevel = AccessLevelPicker.SelectedIndex;
             int pictureSeconds = 0;
             if (updatedPicture.PictureTime.HasValue)
@@ -634,12 +651,19 @@ namespace KinaUnaXamarin.Views
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
+                int deleteId = _viewModel.CurrentPictureViewModel.PictureId;
                 _viewModel.IsBusy = true;
                 _viewModel.EditMode = false;
-                Picture deletedPicture = await ProgenyService.DeletePicture(_viewModel.CurrentPictureViewModel.PictureId);
+                Picture deletedPicture = await ProgenyService.DeletePicture(deleteId);
                 if (deletedPicture.PictureId == 0)
                 {
                     _dataChanged = true;
+
+                    TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(deleteId, KinaUnaTypes.TimeLineType.Photo);
+                    if (tItem != null && tItem.TimeLineId != 0)
+                    {
+                        TimeLineItem updatedTimeLineItem = await ProgenyService.DeleteTimeLineItem(tItem);
+                    }
                     if (_viewModel.PhotoItems.Count > 1)
                     {
                         if (_viewModel.PhotoItems.Count < _viewModel.CurrentIndex + 1)

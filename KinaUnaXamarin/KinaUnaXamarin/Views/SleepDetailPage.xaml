@@ -28,7 +28,6 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -118,11 +117,11 @@
                     <StackLayout Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
                         <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
                         <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                        <StackLayout Grid.ColumnSpan="2" Orientation="Horizontal" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="EndAndExpand">
+                            <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="End">
-                        <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
-                    </StackLayout>
-                    <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                    <Label Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
                 </Grid>
             </ScrollView>
         </Grid>

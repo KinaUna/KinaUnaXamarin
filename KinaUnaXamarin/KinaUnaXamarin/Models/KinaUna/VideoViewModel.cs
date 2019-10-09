@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using MvvmHelpers;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {
-    public class VideoViewModel
+    public class VideoViewModel: BaseViewModel
     {
+        private int _commentsCount;
+
         public int VideoId { get; set; }
 
         public string VideoLink { get; set; }
@@ -22,7 +25,11 @@ namespace KinaUnaXamarin.Models.KinaUna
         public bool IsAdmin { get; set; }
         public int CommentThreadNumber { get; set; }
         public List<Comment> CommentsList { get; set; }
-        public int CommentsCount { get; set; }
+        public int CommentsCount
+        {
+            get => _commentsCount;
+            set => SetProperty(ref _commentsCount, value);
+        }
         public int VideoType { get; set; }
         public string Tags { get; set; }
         public string TagFilter { get; set; }

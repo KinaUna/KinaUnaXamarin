@@ -30,8 +30,9 @@ namespace KinaUnaXamarin.Views
         public TimelinePage()
         {
             InitializeComponent();
-            
 
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            TimeLineListView.ItemAppearing += ItemAppearingEvent;
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -45,7 +46,6 @@ namespace KinaUnaXamarin.Views
 
         protected override async void OnAppearing()
         {
-            base.OnAppearing();
             if (_reload)
             {
                 _timelineModel = new TimelineFeedViewModel();
@@ -56,7 +56,8 @@ namespace KinaUnaXamarin.Views
                 _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
                 _timelineModel.SelectedDay = DateTime.UtcNow.Day;
             }
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            //Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            //TimeLineListView.ItemAppearing += ItemAppearingEvent;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
@@ -68,20 +69,23 @@ namespace KinaUnaXamarin.Views
                 OfflineStackLayout.IsVisible = true;
             }
 
-            TimeLineListView.ItemAppearing += ItemAppearingEvent;
+
             if (_reload)
             {
                 await Reload();
             }
 
             _reload = false;
+            base.OnAppearing();
+            
         }
 
         protected override void OnDisappearing()
         {
+            //Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+            //TimeLineListView.ItemAppearing -= ItemAppearingEvent;
             base.OnDisappearing();
-            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
-            TimeLineListView.ItemAppearing -= ItemAppearingEvent;
+            
         }
 
         private async Task Reload()
@@ -273,10 +277,10 @@ namespace KinaUnaXamarin.Views
                     {
                         _dateHeaderCount++;
                     }
-                    // _timelineModel.TimeLineItems.Add(ti);
+                    _timelineModel.TimeLineItems.Add(ti);
                 }
                 lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-                _timelineModel.TimeLineItems.AddRange(timeLineList);
+                // _timelineModel.TimeLineItems.AddRange(timeLineList);
             }
             
             // Run GetTimeLine a second time to add more items.
@@ -291,10 +295,10 @@ namespace KinaUnaXamarin.Views
                     {
                         _dateHeaderCount++;
                     }
-                    //_timelineModel.TimeLineItems.Add(ti);
+                    _timelineModel.TimeLineItems.Add(ti);
                 }
                 lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-                _timelineModel.TimeLineItems.AddRange(timeLineList);
+                // _timelineModel.TimeLineItems.AddRange(timeLineList);
             }
             
             _timelineModel.CanLoadMore = true;
