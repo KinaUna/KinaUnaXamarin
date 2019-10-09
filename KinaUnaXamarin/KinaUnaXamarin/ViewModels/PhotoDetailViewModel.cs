@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
+using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
 {
@@ -33,10 +34,12 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserEditItems;
         private List<string> _accessLevelList;
         private bool _showComments;
+        private LayoutOptions _photoVerticalOptions;
 
         public PhotoDetailViewModel()
         {
             PhotoItems = new ObservableRangeCollection<PictureViewModel>();
+            _photoVerticalOptions = LayoutOptions.FillAndExpand;
             _accessLevelList = new List<string>();
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
             if (ci == "da")
@@ -78,6 +81,13 @@ namespace KinaUnaXamarin.ViewModels
             get => _currentPictureViewModel;
             set => SetProperty(ref _currentPictureViewModel, value);
         }
+
+        public LayoutOptions PhotoVerticalOptions
+        {
+            get => _photoVerticalOptions;
+            set => SetProperty(ref _photoVerticalOptions, value);
+        }
+
         public int CurrentPictureId
         {
             get => _currentPictureId;

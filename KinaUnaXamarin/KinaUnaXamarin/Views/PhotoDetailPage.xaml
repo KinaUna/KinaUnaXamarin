@@ -33,9 +33,6 @@
                     <RowDefinition Height="0"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-                </StackLayout>
                 <panCardView:CarouselView
                 x:Name="PhotoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
@@ -62,7 +59,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <ContentView Grid.Row="1" Grid.Column="0">
+                                    <ContentView x:Name="PhotoContentView" Grid.Row="1" Grid.Column="0" VerticalOptions="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.PhotoVerticalOptions}">
                                         <forms:CachedImage 
                                         x:Name="CardCachedImage"
                                         Aspect="AspectFit"
@@ -79,19 +76,19 @@
                                             </forms:CachedImage.Behaviors>
                                         </forms:CachedImage>
                                     </ContentView>
-                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
+                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Start" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
                                         <Label Text="{i18n:Translate Photo}" TextColor="WhiteSmoke"></Label>
                                         <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
                                         <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
                                         <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
                                     </StackLayout>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="#808080" Padding="5" Margin="0" HasShadow="False">
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="#808080" Padding="5" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
                                         <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="14" Margin="5, 0, 5, 0" ></Label>
                                     </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
                                         <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="14" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
                                     </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False">
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
                                         </Frame.GestureRecognizers>
@@ -112,12 +109,12 @@
                             </ContentView>
                         </DataTemplate>
                     </panCardView:CarouselView.ItemTemplate>
-                    <panCardViewControls:LeftArrowControl/>
-                    <panCardViewControls:RightArrowControl/>
-                    <panCardViewControls:IndicatorsControl/>
+                    <panCardViewControls:LeftArrowControl  />
+                    <panCardViewControls:RightArrowControl />
+                    <panCardViewControls:IndicatorsControl />
                 </panCardView:CarouselView>
                 <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
-                    <Grid Margin="0">
+                    <Grid Margin="0" ColumnSpacing="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
@@ -133,35 +130,35 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="5"></Label>
-                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="TagsEditor" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
-                        <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="1" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
                                 <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker> <!--Todo: Add Seconds to timePicker-->
                             </StackLayout>
                         </StackLayout>
-                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
-                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Location}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="LocationEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="LatitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="LongitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="AltitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
-                        <StackLayout  Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" >
+                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout  Grid.Row="6" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" >
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
@@ -175,6 +172,9 @@
                     </Grid>
                 </ScrollView>
                 <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
             </Grid>
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 

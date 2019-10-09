@@ -526,6 +526,8 @@ namespace KinaUnaXamarin.Views
         private void EditClicked(object sender, EventArgs e)
         {
             UpdateEditInfo();
+            PhotoCarousel.VerticalOptions = LayoutOptions.Start;
+            _viewModel.PhotoVerticalOptions = LayoutOptions.Start;
             _viewModel.EditMode = true;
         }
 
@@ -558,6 +560,8 @@ namespace KinaUnaXamarin.Views
         private async void CancelButton_OnClicked(object sender, EventArgs e)
         {
             DeleteButton.IsVisible = true;
+            PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+            _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
             _viewModel.EditMode = false;
             if (_dataChanged)
             {
@@ -625,7 +629,7 @@ namespace KinaUnaXamarin.Views
                         CancelButton.Text = "Ok";
                         CancelButton.BackgroundColor = Color.FromHex("#4caf50");
                         CancelButton.IsEnabled = true;
-                        await Reload();
+                        // await Reload();
                     }
                     else
                     {
@@ -723,6 +727,8 @@ namespace KinaUnaXamarin.Views
             {
                 if (_viewModel.EditMode)
                 {
+                    PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
                     _viewModel.EditMode = false;
                 }
                 else
