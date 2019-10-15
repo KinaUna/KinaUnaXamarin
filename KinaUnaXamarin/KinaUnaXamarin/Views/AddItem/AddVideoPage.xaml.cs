@@ -86,6 +86,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 saveVideo.Author = userinfo.UserId;
                 saveVideo.Owners = userEmail;
                 saveVideo.VideoType = 2; // Todo: Replace with Enum or constant. Assuming it is Youtube video for now.
+                saveVideo.Tags = _viewModel.Tags;
+                saveVideo.Location = _viewModel.Location;
 
                 Int32.TryParse(VideoHoursEntry.Text, out var durHours);
                 Int32.TryParse(VideoMinutesEntry.Text, out var durMins);

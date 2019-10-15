@@ -47,6 +47,10 @@
                         <Label Text="{i18n:Translate PasteVideoLink}"></Label>
                         <Entry x:Name="LinkEntry"></Entry>
                     </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White" Orientation="Vertical">
                         <Label Text="{i18n:Translate Duration}"></Label>
                         <StackLayout Orientation="Vertical" Margin="5, 0, 5, 0">
@@ -75,8 +79,12 @@
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}"></Label>
-                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                        <Label Text="Tags"></Label>
+                        <Entry x:Name="TagsEntry" Text="{Binding Tags}" ></Entry>
+                    </StackLayout>
+                    <StackLayout Margin="5" BackgroundColor="White">
+                        <Label Text="{i18n:Translate Location}"></Label>
+                        <Entry x:Name="LocationEntry" Text="{Binding Location}" ></Entry>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
