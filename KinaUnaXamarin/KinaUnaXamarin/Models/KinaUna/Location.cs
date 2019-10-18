@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 
@@ -28,6 +29,9 @@ namespace KinaUnaXamarin.Models.KinaUna
 
         public int LocationNumber { get; set; }
 
+        [JsonIgnore]
         public Position Position { get; set; }
+
+        public Progeny Progeny { get; set; }
     }
 }

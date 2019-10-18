@@ -682,6 +682,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Location.
+        /// </summary>
+        internal static string DeleteLocation {
+            get {
+                return ResourceManager.GetString("DeleteLocation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this location.
+        /// </summary>
+        internal static string DeleteLocationMessage {
+            get {
+                return ResourceManager.GetString("DeleteLocationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Sleep.
         /// </summary>
         internal static string DeleteSleep {
@@ -1695,6 +1713,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tags.
+        /// </summary>
+        internal static string Tags {
+            get {
+                return ResourceManager.GetString("Tags", resourceCulture);
             }
         }
         

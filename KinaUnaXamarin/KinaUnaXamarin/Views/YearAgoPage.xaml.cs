@@ -11,6 +11,7 @@ using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Location = KinaUnaXamarin.Models.KinaUna.Location;
 
 namespace KinaUnaXamarin.Views
 {
@@ -277,6 +278,13 @@ namespace KinaUnaXamarin.Views
                     EventDetailPage eventDetailPage = new EventDetailPage(calendarItem);
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(eventDetailPage);
+                }
+
+                if (timeLineItem.ItemObject is Location locationItem)
+                {
+                    LocationDetailPage locationDetailPage = new LocationDetailPage(locationItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(locationDetailPage);
                 }
             }
         }

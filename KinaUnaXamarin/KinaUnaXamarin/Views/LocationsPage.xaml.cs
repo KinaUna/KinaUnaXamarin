@@ -302,9 +302,15 @@ namespace KinaUnaXamarin.Views
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
 
-        private void LocationCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void LocationCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Todo: Navigate to LocationDetailsPage.
+            if (LocationCollectionView.SelectedItem is Location selectedLocation)
+            {
+                LocationDetailPage locationDetailPage = new LocationDetailPage(selectedLocation);
+                // Reset selection
+                LocationCollectionView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(locationDetailPage);
+            }
         }
 
         protected override void OnSizeAllocated(double width, double height)

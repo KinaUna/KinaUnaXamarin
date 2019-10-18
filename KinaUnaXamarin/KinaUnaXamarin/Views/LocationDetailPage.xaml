@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.LocationDetailPage"
+             Visual="Material">
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="WhiteSmoke">
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <ScrollView>
+                <Grid x:Name="DetailsGrid" Margin="10" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="{i18n:Translate NameOrLabel}"
+                       FontAttributes="Bold"
+                       FontSize="15"/>
+                    <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Street}"
+                       FontAttributes="Bold"
+                       FontSize="15" />
+                    <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{i18n:Translate HouseNumber}"
+                       FontSize="14"/>
+                    <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Text="{i18n:Translate District}"
+                       FontSize="14"/>
+                    <Label Grid.Row="4"
+                       Grid.Column="0"
+                       Text="{i18n:Translate City}"
+                       FontSize="14" />
+                    <Label Grid.Row="5"
+                           Grid.Column="0"
+                           Text="{i18n:Translate PostalCode}"
+                           FontSize="14" />
+                    <Label Grid.Row="6"
+                           Grid.Column="0"
+                           Text="{i18n:Translate County}"
+                           FontSize="14" />
+                    <Label Grid.Row="7"
+                           Grid.Column="0"
+                           Text="{i18n:Translate State}"
+                           FontSize="14" />
+                    <Label Grid.Row="8"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Country}"
+                           FontSize="14" />
+                    <Label Grid.Row="9"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Latitude}"
+                           FontSize="14" />
+                    <Label Grid.Row="10"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Longitude}"
+                           FontSize="14" />
+                    <Label Grid.Row="11"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Date}"
+                           FontSize="14" />
+                    <Label Grid.Row="12"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Notes}"
+                           FontSize="14" />
+                    <Label Grid.Row="13"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Tags}"
+                           FontSize="14" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Name}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                    <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{Binding Street}"
+                       Margin="5"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding HouseNumber}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Text="{Binding District}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="4"
+                           Grid.Column="1"
+                           Text="{Binding City}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="5"
+                           Grid.Column="1"
+                           Text="{Binding PostalCode}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="6"
+                           Grid.Column="1"
+                           Text="{Binding County}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="7"
+                           Grid.Column="1"
+                           Text="{Binding State}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="8"
+                           Grid.Column="1"
+                           Text="{Binding Country}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="9"
+                           Grid.Column="1"
+                           Text="{Binding Latitude}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="10"
+                           Grid.Column="1"
+                           Text="{Binding Longitude}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="11"
+                           Grid.Column="1"
+                           Margin="5"
+                           Text="{Binding CurrentLocation.Date, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="12"
+                           Grid.Column="1"
+                           Text="{Binding Notes}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="13"
+                           Grid.Column="1"
+                           Text="{Binding Tags}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="NameEntry" Text="{Binding Name}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="StreetEntry" Text="{Binding Street}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="HouseNumberEntry" Text="{Binding HouseNumber}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="DistrictEntry" Text="{Binding District}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CityEntry" Text="{Binding City}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="PostalCodeEntry" Text="{Binding PostalCode}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CountyEntry" Text="{Binding County}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="StateEntry" Text="{Binding State}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="8" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CountryEntry" Text="{Binding Country}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="9" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="LatitudeEntry" Text="{Binding Latitude}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="10" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="LongitudeEntry" Text="{Binding Longitude}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="11" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="LocationDatePicker" Format="dd MMM yyyy" DateSelected="LocationDatePicker_OnDateSelected"></DatePicker>
+                            <TimePicker x:Name="LocationTimePicker" Format="HH:mm" PropertyChanged="LocationTimePicker_OnPropertyChanged"></TimePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Grid.Row="12" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="NotesEntry" Text="{Binding Notes}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="13" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="TagsEntry" Text="{Binding Tags}"></Entry>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="14" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <StackLayout Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
+                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                        <StackLayout Orientation="Horizontal" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="EndAndExpand">
+                            <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                    <Label Grid.Row="16" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

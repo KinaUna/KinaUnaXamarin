@@ -741,4 +741,13 @@
   <data name="NoCommentsToDisplay" xml:space="preserve">
     <value>Ingen kommentarer for dette foto.</value>
   </data>
+  <data name="DeleteLocation" xml:space="preserve">
+    <value>Slet sted</value>
+  </data>
+  <data name="DeleteLocationMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette dette sted</value>
+  </data>
+  <data name="Tags" xml:space="preserve">
+    <value>Tags</value>
+  </data>
 </root>

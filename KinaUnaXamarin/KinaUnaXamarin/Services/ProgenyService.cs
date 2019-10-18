@@ -4522,5 +4522,59 @@ namespace KinaUnaXamarin.Services
             failTimeLineItem.TimeLineId = timeLineItem.TimeLineId;
             return failTimeLineItem;
         }
+
+        public static async Task<Location> UpdateLocation(Location location)
+        {
+            if (Online())
+            {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(location.Progeny.TimeZone);
+                }
+                catch (Exception)
+                {
+                    location.Progeny.TimeZone = TZConvert.WindowsToIana(location.Progeny.TimeZone);
+                }
+
+                if (location.Date.HasValue)
+                {
+                    location.Date = TimeZoneInfo.ConvertTimeToUtc(location.Date.Value, TimeZoneInfo.FindSystemTimeZoneById(location.Progeny.TimeZone));
+                }
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/locations/" + location.LocationId, new StringContent(JsonConvert.SerializeObject(location), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Location resultLocationItem = JsonConvert.DeserializeObject<Location>(resultString);
+                    return resultLocationItem;
+                }
+            }
+
+            return location;
+        }
+
+        public static async Task<Location> DeleteLocation(Location location)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/locations/" + location.LocationId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Location deletedLocation = new Location();
+                    deletedLocation.LocationId = 0;
+                    return deletedLocation;
+                }
+            }
+
+            return location;
+        }
     }
 }
