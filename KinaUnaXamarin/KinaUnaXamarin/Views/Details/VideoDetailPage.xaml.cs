@@ -5,8 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
-using FFImageLoading.Forms;
-using KinaUnaXamarin.Behaviors;
+using dotMorten.Xamarin.Forms;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -24,9 +23,9 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PhotoDetailPage : ContentPage
+    public partial class VideoDetailPage : ContentPage
     {
-        private readonly PhotoDetailViewModel _viewModel;
+        VideoDetailViewModel _viewModel = new VideoDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -37,11 +36,11 @@ namespace KinaUnaXamarin.Views
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
         private CommentsPageViewModel _commentsPageViewModel;
 
-        public PhotoDetailPage(int pictureId)
+        public VideoDetailPage(int videoId)
         {
             InitializeComponent();
-            _viewModel = new PhotoDetailViewModel();
-            _viewModel.CurrentPictureId = pictureId;
+            _viewModel = new VideoDetailViewModel();
+            _viewModel.CurrentVideoId = videoId;
             BindingContext = _viewModel;
             ContentGrid.BindingContext = _viewModel;
         }
@@ -83,12 +82,11 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             _dataChanged = false;
             await CheckAccount();
-            _viewModel.PhotoItems.Clear();
 
-            PictureViewModel pictureViewModel = await ProgenyService.GetPictureViewModel(
-                _viewModel.CurrentPictureId, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
-            _viewModel.PhotoItems.Add(pictureViewModel);
-            _viewModel.CurrentPictureViewModel = pictureViewModel;
+            VideoViewModel videoViewModel = await ProgenyService.GetVideoViewModel(
+                _viewModel.CurrentVideoId, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            _viewModel.VideoItems.Add(videoViewModel);
+            _viewModel.CurrentVideoViewModel = videoViewModel;
 
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -103,22 +101,23 @@ namespace KinaUnaXamarin.Views
                 _online = false;
                 OfflineStackLayout.IsVisible = true;
             }
-            
+
             _viewModel.IsBusy = false;
+
         }
 
         private async Task LoadNewer()
         {
             _viewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _viewModel.PhotoItems.FirstOrDefault();
-            if (pictureViewModel != null)
+            VideoViewModel videoViewModel = _viewModel.VideoItems.FirstOrDefault();
+            if (videoViewModel != null)
             {
-                PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.PrevPicture, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _viewModel.PhotoItems.Insert(0, pictureViewModel2);
-                if (_viewModel.PhotoItems.Count > 10)
+                VideoViewModel videoViewModel2 = await ProgenyService.GetVideoViewModel(
+                    videoViewModel.PrevVideo, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.VideoItems.Insert(0, videoViewModel2);
+                if (_viewModel.VideoItems.Count > 10)
                 {
-                    _viewModel.PhotoItems.RemoveAt(_viewModel.PhotoItems.Count -1);
+                    _viewModel.VideoItems.RemoveAt(_viewModel.VideoItems.Count - 1);
                 }
             }
 
@@ -128,15 +127,15 @@ namespace KinaUnaXamarin.Views
         private async Task LoadOlder()
         {
             _viewModel.CanLoadMore = false;
-            PictureViewModel pictureViewModel = _viewModel.PhotoItems.LastOrDefault();
-            if (pictureViewModel != null)
+            VideoViewModel videoViewModel = _viewModel.VideoItems.LastOrDefault();
+            if (videoViewModel != null)
             {
-                PictureViewModel pictureViewModel2 = await ProgenyService.GetPictureViewModel(
-                    pictureViewModel.NextPicture, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
-                _viewModel.PhotoItems.Add(pictureViewModel2);
-                if (_viewModel.PhotoItems.Count > 10)
+                VideoViewModel videoViewModel2 = await ProgenyService.GetVideoViewModel(
+                    videoViewModel.NextVideo, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+                _viewModel.VideoItems.Add(videoViewModel2);
+                if (_viewModel.VideoItems.Count > 10)
                 {
-                    _viewModel.PhotoItems.RemoveAt(0);
+                    _viewModel.VideoItems.RemoveAt(0);
                 }
             }
 
@@ -224,7 +223,6 @@ namespace KinaUnaXamarin.Views
             }
             _viewModel.Progeny = progeny;
 
-            
             _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
             if (_viewModel.UserAccessLevel == 0)
             {
@@ -242,13 +240,13 @@ namespace KinaUnaXamarin.Views
                 await Reload();
             }
         }
-        
+
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            _viewModel.ImageHeight = height;
-            _viewModel.ImageWidth = width;
-            
+            _viewModel.ImageHeight = height * 0.8;
+            _viewModel.ImageWidth = width * 0.9;
+
             if (height > width)
             {
                 LocationMap.WidthRequest = width * 0.9;
@@ -269,95 +267,63 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.IsZoomed = false;
             _viewModel.IsBusy = true;
-            // var ciView = view.CurrentView..SingleOrDefault(c => c.GetType() == typeof(CachedImage));
-            if (view.CurrentView != null)
+            
+            if (_viewModel.CanLoadMore && _viewModel.CurrentIndex < 1)
             {
-                CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-                if (ciView != null)
-                {
+                await LoadNewer();
 
-                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
-                    {
-                        mtb.OnAppearing();
-                    }
-                }
             }
 
-            
-
-            if (_viewModel.PhotoItems.Any())
+            if (_viewModel.CanLoadMore && _viewModel.CurrentIndex > _viewModel.VideoItems.Count - 2)
             {
-                if (_viewModel.CanLoadMore && _viewModel.CurrentIndex < 1)
-                {
-                    await LoadNewer();
-                }
+                await LoadOlder();
 
-                if (_viewModel.CanLoadMore && _viewModel.CurrentIndex > _viewModel.PhotoItems.Count - 2)
-                {
-                    await LoadOlder();
-                }
-                _viewModel.CurrentPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex];
-                _viewModel.CurrentPictureId = _viewModel.CurrentPictureViewModel.PictureId;
-                UpdateEditInfo();
+            }
 
-                PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
-                if (_viewModel.CurrentPictureViewModel.PictureTime != null && _viewModel.Progeny.BirthDay.HasValue)
-                {
-                    DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
+            _viewModel.CurrentVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex];
+            _viewModel.CurrentVideoId = _viewModel.CurrentVideoViewModel.VideoId;
+            await UpdateEditInfo();
 
-                    picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
-                    _viewModel.PicTimeValid = true;
-                    _viewModel.PicYears = picTime.CalcYears();
-                    _viewModel.PicMonths = picTime.CalcMonths();
-                    _viewModel.PicWeeks = picTime.CalcWeeks();
-                    _viewModel.PicDays = picTime.CalcDays();
-                    _viewModel.PicHours = picTime.CalcHours();
-                    _viewModel.PicMinutes = picTime.CalcMinutes();
-                }
+            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+            if (_viewModel.CurrentVideoViewModel.VideoTime != null && _viewModel.Progeny.BirthDay.HasValue)
+            {
+                DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                LocationMap.Pins.Clear();
-                if (!string.IsNullOrEmpty(_viewModel.CurrentPictureViewModel.Latitude) &&
-                    !string.IsNullOrEmpty(_viewModel.CurrentPictureViewModel.Longtitude))
+                picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentVideoViewModel.VideoTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                _viewModel.PicTimeValid = true;
+                _viewModel.PicYears = picTime.CalcYears();
+                _viewModel.PicMonths = picTime.CalcMonths();
+                _viewModel.PicWeeks = picTime.CalcWeeks();
+                _viewModel.PicDays = picTime.CalcDays();
+                _viewModel.PicHours = picTime.CalcHours();
+                _viewModel.PicMinutes = picTime.CalcMinutes();
+            }
+
+            LocationMap.Pins.Clear();
+            if (!string.IsNullOrEmpty(_viewModel.CurrentVideoViewModel.Latitude) &&
+                !string.IsNullOrEmpty(_viewModel.CurrentVideoViewModel.Longtitude))
+            {
+                LocationMap.IsVisible = true;
+                double lat;
+                double lon;
+                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
+                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                if (latParsed && lonParsed)
                 {
-                    LocationMap.IsVisible = true;
-                    double lat;
-                    double lon;
-                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
-                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
-                    if (latParsed && lonParsed)
-                    {
-                        Position position = new Position(lat, lon);
-                        Pin pin = new Pin();
-                        pin.Position = position;
-                        pin.Label = _viewModel.CurrentPictureViewModel.Location;
-                        pin.Type = PinType.SavedPin;
-                        LocationMap.Pins.Add(pin);
-                        LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
-                    }
-                }
-                else
-                {
-                    LocationMap.IsVisible = false;
+                    Position position = new Position(lat, lon);
+                    Pin pin = new Pin();
+                    pin.Position = position;
+                    pin.Label = _viewModel.CurrentVideoViewModel.Location;
+                    pin.Type = PinType.SavedPin;
+                    LocationMap.Pins.Add(pin);
+                    LocationMap.MoveToRegion(MapSpan.FromCenterAndRadius(position, Distance.FromKilometers(2)));
                 }
             }
-            
+            else
+            {
+                LocationMap.IsVisible = false;
+            }
             _viewModel.IsBusy = false;
-        }
-
-        private async void PhotoCarousel_OnItemDisappearing(CardsView view, ItemDisappearingEventArgs args)
-        {
-            if (view.CurrentView != null)
-            {
-                CachedImage ciView = (CachedImage)view.CurrentView.FindByName("CardCachedImage");
-                if (ciView != null)
-                {
-
-                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
-                    {
-                        await mtb.OnDisAppearing();
-                    }
-                }
-            }
         }
 
         private double y;
@@ -392,7 +358,7 @@ namespace KinaUnaXamarin.Views
                         BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 250, Easing.SpringOut);
                     }
 
-                    
+
                     y = BottomSheetFrame.TranslationY;
 
                     break;
@@ -432,9 +398,9 @@ namespace KinaUnaXamarin.Views
             }
 
             var selectedLockState = lockStates[closestIndex];
-            var translateToLockState = GetProportionCoordinate(selectedLockState);
+            var TranslateToLockState = GetProportionCoordinate(selectedLockState);
 
-            return translateToLockState;
+            return TranslateToLockState;
         }
 
         private double GetProportionCoordinate(double proportion)
@@ -446,10 +412,10 @@ namespace KinaUnaXamarin.Views
         {
             if (_viewModel.IsLoggedIn)
             {
-                //CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+                //CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
                 //await Shell.Current.Navigation.PushModalAsync(commentsPage);
 
-                _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+                _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
                 CommentsCollectionView.ItemsSource = _commentsPageViewModel.CommentsCollection;
                 await GetComments();
                 _viewModel.ShowComments = true;
@@ -459,7 +425,7 @@ namespace KinaUnaXamarin.Views
         private async Task GetComments()
         {
             _commentsPageViewModel.CommentsCollection.Clear();
-            List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+            List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
             if (commentsList.Any())
             {
                 foreach (var comment in commentsList)
@@ -467,7 +433,7 @@ namespace KinaUnaXamarin.Views
                     _commentsPageViewModel.CommentsCollection.Add(comment);
                 }
 
-                _viewModel.CurrentPictureViewModel.CommentsCount = commentsList.Count;
+                _viewModel.CurrentVideoViewModel.CommentsCount = commentsList.Count;
             }
         }
 
@@ -476,7 +442,7 @@ namespace KinaUnaXamarin.Views
             if (!String.IsNullOrEmpty(AddCommentEditor.Text))
             {
                 AddCommentButton.IsEnabled = false;
-                await ProgenyService.AddComment(_viewModel.CurrentPictureViewModel.CommentThreadNumber, AddCommentEditor.Text);
+                await ProgenyService.AddComment(_viewModel.CurrentVideoViewModel.CommentThreadNumber, AddCommentEditor.Text);
                 AddCommentEditor.Text = "";
                 await GetComments();
                 AddCommentButton.IsEnabled = true;
@@ -523,32 +489,40 @@ namespace KinaUnaXamarin.Views
             y = BottomSheetFrame.TranslationY;
         }
 
-        private void EditClicked(object sender, EventArgs e)
+        private async void EditClicked(object sender, EventArgs e)
         {
-            UpdateEditInfo();
-            PhotoCarousel.VerticalOptions = LayoutOptions.Start;
-            _viewModel.PhotoVerticalOptions = LayoutOptions.Start;
+            await UpdateEditInfo();
             _viewModel.EditMode = true;
         }
 
-        private void UpdateEditInfo()
+        private async Task UpdateEditInfo()
         {
             MessageLabel.Text = "";
             MessageLabel.IsVisible = false;
             CancelButton.BackgroundColor = Color.DimGray;
 
-            TagsEditor.Text = _viewModel.CurrentPictureViewModel.Tags;
-            if (_viewModel.CurrentPictureViewModel.PictureTime.HasValue)
+            _viewModel.LocationAutoSuggestList = await ProgenyService.GetLocationAutoSuggestList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
+            _viewModel.TagsAutoSuggestList = await ProgenyService.GetTagsAutoSuggestList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
+
+            TagsEditor.Text = _viewModel.CurrentVideoViewModel.Tags;
+            if (_viewModel.CurrentVideoViewModel.VideoTime.HasValue)
             {
-                PhotoDatePicker.Date = _viewModel.CurrentPictureViewModel.PictureTime.Value.Date;
-                PhotoTimePicker.Time = _viewModel.CurrentPictureViewModel.PictureTime.Value.TimeOfDay;
+                PhotoDatePicker.Date = _viewModel.CurrentVideoViewModel.VideoTime.Value.Date;
+                PhotoTimePicker.Time = _viewModel.CurrentVideoViewModel.VideoTime.Value.TimeOfDay;
             }
 
-            LocationEntry.Text = _viewModel.CurrentPictureViewModel.Location;
-            LatitudeEntry.Text = _viewModel.CurrentPictureViewModel.Latitude;
-            LongitudeEntry.Text = _viewModel.CurrentPictureViewModel.Longtitude;
-            AltitudeEntry.Text = _viewModel.CurrentPictureViewModel.Altitude;
-            AccessLevelPicker.SelectedIndex = _viewModel.CurrentPictureViewModel.AccessLevel;
+            if (_viewModel.CurrentVideoViewModel.Duration.HasValue)
+            {
+                _viewModel.VideoHours = _viewModel.CurrentVideoViewModel.Duration.Value.Hours;
+                _viewModel.VideoMinutes = _viewModel.CurrentVideoViewModel.Duration.Value.Minutes;
+                _viewModel.VideoSeconds = _viewModel.CurrentVideoViewModel.Duration.Value.Seconds;
+            }
+
+            LocationEntry.Text = _viewModel.CurrentVideoViewModel.Location;
+            LatitudeEntry.Text = _viewModel.CurrentVideoViewModel.Latitude;
+            LongitudeEntry.Text = _viewModel.CurrentVideoViewModel.Longtitude;
+            AltitudeEntry.Text = _viewModel.CurrentVideoViewModel.Altitude;
+            AccessLevelPicker.SelectedIndex = _viewModel.CurrentVideoViewModel.AccessLevel;
 
             DeleteButton.IsVisible = true;
             CancelButton.IsVisible = true;
@@ -560,57 +534,65 @@ namespace KinaUnaXamarin.Views
         private async void CancelButton_OnClicked(object sender, EventArgs e)
         {
             DeleteButton.IsVisible = true;
-            PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
-            _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
             _viewModel.EditMode = false;
             if (_dataChanged)
             {
                 await Reload();
             }
-            
+
         }
 
         private async void SaveButton_OnClicked(object sender, EventArgs e)
         {
-            Picture updatedPicture = await ProgenyService.GetPictureWithOriginalImageLink(_viewModel.CurrentPictureViewModel.PictureId, _accessToken, _userInfo.Timezone);
-            updatedPicture.Progeny = _viewModel.Progeny;
-            updatedPicture.Tags = TagsEditor.Text;
+            Video updatedVideo = await ProgenyService.GetVideo(_viewModel.CurrentVideoViewModel.VideoId, _accessToken, _userInfo.Timezone);
+            updatedVideo.Progeny = _viewModel.Progeny;
+            updatedVideo.Tags = TagsEditor.Text;
+            updatedVideo.Location = LocationEntry.Text;
             if (!string.IsNullOrEmpty(LatitudeEntry.Text))
             {
-                updatedPicture.Latitude = LatitudeEntry.Text.Replace(',', '.');
+                updatedVideo.Latitude = LatitudeEntry.Text.Replace(',', '.');
             }
 
             if (!string.IsNullOrEmpty(LongitudeEntry.Text))
             {
-                updatedPicture.Longtitude = LongitudeEntry.Text.Replace(',', '.');
+                updatedVideo.Longtitude = LongitudeEntry.Text.Replace(',', '.');
             }
 
             if (!string.IsNullOrEmpty(AltitudeEntry.Text))
             {
-                updatedPicture.Altitude = AltitudeEntry.Text.Replace(',', '.');
+                updatedVideo.Altitude = AltitudeEntry.Text.Replace(',', '.');
             }
-            updatedPicture.AccessLevel = AccessLevelPicker.SelectedIndex;
-            int pictureSeconds = 0;
-            if (updatedPicture.PictureTime.HasValue)
+
+            updatedVideo.AccessLevel = AccessLevelPicker.SelectedIndex;
+            int videoSeconds = 0;
+            if (updatedVideo.VideoTime.HasValue)
             {
-                pictureSeconds = updatedPicture.PictureTime.Value.Second;
+                videoSeconds = updatedVideo.VideoTime.Value.Second;
             }
 
-            DateTime newPictureTime = new DateTime(PhotoDatePicker.Date.Year, PhotoDatePicker.Date.Month, PhotoDatePicker.Date.Day, PhotoTimePicker.Time.Hours, PhotoTimePicker.Time.Minutes, pictureSeconds);
-            updatedPicture.PictureTime = TimeZoneInfo.ConvertTimeToUtc(newPictureTime, TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
+            DateTime newVideoTime = new DateTime(PhotoDatePicker.Date.Year, PhotoDatePicker.Date.Month, PhotoDatePicker.Date.Day, PhotoTimePicker.Time.Hours, PhotoTimePicker.Time.Minutes, videoSeconds);
+            updatedVideo.VideoTime = TimeZoneInfo.ConvertTimeToUtc(newVideoTime, TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
 
-            Picture savedPicture = await ProgenyService.UpdatePicture(updatedPicture);
+            Int32.TryParse(VideoHoursEntry.Text, out var durHours);
+            Int32.TryParse(VideoMinutesEntry.Text, out var durMins);
+            Int32.TryParse(VideoSecondsEntry.Text, out var durSecs);
+            if (durHours + durMins + durSecs != 0)
+            {
+                updatedVideo.Duration = new TimeSpan(durHours, durMins, durSecs);
+            }
 
-            if (savedPicture != null && savedPicture.PictureId != 0)
+            Video savedVideo = await ProgenyService.UpdateVideo(updatedVideo);
+
+            if (savedVideo != null && savedVideo.VideoId != 0)
             {
                 _dataChanged = true;
-                TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(savedPicture.PictureId, KinaUnaTypes.TimeLineType.Photo);
+                TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(savedVideo.VideoId, KinaUnaTypes.TimeLineType.Video);
                 if (tItem != null && tItem.TimeLineId != 0)
                 {
-                    tItem.AccessLevel = savedPicture.AccessLevel;
-                    if (savedPicture.PictureTime.HasValue)
+                    tItem.AccessLevel = savedVideo.AccessLevel;
+                    if (savedVideo.VideoTime.HasValue)
                     {
-                        tItem.ProgenyTime = savedPicture.PictureTime.Value;
+                        tItem.ProgenyTime = savedVideo.VideoTime.Value;
                     }
                     else
                     {
@@ -622,20 +604,20 @@ namespace KinaUnaXamarin.Views
                     {
                         MessageLabel.IsVisible = true;
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                        MessageLabel.Text = resmgr.Value.GetString("PhotoSaved", ci) + savedPicture.PictureId;
+                        MessageLabel.Text = resmgr.Value.GetString("VideoSaved", ci) + savedVideo.VideoId;
                         MessageLabel.BackgroundColor = Color.Green;
                         SaveButton.IsVisible = false;
                         DeleteButton.IsVisible = false;
                         CancelButton.Text = "Ok";
                         CancelButton.BackgroundColor = Color.FromHex("#4caf50");
                         CancelButton.IsEnabled = true;
-                        // await Reload();
+                        await Reload();
                     }
                     else
                     {
                         MessageLabel.IsVisible = true;
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                        MessageLabel.Text = resmgr.Value.GetString("ErrorPhotoNotSaved", ci);
+                        MessageLabel.Text = resmgr.Value.GetString("ErrorVideoNotSaved", ci);
                         MessageLabel.BackgroundColor = Color.Red;
                         SaveButton.IsEnabled = true;
                         CancelButton.IsEnabled = true;
@@ -655,44 +637,45 @@ namespace KinaUnaXamarin.Views
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
-                int deleteId = _viewModel.CurrentPictureViewModel.PictureId;
                 _viewModel.IsBusy = true;
+                int deleteId =_viewModel.CurrentVideoViewModel.VideoId;
                 _viewModel.EditMode = false;
-                Picture deletedPicture = await ProgenyService.DeletePicture(deleteId);
-                if (deletedPicture.PictureId == 0)
+                Video deletedVideo = await ProgenyService.DeleteVideo(_viewModel.CurrentVideoViewModel.VideoId);
+                if (deletedVideo.VideoId == 0)
                 {
                     _dataChanged = true;
 
-                    TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(deleteId, KinaUnaTypes.TimeLineType.Photo);
+                    TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(deleteId, KinaUnaTypes.TimeLineType.Video);
                     if (tItem != null && tItem.TimeLineId != 0)
                     {
                         TimeLineItem updatedTimeLineItem = await ProgenyService.DeleteTimeLineItem(tItem);
                     }
-                    if (_viewModel.PhotoItems.Count > 1)
+
+                    if (_viewModel.VideoItems.Count > 1)
                     {
-                        if (_viewModel.PhotoItems.Count < _viewModel.CurrentIndex + 1)
+                        if (_viewModel.VideoItems.Count < _viewModel.CurrentIndex + 1)
                         {
-                            PictureViewModel thisPictureViewModel = _viewModel.CurrentPictureViewModel;
-                            PictureViewModel nextPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex + 1];
-                            _viewModel.CurrentPictureId = nextPictureViewModel.PictureId;
+                            VideoViewModel thisVideoViewModel = _viewModel.CurrentVideoViewModel;
+                            VideoViewModel nextVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex + 1];
+                            _viewModel.CurrentVideoId = nextVideoViewModel.VideoId;
                             _viewModel.CurrentIndex = _viewModel.CurrentIndex + 1;
-                            _viewModel.PhotoItems.Remove(thisPictureViewModel);
+                            _viewModel.VideoItems.Remove(thisVideoViewModel);
                         }
                         else
                         {
-                            if (_viewModel.PhotoItems.Count > _viewModel.CurrentIndex - 1)
+                            if (_viewModel.VideoItems.Count > _viewModel.CurrentIndex - 1)
                             {
-                                PictureViewModel thisPictureViewModel = _viewModel.CurrentPictureViewModel;
-                                PictureViewModel nextPictureViewModel = _viewModel.PhotoItems[_viewModel.CurrentIndex - 1];
-                                _viewModel.CurrentPictureId = nextPictureViewModel.PictureId;
+                                VideoViewModel thisVideoViewModel = _viewModel.CurrentVideoViewModel;
+                                VideoViewModel nextVideoViewModel = _viewModel.VideoItems[_viewModel.CurrentIndex - 1];
+                                _viewModel.CurrentVideoId = nextVideoViewModel.VideoId;
                                 _viewModel.CurrentIndex = _viewModel.CurrentIndex - 1;
-                                _viewModel.PhotoItems.Remove(thisPictureViewModel);
+                                _viewModel.VideoItems.Remove(thisVideoViewModel);
                             }
                         }
                     }
-                    
+
                     // Todo: Translate success message
-                    MessageLabel.Text = "Photo deleted.";
+                    MessageLabel.Text = "Video deleted.";
                     MessageLabel.IsVisible = true;
                     SaveButton.IsVisible = false;
                     DeleteButton.IsVisible = false;
@@ -703,7 +686,7 @@ namespace KinaUnaXamarin.Views
                 else
                 {
                     // Todo: Translate failed message
-                    MessageLabel.Text = "Photo deletion failed.";
+                    MessageLabel.Text = "Video deletion failed.";
                     MessageLabel.IsVisible = true;
                     MessageLabel.BackgroundColor = Color.Red;
                     SaveButton.IsEnabled = true;
@@ -711,8 +694,8 @@ namespace KinaUnaXamarin.Views
                     CancelButton.IsEnabled = true;
                 }
 
-                
-                
+
+
                 _viewModel.IsBusy = false;
             }
         }
@@ -727,8 +710,6 @@ namespace KinaUnaXamarin.Views
             {
                 if (_viewModel.EditMode)
                 {
-                    PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
-                    _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
                     _viewModel.EditMode = false;
                 }
                 else
@@ -738,6 +719,152 @@ namespace KinaUnaXamarin.Views
             }
 
             return true;
+        }
+
+        private void LocationEntry_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
+        {
+            // Only get results when it was a user typing, 
+            // otherwise assume the value got filled in by TextMemberPath 
+            // or the handler for SuggestionChosen.
+            if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                {
+                    List<string> filteredLocations = new List<string>();
+                    foreach (string locationString in _viewModel.LocationAutoSuggestList)
+                    {
+                        if (locationString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        {
+                            filteredLocations.Add(locationString);
+                        }
+                    }
+                    //Set the ItemsSource to be your filtered dataset
+                    autoSuggestBox.ItemsSource = filteredLocations;
+                }
+                else
+                {
+                    if (autoSuggestBox != null)
+                    {
+                        autoSuggestBox.ItemsSource = null;
+                    }
+                }
+            }
+        }
+
+        private void LocationEntry_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        {
+            if (e.ChosenSuggestion != null)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null)
+                {
+                    // User selected an item from the suggestion list, take an action on it here.
+                    autoSuggestBox.Text = e.ChosenSuggestion.ToString();
+                    autoSuggestBox.ItemsSource = null;
+                }
+            }
+            else
+            {
+                // User hit Enter from the search box. Use e.QueryText to determine what to do.
+            }
+        }
+
+        private void LocationEntry_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        {
+            AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+            // Set sender.Text. You can use e.SelectedItem to build your text string.
+            if (autoSuggestBox != null)
+            {
+                autoSuggestBox.Text = e.SelectedItem.ToString();
+            }
+        }
+
+        private void TagsEditor_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
+        {
+            // Only get results when it was a user typing, 
+            // otherwise assume the value got filled in by TextMemberPath 
+            // or the handler for SuggestionChosen.
+            if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                {
+                    string lastTag = autoSuggestBox.Text.Split(',').LastOrDefault();
+                    if (!string.IsNullOrEmpty(lastTag) && lastTag.Length > 1)
+                    {
+                        List<string> filteredTags = new List<string>();
+                        foreach (string tagString in _viewModel.TagsAutoSuggestList)
+                        {
+                            if (tagString.Trim().ToUpper().Contains(lastTag.Trim().ToUpper()))
+                            {
+                                filteredTags.Add(tagString);
+                            }
+                        }
+                        //Set the ItemsSource to be your filtered dataset
+                        autoSuggestBox.ItemsSource = filteredTags;
+                    }
+                    else
+                    {
+                        autoSuggestBox.ItemsSource = null;
+                    }
+
+                }
+                else
+                {
+                    if (autoSuggestBox != null)
+                    {
+                        autoSuggestBox.ItemsSource = null;
+                    }
+                }
+            }
+        }
+
+        private void TagsEditor_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        {
+            if (e.ChosenSuggestion != null)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null)
+                {
+                    // User selected an item from the suggestion list, take an action on it here.
+                    List<string> existingTags = TagsEditor.Text.Split(',').ToList();
+                    existingTags.Remove(existingTags.Last());
+                    string newText = "";
+                    if (existingTags.Any())
+                    {
+                        foreach (string tagString in existingTags)
+                        {
+                            newText = newText + tagString + ", ";
+                        }
+                    }
+                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    autoSuggestBox.Text = newText;
+
+                    autoSuggestBox.ItemsSource = null;
+                }
+            }
+            else
+            {
+                // User hit Enter from the search box. Use e.QueryText to determine what to do.
+            }
+        }
+
+        private void TagsEditor_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        {
+            AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+            // Set sender.Text. You can use e.SelectedItem to build your text string.
+            if (autoSuggestBox != null)
+            {
+                //List<string> existingTags = TagsEditor.Text.Split(',').ToList();
+                //existingTags.Remove(existingTags.Last());
+                //autoSuggestBox.Text = "";
+                //foreach (string tagString in existingTags)
+                //{
+                //    autoSuggestBox.Text = autoSuggestBox.Text + ", " + tagString;
+                //}
+                //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
+            }
         }
     }
 }

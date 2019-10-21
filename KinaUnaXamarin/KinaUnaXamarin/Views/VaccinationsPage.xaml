@@ -29,8 +29,8 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>
-                <CollectionView x:Name="VaccinationsListView" ItemsSource="{Binding VaccinationItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="SkillsListView_OnSelectionChanged" SelectionMode="Single" >
-                    <CollectionView.Header>
+                <CollectionView x:Name="VaccinationsListView" ItemsSource="{Binding VaccinationItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="VaccinationsListView_OnSelectionChanged" SelectionMode="Single" >
+                    <!--<CollectionView.Header>
                         <Grid BackgroundColor="LightGray">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,7 +50,7 @@
                                    FontSize="Small"
                                    FontAttributes="Bold" />
                         </Grid>
-                    </CollectionView.Header>
+                    </CollectionView.Header>-->
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Vaccination">
                             <Grid Padding="5" BackgroundColor="White">

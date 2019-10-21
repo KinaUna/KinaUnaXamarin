@@ -750,4 +750,10 @@
   <data name="Tags" xml:space="preserve">
     <value>Tags</value>
   </data>
+  <data name="DeleteVaccination" xml:space="preserve">
+    <value>Impfung löschen</value>
+  </data>
+  <data name="DeleteVaccinationMessage" xml:space="preserve">
+    <value>Möchten Sie diese Impfung wirklich löschen</value>
+  </data>
 </root>

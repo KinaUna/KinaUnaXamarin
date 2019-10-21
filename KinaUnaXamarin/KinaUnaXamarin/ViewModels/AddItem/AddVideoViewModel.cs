@@ -18,6 +18,8 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private int _videoSeconds;
         private string _tags;
         private string _location;
+        private List<string> _locationAutoSuggestList;
+        private List<string> _tagsAutoSuggestList;
 
         public AddVideoViewModel()
         {
@@ -64,6 +66,18 @@ namespace KinaUnaXamarin.ViewModels.AddItem
 
             get => _accessLevelList;
             set => SetProperty(ref _accessLevelList, value);
+        }
+
+        public List<string> LocationAutoSuggestList
+        {
+            get => _locationAutoSuggestList;
+            set => SetProperty(ref _locationAutoSuggestList, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
 
         public int AccessLevel

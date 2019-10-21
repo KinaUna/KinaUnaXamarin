@@ -5,21 +5,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:panCardView="clr-namespace:PanCardView;assembly=PanCardView"
              xmlns:panCardViewControls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.VideoDetailPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
-             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
-             Visual="Material"
-             x:Name="VideoDetailContentPage">
+             xmlns:autoSuggest="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
+             x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
+             Visual="Material">
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.Content>
-        <RelativeLayout BackgroundColor="Black">
+        <RelativeLayout BackgroundColor="Black" Margin="0">
             <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
                   RelativeLayout.WidthConstraint=
                   "{ConstraintExpression Type=RelativeToParent,
@@ -33,21 +34,22 @@
                     <RowDefinition Height="0"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-                </StackLayout>
                 <panCardView:CarouselView
-                x:Name="VideoCarousel"
+                x:Name="PhotoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
-                ItemsSource="{Binding VideoItems}"
+                ItemsSource="{Binding PhotoItems}"
                 SelectedIndex="{Binding CurrentIndex}"
                 ItemAppearing="CardsView_OnItemAppearing"
+                ItemDisappearing="PhotoCarousel_OnItemDisappearing"
                 IsCyclical="False"
+                IsUserInteractionEnabled="{Binding IsNotZoomed}"
+                IsPanSwipeEnabled ="{Binding IsNotZoomed}"
                 IsVerticalSwipeEnabled="False"
+                IsPanInteractionEnabled="{Binding IsNotZoomed}"
                 IsViewReusingEnabled="True">
                     <panCardView:CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="modelsKinaUna:VideoViewModel">
+                        <DataTemplate x:DataType="modelsKinaUna:PictureViewModel">
                             <ContentView>
                                 <Grid Margin="0" IsClippedToBounds="True">
                                     <Grid.RowDefinitions>
@@ -58,22 +60,36 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-
-                                    </controls:ExtendedWebView>
-                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
-                                        <Label Text="Video" TextColor="WhiteSmoke"></Label>
-                                        <Label Text="{Binding VideoNumber}" TextColor="WhiteSmoke"></Label>
+                                    <ContentView x:Name="PhotoContentView" Grid.Row="1" Grid.Column="0" VerticalOptions="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.PhotoVerticalOptions}">
+                                        <forms:CachedImage 
+                                        x:Name="CardCachedImage"
+                                        Aspect="AspectFit"
+                                        RetryCount="3"
+                                        Source = "{Binding PictureLink}"
+                                        LoadingPriority="High">
+                                            <forms:CachedImage.Behaviors>
+                                                <behaviors:MultiTouchBehavior
+                                                IsScaleEnabled="True"
+                                                IsTranslateEnabled="False" 
+                                                IsZoomed="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.IsZoomed, Mode=TwoWay}"
+                                                ContainerHeight="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageHeight}"
+                                                ContainerWidth="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.ImageWidth}"/>
+                                            </forms:CachedImage.Behaviors>
+                                        </forms:CachedImage>
+                                    </ContentView>
+                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Start" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
+                                        <Label Text="{i18n:Translate Photo}" TextColor="WhiteSmoke"></Label>
+                                        <Label Text="{Binding PictureNumber}" TextColor="WhiteSmoke"></Label>
                                         <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
-                                        <Label Text="{Binding VideoCount}" TextColor="WhiteSmoke"></Label>
+                                        <Label Text="{Binding PictureCount}" TextColor="WhiteSmoke"></Label>
                                     </StackLayout>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
-                                        <Label Text="{Binding VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="#808080" Padding="5" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
+                                        <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="14" Margin="5, 0, 5, 0" ></Label>
                                     </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
-                                        <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
+                                        <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="14" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
                                     </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False">
+                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.EditMode,Converter={StaticResource InverseBoolConverter}}">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
                                         </Frame.GestureRecognizers>
@@ -94,14 +110,13 @@
                             </ContentView>
                         </DataTemplate>
                     </panCardView:CarouselView.ItemTemplate>
-                    <panCardViewControls:LeftArrowControl/>
-                    <panCardViewControls:RightArrowControl/>
-                    <panCardViewControls:IndicatorsControl/>
+                    <panCardViewControls:LeftArrowControl  />
+                    <panCardViewControls:RightArrowControl />
+                    <panCardViewControls:IndicatorsControl />
                 </panCardView:CarouselView>
                 <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
-                    <Grid Margin="0">
+                    <Grid Margin="0" ColumnSpacing="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
@@ -116,67 +131,51 @@
                             <ColumnDefinition Width="*"></ColumnDefinition>
                             <ColumnDefinition Width="2*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="5"></Label>
-                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="TagsEditor" ></Entry>
+                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
+                            <autoSuggest:AutoSuggestBox x:Name="TagsEditor" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></autoSuggest:AutoSuggestBox>
                         </StackLayout>
-                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Duration}"></Label>
-                        <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5, 0, 5, 0" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
-                                <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
-                            </StackLayout>
-                            <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
-                                <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
-                            </StackLayout>
-                            <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
-                                <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
-                            </StackLayout>
-                        </StackLayout>
-                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
-                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="1" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
-                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker>
-                                <!--Todo: Add Seconds to timePicker-->
+                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker> <!--Todo: Add Seconds to timePicker-->
                             </StackLayout>
                         </StackLayout>
-                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
-                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="LocationEntry" ></Entry>
+                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Location}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
+                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></autoSuggest:AutoSuggestBox>
                         </StackLayout>
-                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="LatitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="LongitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White">
+                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
                             <Entry x:Name="AltitudeEntry" ></Entry>
                         </StackLayout>
-                        <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
-                        <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" >
+                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
+                        <StackLayout  Grid.Row="6" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" >
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"></Picker>
                         </StackLayout>
-                        <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
+                        <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
                             <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>
                             <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
                                 <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="20" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
                             </StackLayout>
                         </StackLayout>
-                        <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                        <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
                     </Grid>
                 </ScrollView>
                 <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
             </Grid>
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 
@@ -197,15 +196,15 @@
                         <StackLayout x:Name="DataStackLayout" Orientation="Vertical" MinimumWidthRequest="350">
                             <FlexLayout Wrap="Wrap">
                                 <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
-                                <Label Text="{Binding CurrentVideoViewModel.Tags}" TextColor="White" />
+                                <Label Text="{Binding CurrentPictureViewModel.Tags}" TextColor="White" />
                             </FlexLayout>
                             <FlexLayout Wrap="Wrap">
-                                <Label Text="{i18n:Translate VideoLocation}" Margin="0,0,5,0" TextColor="Azure" />
-                                <Label Text="{Binding CurrentVideoViewModel.Location}" TextColor="White" />
+                                <Label Text="{i18n:Translate PhotoLocation}" Margin="0,0,5,0" TextColor="Azure" />
+                                <Label Text="{Binding CurrentPictureViewModel.Location}" TextColor="White" />
                             </FlexLayout>
                             <FlexLayout Wrap="Wrap">
-                                <Label Text="{i18n:Translate VideoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
-                                <Label Text="{Binding CurrentVideoViewModel.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
+                                <Label Text="{i18n:Translate PhotoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
+                                <Label Text="{Binding CurrentPictureViewModel.PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
                             </FlexLayout>
                             <FlexLayout Wrap="Wrap">
                                 <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
@@ -247,9 +246,9 @@
                             </FlexLayout>
                         </StackLayout>
                         <googleMaps:Map x:Name="LocationMap" Margin="5"
-                                        MapType="Street"
-                                        HeightRequest="200"
-                                        WidthRequest="200">
+                                  MapType="Street"
+                                  HeightRequest="200"
+                                  WidthRequest="200">
                         </googleMaps:Map>
                     </StackLayout>
                 </StackLayout>

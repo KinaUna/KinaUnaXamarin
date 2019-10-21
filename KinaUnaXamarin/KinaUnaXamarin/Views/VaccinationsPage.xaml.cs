@@ -243,14 +243,15 @@ namespace KinaUnaXamarin.Views
         }
         
 
-        private void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void VaccinationsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (VaccinationsListView.SelectedItem is Vaccination selectedVaccination)
             {
-                //VaccinationDetailPage vaccinationDetailPage = new VaccinationDetailPage(selectedVaccination.VaccinationId);
-                //// Reset selection
-                //VaccinationsListView.SelectedItem = null;
-                //await Shell.Current.Navigation.PushModalAsync(VaccinationDetailPage);
+                VaccinationDetailPage vaccinationDetailPage = new VaccinationDetailPage(selectedVaccination);
+                // Reset selection
+                VaccinationsListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(vaccinationDetailPage);
+                
             }
 
         }

@@ -750,4 +750,10 @@
   <data name="Tags" xml:space="preserve">
     <value>Tags</value>
   </data>
+  <data name="DeleteVaccination" xml:space="preserve">
+    <value>Delete Vaccination</value>
+  </data>
+  <data name="DeleteVaccinationMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this vaccination</value>
+  </data>
 </root>

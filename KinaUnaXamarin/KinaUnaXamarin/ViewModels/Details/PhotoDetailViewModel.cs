@@ -10,9 +10,9 @@ using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
 {
-    class VideoDetailViewModel : BaseViewModel
+    class PhotoDetailViewModel : BaseViewModel
     {
-        private int _currentVideoId;
+        private int _currentPictureId;
         private int _currentIndex;
         private int _userAccessLevel;
         private bool _loggedOut;
@@ -22,7 +22,7 @@ namespace KinaUnaXamarin.ViewModels
         private bool _isZoomed;
         private double _imageHeight;
         private double _imageWidth;
-        private VideoViewModel _currentVideosViewModel;
+        private PictureViewModel _currentPictureViewModel;
         private string _picYears;
         private string _picMonths;
         private string[] _picWeeks;
@@ -34,13 +34,14 @@ namespace KinaUnaXamarin.ViewModels
         private bool _canUserEditItems;
         private List<string> _accessLevelList;
         private bool _showComments;
-        private int _videoHours;
-        private int _videoMinutes;
-        private int _videoSeconds;
+        private LayoutOptions _photoVerticalOptions;
+        private List<string> _locationAutoSuggestList;
+        private List<string> _tagsAutoSuggestList;
 
-        public VideoDetailViewModel()
+        public PhotoDetailViewModel()
         {
-            VideoItems = new ObservableRangeCollection<VideoViewModel>();
+            PhotoItems = new ObservableRangeCollection<PictureViewModel>();
+            _photoVerticalOptions = LayoutOptions.FillAndExpand;
             _accessLevelList = new List<string>();
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
             if (ci == "da")
@@ -75,17 +76,24 @@ namespace KinaUnaXamarin.ViewModels
             }
         }
 
-        public ObservableRangeCollection<VideoViewModel> VideoItems { get; set; }
-        
-        public VideoViewModel CurrentVideoViewModel
+        public ObservableRangeCollection<PictureViewModel> PhotoItems { get; set; }
+
+        public PictureViewModel CurrentPictureViewModel
         {
-            get => _currentVideosViewModel;
-            set => SetProperty(ref _currentVideosViewModel, value);
+            get => _currentPictureViewModel;
+            set => SetProperty(ref _currentPictureViewModel, value);
         }
-        public int CurrentVideoId
+
+        public LayoutOptions PhotoVerticalOptions
         {
-            get => _currentVideoId;
-            set => SetProperty(ref _currentVideoId, value);
+            get => _photoVerticalOptions;
+            set => SetProperty(ref _photoVerticalOptions, value);
+        }
+
+        public int CurrentPictureId
+        {
+            get => _currentPictureId;
+            set => SetProperty(ref _currentPictureId, value);
         }
 
         public int CurrentIndex
@@ -98,6 +106,18 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _accessLevelList;
             set => SetProperty(ref _accessLevelList, value);
+        }
+
+        public List<string> LocationAutoSuggestList
+        {
+            get => _locationAutoSuggestList;
+            set => SetProperty(ref _locationAutoSuggestList, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
 
         public bool CanUserEditItems
@@ -211,24 +231,6 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _picTimeValid;
             set => SetProperty(ref _picTimeValid, value);
-        }
-
-        public int VideoHours
-        {
-            get => _videoHours;
-            set => SetProperty(ref _videoHours, value);
-        }
-
-        public int VideoMinutes
-        {
-            get => _videoMinutes;
-            set => SetProperty(ref _videoMinutes, value);
-        }
-
-        public int VideoSeconds
-        {
-            get => _videoSeconds;
-            set => SetProperty(ref _videoSeconds, value);
         }
     }
 }

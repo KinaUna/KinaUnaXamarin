@@ -4576,5 +4576,148 @@ namespace KinaUnaXamarin.Services
 
             return location;
         }
+
+        public static async Task<Vaccination> UpdateVaccination(Vaccination vaccination)
+        {
+            if (Online())
+            {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(vaccination.Progeny.TimeZone);
+                }
+                catch (Exception)
+                {
+                    vaccination.Progeny.TimeZone = TZConvert.WindowsToIana(vaccination.Progeny.TimeZone);
+                }
+
+                vaccination.VaccinationDate = TimeZoneInfo.ConvertTimeToUtc(vaccination.VaccinationDate, TimeZoneInfo.FindSystemTimeZoneById(vaccination.Progeny.TimeZone));
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/vaccinations/" + vaccination.VaccinationId, new StringContent(JsonConvert.SerializeObject(vaccination), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Vaccination resultVaccinationItem = JsonConvert.DeserializeObject<Vaccination>(resultString);
+                    return resultVaccinationItem;
+                }
+            }
+
+            return vaccination;
+        }
+
+        public static async Task<Vaccination> DeleteVaccination(Vaccination vaccination)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/vaccinations/" + vaccination.VaccinationId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Vaccination deletedVaccination = new Vaccination();
+                    deletedVaccination.VaccinationId = 0;
+                    return deletedVaccination;
+                }
+            }
+
+            return vaccination;
+        }
+
+        public static async Task<List<string>> GetLocationAutoSuggestList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+
+            if (online)
+            {
+                string accessToken = await UserService.GetAuthAccessToken();
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new List<string>();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/pictures/getlocationautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var autoSuggestListString = await result.Content.ReadAsStringAsync();
+                        List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                        await SecureStorage.SetAsync("LocationAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        return autoSuggestList;
+                    }
+                    else
+                    {
+                        return new List<string>();
+                    }
+                }
+            }
+            else
+            {
+                string autoSuggestListString = await SecureStorage.GetAsync("LocationAutoSuggestList" + progenyId + "AL" + accessLevel);
+                if (string.IsNullOrEmpty(autoSuggestListString))
+                {
+                    return new List<string>();
+                }
+                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                return autoSuggestList;
+            }
+        }
+
+        public static async Task<List<string>> GetTagsAutoSuggestList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+
+            if (online)
+            {
+                string accessToken = await UserService.GetAuthAccessToken();
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.MediaApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new List<string>();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/pictures/gettagsautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var autoSuggestListString = await result.Content.ReadAsStringAsync();
+                        List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                        await SecureStorage.SetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        return autoSuggestList;
+                    }
+                    else
+                    {
+                        return new List<string>();
+                    }
+                }
+            }
+            else
+            {
+                string autoSuggestListString = await SecureStorage.GetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel);
+                if (string.IsNullOrEmpty(autoSuggestListString))
+                {
+                    return new List<string>();
+                }
+                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                return autoSuggestList;
+            }
+        }
     }
 }

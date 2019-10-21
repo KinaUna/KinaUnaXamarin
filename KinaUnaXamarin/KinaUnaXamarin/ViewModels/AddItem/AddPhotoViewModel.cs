@@ -14,6 +14,9 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private List<string> _accessLevelList;
         private string _tags;
         private string _location;
+        private List<string> _locationAutoSuggestList;
+        private List<string> _tagsAutoSuggestList;
+
         public AddPhotoViewModel()
         {
             ProgenyCollection = new ObservableCollection<Progeny>();
@@ -65,6 +68,18 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _accessLevel;
             set => SetProperty(ref _accessLevel, value);
+        }
+
+        public List<string> LocationAutoSuggestList
+        {
+            get => _locationAutoSuggestList;
+            set => SetProperty(ref _locationAutoSuggestList, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
 
         public string Tags

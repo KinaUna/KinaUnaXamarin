@@ -285,7 +285,7 @@ namespace KinaUnaXamarin.Views
                 // Save changes.
                 Models.KinaUna.Location resultLocation = await ProgenyService.UpdateLocation(_viewModel.CurrentLocation);
                 _viewModel.IsBusy = false;
-                EditButton.Text = IconFont.AccountEdit;
+                EditButton.Text = IconFont.CalendarEdit;
                 if (resultLocation != null)  // Todo: Error message if update fails.
                 {
                     MessageLabel.Text = "Location Item Updated"; // Todo: Translate

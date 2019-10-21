@@ -718,6 +718,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Vaccination.
+        /// </summary>
+        internal static string DeleteVaccination {
+            get {
+                return ResourceManager.GetString("DeleteVaccination", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this vaccination.
+        /// </summary>
+        internal static string DeleteVaccinationMessage {
+            get {
+                return ResourceManager.GetString("DeleteVaccinationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {

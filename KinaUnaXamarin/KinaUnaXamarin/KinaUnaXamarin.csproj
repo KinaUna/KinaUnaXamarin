@@ -13,6 +13,7 @@
   <ItemGroup>
     <PackageReference Include="CardsView" Version="2.3.4" />
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView" Version="1.0.7" />
+    <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox" Version="0.7.0" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
     <PackageReference Include="IdentityModel.OidcClient" Version="2.9.1" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
@@ -68,7 +69,10 @@
     <Compile Update="Views\ContactsPage.xaml.cs">
       <DependentUpon>ContactsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\LocationDetailPage.xaml.cs">
+    <Compile Update="Views\Details\VaccinationDetailPage.xaml.cs">
+      <DependentUpon>VaccinationDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Details\LocationDetailPage.xaml.cs">
       <DependentUpon>LocationDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\PhotoLocationsPage.xaml.cs">
@@ -80,7 +84,7 @@
     <Compile Update="Views\NotesPage.xaml.cs">
       <DependentUpon>NotesPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\EventDetailPage.xaml.cs">
+    <Compile Update="Views\Details\EventDetailPage.xaml.cs">
       <DependentUpon>EventDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\VaccinationsPage.xaml.cs">
@@ -147,7 +151,7 @@
     <EmbeddedResource Update="Views\HomePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\PhotoDetailPage.xaml">
+    <EmbeddedResource Update="Views\Details\PhotoDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\PhotosPage.xaml">
@@ -162,7 +166,7 @@
     <EmbeddedResource Update="Views\SelectProgenyPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\SleepDetailPage.xaml">
+    <EmbeddedResource Update="Views\Details\SleepDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\SleepPage.xaml">
@@ -174,7 +178,7 @@
     <EmbeddedResource Update="Views\TimelinePage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\VideoDetailPage.xaml">
+    <EmbeddedResource Update="Views\Details\VideoDetailPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\VideosPage.xaml">

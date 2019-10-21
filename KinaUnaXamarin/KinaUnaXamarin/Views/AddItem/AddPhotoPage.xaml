@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddPhotoPage"
              Title="{i18n:Translate AddPhoto}"
              Visual="Material">
@@ -13,7 +14,7 @@
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
                     <Label Text="{i18n:Translate AddPhotoFor}"></Label>
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -51,11 +52,11 @@
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
                         <Label Text="Tags"></Label>
-                        <Entry x:Name="TagsEntry" Text="{Binding Tags}" ></Entry>
+                        <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate Location}"></Label>
-                        <Entry x:Name="LocationEntry" Text="{Binding Location}" ></Entry>
+                        <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
