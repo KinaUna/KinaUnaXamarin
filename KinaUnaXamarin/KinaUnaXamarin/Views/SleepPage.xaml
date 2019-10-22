@@ -30,7 +30,7 @@
 
                 </StackLayout>
                 <CollectionView x:Name="SleepListView" ItemsSource="{Binding SleepItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="SleepListView_OnSelectionChanged" SelectionMode="Single" >
-                    <!--<CollectionView.Header>
+                    <CollectionView.Header>
                         <Grid BackgroundColor="LightGray">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -50,7 +50,7 @@
                                    FontSize="Small"
                                    FontAttributes="Bold" />
                         </Grid>
-                    </CollectionView.Header>-->
+                    </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Sleep">
                             <Grid Padding="5" BackgroundColor="White">

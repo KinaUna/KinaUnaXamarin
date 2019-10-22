@@ -293,6 +293,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(vaccinationDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is VocabularyItem vocabularyItem)
+                {
+                    VocabularyDetailPage vocabularyDetailPage = new VocabularyDetailPage(vocabularyItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(vocabularyDetailPage);
+                }
             }
         }
     }

@@ -21,9 +21,9 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VaccinationDetailPage : ContentPage
+    public partial class VocabularyDetailPage : ContentPage
     {
-        private readonly VaccinationDetailViewModel _viewModel = new VaccinationDetailViewModel();
+        private readonly VocabularyDetailViewModel _viewModel = new VocabularyDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -32,15 +32,16 @@ namespace KinaUnaXamarin.Views
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
-        public VaccinationDetailPage(Vaccination vaccinationItem)
+        public VocabularyDetailPage(VocabularyItem vocabularyItem)
         {
             
             InitializeComponent();
-            _viewModel.CurrentVaccinationId = vaccinationItem.VaccinationId;
-            _viewModel.AccessLevel = vaccinationItem.AccessLevel;
-            _viewModel.Name = vaccinationItem.VaccinationName;
-            _viewModel.Notes = vaccinationItem.Notes;
-            _viewModel.Description = vaccinationItem.VaccinationDescription;
+            _viewModel.CurrentVocabularyItemId = vocabularyItem.WordId;
+            _viewModel.Word = vocabularyItem.Word;
+            _viewModel.AccessLevel = vocabularyItem.AccessLevel;
+            _viewModel.Language = vocabularyItem.Language;
+            _viewModel.SoundsLike = vocabularyItem.SoundsLike;
+            _viewModel.Description = vocabularyItem.Description;
             BindingContext = _viewModel;
             
         }
@@ -174,19 +175,21 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.IsBusy = true;
             await CheckAccount();
-            _viewModel.CurrentVaccination =
-                await ProgenyService.GetVaccination(_viewModel.CurrentVaccinationId, _accessToken, _userInfo.Timezone);
+            _viewModel.CurrentVocabularyItem =
+                await ProgenyService.GetVocabularyItem(_viewModel.CurrentVocabularyItemId, _accessToken, _userInfo.Timezone);
 
-            _viewModel.AccessLevel = _viewModel.CurrentVaccination.AccessLevel;
-            _viewModel.CurrentVaccination.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVaccination.ProgenyId);
+            _viewModel.AccessLevel = _viewModel.CurrentVocabularyItem.AccessLevel;
+            _viewModel.CurrentVocabularyItem.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVocabularyItem.ProgenyId);
+            if (_viewModel.CurrentVocabularyItem.Date.HasValue)
+            {
+                _viewModel.DateYear = _viewModel.CurrentVocabularyItem.Date.Value.Year;
+                _viewModel.DateMonth = _viewModel.CurrentVocabularyItem.Date.Value.Month;
+                _viewModel.DateDay = _viewModel.CurrentVocabularyItem.Date.Value.Day;
 
-            _viewModel.DateYear = _viewModel.CurrentVaccination.VaccinationDate.Year;
-            _viewModel.DateMonth = _viewModel.CurrentVaccination.VaccinationDate.Month;
-            _viewModel.DateDay = _viewModel.CurrentVaccination.VaccinationDate.Day;
+                WordDatePicker.Date = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
+            }
 
-            VaccinationDatePicker.Date = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
-
-            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentVaccination.ProgenyId);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentVocabularyItem.ProgenyId);
             if (_viewModel.UserAccessLevel == 0)
             {
                 _viewModel.CanUserEditItems = true;
@@ -196,11 +199,12 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CanUserEditItems = false;
             }
 
-            _viewModel.CurrentVaccinationId = _viewModel.CurrentVaccination.VaccinationId;
-            _viewModel.AccessLevel = _viewModel.CurrentVaccination.AccessLevel;
-            _viewModel.Name = _viewModel.CurrentVaccination.VaccinationName;
-            _viewModel.Description = _viewModel.CurrentVaccination.VaccinationDescription;
-            _viewModel.Notes = _viewModel.CurrentVaccination.Notes;
+            _viewModel.CurrentVocabularyItemId = _viewModel.CurrentVocabularyItem.WordId;
+            _viewModel.AccessLevel = _viewModel.CurrentVocabularyItem.AccessLevel;
+            _viewModel.Word = _viewModel.CurrentVocabularyItem.Word;
+            _viewModel.SoundsLike = _viewModel.CurrentVocabularyItem.SoundsLike;
+            _viewModel.Description = _viewModel.CurrentVocabularyItem.Description;
+            _viewModel.Language = _viewModel.CurrentVocabularyItem.Language;
             
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -227,20 +231,21 @@ namespace KinaUnaXamarin.Views
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
 
-                DateTime vacDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
-                _viewModel.CurrentVaccination.VaccinationDate = vacDate;
-                _viewModel.CurrentVaccination.VaccinationName = _viewModel.Name;
-                _viewModel.CurrentVaccination.VaccinationDescription = _viewModel.Description;
-                _viewModel.CurrentVaccination.Notes = _viewModel.Notes;
-                _viewModel.CurrentVaccination.AccessLevel = _viewModel.AccessLevel;
+                DateTime wordDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
+                _viewModel.CurrentVocabularyItem.Date = wordDate;
+                _viewModel.CurrentVocabularyItem.Word = _viewModel.Word;
+                _viewModel.CurrentVocabularyItem.SoundsLike = _viewModel.SoundsLike;
+                _viewModel.CurrentVocabularyItem.Description = _viewModel.Description;
+                _viewModel.CurrentVocabularyItem.Language = _viewModel.Language;
+                _viewModel.CurrentVocabularyItem.AccessLevel = _viewModel.AccessLevel;
 
                 // Save changes.
-                Vaccination resultVaccination = await ProgenyService.UpdateVaccination(_viewModel.CurrentVaccination);
+                VocabularyItem resultVocabularyItem = await ProgenyService.UpdateVocabularyItem(_viewModel.CurrentVocabularyItem);
                 _viewModel.IsBusy = false;
                 EditButton.Text = IconFont.CalendarEdit;
-                if (resultVaccination != null)  // Todo: Error message if update fails.
+                if (resultVocabularyItem != null)  // Todo: Error message if update fails.
                 {
-                    MessageLabel.Text = "Vaccination Updated"; // Todo: Translate
+                    MessageLabel.Text = "Word Updated"; // Todo: Translate
                     MessageLabel.BackgroundColor = Color.DarkGreen;
                     MessageLabel.IsVisible = true;
                     await Reload();
@@ -261,18 +266,18 @@ namespace KinaUnaXamarin.Views
             await Reload();
         }
 
-        private void VaccinationDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
+        private void WordDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.DateYear = VaccinationDatePicker.Date.Year;
-            _viewModel.DateMonth = VaccinationDatePicker.Date.Month;
-            _viewModel.DateDay = VaccinationDatePicker.Date.Day;
+            _viewModel.DateYear = WordDatePicker.Date.Year;
+            _viewModel.DateMonth = WordDatePicker.Date.Month;
+            _viewModel.DateDay = WordDatePicker.Date.Day;
         }
 
         private async void DeleteButton_OnClickedButton_OnClicked(object sender, EventArgs e)
         {
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
-            string confirmTitle = resmgr.Value.GetString("DeleteVaccination", ci);
-            string confirmMessage = resmgr.Value.GetString("DeleteVaccinationMessage", ci) + " ? ";
+            string confirmTitle = resmgr.Value.GetString("DeleteWord", ci);
+            string confirmMessage = resmgr.Value.GetString("DeleteWordMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
             string no = resmgr.Value.GetString("No", ci); ;
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
@@ -280,8 +285,8 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.IsBusy = true;
                 _viewModel.EditMode = false;
-                Vaccination deletedVaccination = await ProgenyService.DeleteVaccination(_viewModel.CurrentVaccination);
-                if (deletedVaccination.VaccinationId == 0)
+                VocabularyItem deleteVocabularyItem = await ProgenyService.DeleteVocabularyItem(_viewModel.CurrentVocabularyItem);
+                if (deleteVocabularyItem.WordId == 0)
                 {
                     _viewModel.EditMode = false;
                     // Todo: Show success message

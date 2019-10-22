@@ -269,14 +269,14 @@ namespace KinaUnaXamarin.Views
             await UpdateVocabulary();
         }
 
-        private void VocabularyListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void VocabularyListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (VocabularyListView.SelectedItem is VocabularyItem selectedVocabularyItem)
             {
-                //VocabularyDetailPage vocabularyDetailPage = new VocabularyDetailPage(selectedVocabularyItem.WordId);
-                //// Reset selection
-                //VocabularyListView.SelectedItem = null;
-                //await Shell.Current.Navigation.PushModalAsync(VocabularyDetailPage);
+                VocabularyDetailPage vocabularyDetailPage = new VocabularyDetailPage(selectedVocabularyItem);
+                // Reset selection
+                VocabularyListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(vocabularyDetailPage);
             }
 
         }

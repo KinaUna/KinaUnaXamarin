@@ -756,4 +756,10 @@
   <data name="DeleteVaccinationMessage" xml:space="preserve">
     <value>Möchten Sie diese Impfung wirklich löschen</value>
   </data>
+  <data name="DeleteWord" xml:space="preserve">
+    <value>Wort löschen</value>
+  </data>
+  <data name="DeleteWordMessage" xml:space="preserve">
+    <value>Möchten Sie diese Wort wirklich löschen</value>
+  </data>
 </root>

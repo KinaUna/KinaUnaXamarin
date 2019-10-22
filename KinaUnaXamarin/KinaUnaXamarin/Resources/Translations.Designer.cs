@@ -736,6 +736,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Word.
+        /// </summary>
+        internal static string DeleteWord {
+            get {
+                return ResourceManager.GetString("DeleteWord", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this word.
+        /// </summary>
+        internal static string DeleteWordMessage {
+            get {
+                return ResourceManager.GetString("DeleteWordMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         internal static string Description {

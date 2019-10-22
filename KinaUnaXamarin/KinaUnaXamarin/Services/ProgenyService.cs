@@ -4826,5 +4826,60 @@ namespace KinaUnaXamarin.Services
                 return autoSuggestList;
             }
         }
+
+        public static async Task<VocabularyItem> UpdateVocabularyItem(VocabularyItem vocabularyItem)
+        {
+            if (Online())
+            {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(vocabularyItem.Progeny.TimeZone);
+                }
+                catch (Exception)
+                {
+                    vocabularyItem.Progeny.TimeZone = TZConvert.WindowsToIana(vocabularyItem.Progeny.TimeZone);
+                }
+
+                if (vocabularyItem.Date.HasValue)
+                {
+                    vocabularyItem.Date = TimeZoneInfo.ConvertTimeToUtc(vocabularyItem.Date.Value,
+                        TimeZoneInfo.FindSystemTimeZoneById(vocabularyItem.Progeny.TimeZone));
+                }
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/vocabulary/" + vocabularyItem.WordId, new StringContent(JsonConvert.SerializeObject(vocabularyItem), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    VocabularyItem resultItem = JsonConvert.DeserializeObject<VocabularyItem>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return vocabularyItem;
+        }
+
+        public static async Task<VocabularyItem> DeleteVocabularyItem(VocabularyItem vocabularyItem)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/vocabulary/" + vocabularyItem.WordId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    VocabularyItem deleteVocabularyItem = new VocabularyItem();
+                    deleteVocabularyItem.WordId = 0;
+                    return deleteVocabularyItem;
+                }
+            }
+
+            return vocabularyItem;
+        }
     }
 }

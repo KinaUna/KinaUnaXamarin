@@ -14,7 +14,7 @@
                 <Grid>
                     <StackLayout Orientation="Vertical" Margin="5">
                         <Label Text="{i18n:Translate AddVaccinationFor}"></Label>
-                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Padding="10">

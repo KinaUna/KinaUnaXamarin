@@ -756,4 +756,10 @@
   <data name="DeleteVaccinationMessage" xml:space="preserve">
     <value>Are you sure you want to delete this vaccination</value>
   </data>
+  <data name="DeleteWord" xml:space="preserve">
+    <value>Delete Word</value>
+  </data>
+  <data name="DeleteWordMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this word</value>
+  </data>
 </root>

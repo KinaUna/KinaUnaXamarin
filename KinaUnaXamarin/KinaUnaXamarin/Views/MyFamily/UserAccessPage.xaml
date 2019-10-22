@@ -26,7 +26,7 @@
                 <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <CollectionView Grid.Row="0" x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged" IsVisible="{Binding AnyChildren}">
+            <CollectionView Grid.Row="0" x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged" IsVisible="{Binding AnyChildren}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="modelsKinaUna:Progeny">
                         <Grid Padding="10">
@@ -59,7 +59,8 @@
             <CollectionView Grid.Row="1" x:Name="UserAccessCollectionView" SelectionMode="Single" SelectionChanged="UserAccessCollectionView_OnSelectionChanged" 
                             HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" ItemSizingStrategy="MeasureFirstItem" IsVisible="{Binding AnyChildren}">
                 <CollectionView.ItemsLayout>
-                    <ListItemsLayout ItemSpacing="5" Orientation="Vertical"></ListItemsLayout></CollectionView.ItemsLayout>
+                    <LinearItemsLayout ItemSpacing="5" Orientation="Vertical"></LinearItemsLayout>
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="modelsKinaUna:UserAccess">
                         <Frame Margin="5" Padding="5" >

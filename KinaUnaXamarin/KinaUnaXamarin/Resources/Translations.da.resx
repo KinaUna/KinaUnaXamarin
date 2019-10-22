@@ -756,4 +756,10 @@
   <data name="DeleteVaccinationMessage" xml:space="preserve">
     <value>Er du sikker på at du vil slette denne vaccination</value>
   </data>
+  <data name="DeleteWord" xml:space="preserve">
+    <value>Slet ord</value>
+  </data>
+  <data name="DeleteWordMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette dette ord</value>
+  </data>
 </root>
