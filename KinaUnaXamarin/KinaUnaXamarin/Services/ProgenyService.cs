@@ -3814,6 +3814,21 @@ namespace KinaUnaXamarin.Services
         {
             if (Online())
             {
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(await UserService.GetUserTimezone());
+                }
+                catch (Exception)
+                {
+                    calendarItem.Progeny.TimeZone = TZConvert.WindowsToIana(await UserService.GetUserTimezone());
+                }
+
+                if (calendarItem.StartTime.HasValue && calendarItem.EndTime.HasValue)
+                {
+                    calendarItem.StartTime = TimeZoneInfo.ConvertTimeToUtc(calendarItem.StartTime.Value, TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone));
+                    calendarItem.EndTime = TimeZoneInfo.ConvertTimeToUtc(calendarItem.EndTime.Value, TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone));
+                }
+
                 var client = new HttpClient();
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
@@ -4281,11 +4296,11 @@ namespace KinaUnaXamarin.Services
             {
                 try
                 {
-                    TimeZoneInfo.FindSystemTimeZoneById(calendarItem.Progeny.TimeZone);
+                    TimeZoneInfo.FindSystemTimeZoneById(await UserService.GetUserTimezone());
                 }
                 catch (Exception)
                 {
-                    calendarItem.Progeny.TimeZone = TZConvert.WindowsToIana(calendarItem.Progeny.TimeZone);
+                    calendarItem.Progeny.TimeZone = TZConvert.WindowsToIana(await UserService.GetUserTimezone());
                 }
 
                 if (calendarItem.StartTime.HasValue && calendarItem.EndTime.HasValue)

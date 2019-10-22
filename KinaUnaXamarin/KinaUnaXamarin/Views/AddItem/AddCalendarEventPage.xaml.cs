@@ -151,6 +151,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
 
+                
                 CalendarItem saveEvent = new CalendarItem();
                 saveEvent.ProgenyId = progeny.Id;
                 saveEvent.AccessLevel = _viewModel.AccessLevel;
