@@ -43,6 +43,7 @@ namespace KinaUnaXamarin.ViewModels
         private string _latitude;
         private string _longitude;
         private string _houseNumber;
+        private List<string> _tagsAutoSuggestList;
 
         public LocationDetailViewModel()
         {
@@ -268,6 +269,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _houseNumber;
             set => SetProperty(ref _houseNumber, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
     }
 }

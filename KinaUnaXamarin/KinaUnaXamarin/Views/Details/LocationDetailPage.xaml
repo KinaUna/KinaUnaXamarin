@@ -6,6 +6,7 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.LocationDetailPage"
              Visual="Material">
@@ -255,7 +256,7 @@
                         <Entry x:Name="NotesEntry" Text="{Binding Notes}"></Entry>
                     </StackLayout>
                     <StackLayout Grid.Row="13" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <Entry x:Name="TagsEntry" Text="{Binding Tags}"></Entry>
+                        <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout  Grid.Row="14" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                         <Label Text="{i18n:Translate AccessLevel}"></Label>

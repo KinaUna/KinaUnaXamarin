@@ -6,6 +6,7 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.EventDetailPage"
              Visual="Material">
@@ -129,10 +130,10 @@
                         <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
                     </StackLayout>
                     <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <Entry x:Name="LocationEntry" Text="{Binding Location}"></Entry>
+                        <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                        <Entry x:Name="ContextEntry" Text="{Binding Context}"></Entry>
+                        <forms:AutoSuggestBox x:Name="ContextEntry" Text="{Binding Context}"  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                         <CheckBox IsChecked="{Binding AllDay}"></CheckBox>

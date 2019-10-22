@@ -40,6 +40,8 @@ namespace KinaUnaXamarin.ViewModels
         private string _notes;
         private string _context;
         private string _location;
+        private List<string> _locationAutoSuggestList;
+        private List<string> _contextAutoSuggestList;
 
         public EventDetailViewModel()
         {
@@ -256,6 +258,18 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _context;
             set => SetProperty(ref _context, value);
+        }
+
+        public List<string> LocationAutoSuggestList
+        {
+            get => _locationAutoSuggestList;
+            set => SetProperty(ref _locationAutoSuggestList, value);
+        }
+
+        public List<string> ContextAutoSuggestList
+        {
+            get => _contextAutoSuggestList;
+            set => SetProperty(ref _contextAutoSuggestList, value);
         }
     }
 }
