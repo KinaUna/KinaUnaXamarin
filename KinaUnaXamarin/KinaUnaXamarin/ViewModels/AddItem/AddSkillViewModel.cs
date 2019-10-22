@@ -19,6 +19,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private List<string> _accessLevelList;
         private bool _online;
         private DateTime _date;
+        private List<string> _categoryAutoSuggestList;
 
         public AddSkillViewModel()
         {
@@ -87,6 +88,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _date;
             set => SetProperty(ref _date, value);
+        }
+
+        public List<string> CategoryAutoSuggestList
+        {
+            get => _categoryAutoSuggestList;
+            set => SetProperty(ref _categoryAutoSuggestList, value);
         }
     }
 }

@@ -28,6 +28,9 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private int _accessLevel;
         private string _notes;
         private List<string> _accessLevelList;
+        private List<string> _locationAutoSuggestList;
+        private List<string> _contextAutoSuggestList;
+
         public AddCalendarEventViewModel()
         {
             ProgenyCollection = new ObservableCollection<Progeny>();
@@ -149,6 +152,18 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _notes;
             set => SetProperty(ref _notes, value);
+        }
+
+        public List<string> LocationAutoSuggestList
+        {
+            get => _locationAutoSuggestList;
+            set => SetProperty(ref _locationAutoSuggestList, value);
+        }
+
+        public List<string> ContextAutoSuggestList
+        {
+            get => _contextAutoSuggestList;
+            set => SetProperty(ref _contextAutoSuggestList, value);
         }
     }
 }

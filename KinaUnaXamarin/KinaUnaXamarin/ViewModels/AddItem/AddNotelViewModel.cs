@@ -15,6 +15,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private bool _online;
         private DateTime _date;
         private TimeSpan _time;
+        private List<string> _categoryAutoSuggestList;
 
         public AddNoteViewModel()
         {
@@ -90,6 +91,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _time;
             set => SetProperty(ref _time, value);
+        }
+
+        public List<string> CategoryAutoSuggestList
+        {
+            get => _categoryAutoSuggestList;
+            set => SetProperty(ref _categoryAutoSuggestList, value);
         }
     }
 }

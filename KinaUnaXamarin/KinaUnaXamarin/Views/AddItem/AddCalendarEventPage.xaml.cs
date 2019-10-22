@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using dotMorten.Xamarin.Forms;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
@@ -71,16 +72,14 @@ namespace KinaUnaXamarin.Views.AddItem
                     ProgenyCollectionView.SelectedItem =
                         _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
                     ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                    _viewModel.LocationAutoSuggestList = await ProgenyService.GetLocationAutoSuggestList(viewProgeny.Id, 0);
+                    _viewModel.ContextAutoSuggestList = await ProgenyService.GetContextAutoSuggestList(viewProgeny.Id, 0);
                 }
                 else
                 {
                     ProgenyCollectionView.SelectedItem = _viewModel.ProgenyCollection[0];
                 }
             }
-            
-            
-            
-
         }
 
         private void CalendarEventStartDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
@@ -199,6 +198,134 @@ namespace KinaUnaXamarin.Views.AddItem
             }
 
             _viewModel.IsBusy = false;
+        }
+
+        private void LocationEntry_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
+        {
+            // Only get results when it was a user typing, 
+            // otherwise assume the value got filled in by TextMemberPath 
+            // or the handler for SuggestionChosen.
+            if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                {
+                    List<string> filteredLocations = new List<string>();
+                    foreach (string locationString in _viewModel.LocationAutoSuggestList)
+                    {
+                        if (locationString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        {
+                            filteredLocations.Add(locationString);
+                        }
+                    }
+                    //Set the ItemsSource to be your filtered dataset
+                    autoSuggestBox.ItemsSource = filteredLocations;
+                }
+                else
+                {
+                    if (autoSuggestBox != null)
+                    {
+                        autoSuggestBox.ItemsSource = null;
+                    }
+                }
+            }
+        }
+
+        private void LocationEntry_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        {
+            if (e.ChosenSuggestion != null)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null)
+                {
+                    // User selected an item from the suggestion list, take an action on it here.
+                    autoSuggestBox.Text = e.ChosenSuggestion.ToString();
+                    autoSuggestBox.ItemsSource = null;
+                }
+            }
+            else
+            {
+                // User hit Enter from the search box. Use e.QueryText to determine what to do.
+            }
+        }
+
+        private void LocationEntry_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        {
+            AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+            // Set sender.Text. You can use e.SelectedItem to build your text string.
+            if (autoSuggestBox != null)
+            {
+                autoSuggestBox.Text = e.SelectedItem.ToString();
+            }
+        }
+
+        private async void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Progeny viewProgeny = ProgenyCollectionView.SelectedItem as Progeny;
+            if (viewProgeny != null)
+            {
+                _viewModel.LocationAutoSuggestList = await ProgenyService.GetLocationAutoSuggestList(viewProgeny.Id, 0);
+                _viewModel.ContextAutoSuggestList = await ProgenyService.GetContextAutoSuggestList(viewProgeny.Id, 0);
+            }
+        }
+
+        private void ContextEntry_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
+        {
+            // Only get results when it was a user typing, 
+            // otherwise assume the value got filled in by TextMemberPath 
+            // or the handler for SuggestionChosen.
+            if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                {
+                    List<string> filteredContexts = new List<string>();
+                    foreach (string contextString in _viewModel.ContextAutoSuggestList)
+                    {
+                        if (contextString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        {
+                            filteredContexts.Add(contextString);
+                        }
+                    }
+                    //Set the ItemsSource to be your filtered dataset
+                    autoSuggestBox.ItemsSource = filteredContexts;
+                }
+                else
+                {
+                    if (autoSuggestBox != null)
+                    {
+                        autoSuggestBox.ItemsSource = null;
+                    }
+                }
+            }
+        }
+
+        private void ContextEntry_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        {
+            if (e.ChosenSuggestion != null)
+            {
+                AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+                if (autoSuggestBox != null)
+                {
+                    // User selected an item from the suggestion list, take an action on it here.
+                    autoSuggestBox.Text = e.ChosenSuggestion.ToString();
+                    autoSuggestBox.ItemsSource = null;
+                }
+            }
+            else
+            {
+                // User hit Enter from the search box. Use e.QueryText to determine what to do.
+            }
+        }
+
+        private void ContextEntry_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        {
+            AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
+            // Set sender.Text. You can use e.SelectedItem to build your text string.
+            if (autoSuggestBox != null)
+            {
+                autoSuggestBox.Text = e.SelectedItem.ToString();
+            }
         }
     }
 }

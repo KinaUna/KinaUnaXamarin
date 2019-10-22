@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddSkillPage"
              Title="{i18n:Translate AddSkill}"
              Visual="Material">
@@ -14,7 +15,7 @@
                 <Grid>
                     <StackLayout Orientation="Vertical" Margin="5">
                         <Label Text="{i18n:Translate AddSkillFor}"></Label>
-                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
                                     <Grid Padding="10">
@@ -54,7 +55,7 @@
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
                             <Label Text="{i18n:Translate Category}"></Label>
-                            <Entry x:Name="CategoryEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
+                            <forms:AutoSuggestBox x:Name="CategoryEntry" Text=""  TextChanged="CategoryEntry_OnTextChanged" QuerySubmitted="CategoryEntry_OnQuerySubmitted" SuggestionChosen="CategoryEntry_OnSuggestionChosen" TextColor="Black" Margin="15, 0, 0, 0"></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
                             <Label Text="{i18n:Translate FirstObservation}"></Label>

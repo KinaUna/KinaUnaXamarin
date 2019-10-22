@@ -578,6 +578,7 @@ namespace KinaUnaXamarin.Views
             Picture updatedPicture = await ProgenyService.GetPictureWithOriginalImageLink(_viewModel.CurrentPictureViewModel.PictureId, _accessToken, _userInfo.Timezone);
             updatedPicture.Progeny = _viewModel.Progeny;
             updatedPicture.Tags = TagsEditor.Text;
+            updatedPicture.Location = LocationEntry.Text;
             if (!string.IsNullOrEmpty(LatitudeEntry.Text))
             {
                 updatedPicture.Latitude = LatitudeEntry.Text.Replace(',', '.');

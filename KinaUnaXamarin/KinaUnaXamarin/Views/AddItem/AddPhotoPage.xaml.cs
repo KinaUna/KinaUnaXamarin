@@ -100,8 +100,8 @@ namespace KinaUnaXamarin.Views.AddItem
             picture.Author = userinfo.UserId;
             picture.Owners = userEmail;
             picture.TimeZone = userinfo.Timezone;
-            picture.Tags = _addPhotoViewModel.Tags;
-            picture.Location = _addPhotoViewModel.Location;
+            picture.Tags = TagsEntry.Text;
+            picture.Location = LocationEntry.Text;
 
             Picture newPicture = await ProgenyService.SavePicture(picture);
             if (newPicture.PictureId != 0)

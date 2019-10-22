@@ -15,6 +15,8 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private List<string> _friendTypeList;
         private bool _online;
         private int _friendType;
+        private List<string> _contextAutoSuggestList;
+        private List<string> _tagsAutoSuggestList;
 
         public AddFriendViewModel()
         {
@@ -106,6 +108,18 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _online;
             set => SetProperty(ref _online, value);
+        }
+
+        public List<string> ContextAutoSuggestList
+        {
+            get => _contextAutoSuggestList;
+            set => SetProperty(ref _contextAutoSuggestList, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
     }
 }

@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddCalendarEventPage"
              Title="{i18n:Translate AddCalendarEvent}"
              Visual="Material">
@@ -13,7 +14,7 @@
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
                     <Label Text="{i18n:Translate AddCalendarEventFor}"></Label>
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105">
+                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="{x:Static ListItemsLayout.Horizontal}" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Padding="10">
@@ -67,11 +68,11 @@
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate Location}"></Label>
-                        <Entry x:Name="LocationEntry" Text=""></Entry>
+                        <forms:AutoSuggestBox x:Name="LocationEntry" Text=""  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate Context}"></Label>
-                        <Entry x:Name="ContextEntry" Text=""></Entry>
+                        <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
                         <Label Text="{i18n:Translate AllDay}"></Label>

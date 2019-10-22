@@ -13,7 +13,9 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private int _accessLevel;
         private List<string> _accessLevelList;
         private bool _online;
-        
+        private List<string> _contextAutoSuggestList;
+        private List<string> _tagsAutoSuggestList;
+
         public AddContactViewModel()
         {
             ProgenyCollection = new ObservableCollection<Progeny>();
@@ -72,6 +74,18 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _online;
             set => SetProperty(ref _online, value);
+        }
+
+        public List<string> ContextAutoSuggestList
+        {
+            get => _contextAutoSuggestList;
+            set => SetProperty(ref _contextAutoSuggestList, value);
+        }
+
+        public List<string> TagsAutoSuggestList
+        {
+            get => _tagsAutoSuggestList;
+            set => SetProperty(ref _tagsAutoSuggestList, value);
         }
     }
 }

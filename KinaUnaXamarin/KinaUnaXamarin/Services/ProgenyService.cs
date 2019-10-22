@@ -4647,7 +4647,7 @@ namespace KinaUnaXamarin.Services
                 {
                     client.SetBearerToken(accessToken);
 
-                    var result = await client.GetAsync("api/pictures/getlocationautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/autosuggests/getlocationautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -4693,7 +4693,7 @@ namespace KinaUnaXamarin.Services
                 {
                     client.SetBearerToken(accessToken);
 
-                    var result = await client.GetAsync("api/pictures/gettagsautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+                    var result = await client.GetAsync("api/autosuggests/gettagsautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -4711,6 +4711,98 @@ namespace KinaUnaXamarin.Services
             else
             {
                 string autoSuggestListString = await SecureStorage.GetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel);
+                if (string.IsNullOrEmpty(autoSuggestListString))
+                {
+                    return new List<string>();
+                }
+                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                return autoSuggestList;
+            }
+        }
+
+        public static async Task<List<string>> GetCategoryAutoSuggestList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+
+            if (online)
+            {
+                string accessToken = await UserService.GetAuthAccessToken();
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new List<string>();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/autosuggests/getcategoryautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var autoSuggestListString = await result.Content.ReadAsStringAsync();
+                        List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                        await SecureStorage.SetAsync("CategoryAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        return autoSuggestList;
+                    }
+                    else
+                    {
+                        return new List<string>();
+                    }
+                }
+            }
+            else
+            {
+                string autoSuggestListString = await SecureStorage.GetAsync("CategoryAutoSuggestList" + progenyId + "AL" + accessLevel);
+                if (string.IsNullOrEmpty(autoSuggestListString))
+                {
+                    return new List<string>();
+                }
+                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                return autoSuggestList;
+            }
+        }
+
+        public static async Task<List<string>> GetContextAutoSuggestList(int progenyId, int accessLevel)
+        {
+            bool online = Online();
+
+            if (online)
+            {
+                string accessToken = await UserService.GetAuthAccessToken();
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                // If the user is not logged in.
+                if (String.IsNullOrEmpty(accessToken))
+                {
+                    return new List<string>();
+                }
+                else // If the user is logged in.
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/autosuggests/getcontextautosuggestlist/" + progenyId + "/" + accessLevel).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var autoSuggestListString = await result.Content.ReadAsStringAsync();
+                        List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                        await SecureStorage.SetAsync("ContextAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        return autoSuggestList;
+                    }
+                    else
+                    {
+                        return new List<string>();
+                    }
+                }
+            }
+            else
+            {
+                string autoSuggestListString = await SecureStorage.GetAsync("ContextAutoSuggestList" + progenyId + "AL" + accessLevel);
                 if (string.IsNullOrEmpty(autoSuggestListString))
                 {
                     return new List<string>();
