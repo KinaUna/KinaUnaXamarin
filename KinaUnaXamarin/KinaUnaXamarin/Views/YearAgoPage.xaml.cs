@@ -307,6 +307,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(skillDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is Measurement measurementItem)
+                {
+                    MeasurementDetailPage measurementDetailPage = new MeasurementDetailPage(measurementItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(measurementDetailPage);
+                }
             }
         }
     }

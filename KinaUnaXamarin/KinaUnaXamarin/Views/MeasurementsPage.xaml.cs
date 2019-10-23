@@ -269,14 +269,14 @@ namespace KinaUnaXamarin.Views
             await UpdateMeasurements();
         }
 
-        private void MeasurementsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void MeasurementsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MeasurementsListView.SelectedItem is Measurement selectedMeasurement)
             {
-                //MeausrementDetailPage measurementDetailPage = new MeasurementDetailPage(selectedMeasurement.MeasurementId);
-                //// Reset selection
-                //MeasurementsListView.SelectedItem = null;
-                //await Shell.Current.Navigation.PushModalAsync(MeasurementDetailPage);
+                MeasurementDetailPage measurementDetailPage = new MeasurementDetailPage(selectedMeasurement);
+                // Reset selection
+                MeasurementsListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(measurementDetailPage);
             }
 
         }

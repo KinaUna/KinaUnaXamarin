@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.MeasurementDetailPage"
+             Visual="Material">
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="WhiteSmoke">
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <ScrollView>
+                <Grid x:Name="DetailsGrid" Margin="10" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Date}"
+                       FontAttributes="Bold"
+                       FontSize="15"/>
+                    <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Height}"
+                       FontSize="15" />
+                    <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Weight}"
+                       FontSize="14"/>
+                    <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Text="{i18n:Translate Circumference}"
+                       FontSize="14"/>
+                    <Label Grid.Row="4"
+                       Grid.Column="0"
+                       Text="{i18n:Translate HairColor}"
+                       FontSize="14" />
+                    <Label Grid.Row="5"
+                           Grid.Column="0"
+                           Text="{i18n:Translate EyeColor}"
+                           FontSize="14" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding Date, StringFormat='{0:dd-MMM-yyyy}'}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                    <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{Binding Height}"
+                       Margin="5"
+                       FontAttributes="Bold"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding Weight}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Text="{Binding Circumference}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="4"
+                           Grid.Column="1"
+                           Text="{Binding HairColor}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="5"
+                           Grid.Column="1"
+                           Text="{Binding EyeColor}"
+                           Margin="5"
+                           FontAttributes="Bold"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="NameEntry" Text="{Binding Name}"></Entry>
+
+                    </StackLayout>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <StackLayout Orientation="Horizontal">
+                            <DatePicker x:Name="MeasurementDatePicker" Format="dd MMM yyyy" DateSelected="MeasurementDatePicker_OnDateSelected"></DatePicker>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="HeightEntry" Text="{Binding Height}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="WeightEntry" Text="{Binding Weight}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CircumferenceEntry" Text="{Binding Circumference}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="HairColorEntry" Text="{Binding HairColor}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="EyeColorEntry" Text="{Binding EyeColor}"></Entry>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
+                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                        <StackLayout Orientation="Horizontal" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="EndAndExpand">
+                            <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                    <Label Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

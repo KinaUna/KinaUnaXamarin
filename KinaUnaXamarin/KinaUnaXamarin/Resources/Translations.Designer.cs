@@ -700,6 +700,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Measurement.
+        /// </summary>
+        internal static string DeleteMeasurement {
+            get {
+                return ResourceManager.GetString("DeleteMeasurement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this measurement.
+        /// </summary>
+        internal static string DeleteMeasurementMessage {
+            get {
+                return ResourceManager.GetString("DeleteMeasurementMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Skill.
         /// </summary>
         internal static string DeleteSkill {

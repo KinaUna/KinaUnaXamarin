@@ -4921,5 +4921,45 @@ namespace KinaUnaXamarin.Services
 
             return skill;
         }
+
+        public static async Task<Measurement> UpdateMeasurement(Measurement measurement)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/measurements/" + measurement.MeasurementId, new StringContent(JsonConvert.SerializeObject(measurement), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Measurement resultItem = JsonConvert.DeserializeObject<Measurement>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return measurement;
+        }
+
+        public static async Task<Measurement> DeleteMeasurement(Measurement measurement)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/measurements/" + measurement.MeasurementId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Measurement deleteMeasurementItem = new Measurement();
+                    deleteMeasurementItem.MeasurementId = 0;
+                    return deleteMeasurementItem;
+                }
+            }
+
+            return measurement;
+        }
     }
 }

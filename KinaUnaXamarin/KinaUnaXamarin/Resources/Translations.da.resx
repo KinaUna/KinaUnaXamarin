@@ -762,6 +762,12 @@
   <data name="DeleteWordMessage" xml:space="preserve">
     <value>Er du sikker på at du vil slette dette ord</value>
   </data>
+  <data name="DeleteMeasurement" xml:space="preserve">
+    <value>Slet måling</value>
+  </data>
+  <data name="DeleteMeasurementMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette denne måling</value>
+  </data>
   <data name="DeleteSkill" xml:space="preserve">
     <value>Slet færdighed</value>
   </data>
