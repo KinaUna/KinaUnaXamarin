@@ -99,6 +99,18 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = false;
         }
 
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height); //must be called
+            int columns = (int)Math.Floor(width / 200);
+            if (columns < 1)
+            {
+                columns = 1;
+            }
+
+            VideosListView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+        }
+
         private async Task CheckAccount()
         {
             string userEmail = await UserService.GetUserEmail();

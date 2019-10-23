@@ -88,9 +88,7 @@ namespace KinaUnaXamarin.Views
             }
 
             _viewModel.Columns = columns;
-            // This doesn't work yet, see: https://github.com/xamarin/Xamarin.Forms/issues/5354
             FriendsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
-
         }
 
         private async Task Reload()

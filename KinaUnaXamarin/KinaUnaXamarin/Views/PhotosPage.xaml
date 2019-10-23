@@ -39,40 +39,39 @@
                 <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
                     <CollectionView.ItemsLayout >
                         <GridItemsLayout Orientation="Vertical" Span="2" />
-                        </CollectionView.ItemsLayout>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="modelsKinaUna:Picture">
-                                <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
-                                    <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
-                                        <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="modelsKinaUna:Picture">
+                            <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
+                                <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                        RetryCount="3"
                                                        Source = "{Binding PictureLink600}">
-                                        </forms:CachedImage>
-                                        <Frame BackgroundColor="Teal" Padding="5"
+                                    </forms:CachedImage>
+                                    <Frame BackgroundColor="Teal" Padding="5"
                                            Margin="5" HorizontalOptions="Start" VerticalOptions="Start" >
-                                            <Label Text="{Binding PictureNumber}"
+                                        <Label Text="{Binding PictureNumber}"
                                                FontAttributes="Bold"
                                                FontSize="14"
                                                TextColor="LightGray" />
-                                        </Frame>
-                                        <Frame BackgroundColor="DimGray" Padding="5"
+                                    </Frame>
+                                    <Frame BackgroundColor="DimGray" Padding="5"
                                            Margin="5" HorizontalOptions="Start" VerticalOptions="End">
-                                            <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
+                                        <Label Text="{Binding PictureTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
                                                TextColor="LightGray"
                                                FontSize="10" />
-                                        </Frame>
+                                    </Frame>
                                     <Frame HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="5" Margin="5" HasShadow="False">
                                         <StackLayout Orientation="Horizontal">
                                             <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
                                             <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="11" ></Label>
                                         </StackLayout>
-
                                     </Frame>
                                 </Grid>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>
