@@ -762,6 +762,12 @@
   <data name="DeleteWordMessage" xml:space="preserve">
     <value>Möchten Sie diese Wort wirklich löschen</value>
   </data>
+  <data name="DeleteFriend" xml:space="preserve">
+    <value>Freund löschen</value>
+  </data>
+  <data name="DeleteFriendMessage" xml:space="preserve">
+    <value>Möchten Sie diese Freund wirklich löschen</value>
+  </data>
   <data name="DeleteMeasurement" xml:space="preserve">
     <value>Messung löschen</value>
   </data>

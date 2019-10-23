@@ -4961,5 +4961,45 @@ namespace KinaUnaXamarin.Services
 
             return measurement;
         }
+
+        public static async Task<Friend> UpdateFriend(Friend friend)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/friends/" + friend.FriendId, new StringContent(JsonConvert.SerializeObject(friend), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Friend resultItem = JsonConvert.DeserializeObject<Friend>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return friend;
+        }
+
+        public static async Task<Friend> DeleteFriend(Friend friend)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/friends/" + friend.FriendId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Friend deleteFriendItem = new Friend();
+                    deleteFriendItem.FriendId = 0;
+                    return deleteFriendItem;
+                }
+            }
+
+            return friend;
+        }
     }
 }

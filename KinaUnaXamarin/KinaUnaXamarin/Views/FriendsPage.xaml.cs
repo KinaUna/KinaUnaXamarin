@@ -302,9 +302,14 @@ namespace KinaUnaXamarin.Views
             await Reload();
         }
 
-        private void FriendsCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void FriendsCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (FriendsCollectionView.SelectedItem is Friend friendItem)
+            {
+                FriendDetailPage friendDetailPage = new FriendDetailPage(friendItem);
+                FriendsCollectionView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(friendDetailPage);
+            }
         }
     }
 }

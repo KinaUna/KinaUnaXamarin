@@ -682,6 +682,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Friend.
+        /// </summary>
+        internal static string DeleteFriend {
+            get {
+                return ResourceManager.GetString("DeleteFriend", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this friend.
+        /// </summary>
+        internal static string DeleteFriendMessage {
+            get {
+                return ResourceManager.GetString("DeleteFriendMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Location.
         /// </summary>
         internal static string DeleteLocation {

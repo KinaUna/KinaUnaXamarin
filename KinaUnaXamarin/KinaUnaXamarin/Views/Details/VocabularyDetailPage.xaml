@@ -67,7 +67,6 @@
                        Grid.Column="1"
                        Text="{Binding SoundsLike}"
                        Margin="5"
-                       FontAttributes="Bold"
                        FontSize="15"
                        TextColor="Black"
                        IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
@@ -75,7 +74,6 @@
                            Grid.Column="1"
                            Text="{Binding Description}"
                            Margin="5"
-                           FontAttributes="Bold"
                            FontSize="15"
                            TextColor="Black"
                            IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
@@ -83,7 +81,6 @@
                            Grid.Column="1"
                            Text="{Binding Language}"
                            Margin="5"
-                           FontAttributes="Bold"
                            FontSize="15"
                            TextColor="Black"
                            IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
@@ -91,7 +88,6 @@
                            Grid.Column="1"
                            Margin="5"
                            Text="{Binding CurrentVocabularyItem.Date, StringFormat='{0:dd-MMM-yyyy}'}"
-                           FontAttributes="Bold"
                            FontSize="15"
                            TextColor="Black"
                            IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>

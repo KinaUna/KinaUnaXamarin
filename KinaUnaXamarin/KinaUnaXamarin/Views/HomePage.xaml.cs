@@ -531,9 +531,14 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(measurementDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is Friend friendItem)
+                { 
+                    FriendDetailPage friendDetailPage = new FriendDetailPage(friendItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(friendDetailPage);
+                }
             }
         }
-
-        
     }
 }

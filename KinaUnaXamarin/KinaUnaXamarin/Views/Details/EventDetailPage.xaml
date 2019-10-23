@@ -44,7 +44,6 @@
                     <Label Grid.Row="1"
                        Grid.Column="0"
                        Text="{i18n:Translate Start}"
-                       FontAttributes="Bold"
                        FontSize="15" />
                     <Label Grid.Row="2"
                        Grid.Column="0"
@@ -78,7 +77,6 @@
                        Grid.Column="1"
                        Margin="5"
                        Text="{Binding CurrentEvent.StartTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
-                       FontAttributes="Bold"
                        FontSize="15"
                        TextColor="Black"
                        IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
@@ -86,7 +84,6 @@
                        Grid.Column="1"
                        Margin="5"
                        Text="{Binding CurrentEvent.EndTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}"
-                       FontAttributes="Bold"
                        FontSize="15"
                        TextColor="Black"
                        IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
