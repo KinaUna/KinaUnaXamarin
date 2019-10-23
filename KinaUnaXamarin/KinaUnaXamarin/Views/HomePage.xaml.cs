@@ -517,6 +517,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(vocabularyDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is Skill skillItem)
+                {
+                    SkillDetailPage skillDetailPage = new SkillDetailPage(skillItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(skillDetailPage);
+                }
             }
         }
 

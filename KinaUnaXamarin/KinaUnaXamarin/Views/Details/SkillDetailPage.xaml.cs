@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
+using System.Text;
 using System.Threading.Tasks;
 using dotMorten.Xamarin.Forms;
 using KinaUnaXamarin.Helpers;
@@ -21,9 +22,9 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationDetailPage : ContentPage
+    public partial class SkillDetailPage : ContentPage
     {
-        private readonly LocationDetailViewModel _viewModel = new LocationDetailViewModel();
+        private readonly SkillDetailViewModel _viewModel = new SkillDetailViewModel();
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -32,26 +33,15 @@ namespace KinaUnaXamarin.Views
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
-        public LocationDetailPage(Models.KinaUna.Location locationItem)
+        public SkillDetailPage(Skill skillItem)
         {
-            _viewModel = new LocationDetailViewModel();
-            InitializeComponent();
-            _viewModel.CurrentLocationId = locationItem.LocationId;
-            _viewModel.AccessLevel = locationItem.AccessLevel;
-            _viewModel.City = locationItem.City;
-            _viewModel.Country = locationItem.Country;
-            _viewModel.County = locationItem.County;
-            _viewModel.District = locationItem.District;
-            _viewModel.HouseNumber = locationItem.HouseNumber;
-            _viewModel.Latitude = locationItem.Latitude.ToString(CultureInfo.InvariantCulture);
-            _viewModel.Longitude = locationItem.Longitude.ToString(CultureInfo.InvariantCulture);
-            _viewModel.Name = locationItem.Name;
-            _viewModel.Notes = locationItem.Notes;
-            _viewModel.PostalCode = locationItem.PostalCode;
-            _viewModel.State = locationItem.State;
-            _viewModel.Street = locationItem.StreetName;
-            _viewModel.Tags = locationItem.Tags;
             
+            InitializeComponent();
+            _viewModel.CurrentSkillItemId = skillItem.SkillId;
+            _viewModel.Name = skillItem.Name;
+            _viewModel.AccessLevel = skillItem.AccessLevel;
+            _viewModel.Category = skillItem.Category;
+            _viewModel.Description = skillItem.Description;
             BindingContext = _viewModel;
             
         }
@@ -185,25 +175,21 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.IsBusy = true;
             await CheckAccount();
-            _viewModel.CurrentLocation =
-                await ProgenyService.GetLocation(_viewModel.CurrentLocationId, _accessToken, _userInfo.Timezone);
+            _viewModel.CurrentSkillItem =
+                await ProgenyService.GetSkill(_viewModel.CurrentSkillItemId, _accessToken, _userInfo.Timezone);
 
-            _viewModel.AccessLevel = _viewModel.CurrentLocation.AccessLevel;
-            _viewModel.CurrentLocation.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentLocation.ProgenyId);
-
-            if (_viewModel.CurrentLocation.Date.HasValue)
+            _viewModel.AccessLevel = _viewModel.CurrentSkillItem.AccessLevel;
+            _viewModel.CurrentSkillItem.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSkillItem.ProgenyId);
+            if (_viewModel.CurrentSkillItem.SkillFirstObservation.HasValue)
             {
-                _viewModel.DateYear = _viewModel.CurrentLocation.Date.Value.Year;
-                _viewModel.DateMonth = _viewModel.CurrentLocation.Date.Value.Month;
-                _viewModel.DateDay = _viewModel.CurrentLocation.Date.Value.Day;
-                _viewModel.DateHours = _viewModel.CurrentLocation.Date.Value.Hour;
-                _viewModel.DateMinutes = _viewModel.CurrentLocation.Date.Value.Minute;
+                _viewModel.DateYear = _viewModel.CurrentSkillItem.SkillFirstObservation.Value.Year;
+                _viewModel.DateMonth = _viewModel.CurrentSkillItem.SkillFirstObservation.Value.Month;
+                _viewModel.DateDay = _viewModel.CurrentSkillItem.SkillFirstObservation.Value.Day;
 
-                LocationDatePicker.Date = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
-                LocationTimePicker.Time = new TimeSpan(_viewModel.CurrentLocation.Date.Value.Hour, _viewModel.CurrentLocation.Date.Value.Minute, 0);
+                SkillDatePicker.Date = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
             }
 
-            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentLocation.ProgenyId);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentSkillItem.ProgenyId);
             if (_viewModel.UserAccessLevel == 0)
             {
                 _viewModel.CanUserEditItems = true;
@@ -213,21 +199,11 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CanUserEditItems = false;
             }
 
-            _viewModel.CurrentLocationId = _viewModel.CurrentLocation.LocationId;
-            _viewModel.AccessLevel = _viewModel.CurrentLocation.AccessLevel;
-            _viewModel.City = _viewModel.CurrentLocation.City;
-            _viewModel.Country = _viewModel.CurrentLocation.Country;
-            _viewModel.County = _viewModel.CurrentLocation.County;
-            _viewModel.District = _viewModel.CurrentLocation.District;
-            _viewModel.HouseNumber = _viewModel.CurrentLocation.HouseNumber;
-            _viewModel.Latitude = _viewModel.CurrentLocation.Latitude.ToString(CultureInfo.InvariantCulture);
-            _viewModel.Longitude = _viewModel.CurrentLocation.Longitude.ToString(CultureInfo.InvariantCulture);
-            _viewModel.Name = _viewModel.CurrentLocation.Name;
-            _viewModel.Notes = _viewModel.CurrentLocation.Notes;
-            _viewModel.PostalCode = _viewModel.CurrentLocation.PostalCode;
-            _viewModel.State = _viewModel.CurrentLocation.State;
-            _viewModel.Street = _viewModel.CurrentLocation.StreetName;
-            _viewModel.Tags = _viewModel.CurrentLocation.Tags;
+            _viewModel.CurrentSkillItemId = _viewModel.CurrentSkillItem.SkillId;
+            _viewModel.AccessLevel = _viewModel.CurrentSkillItem.AccessLevel;
+            _viewModel.Name = _viewModel.CurrentSkillItem.Name;
+            _viewModel.Description = _viewModel.CurrentSkillItem.Description;
+            _viewModel.Category = _viewModel.CurrentSkillItem.Category;
             
             var networkInfo = Connectivity.NetworkAccess;
 
@@ -254,41 +230,20 @@ namespace KinaUnaXamarin.Views
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
 
-                DateTime locDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay, _viewModel.DateHours, _viewModel.DateMinutes, 0);
-                _viewModel.CurrentLocation.Date = locDate;
-                _viewModel.CurrentLocation.Name = _viewModel.Name;
-                _viewModel.CurrentLocation.StreetName = _viewModel.Street;
-                _viewModel.CurrentLocation.HouseNumber = _viewModel.HouseNumber;
-                _viewModel.CurrentLocation.District = _viewModel.District;
-                _viewModel.CurrentLocation.City = _viewModel.City;
-                _viewModel.CurrentLocation.PostalCode = _viewModel.PostalCode;
-                _viewModel.CurrentLocation.County = _viewModel.County;
-                _viewModel.CurrentLocation.State = _viewModel.State;
-                _viewModel.CurrentLocation.Country = _viewModel.Country;
-                double latitude = 0.0;
-                bool latitudeParsed = double.TryParse(_viewModel.Latitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out latitude);
-                if (latitudeParsed)
-                {
-                    _viewModel.CurrentLocation.Latitude = latitude;
-                }
-                double longitude = 0.0;
-                bool longitudeParsed = double.TryParse(_viewModel.Longitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out longitude);
-                if (longitudeParsed)
-                {
-                    _viewModel.CurrentLocation.Longitude = longitude;
-                }
-
-                _viewModel.CurrentLocation.Notes = _viewModel.Notes;
-                _viewModel.CurrentLocation.Tags = TagsEntry.Text;
-                _viewModel.CurrentLocation.AccessLevel = _viewModel.AccessLevel;
+                DateTime skillDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
+                _viewModel.CurrentSkillItem.SkillFirstObservation = skillDate;
+                _viewModel.CurrentSkillItem.Name = _viewModel.Name;
+                _viewModel.CurrentSkillItem.Description = _viewModel.Description;
+                _viewModel.CurrentSkillItem.Category = CategoryEntry.Text.Trim();
+                _viewModel.CurrentSkillItem.AccessLevel = _viewModel.AccessLevel;
 
                 // Save changes.
-                Models.KinaUna.Location resultLocation = await ProgenyService.UpdateLocation(_viewModel.CurrentLocation);
+                Skill resultSkillItem = await ProgenyService.UpdateSkill(_viewModel.CurrentSkillItem);
                 _viewModel.IsBusy = false;
                 EditButton.Text = IconFont.CalendarEdit;
-                if (resultLocation != null)  // Todo: Error message if update fails.
+                if (resultSkillItem != null)  // Todo: Error message if update fails.
                 {
-                    MessageLabel.Text = "Location Item Updated"; // Todo: Translate
+                    MessageLabel.Text = "Skill Updated"; // Todo: Translate
                     MessageLabel.BackgroundColor = Color.DarkGreen;
                     MessageLabel.IsVisible = true;
                     await Reload();
@@ -299,37 +254,29 @@ namespace KinaUnaXamarin.Views
                 EditButton.Text = IconFont.ContentSave;
 
                 _viewModel.EditMode = true;
-                _viewModel.TagsAutoSuggestList = await ProgenyService.GetTagsAutoSuggestList(_viewModel.CurrentLocation.ProgenyId, 0);
+                _viewModel.CategoryAutoSuggestList = await ProgenyService.GetCategoryAutoSuggestList(_viewModel.CurrentSkillItem.ProgenyId, 0);
             }
         }
 
         private async void CancelButton_OnClicked(object sender, EventArgs e)
         {
-            EditButton.Text = IconFont.AccountEdit;
+            EditButton.Text = IconFont.CalendarEdit;
             _viewModel.EditMode = false;
             await Reload();
         }
 
-        private void LocationDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
+        private void SkillDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.DateYear = LocationDatePicker.Date.Year;
-            _viewModel.DateMonth = LocationDatePicker.Date.Month;
-            _viewModel.DateDay = LocationDatePicker.Date.Day;
-            _viewModel.DateHours = LocationDatePicker.Date.Hour;
-            _viewModel.DateMinutes = LocationDatePicker.Date.Minute;
+            _viewModel.DateYear = SkillDatePicker.Date.Year;
+            _viewModel.DateMonth = SkillDatePicker.Date.Month;
+            _viewModel.DateDay = SkillDatePicker.Date.Day;
         }
 
-        private void LocationTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            _viewModel.DateHours = LocationTimePicker.Time.Hours;
-            _viewModel.DateMinutes = LocationTimePicker.Time.Minutes;
-        }
-        
         private async void DeleteButton_OnClickedButton_OnClicked(object sender, EventArgs e)
         {
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
-            string confirmTitle = resmgr.Value.GetString("DeleteLocation", ci);
-            string confirmMessage = resmgr.Value.GetString("DeleteLocationMessage", ci) + " ? ";
+            string confirmTitle = resmgr.Value.GetString("DeleteSkill", ci);
+            string confirmMessage = resmgr.Value.GetString("DeleteSkillMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
             string no = resmgr.Value.GetString("No", ci); ;
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
@@ -337,8 +284,8 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.IsBusy = true;
                 _viewModel.EditMode = false;
-                Models.KinaUna.Location deletedLocation = await ProgenyService.DeleteLocation(_viewModel.CurrentLocation);
-                if (deletedLocation.LocationId == 0)
+                Skill deleteSkillItem = await ProgenyService.DeleteSkill(_viewModel.CurrentSkillItem);
+                if (deleteSkillItem.SkillId == 0)
                 {
                     _viewModel.EditMode = false;
                     // Todo: Show success message
@@ -353,7 +300,7 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void TagsEditor_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
+        private void CategoryEntry_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
         {
             // Only get results when it was a user typing, 
             // otherwise assume the value got filled in by TextMemberPath 
@@ -363,25 +310,16 @@ namespace KinaUnaXamarin.Views
                 AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
                 if (autoSuggestBox != null && autoSuggestBox.Text.Length > 0)
                 {
-                    string lastTag = autoSuggestBox.Text.Split(',').LastOrDefault();
-                    if (!string.IsNullOrEmpty(lastTag) && lastTag.Length > 0)
+                    List<string> filteredCategories = new List<string>();
+                    foreach (string categoryString in _viewModel.CategoryAutoSuggestList)
                     {
-                        List<string> filteredTags = new List<string>();
-                        foreach (string tagString in _viewModel.TagsAutoSuggestList)
+                        if (categoryString.ToUpper().Contains(autoSuggestBox.Text.Trim().ToUpper()))
                         {
-                            if (tagString.Trim().ToUpper().Contains(lastTag.Trim().ToUpper()))
-                            {
-                                filteredTags.Add(tagString);
-                            }
+                            filteredCategories.Add(categoryString);
                         }
-                        //Set the ItemsSource to be your filtered dataset
-                        autoSuggestBox.ItemsSource = filteredTags;
                     }
-                    else
-                    {
-                        autoSuggestBox.ItemsSource = null;
-                    }
-
+                    //Set the ItemsSource to be your filtered dataset
+                    autoSuggestBox.ItemsSource = filteredCategories;
                 }
                 else
                 {
@@ -393,7 +331,7 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void TagsEditor_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
+        private void CategoryEntry_OnQuerySubmitted(object sender, AutoSuggestBoxQuerySubmittedEventArgs e)
         {
             if (e.ChosenSuggestion != null)
             {
@@ -401,19 +339,7 @@ namespace KinaUnaXamarin.Views
                 if (autoSuggestBox != null)
                 {
                     // User selected an item from the suggestion list, take an action on it here.
-                    List<string> existingTags = TagsEntry.Text.Split(',').ToList();
-                    existingTags.Remove(existingTags.Last());
-                    string newText = "";
-                    if (existingTags.Any())
-                    {
-                        foreach (string tagString in existingTags)
-                        {
-                            newText = newText + tagString + ", ";
-                        }
-                    }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
-                    autoSuggestBox.Text = newText;
-
+                    autoSuggestBox.Text = e.ChosenSuggestion.ToString();
                     autoSuggestBox.ItemsSource = null;
                 }
             }
@@ -423,20 +349,13 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private void TagsEditor_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
+        private void CategoryEntry_OnSuggestionChosen(object sender, AutoSuggestBoxSuggestionChosenEventArgs e)
         {
             AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
             // Set sender.Text. You can use e.SelectedItem to build your text string.
             if (autoSuggestBox != null)
             {
-                //List<string> existingTags = TagsEditor.Text.Split(',').ToList();
-                //existingTags.Remove(existingTags.Last());
-                //autoSuggestBox.Text = "";
-                //foreach (string tagString in existingTags)
-                //{
-                //    autoSuggestBox.Text = autoSuggestBox.Text + ", " + tagString;
-                //}
-                //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
+                autoSuggestBox.Text = e.SelectedItem.ToString();
             }
         }
     }

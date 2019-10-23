@@ -762,4 +762,10 @@
   <data name="DeleteWordMessage" xml:space="preserve">
     <value>Möchten Sie diese Wort wirklich löschen</value>
   </data>
+  <data name="DeleteSkill" xml:space="preserve">
+    <value>Fähigkeit löschen</value>
+  </data>
+  <data name="DeleteSkillMessage" xml:space="preserve">
+    <value>Möchten Sie diese Fähigkeit wirklich löschen</value>
+  </data>
 </root>

@@ -4881,5 +4881,45 @@ namespace KinaUnaXamarin.Services
 
             return vocabularyItem;
         }
+
+        public static async Task<Skill> UpdateSkill(Skill skill)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/skills/" + skill.SkillId, new StringContent(JsonConvert.SerializeObject(skill), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Skill resultItem = JsonConvert.DeserializeObject<Skill>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return skill;
+        }
+
+        public static async Task<Skill> DeleteSkill(Skill skill)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/skills/" + skill.SkillId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Skill deleteSkillItem = new Skill();
+                    deleteSkillItem.SkillId = 0;
+                    return deleteSkillItem;
+                }
+            }
+
+            return skill;
+        }
     }
 }

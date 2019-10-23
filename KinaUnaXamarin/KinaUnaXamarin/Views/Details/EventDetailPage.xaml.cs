@@ -374,12 +374,12 @@ namespace KinaUnaXamarin.Views
             if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
-                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 0)
                 {
                     List<string> filteredLocations = new List<string>();
                     foreach (string locationString in _viewModel.LocationAutoSuggestList)
                     {
-                        if (locationString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        if (locationString.ToUpper().Contains(autoSuggestBox.Text.Trim().ToUpper()))
                         {
                             filteredLocations.Add(locationString);
                         }
@@ -433,12 +433,12 @@ namespace KinaUnaXamarin.Views
             if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
-                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 0)
                 {
                     List<string> filteredContexts = new List<string>();
                     foreach (string contextString in _viewModel.ContextAutoSuggestList)
                     {
-                        if (contextString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        if (contextString.ToUpper().Contains(autoSuggestBox.Text.Trim().ToUpper()))
                         {
                             filteredContexts.Add(contextString);
                         }

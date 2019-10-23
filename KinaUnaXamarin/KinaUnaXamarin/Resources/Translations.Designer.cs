@@ -700,6 +700,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Skill.
+        /// </summary>
+        internal static string DeleteSkill {
+            get {
+                return ResourceManager.GetString("DeleteSkill", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this skill.
+        /// </summary>
+        internal static string DeleteSkillMessage {
+            get {
+                return ResourceManager.GetString("DeleteSkillMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Sleep.
         /// </summary>
         internal static string DeleteSleep {

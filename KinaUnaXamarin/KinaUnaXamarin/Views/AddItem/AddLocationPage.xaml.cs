@@ -244,10 +244,10 @@ namespace KinaUnaXamarin.Views.AddItem
             if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
-                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 0)
                 {
                     string lastTag = autoSuggestBox.Text.Split(',').LastOrDefault();
-                    if (!string.IsNullOrEmpty(lastTag) && lastTag.Length > 1)
+                    if (!string.IsNullOrEmpty(lastTag) && lastTag.Length > 0)
                     {
                         List<string> filteredTags = new List<string>();
                         foreach (string tagString in _viewModel.TagsAutoSuggestList)

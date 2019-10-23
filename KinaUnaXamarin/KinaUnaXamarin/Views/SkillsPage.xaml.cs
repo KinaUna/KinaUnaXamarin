@@ -269,16 +269,15 @@ namespace KinaUnaXamarin.Views
             await UpdateSkills();
         }
 
-        private void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void SkillsListView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (SkillsListView.SelectedItem is Skill selectedSkill)
             {
-                //SkillDetailPage skillDetailPage = new MeasurementDetailPage(selectedSkill.SkillId);
-                //// Reset selection
-                //SkillsListView.SelectedItem = null;
-                //await Shell.Current.Navigation.PushModalAsync(SkillDetailPage);
+                SkillDetailPage skillDetailPage = new SkillDetailPage(selectedSkill);
+                // Reset selection
+                SkillsListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(skillDetailPage);
             }
-
         }
     }
 }

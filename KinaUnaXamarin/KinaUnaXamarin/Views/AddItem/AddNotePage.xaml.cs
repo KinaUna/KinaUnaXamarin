@@ -182,12 +182,12 @@ namespace KinaUnaXamarin.Views.AddItem
             if (e.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
                 AutoSuggestBox autoSuggestBox = sender as AutoSuggestBox;
-                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 1)
+                if (autoSuggestBox != null && autoSuggestBox.Text.Length > 0)
                 {
                     List<string> filteredCategories = new List<string>();
                     foreach (string categoryString in _viewModel.CategoryAutoSuggestList)
                     {
-                        if (categoryString.ToUpper().Contains(autoSuggestBox.Text.ToUpper()))
+                        if (categoryString.ToUpper().Contains(autoSuggestBox.Text.Trim().ToUpper()))
                         {
                             filteredCategories.Add(categoryString);
                         }
