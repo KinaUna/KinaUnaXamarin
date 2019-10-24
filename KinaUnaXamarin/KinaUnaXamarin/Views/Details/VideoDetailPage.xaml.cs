@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -412,11 +413,6 @@ namespace KinaUnaXamarin.Views
         {
             if (_viewModel.IsLoggedIn)
             {
-                //CommentsPage commentsPage = new CommentsPage(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
-                //await Shell.Current.Navigation.PushModalAsync(commentsPage);
-
-                _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
-                CommentsCollectionView.ItemsSource = _commentsPageViewModel.CommentsCollection;
                 await GetComments();
                 _viewModel.ShowComments = true;
             }
@@ -424,7 +420,8 @@ namespace KinaUnaXamarin.Views
 
         private async Task GetComments()
         {
-            _commentsPageViewModel.CommentsCollection.Clear();
+            _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
+            _commentsPageViewModel.CommentsCollection = new ObservableCollection<Comment>();
             List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentVideoViewModel.CommentThreadNumber);
             if (commentsList.Any())
             {
@@ -435,6 +432,7 @@ namespace KinaUnaXamarin.Views
 
                 _viewModel.CurrentVideoViewModel.CommentsCount = commentsList.Count;
             }
+            CommentsCollectionView.ItemsSource = _commentsPageViewModel.CommentsCollection;
         }
 
         private async void AddCommentButton_OnClicked(object sender, EventArgs e)
