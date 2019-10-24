@@ -88,6 +88,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Active.
+        /// </summary>
+        internal static string Active {
+            get {
+                return ResourceManager.GetString("Active", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Calendar Event.
         /// </summary>
         internal static string AddCalendarEvent {
@@ -439,6 +448,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call.
+        /// </summary>
+        internal static string Call {
+            get {
+                return ResourceManager.GetString("Call", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel.
         /// </summary>
         internal static string Cancel {
@@ -664,6 +682,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Contact.
+        /// </summary>
+        internal static string DeleteContact {
+            get {
+                return ResourceManager.GetString("DeleteContact", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this contact.
+        /// </summary>
+        internal static string DeleteContactMessage {
+            get {
+                return ResourceManager.GetString("DeleteContactMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Event.
         /// </summary>
         internal static string DeleteEvent {
@@ -849,6 +885,24 @@ namespace KinaUnaXamarin.Resources {
         internal static string DurationColon {
             get {
                 return ResourceManager.GetString("DurationColon", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email 1.
+        /// </summary>
+        internal static string Email1 {
+            get {
+                return ResourceManager.GetString("Email1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Email 2.
+        /// </summary>
+        internal static string Email2 {
+            get {
+                return ResourceManager.GetString("Email2", resourceCulture);
             }
         }
         
@@ -1974,6 +2028,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Was {
             get {
                 return ResourceManager.GetString("Was", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Website.
+        /// </summary>
+        internal static string Website {
+            get {
+                return ResourceManager.GetString("Website", resourceCulture);
             }
         }
         

@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
+             mc:Ignorable="d"
+             x:Class="KinaUnaXamarin.Views.ContactDetailPage"
+             Visual="Material">
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+        <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="WhiteSmoke">
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
+            <ScrollView>
+                <Grid x:Name="DetailsGrid" Margin="10" VerticalOptions="FillAndExpand">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0"
+                       Grid.Column="0"
+                       Text="{i18n:Translate FirstName}"
+                       FontSize="15"/>
+                    <Label Grid.Row="1"
+                       Grid.Column="0"
+                       Text="{i18n:Translate MiddleName}"
+                       FontSize="15" />
+                    <Label Grid.Row="2"
+                       Grid.Column="0"
+                       Text="{i18n:Translate LastName}"
+                       FontSize="14"/>
+                    <Label Grid.Row="3"
+                       Grid.Column="0"
+                       Text="{i18n:Translate DisplayName}"
+                       FontSize="14"/>
+                    <Label Grid.Row="4"
+                       Grid.Column="0"
+                       Text="{i18n:Translate AddressLine1}"
+                       FontSize="14" />
+                    <Label Grid.Row="5"
+                           Grid.Column="0"
+                           Text="{i18n:Translate AddressLine2}"
+                           FontSize="14" />
+                    <Label Grid.Row="6"
+                           Grid.Column="0"
+                           Text="{i18n:Translate City}"
+                           FontSize="14" />
+                    <Label Grid.Row="7"
+                           Grid.Column="0"
+                           Text="{i18n:Translate State}"
+                           FontSize="14" />
+                    <Label Grid.Row="8"
+                           Grid.Column="0"
+                           Text="{i18n:Translate PostalCode}"
+                           FontSize="14" />
+                    <Label Grid.Row="9"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Country}"
+                           FontSize="14" />
+                    <Label Grid.Row="10"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Email1}"
+                           FontSize="14" />
+                    <Label Grid.Row="11"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Email2}"
+                           FontSize="14" />
+                    <Label Grid.Row="12"
+                           Grid.Column="0"
+                           Text="{i18n:Translate PhoneNumber}"
+                           FontSize="14" />
+                    <Label Grid.Row="13"
+                           Grid.Column="0"
+                           Text="{i18n:Translate MobileNumber}"
+                           FontSize="14" />
+                    <Label Grid.Row="14"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Website}"
+                           FontSize="14" />
+                    <Label Grid.Row="15"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Context}"
+                           FontSize="14" />
+                    <Label Grid.Row="16"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Notes}"
+                           FontSize="14" />
+                    <Label Grid.Row="17"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Tags}"
+                           FontSize="14" />
+                    <Label Grid.Row="18"
+                           Grid.Column="0"
+                           Text="{i18n:Translate Active}"
+                           FontSize="14" />
+                    <Label Grid.Row="0"
+                           Grid.Column="1"
+                           Text="{Binding FirstName}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                    <Label Grid.Row="1"
+                       Grid.Column="1"
+                       Text="{Binding MiddleName}"
+                       Margin="5"
+                       FontSize="15"
+                       TextColor="Black"
+                       IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="2"
+                           Grid.Column="1"
+                           Text="{Binding LastName}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="3"
+                           Grid.Column="1"
+                           Text="{Binding DisplayName}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="4"
+                           Grid.Column="1"
+                           Text="{Binding AddressLine1}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="5"
+                           Grid.Column="1"
+                           Text="{Binding AddressLine2}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="6"
+                           Grid.Column="1"
+                           Text="{Binding City}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="7"
+                           Grid.Column="1"
+                           Text="{Binding State}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="8"
+                           Grid.Column="1"
+                           Text="{Binding PostalCode}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="9"
+                           Grid.Column="1"
+                           Text="{Binding Country}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <StackLayout Grid.Row="10"
+                                 Grid.Column="1" Orientation="Vertical" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}">
+                        <Label Text="{Binding Email1}"
+                               Margin="5"
+                               FontSize="15"
+                               TextColor="Black"/>
+                        <Button x:Name="Email1Button" Text="{x:Static models:IconFont.Email}" FontFamily="{StaticResource MaterialFontFamily}" IsVisible="{Binding Email1, Converter={StaticResource TextNotEmptyConverter }}" Clicked="Email1Button_OnClicked" HorizontalOptions="End"></Button>
+                    </StackLayout>
+                    <StackLayout Grid.Row="11"
+                                 Grid.Column="1" Orientation="Vertical" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}" >
+                        <Label Text="{Binding Email2}"
+                               Margin="5"
+                               FontSize="15"
+                               TextColor="Black"/>
+                        <Button x:Name="Email2Button" Text="{x:Static models:IconFont.Email}" FontFamily="{StaticResource MaterialFontFamily}" IsVisible="{Binding Email2, Converter={StaticResource TextNotEmptyConverter }}" Clicked="Email2Button_OnClicked" HorizontalOptions="End" ></Button>
+                    </StackLayout>
+                    <StackLayout Grid.Row="12"
+                                 Grid.Column="1" Orientation="Vertical" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}" >
+                        <Label Text="{Binding PhoneNumber}"
+                               Margin="5"
+                               FontSize="15"
+                               TextColor="Black"/>
+                        <Button x:Name="CallPhoneNumberButton" Text="{x:Static models:IconFont.Phone}" FontFamily="{StaticResource MaterialFontFamily}" IsVisible="{Binding PhoneNumber, Converter={StaticResource TextNotEmptyConverter }}" Clicked="CallPhoneNumberButton_OnClicked" HorizontalOptions="End"></Button>
+                    </StackLayout>
+                    <StackLayout Grid.Row="13"
+                                 Grid.Column="1" Orientation="Vertical" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}" >
+                        <Label Text="{Binding MobileNumber}"
+                               Margin="5"
+                               FontSize="15"
+                               TextColor="Black"/>
+                        <StackLayout Orientation="Horizontal" IsVisible="{Binding MobileNumber, Converter={StaticResource TextNotEmptyConverter }}" HorizontalOptions="End">
+                            <Button x:Name="CallMobileNumberButton" Text="{x:Static models:IconFont.Phone}" FontFamily="{StaticResource MaterialFontFamily}" Clicked="CallMobileNumberButton_OnClicked"></Button>
+                            <Button x:Name="SmsMobileNumberButton" Text="{x:Static models:IconFont.MessageText}" FontFamily="{StaticResource MaterialFontFamily}" Clicked="SmsMobileNumberButton_OnClicked"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                    <StackLayout Grid.Row="14"
+                                 Grid.Column="1" Orientation="Vertical" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}" >
+                        <Label Text="{Binding Website}"
+                               Margin="5"
+                               FontSize="15"
+                               TextColor="Black"/>
+                        <Button x:Name="WebsiteButton" Text="{x:Static models:IconFont.Web}" FontFamily="{StaticResource MaterialFontFamily}" IsVisible="{Binding Website, Converter={StaticResource TextNotEmptyConverter }}" Clicked="WebsiteButton_OnClicked" HorizontalOptions="End"></Button>
+                    </StackLayout>
+                    <Label Grid.Row="15"
+                           Grid.Column="1"
+                           Text="{Binding Context}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="16"
+                           Grid.Column="1"
+                           Text="{Binding Notes}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <Label Grid.Row="17"
+                           Grid.Column="1"
+                           Text="{Binding Tags}"
+                           Margin="5"
+                           FontSize="15"
+                           TextColor="Black"
+                           IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
+                    <CheckBox Grid.Row="18" Grid.Column="1" x:Name="ActiveCheckBox" IsChecked="{Binding Active}" IsEnabled="{Binding EditMode}"></CheckBox>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="MiddleNameEntry" Text="{Binding MiddleName}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="LastNameEntry" Text="{Binding LastName}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="DisplayNameEntry" Text="{Binding DisplayName}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="AddressLine1Entry" Text="{Binding AddressLine1}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="AddressLine2Entry" Text="{Binding AddressLine2}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CityEntry" Text="{Binding City}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="StateEntry" Text="{Binding State}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="8" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="PostalCodeEntry" Text="{Binding PostalCode}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="9" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="CountryEntry" Text="{Binding Country}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="10" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="Email1Entry" Text="{Binding Email1}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="11" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="Email2Entry" Text="{Binding Email2}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="12" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="PhoneNumberEntry" Text="{Binding PhoneNumber}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="13" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="MobileNumberEntry" Text="{Binding MobileNumber}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="14" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Entry x:Name="WebsiteEntry" Text="{Binding Website}"></Entry>
+                    </StackLayout>
+                    <StackLayout Grid.Row="15" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <forms:AutoSuggestBox x:Name="ContextEntry" Text="{Binding Context}"  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                    </StackLayout>
+                    <StackLayout Grid.Row="16" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Editor x:Name="NotesEditor" Text="{Binding Notes}" AutoSize="TextChanges"></Editor>
+                    </StackLayout>
+                    <StackLayout Grid.Row="17" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
+                    </StackLayout>
+                    <StackLayout  Grid.Row="19" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                    </StackLayout>
+                    <StackLayout Grid.Row="20" Grid.Column="0" Grid.ColumnSpan="2" Margin="5">
+                        <Image x:Name="ContactImage" HeightRequest="200" HorizontalOptions="FillAndExpand"></Image>
+                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                    </StackLayout>
+                    <StackLayout Grid.Row="21" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
+                        <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
+                        <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                        <StackLayout Orientation="Horizontal" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="EndAndExpand">
+                            <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClickedButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                        </StackLayout>
+                    </StackLayout>
+                    <Label Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                </Grid>
+            </ScrollView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

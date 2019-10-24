@@ -5001,5 +5001,45 @@ namespace KinaUnaXamarin.Services
 
             return friend;
         }
+
+        public static async Task<Contact> UpdateContact(Contact contact)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/contacts/" + contact.ContactId, new StringContent(JsonConvert.SerializeObject(contact), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Contact resultItem = JsonConvert.DeserializeObject<Contact>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return contact;
+        }
+
+        public static async Task<Contact> DeleteContact(Contact contact)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/contacts/" + contact.ContactId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Contact deleteContactItem = new Contact();
+                    deleteContactItem.ContactId = 0;
+                    return deleteContactItem;
+                }
+            }
+
+            return contact;
+        }
     }
 }

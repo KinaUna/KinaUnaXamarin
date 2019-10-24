@@ -780,4 +780,25 @@
   <data name="DeleteSkillMessage" xml:space="preserve">
     <value>Are you sure you want to delete this skill</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>Call</value>
+  </data>
+  <data name="DeleteContact" xml:space="preserve">
+    <value>Delete Contact</value>
+  </data>
+  <data name="DeleteContactMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this contact</value>
+  </data>
+  <data name="Email1" xml:space="preserve">
+    <value>Email 1</value>
+  </data>
+  <data name="Email2" xml:space="preserve">
+    <value>Email 2</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
 </root>

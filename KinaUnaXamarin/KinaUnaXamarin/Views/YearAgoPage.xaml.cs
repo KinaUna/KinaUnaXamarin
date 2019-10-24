@@ -321,6 +321,13 @@ namespace KinaUnaXamarin.Views
                     TimeLineListView.SelectedItem = null;
                     await Shell.Current.Navigation.PushModalAsync(friendDetailPage);
                 }
+
+                if (timeLineItem.ItemObject is Contact contactItem)
+                {
+                    ContactDetailPage contactDetailPage = new ContactDetailPage(contactItem);
+                    TimeLineListView.SelectedItem = null;
+                    await Shell.Current.Navigation.PushModalAsync(contactDetailPage);
+                }
             }
         }
     }

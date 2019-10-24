@@ -88,7 +88,7 @@ namespace KinaUnaXamarin.Views
             }
 
             _viewModel.Columns = columns;
-            FriendsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+            ContactsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
 
         }
 
@@ -276,9 +276,14 @@ namespace KinaUnaXamarin.Views
             await Reload();
         }
 
-        private void FriendsCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ContactsCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            
+            if (ContactsCollectionView.SelectedItem is Contact contactItem)
+            {
+                ContactDetailPage contactDetailPage = new ContactDetailPage(contactItem);
+                ContactsCollectionView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(contactDetailPage);
+            }
         }
     }
 }

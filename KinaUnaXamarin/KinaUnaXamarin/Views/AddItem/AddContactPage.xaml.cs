@@ -128,7 +128,7 @@ namespace KinaUnaXamarin.Views.AddItem
             contact.MiddleName = MiddleNameEntry?.Text ?? "";
             contact.LastName = LastNameEntry?.Text ?? "";
             contact.DisplayName = DisplayNameEntry?.Text ?? "";
-            contact.AddressIdNumber = 0; // Todo: Save address object.
+            contact.AddressIdNumber = 0;
             contact.Email1 = Email1Entry?.Text ?? "";
             contact.Email2 = Email2Entry?.Text ?? "";
             contact.PhoneNumber = PhoneNumberEntry?.Text ?? "";

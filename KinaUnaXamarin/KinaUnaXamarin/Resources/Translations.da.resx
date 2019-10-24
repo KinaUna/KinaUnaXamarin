@@ -780,4 +780,25 @@
   <data name="DeleteSkillMessage" xml:space="preserve">
     <value>Er du sikker på at du vil slette denne færdighed</value>
   </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktiv</value>
+  </data>
+  <data name="Call" xml:space="preserve">
+    <value>Ring op</value>
+  </data>
+  <data name="DeleteContact" xml:space="preserve">
+    <value>Slet kontakt</value>
+  </data>
+  <data name="DeleteContactMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette denne kontakt</value>
+  </data>
+  <data name="Email1" xml:space="preserve">
+    <value>Email 1</value>
+  </data>
+  <data name="Email2" xml:space="preserve">
+    <value>Email 2</value>
+  </data>
+  <data name="Website" xml:space="preserve">
+    <value>Website</value>
+  </data>
 </root>

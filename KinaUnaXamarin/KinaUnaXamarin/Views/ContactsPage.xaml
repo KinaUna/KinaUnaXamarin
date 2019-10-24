@@ -20,7 +20,7 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
-            <CollectionView x:Name="FriendsCollectionView" ItemsSource="{Binding ContactItems}" ItemSizingStrategy="MeasureAllItems" SelectionChanged="FriendsCollectionView_OnSelectionChanged"  SelectionMode="Single">
+            <CollectionView x:Name="ContactsCollectionView" ItemsSource="{Binding ContactItems}" ItemSizingStrategy="MeasureAllItems" SelectionChanged="ContactsCollectionView_OnSelectionChanged"  SelectionMode="Single">
                 <CollectionView.ItemsLayout >
                     <GridItemsLayout Orientation="Vertical"
                                          Span="2" />
