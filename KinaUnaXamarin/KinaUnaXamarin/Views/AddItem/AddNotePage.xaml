@@ -6,6 +6,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AddItem.AddNotePage"
              Title="{i18n:Translate AddNote}"
              Visual="Material">
@@ -51,7 +52,8 @@
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
                             <Label Text="{i18n:Translate Content}"></Label>
-                            <Editor x:Name="ContentEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>
+                            <controls:ExtendedWebView x:Name="ContentWebView" HeightRequest="300" Focused="ContentWebView_OnFocused"></controls:ExtendedWebView>
+                            <!--<Editor x:Name="ContentEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>-->
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
                             <Label Text="{i18n:Translate Category}"></Label>

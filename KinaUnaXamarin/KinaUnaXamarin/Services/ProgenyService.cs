@@ -5041,5 +5041,58 @@ namespace KinaUnaXamarin.Services
 
             return contact;
         }
+
+        public static async Task<Note> UpdateNote(Note note)
+        {
+            if (Online())
+            {
+                string timeZone = await UserService.GetUserTimezone();
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+                }
+                catch (Exception)
+                {
+                    timeZone = TZConvert.WindowsToIana(timeZone);
+                }
+
+                note.CreatedDate = TimeZoneInfo.ConvertTimeToUtc(note.CreatedDate, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
+                
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/notes/" + note.NoteId, new StringContent(JsonConvert.SerializeObject(note), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    Note resultItem = JsonConvert.DeserializeObject<Note>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return note;
+        }
+
+        public static async Task<Note> DeleteNote(Note note)
+        {
+            if (Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/notes/" + note.NoteId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    Note deleteNote = new Note();
+                    deleteNote.NoteId = 0;
+                    return deleteNote;
+                }
+            }
+
+            return note;
+        }
     }
 }

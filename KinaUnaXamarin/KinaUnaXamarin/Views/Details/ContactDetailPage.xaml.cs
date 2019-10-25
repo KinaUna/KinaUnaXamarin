@@ -48,7 +48,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.AddressLine1 = contactItem.Address.AddressLine1;
                 _viewModel.AddressLine2 = contactItem.Address.AddressLine2;
                 _viewModel.City = contactItem.Address.City;
-                _viewModel.State = contactItem.Address.City;
+                _viewModel.State = contactItem.Address.State;
                 _viewModel.PostalCode = contactItem.Address.PostalCode;
                 _viewModel.Country = contactItem.Address.Country;
             }

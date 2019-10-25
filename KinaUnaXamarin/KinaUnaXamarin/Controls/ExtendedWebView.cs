@@ -6,9 +6,9 @@ using Xamarin.Forms;
 
 namespace KinaUnaXamarin.Controls
 {
-    // Source: http://lukealderton.com/blog/posts/2016/may/autocustom-height-on-xamarin-forms-webview-for-android-and-ios/
+    // See Platform specific projects for implementation details.
     public class ExtendedWebView : WebView
     {
-
+        
     }
 }

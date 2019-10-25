@@ -772,6 +772,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Note.
+        /// </summary>
+        internal static string DeleteNote {
+            get {
+                return ResourceManager.GetString("DeleteNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this note.
+        /// </summary>
+        internal static string DeleteNoteMessage {
+            get {
+                return ResourceManager.GetString("DeleteNoteMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Skill.
         /// </summary>
         internal static string DeleteSkill {

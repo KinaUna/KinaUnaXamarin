@@ -283,16 +283,15 @@ namespace KinaUnaXamarin.Views
         {
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
-
         
-        private void NotesCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void NotesListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            
-        }
-
-        private void NotesListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            
+            if (NotesListView.SelectedItem is Note noteItem)
+            {
+                NoteDetailPage noteDetailPage = new NoteDetailPage(noteItem);
+                NotesListView.SelectedItem = null;
+                await Shell.Current.Navigation.PushModalAsync(noteDetailPage);
+            }
         }
     }
 }

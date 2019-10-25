@@ -801,6 +801,12 @@
   <data name="Website" xml:space="preserve">
     <value>Website</value>
   </data>
+  <data name="DeleteNote" xml:space="preserve">
+    <value>Delete Note</value>
+  </data>
+  <data name="DeleteNoteMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this note</value>
+  </data>
   <data name="ShowOnlyActive" xml:space="preserve">
     <value>Show only active contacts</value>
   </data>

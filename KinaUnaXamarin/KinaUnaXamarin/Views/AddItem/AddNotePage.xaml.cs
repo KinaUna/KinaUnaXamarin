@@ -22,6 +22,7 @@ namespace KinaUnaXamarin.Views.AddItem
         private bool _online = true;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
+        private double _webViewHeight;
 
         public AddNotePage()
         {
@@ -34,6 +35,11 @@ namespace KinaUnaXamarin.Views.AddItem
             InitializeComponent();
             BindingContext = _viewModel;
             ProgenyCollectionView.ItemsSource = _viewModel.ProgenyCollection;
+            HtmlWebViewSource htmlSource = new HtmlWebViewSource();
+            htmlSource.BaseUrl = DependencyService.Get<IBaseUrl>().Get();
+            htmlSource.Html = DependencyService.Get<IBaseUrl>().GetQuillHtml().Replace("!!Content!!", "");
+
+            ContentWebView.Source = htmlSource;
         }
 
         protected override async void OnAppearing()
@@ -130,7 +136,10 @@ namespace KinaUnaXamarin.Views.AddItem
                 saveNote.Owner = userinfo.UserId;
                 saveNote.Title = TitleEntry.Text;
                 saveNote.Category = CategoryEntry.Text;
-                saveNote.Content = ContentEditor.Text;
+                string noteContent = await ContentWebView.EvaluateJavaScriptAsync("getContent()");
+                noteContent = noteContent.Replace(@"\u003C", "<");
+                saveNote.Content = noteContent;
+                // saveNote.Content = ContentEditor.Text;
                 
                 if (ProgenyService.Online())
                 {
@@ -231,6 +240,32 @@ namespace KinaUnaXamarin.Views.AddItem
             {
                 autoSuggestBox.Text = e.SelectedItem.ToString();
             }
+        }
+
+        private async void ContentWebView_OnFocused(object sender, FocusEventArgs e)
+        {
+            string heightString = "";
+            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+
+            bool heightParsed = double.TryParse(heightString, out _webViewHeight);
+            if (heightParsed)
+            {
+                ContentWebView.HeightRequest = _webViewHeight + 25.0;
+            }
+        }
+
+        private async void ContentWebView_OnNavigating(object sender, WebNavigatingEventArgs e)
+        {
+            e.Cancel = true;
+            string heightString = "";
+            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+
+            bool heightParsed = double.TryParse(heightString, out _webViewHeight);
+            if (heightParsed)
+            {
+                ContentWebView.HeightRequest = _webViewHeight + 25.0;
+            }
+
         }
     }
 }
