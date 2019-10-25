@@ -1726,6 +1726,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show only active contacts.
+        /// </summary>
+        internal static string ShowOnlyActive {
+            get {
+                return ResourceManager.GetString("ShowOnlyActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show Timeline before:.
         /// </summary>
         internal static string ShowTimelineBefore {

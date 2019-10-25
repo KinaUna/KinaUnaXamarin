@@ -211,6 +211,15 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CanUserEditItems = false;
             }
 
+            if (_viewModel.Date.HasValue)
+            {
+                _viewModel.DateYear = _viewModel.CurrentContact.DateAdded.Value.Year;
+                _viewModel.DateMonth = _viewModel.CurrentContact.DateAdded.Value.Month;
+                _viewModel.DateDay = _viewModel.CurrentContact.DateAdded.Value.Day;
+            }
+
+            _viewModel.Date = _viewModel.CurrentContact.DateAdded;
+            
             _viewModel.CurrentContactId = _viewModel.CurrentContact.ContactId;
             _viewModel.AccessLevel = _viewModel.CurrentContact.AccessLevel;
             _viewModel.FirstName = _viewModel.CurrentContact.FirstName;
@@ -291,7 +300,10 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentContact.Tags = TagsEntry?.Text ?? "";
                 _viewModel.CurrentContact.AccessLevel = _viewModel.AccessLevel;
                 _viewModel.CurrentContact.Active = _viewModel.Active;
-                
+
+                DateTime frnDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
+                _viewModel.CurrentContact.DateAdded = frnDate;
+
                 if (string.IsNullOrEmpty(_filePath) || !File.Exists(_filePath))
                 {
                     _viewModel.CurrentContact.PictureLink = "[KeepExistingLink]";
@@ -329,6 +341,13 @@ namespace KinaUnaXamarin.Views
                 _viewModel.TagsAutoSuggestList = await ProgenyService.GetTagsAutoSuggestList(_viewModel.CurrentContact.ProgenyId, 0);
                 _viewModel.ContextAutoSuggestList = await ProgenyService.GetContextAutoSuggestList(_viewModel.CurrentContact.ProgenyId, 0);
             }
+        }
+
+        private void ContactDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
+        {
+            _viewModel.DateYear = ContactDatePicker.Date.Year;
+            _viewModel.DateMonth = ContactDatePicker.Date.Month;
+            _viewModel.DateDay = ContactDatePicker.Date.Day;
         }
 
         private async void SelectImageButton_OnClicked(object sender, EventArgs e)
@@ -587,7 +606,7 @@ namespace KinaUnaXamarin.Views
                 var message = new SmsMessage("", new[] { _viewModel.CurrentContact.MobileNumber });
                 await Sms.ComposeAsync(message);
             }
-            catch (FeatureNotSupportedException ex)
+            catch (FeatureNotSupportedException)
             {
                 // Sms is not supported on this device.
             }
@@ -605,9 +624,7 @@ namespace KinaUnaXamarin.Views
             {
                 Subject = "",
                 Body = "",
-                To = recipients,
-                //Cc = ccRecipients,
-                //Bcc = bccRecipients
+                To = recipients
             };
             await Email.ComposeAsync(message);
         }
@@ -620,9 +637,7 @@ namespace KinaUnaXamarin.Views
             {
                 Subject = "",
                 Body = "",
-                To = recipients,
-                //Cc = ccRecipients,
-                //Bcc = bccRecipients
+                To = recipients
             };
             await Email.ComposeAsync(message);
         }

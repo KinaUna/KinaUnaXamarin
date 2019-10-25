@@ -137,6 +137,7 @@ namespace KinaUnaXamarin.Views.AddItem
             contact.Context = ContextEntry?.Text ?? "";
             contact.Notes = NotesEditor?.Text ?? "";
             contact.Tags = TagsEntry?.Text ?? "";
+            contact.DateAdded = ContactDatePicker.Date;
             contact.Active = true;
             
             if (string.IsNullOrEmpty(_filePath) || !File.Exists(_filePath))

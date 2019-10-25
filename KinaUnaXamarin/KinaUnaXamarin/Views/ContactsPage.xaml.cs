@@ -214,6 +214,11 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.IsBusy = true;
             List<Contact> contactsList = await ProgenyService.GetProgenyContacts(_viewModel.Progeny.Id, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            if (ActiveContactsOnlySwitch.IsToggled)
+            {
+                contactsList = contactsList.Where(c => c.Active).ToList();
+            }
+
             foreach (Contact cnt in contactsList)
             {
                 cnt.FullName = cnt.FirstName + " " + cnt.MiddleName + " " + cnt.LastName;

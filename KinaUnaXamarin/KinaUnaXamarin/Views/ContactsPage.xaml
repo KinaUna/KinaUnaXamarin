@@ -80,6 +80,8 @@
             <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
                 <Label Text="{i18n:Translate SortBy}"></Label>
                 <Picker x:Name="SortByPicker" Margin="20, 0, 0, 0" ItemsSource="{Binding SortByList}"></Picker>
+                <Label Text="{i18n:Translate ShowOnlyActive}"></Label>
+                <Switch x:Name="ActiveContactsOnlySwitch" Margin="20,0,0,0" IsToggled="True"></Switch>
                 <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>

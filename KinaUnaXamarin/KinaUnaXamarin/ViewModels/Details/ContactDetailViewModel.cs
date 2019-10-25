@@ -42,6 +42,10 @@ namespace KinaUnaXamarin.ViewModels
         private List<string> _contextAutoSuggestList;
         private bool _active;
         private int _addressIdNumber;
+        private int _dateYear;
+        private int _dateMonth;
+        private int _dateDay;
+        private DateTime? _date;
 
         public ContactDetailViewModel()
         {
@@ -51,6 +55,10 @@ namespace KinaUnaXamarin.ViewModels
             _currentContact.AccessLevel = 0;
             
             ContactItems = new ObservableRangeCollection<Contact>();
+            _currentContact.DateAdded = DateTime.Now;
+            _dateYear = _currentContact.DateAdded.Value.Year;
+            _dateMonth = _currentContact.DateAdded.Value.Month;
+            _dateDay = _currentContact.DateAdded.Value.Day;
 
             _accessLevelList = new List<string>();
             var ci = CrossMultilingual.Current.CurrentCultureInfo.TwoLetterISOLanguageName;
@@ -285,6 +293,30 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _tagsAutoSuggestList;
             set => SetProperty(ref _tagsAutoSuggestList, value);
+        }
+
+        public int DateYear
+        {
+            get => _dateYear;
+            set => SetProperty(ref _dateYear, value);
+        }
+
+        public int DateMonth
+        {
+            get => _dateMonth;
+            set => SetProperty(ref _dateMonth, value);
+        }
+
+        public int DateDay
+        {
+            get => _dateDay;
+            set => SetProperty(ref _dateDay, value);
+        }
+
+        public DateTime? Date
+        {
+            get => _date;
+            set => SetProperty(ref _date, value);
         }
     }
 }

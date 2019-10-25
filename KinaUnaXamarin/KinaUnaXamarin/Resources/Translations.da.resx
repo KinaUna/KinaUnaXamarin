@@ -801,4 +801,7 @@
   <data name="Website" xml:space="preserve">
     <value>Website</value>
   </data>
+  <data name="ShowOnlyActive" xml:space="preserve">
+    <value>Vis kun aktive kontakter</value>
+  </data>
 </root>

@@ -117,6 +117,10 @@
                             <Label Text="Tags"></Label>
                             <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                         </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Date}"></Label>
+                            <DatePicker x:Name="ContactDatePicker" Format="dd MMM yyyy" ></DatePicker>
+                        </StackLayout>
                         <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
                         <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
                         <StackLayout Margin="5" BackgroundColor="White">
