@@ -87,5 +87,11 @@ namespace KinaUnaXamarin
             LocationsFlyoutItem.Title = LocationsMenuItem.Title = resmgr.Value.GetString("Locations", ci);
             PhotoLocationsTabItem.Title = resmgr.Value.GetString("PhotoLocations", ci);
         }
+
+        public void AddMessage(string message)
+        {
+            // Todo: Show notification.
+            DisplayAlert("New Notification!", message, "Ok");
+        }
     }
 }

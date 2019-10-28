@@ -137,7 +137,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 saveNote.Title = TitleEntry.Text;
                 saveNote.Category = CategoryEntry.Text;
                 string noteContent = await ContentWebView.EvaluateJavaScriptAsync("getContent()");
-                noteContent = noteContent.Replace(@"\u003C", "<");
+                noteContent = noteContent.Replace(@"\u003C", "<");  // Todo: Proper string encoding/decoding.
                 saveNote.Content = noteContent;
                 // saveNote.Content = ContentEditor.Text;
                 

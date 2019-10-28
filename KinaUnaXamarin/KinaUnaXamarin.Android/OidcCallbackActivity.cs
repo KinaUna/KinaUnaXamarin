@@ -30,7 +30,7 @@ namespace KinaUnaXamarin.Droid
             Callbacks?.Invoke(Intent.DataString);
 
             Finish();
-
+            
             StartActivity(typeof(MainActivity));
         }
 

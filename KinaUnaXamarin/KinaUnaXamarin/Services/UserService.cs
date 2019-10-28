@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -148,12 +149,21 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
+                ApplicationUser user = IdentityParser.Parse(result.User);
+                try
+                {
+                    TimeZoneInfo.FindSystemTimeZoneById(user.TimeZone);
+                }
+                catch (Exception)
+                {
+                    user.TimeZone = TZConvert.WindowsToIana(user.TimeZone);
+                }
                 try
                 {
                     await SecureStorage.SetAsync(Constants.AuthAccessTokenKey, result.AccessToken);
                     await SecureStorage.SetAsync(Constants.AuthAccessTokenExpiresKey, result.AccessTokenExpiration.Ticks.ToString());
                     await SecureStorage.SetAsync(Constants.AuthIdTokenKey, result.IdentityToken);
-                    ApplicationUser user = IdentityParser.Parse(result.User);
+                    
                     await SecureStorage.SetAsync(Constants.UserNameKey, user.UserName);
                     await SecureStorage.SetAsync(Constants.UserEmailKey, user.Email);
                     await SecureStorage.SetAsync(Constants.UserFirstNameKey, user.FirstName);
@@ -163,15 +173,9 @@ namespace KinaUnaXamarin.Services
                     await SecureStorage.SetAsync(Constants.UserViewChildKey, user.ViewChild.ToString());
                     await ProgenyService.GetProgeny(user.ViewChild);
                     await UserService.GetUserInfo(user.Email);
-                    try
-                    {
-                        TimeZoneInfo.FindSystemTimeZoneById(user.TimeZone);
-                    }
-                    catch (Exception)
-                    {
-                        user.TimeZone = TZConvert.WindowsToIana(user.TimeZone);
-                    }
                     await SecureStorage.SetAsync(Constants.UserTimezoneKey, user.TimeZone);
+
+                    await RegisterDevice(user.Email);
                 }
                 catch (Exception ex)
                 {
@@ -180,6 +184,76 @@ namespace KinaUnaXamarin.Services
             }
 
             return true;
+        }
+
+        private static async Task RegisterDevice(string user)
+        {
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                string pnsHandle = "";
+                string registrationId = "";
+                try
+                {
+                    pnsHandle = await SecureStorage.GetAsync("PnsHandle");
+                    registrationId = await SecureStorage.GetAsync("RegistrationId");
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+
+                if (string.IsNullOrEmpty(pnsHandle) || string.IsNullOrEmpty(registrationId))
+                {
+                    return;
+                }
+
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                DeviceRegistration deviceRegistration = new DeviceRegistration();
+                deviceRegistration.Platform = "fcm";
+                deviceRegistration.Handle = pnsHandle;
+                List<string> tags = new List<string>();
+                foreach (string str in AzureNotificationsConstants.SubscriptionTags)
+                {
+                    tags.Add(str);
+                }
+
+                string userEmail = await GetUserEmail();
+                tags.Add("userEmail:" + userEmail.ToUpper());
+                foreach (Progeny progeny in await ProgenyService.GetProgenyList(await GetUserEmail()))
+                {
+                    tags.Add("progenyId:" + progeny.Id);
+                }
+                deviceRegistration.Tags = tags.ToArray();
+                await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            }
+        }
+
+        private static async Task DeRegisterDevice()
+        {
+            if (Device.RuntimePlatform == Device.Android)
+            {
+                string registerId = "";
+                try
+                {
+                    registerId = await SecureStorage.GetAsync("RegistrationId");
+                }
+                catch (Exception)
+                {
+                    return;
+                }
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/register/" + registerId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    SecureStorage.Remove("NotificationRegistrationId");
+                }
+            }
         }
 
         public static async Task<string> GetAuthAccessToken()
@@ -335,6 +409,8 @@ namespace KinaUnaXamarin.Services
 
         public static async Task<bool> LogoutIdsAsync()
         {
+            await DeRegisterDevice();
+
             var browser = DependencyService.Get<IBrowser>();
             
             string idToken = "";
@@ -365,7 +441,9 @@ namespace KinaUnaXamarin.Services
 
             try
             {
+                string pnsHandle = await SecureStorage.GetAsync("PnsHandle");
                 SecureStorage.RemoveAll();
+                await SecureStorage.SetAsync("PnsHandle", pnsHandle);
             }
             catch (Exception ex)
             {

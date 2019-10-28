@@ -237,7 +237,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentNote.CreatedDate = noteDate;
                 _viewModel.CurrentNote.Title = _viewModel.NoteTitle;
                 string noteContent = await ContentWebView.EvaluateJavaScriptAsync("getContent()");
-                noteContent = noteContent.Replace(@"\u003C", "<");
+                noteContent = noteContent.Replace(@"\u003C", "<"); // Todo: Proper string encoding/decoding.
                 _viewModel.CurrentNote.Content = noteContent;
                 _viewModel.CurrentNote.Category = CategoryEntry.Text;
                 _viewModel.CurrentNote.AccessLevel = _viewModel.AccessLevel;

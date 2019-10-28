@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FFImageLoading;
-using FFImageLoading.Forms;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using Newtonsoft.Json;
 using TimeZoneConverter;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Location = KinaUnaXamarin.Models.KinaUna.Location;
 

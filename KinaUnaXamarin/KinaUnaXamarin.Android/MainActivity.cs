@@ -1,21 +1,23 @@
-﻿using Android.App;
+﻿using System;
+using Android.App;
+using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
+using Android.Gms.Common;
 using Android.Runtime;
 using Android.OS;
+using Android.Util;
 using Android.Widget;
 using FFImageLoading.Forms.Platform;
 using PanCardView.Droid;
 using Plugin.CurrentActivity;
 using Xamarin;
 using Xamarin.Forms;
-using Xamarin.Forms.GoogleMaps.Android;
 using Configuration = FFImageLoading.Config.Configuration;
 
 namespace KinaUnaXamarin.Droid
 {
     [Activity(Label = "KinaUna Xamarin", Icon = "@mipmap/icon", Theme = "@style/MainTheme",
-        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+        ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation, LaunchMode = LaunchMode.SingleTop)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -41,6 +43,13 @@ namespace KinaUnaXamarin.Droid
             CardsViewRenderer.Preserve(); // See: https://github.com/AndreiMisiukevich/CardView
             OxyPlot.Xamarin.Forms.Platform.Android.PlotViewRenderer.Init(); // See: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
             LoadApplication(new App());
+
+            if (IsPlayServiceAvailable() == false)
+            {
+                throw new Exception("This device does not have Google Play Services and cannot receive push notifications.");
+            }
+
+            CreateNotificationChannel();
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
@@ -75,6 +84,51 @@ namespace KinaUnaXamarin.Droid
                 Toast.MakeText(this, "Press Back again to exit", ToastLength.Short).Show(); // Todo: Translate the message.
 
                 new Handler().PostDelayed(() => { _doubleBackToExitPressedOnce = false; }, 2000);
+            }
+        }
+
+        protected override void OnNewIntent(Intent intent)
+        {
+            if (intent.Extras != null)
+            {
+                var message = intent.GetStringExtra("message");
+                (App.Current.MainPage as AppShell)?.AddMessage(message);
+            }
+
+            base.OnNewIntent(intent);
+        }
+
+        bool IsPlayServiceAvailable()
+        {
+            int resultCode = GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);
+            if (resultCode != ConnectionResult.Success)
+            {
+                if (GoogleApiAvailability.Instance.IsUserResolvableError(resultCode))
+                    Log.Debug(AzureNotificationsConstants.DebugTag, GoogleApiAvailability.Instance.GetErrorString(resultCode));
+                else
+                {
+                    Log.Debug(AzureNotificationsConstants.DebugTag, "This device is not supported");
+                }
+                return false;
+            }
+            return true;
+        }
+
+        void CreateNotificationChannel()
+        {
+            // Notification channels are new as of "Oreo".
+            // There is no need to create a notification channel on older versions of Android.
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var channelName = AzureNotificationsConstants.NotificationChannelName;
+                var channelDescription = String.Empty;
+                var channel = new NotificationChannel(channelName, channelName, NotificationImportance.Default)
+                {
+                    Description = channelDescription
+                };
+
+                var notificationManager = (NotificationManager)GetSystemService(NotificationService);
+                notificationManager.CreateNotificationChannel(channel);
             }
         }
     }
