@@ -178,7 +178,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             await CheckAccount();
             _viewModel.CurrentMeasurement =
-                await ProgenyService.GetMeasurement(_viewModel.CurrentMeasurementId, _accessToken, _userInfo.Timezone);
+                await ProgenyService.GetMeasurement(_viewModel.CurrentMeasurementId, _accessToken);
 
             _viewModel.Date = _viewModel.CurrentMeasurement.Date;
             _viewModel.AccessLevel = _viewModel.CurrentMeasurement.AccessLevel;

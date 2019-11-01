@@ -810,4 +810,7 @@
   <data name="ShowOnlyActive" xml:space="preserve">
     <value>Show only active contacts</value>
   </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notifications</value>
+  </data>
 </root>

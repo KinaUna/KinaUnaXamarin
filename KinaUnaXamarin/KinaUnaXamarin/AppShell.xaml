@@ -228,6 +228,17 @@
             </ShellContent>
         </Tab>
     </FlyoutItem>
+    <FlyoutItem Title="{i18n:Translate Notifications}" x:Name="NotificationsFlyoutItem"
+                Icon="{x:Static models:IconFont.BellAlert}">
+        <Tab>
+            <ShellContent x:Name="NotificationsMenuItem"
+                          Title="{i18n:Translate Notifications}"
+                          Icon="{x:Static models:IconFont.BellAlert}"
+                          Route="notifications"
+                          ContentTemplate="{DataTemplate views:NotificationsPage}">
+            </ShellContent>
+        </Tab>
+    </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"

@@ -219,7 +219,7 @@ namespace KinaUnaXamarin.Views
             
 
             List<Measurement> measurementsList =
-                await ProgenyService.GetMeasurementsList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
+                await ProgenyService.GetMeasurementsList(_viewChild, _viewModel.UserAccessLevel);
             
 
             if (measurementsList != null && measurementsList.Count > 0)

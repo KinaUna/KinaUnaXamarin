@@ -517,5 +517,97 @@ namespace KinaUnaXamarin.Services
 
             return new UserInfo();
         }
+
+        public static async Task<List<MobileNotification>> GetNotificationsList(int count, int start, string language)
+        {
+            bool online = ProgenyService.Online();
+            if (online)
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+
+                string accessToken = await UserService.GetAuthAccessToken();
+
+                if (String.IsNullOrEmpty(accessToken))
+                {
+
+                    return new List<MobileNotification>();
+                    
+                }
+                else
+                {
+                    client.SetBearerToken(accessToken);
+
+                    var result = await client.GetAsync("api/notifications/latest/" + count + "/" + start + "/" + language).ConfigureAwait(false);
+
+                    string userTimeZone = await GetUserTimezone();
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var notificationsString = await result.Content.ReadAsStringAsync();
+                        List<MobileNotification> notificationsList = JsonConvert.DeserializeObject<List<MobileNotification>>(notificationsString);
+                        foreach (MobileNotification notif in notificationsList)
+                        {
+                            notif.Time = TimeZoneInfo.ConvertTimeFromUtc(notif.Time, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                        }
+                        await SecureStorage.SetAsync("NotificationsList" + count + "start" + start + "lang" + language, JsonConvert.SerializeObject(notificationsList));
+                        return notificationsList;
+                    }
+                    else
+                    {
+                        return new List<MobileNotification>();
+                    }
+                }
+            }
+            else
+            {
+                string notificationsString = await SecureStorage.GetAsync("NotificationsList" + count + "start" + start + "lang" + language);
+                if (string.IsNullOrEmpty(notificationsString))
+                {
+                    return new List<MobileNotification>();
+                }
+                List<MobileNotification> notificationsList = JsonConvert.DeserializeObject<List<MobileNotification>>(notificationsString);
+                return notificationsList;
+            }
+        }
+
+        public static async Task<MobileNotification> UpdateNotification(MobileNotification notification)
+        {
+            if (ProgenyService.Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.PutAsync("api/notifications/" + notification.NotificationId, new StringContent(JsonConvert.SerializeObject(notification), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    string resultString = await result.Content.ReadAsStringAsync();
+                    MobileNotification resultItem = JsonConvert.DeserializeObject<MobileNotification>(resultString);
+                    return resultItem;
+                }
+            }
+
+            return notification;
+        }
+
+        public static async Task<MobileNotification> DeleteNotification(MobileNotification notification)
+        {
+            if (ProgenyService.Online())
+            {
+                var client = new HttpClient();
+                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+                string accessToken = await UserService.GetAuthAccessToken();
+                client.SetBearerToken(accessToken);
+                var result = await client.DeleteAsync("api/notifications/" + notification.NotificationId).ConfigureAwait(false);
+                if (result.IsSuccessStatusCode)
+                {
+                    MobileNotification deleteNotification = new MobileNotification();
+                    deleteNotification.NotificationId = 0;
+                    return deleteNotification;
+                }
+            }
+
+            return notification;
+        }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
 using KinaUnaXamarin.Helpers;
+using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Views;
 using Plugin.Multilingual;
 using Xamarin.Forms;
@@ -50,6 +51,7 @@ namespace KinaUnaXamarin
             _routes.Add("useraccess", typeof(UserAccessPage));
             _routes.Add("locations", typeof(LocationsPage));
             _routes.Add("photolocations", typeof(PhotoLocationsPage));
+            _routes.Add("notifications", typeof(NotificationsPage));
             foreach (var item in _routes)
             {
                 Routing.RegisterRoute(item.Key, item.Value);
@@ -83,15 +85,17 @@ namespace KinaUnaXamarin
             VocabularyFlyoutItem.Title = resmgr.Value.GetString("Vocabulary", ci);
             VocabularyStatsTabItem.Title = resmgr.Value.GetString("Statistics", ci);
             VocabularyTabItem.Title = resmgr.Value.GetString("Vocabulary", ci);
-            VaccinationsFlyoutItem.Title = VaccinationsMenuItem.Title = resmgr.Value.GetString("Contacts", ci);
+            VaccinationsFlyoutItem.Title = VaccinationsMenuItem.Title = resmgr.Value.GetString("Vaccinations", ci);
             LocationsFlyoutItem.Title = LocationsMenuItem.Title = resmgr.Value.GetString("Locations", ci);
             PhotoLocationsTabItem.Title = resmgr.Value.GetString("PhotoLocations", ci);
+            NotificationsFlyoutItem.Title = NotificationsMenuItem.Title = resmgr.Value.GetString("Notifications", ci);
         }
 
-        public void AddMessage(string message)
+        public async void AddMessage(string title, string message, int timeLineItem)
         {
             // Todo: Show notification.
-            DisplayAlert("New Notification!", message, "Ok");
+            NotificationsPage notificationsPage = new NotificationsPage();
+            await Shell.Current.Navigation.PushModalAsync(notificationsPage);
         }
     }
 }

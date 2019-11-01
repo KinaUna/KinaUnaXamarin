@@ -44,7 +44,7 @@ namespace KinaUnaXamarin.Views
             if (!String.IsNullOrEmpty(AddCommentEditor.Text))
             {
                 AddCommentButton.IsEnabled = false;
-                await ProgenyService.AddComment(_commentThread, AddCommentEditor.Text);
+                // await ProgenyService.AddComment(_commentThread, AddCommentEditor.Text, );
                 AddCommentEditor.Text = "";
                 await GetComments();
                 AddCommentButton.IsEnabled = true;

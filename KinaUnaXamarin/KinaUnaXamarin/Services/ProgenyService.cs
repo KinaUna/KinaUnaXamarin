@@ -165,7 +165,7 @@ namespace KinaUnaXamarin.Services
             return progeny;
         }
 
-        public static async Task<Comment> AddComment(int commentThread, string text)
+        public static async Task<Comment> AddComment(int commentThread, string text, Progeny progeny, string itemId, int itemType)
         {
             Comment cmnt = new Comment();
 
@@ -174,6 +174,9 @@ namespace KinaUnaXamarin.Services
             cmnt.Author = await UserService.GetUserId();
             cmnt.DisplayName = await UserService.GetFullname();
             cmnt.Created = DateTime.UtcNow;
+            cmnt.Progeny = progeny;
+            cmnt.ItemId = itemId;
+            cmnt.ItemType = itemType;
 
             if (Online())
             {
@@ -692,6 +695,7 @@ namespace KinaUnaXamarin.Services
                 }
                 timeLineLatest = JsonConvert.DeserializeObject<List<TimeLineItem>>(timlineListString);
             }
+
             string currentDate = lastItemDateText;
             List<TimeLineItem> resultList = new List<TimeLineItem>();
             foreach (TimeLineItem tItem in timeLineLatest)
@@ -735,13 +739,13 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     int.TryParse(tItem.ItemId, out int frnId);
-                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
                 {
                     int.TryParse(tItem.ItemId, out int mesId);
-                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
@@ -762,7 +766,7 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
                 {
                     int.TryParse(tItem.ItemId, out int contId);
-                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
+                    tItem.ItemObject = await GetContact(contId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
@@ -848,6 +852,8 @@ namespace KinaUnaXamarin.Services
                 timeLineYearAgo = JsonConvert.DeserializeObject<List<TimeLineItem>>(timlineListString);
             }
 
+            string currentDate = "";
+
             List<TimeLineItem> resultList = new List<TimeLineItem>();
             foreach (TimeLineItem tItem in timeLineYearAgo)
             {
@@ -890,13 +896,13 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     int.TryParse(tItem.ItemId, out int frnId);
-                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
                 {
                     int.TryParse(tItem.ItemId, out int mesId);
-                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
@@ -917,7 +923,7 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
                 {
                     int.TryParse(tItem.ItemId, out int contId);
-                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
+                    tItem.ItemObject = await GetContact(contId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
@@ -925,7 +931,22 @@ namespace KinaUnaXamarin.Services
                     int.TryParse(tItem.ItemId, out int vacId);
                     tItem.ItemObject = await GetVaccination(vacId, accessToken, timezone);
                 }
-                
+
+                string itemDate = tItem.ProgenyTime.ToLongDateString();
+                if (itemDate != currentDate)
+                {
+                    TimeLineItem headerItem = new TimeLineItem();
+                    headerItem.ProgenyTime = tItem.ProgenyTime.Date;
+                    headerItem.TimeLineId = 0;
+                    headerItem.ItemType = 9999;
+                    headerItem.ProgenyId = tItem.ProgenyId;
+                    DateHeader dateHeader = new DateHeader();
+                    dateHeader.DateText = tItem.ProgenyTime.Year.ToString();
+                    headerItem.ItemObject = dateHeader;
+                    currentDate = itemDate;
+                    resultList.Add(headerItem);
+                }
+
                 resultList.Add(tItem);
             }
 
@@ -1052,13 +1073,13 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Friend)
                 {
                     int.TryParse(tItem.ItemId, out int frnId);
-                    tItem.ItemObject = await GetFriend(frnId, accessToken, timezone);
+                    tItem.ItemObject = await GetFriend(frnId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Measurement)
                 {
                     int.TryParse(tItem.ItemId, out int mesId);
-                    tItem.ItemObject = await GetMeasurement(mesId, accessToken, timezone);
+                    tItem.ItemObject = await GetMeasurement(mesId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Sleep)
@@ -1078,7 +1099,7 @@ namespace KinaUnaXamarin.Services
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Contact)
                 {
                     int.TryParse(tItem.ItemId, out int contId);
-                    tItem.ItemObject = await GetContact(contId, accessToken, timezone);
+                    tItem.ItemObject = await GetContact(contId, accessToken);
                 }
 
                 if (tItem.ItemType == (int)KinaUnaTypes.TimeLineType.Vaccination)
@@ -2154,16 +2175,8 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Friend> GetFriend(int frnId, string accessToken, string userTimezone)
+        public static async Task<Friend> GetFriend(int frnId, string accessToken)
         {
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
-            }
-            catch (Exception)
-            {
-                userTimezone = TZConvert.WindowsToIana(userTimezone);
-            }
             bool online = Online();
             if (online)
             {
@@ -2180,10 +2193,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendString = await result.Content.ReadAsStringAsync();
                         Friend friendItem = JsonConvert.DeserializeObject<Friend>(friendString);
-                        if (friendItem.FriendSince.HasValue)
-                        {
-                            friendItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(friendItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                        }
                         await SecureStorage.SetAsync("Friend" + frnId, JsonConvert.SerializeObject(friendItem));
                         ImageService.Instance.LoadUrl(friendItem.PictureLink).Preload();
                         return friendItem;
@@ -2203,11 +2212,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendString = await result.Content.ReadAsStringAsync();
                         Friend friendItem = JsonConvert.DeserializeObject<Friend>(friendString);
-                        if (friendItem.FriendSince.HasValue)
-                        {
-                            friendItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(friendItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                        }
-                        
                         await SecureStorage.SetAsync("Friend" + frnId, JsonConvert.SerializeObject(friendItem));
                         ImageService.Instance.LoadUrl(friendItem.PictureLink).Preload();
                         return friendItem;
@@ -2230,16 +2234,9 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Measurement> GetMeasurement(int mesId, string accessToken, string userTimezone)
+        public static async Task<Measurement> GetMeasurement(int mesId, string accessToken)
         {
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
-            }
-            catch (Exception)
-            {
-                userTimezone = TZConvert.WindowsToIana(userTimezone);
-            }
+            
             bool online = Online();
             if (online)
             {
@@ -2256,8 +2253,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementString = await result.Content.ReadAsStringAsync();
                         Measurement mesItem = JsonConvert.DeserializeObject<Measurement>(measurementString);
-                        mesItem.Date =
-                            TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         await SecureStorage.SetAsync("Measurement" + mesId, JsonConvert.SerializeObject(mesItem));
                         return mesItem;
                     }
@@ -2276,8 +2271,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementString = await result.Content.ReadAsStringAsync();
                         Measurement mesItem = JsonConvert.DeserializeObject<Measurement>(measurementString);
-                        mesItem.Date =
-                            TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         await SecureStorage.SetAsync("Measurement" + mesId, JsonConvert.SerializeObject(mesItem));
                         return mesItem;
                     }
@@ -2691,16 +2684,8 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<Contact> GetContact(int contId, string accessToken, string userTimezone)
+        public static async Task<Contact> GetContact(int contId, string accessToken)
         {
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(userTimezone);
-            }
-            catch (Exception)
-            {
-                userTimezone = TZConvert.WindowsToIana(userTimezone);
-            }
             bool online = Online();
             if (online)
             {
@@ -2715,11 +2700,7 @@ namespace KinaUnaXamarin.Services
                     {
                         var contactString = await result.Content.ReadAsStringAsync();
                         Contact contItem = JsonConvert.DeserializeObject<Contact>(contactString);
-                        if (contItem.DateAdded.HasValue)
-                        {
-                            contItem.DateAdded = TimeZoneInfo.ConvertTimeFromUtc(contItem.DateAdded.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                        }
-                        await SecureStorage.SetAsync("Contact" + contId, JsonConvert.SerializeObject(contItem));
+                       await SecureStorage.SetAsync("Contact" + contId, JsonConvert.SerializeObject(contItem));
                         ImageService.Instance.LoadUrl(contItem.PictureLink).Preload();
                         return contItem;
                     }
@@ -2738,10 +2719,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var contactString = await result.Content.ReadAsStringAsync();
                         Contact contItem = JsonConvert.DeserializeObject<Contact>(contactString);
-                        if (contItem.DateAdded.HasValue)
-                        {
-                            contItem.DateAdded = TimeZoneInfo.ConvertTimeFromUtc(contItem.DateAdded.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
-                        }
                         await SecureStorage.SetAsync("Contact" + contId, JsonConvert.SerializeObject(contItem));
                         ImageService.Instance.LoadUrl(contItem.PictureLink).Preload();
                         return contItem;
@@ -2764,16 +2741,8 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<Contact>> GetProgenyContacts(int progenyId, int accessLevel, string userTimeZone)
+        public static async Task<List<Contact>> GetProgenyContacts(int progenyId, int accessLevel)
         {
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
-            }
-            catch (Exception)
-            {
-                userTimeZone = TZConvert.WindowsToIana(userTimeZone);
-            }
             bool online = Online();
             if (online)
             {
@@ -2791,16 +2760,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var contactsString = await result.Content.ReadAsStringAsync();
                         List<Contact> contList = JsonConvert.DeserializeObject<List<Contact>>(contactsString);
-                        if (contList.Any())
-                        {
-                            foreach (Contact contItem in contList)
-                            {
-                                if (contItem.DateAdded.HasValue)
-                                {
-                                    contItem.DateAdded = TimeZoneInfo.ConvertTimeFromUtc(contItem.DateAdded.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                }
-                            }
-                        }
                         await SecureStorage.SetAsync("ContactList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(contList));
                         return contList;
                     }
@@ -2819,16 +2778,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var contactsString = await result.Content.ReadAsStringAsync();
                         List<Contact> contList = JsonConvert.DeserializeObject<List<Contact>>(contactsString);
-                        if (contList.Any())
-                        {
-                            foreach (Contact contItem in contList)
-                            {
-                                if (contItem.DateAdded.HasValue)
-                                {
-                                    contItem.DateAdded = TimeZoneInfo.ConvertTimeFromUtc(contItem.DateAdded.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                }
-                            }
-                        }
                         await SecureStorage.SetAsync("ContactList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(contList));
                         return contList;
                     }
@@ -3116,16 +3065,8 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<Friend>> GetFriendsList(int progenyId, int accessLevel, string userTimeZone)
+        public static async Task<List<Friend>> GetFriendsList(int progenyId, int accessLevel)
         {
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
-            }
-            catch (Exception)
-            {
-                userTimeZone = TZConvert.WindowsToIana(userTimeZone);
-            }
             bool online = Online();
             if (online)
             {
@@ -3143,16 +3084,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendsString = await result.Content.ReadAsStringAsync();
                         List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
-                        if (frnList.Any())
-                        {
-                            foreach (Friend frnItem in frnList)
-                            {
-                                if (frnItem.FriendSince.HasValue)
-                                {
-                                    frnItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(frnItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                }
-                            }
-                        }
                         await SecureStorage.SetAsync("FriendList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
                         return frnList;
                     }
@@ -3171,16 +3102,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendsString = await result.Content.ReadAsStringAsync();
                         List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
-                        if (frnList.Any())
-                        {
-                            foreach (Friend frnItem in frnList)
-                            {
-                                if (frnItem.FriendSince.HasValue)
-                                {
-                                    frnItem.FriendSince = TimeZoneInfo.ConvertTimeFromUtc(frnItem.FriendSince.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
-                                }
-                            }
-                        }
                         await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
                         return frnList;
                     }
@@ -3322,7 +3243,7 @@ namespace KinaUnaXamarin.Services
             return contact;
         }
 
-        public static async Task<MeasurementsListPage> GetMeasurementsListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, string timezone, int sortOrder)
+        public static async Task<MeasurementsListPage> GetMeasurementsListPage(int pageNumber, int pageSize, int progenyId, int accessLevel, int sortOrder)
         {
             bool online = Online();
             if (online)
@@ -3341,10 +3262,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
-                        foreach (Measurement mesItem in measurementsList.MeasurementsList)
-                        {
-                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                        }
                         await SecureStorage.SetAsync("MeasurementsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
                         return measurementsList;
                     }
@@ -3363,10 +3280,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
-                        foreach (Measurement mesItem in measurementsList.MeasurementsList)
-                        {
-                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timezone));
-                        }
                         await SecureStorage.SetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
                         return measurementsList;
                     }
@@ -3388,7 +3301,7 @@ namespace KinaUnaXamarin.Services
             }
         }
 
-        public static async Task<List<Measurement>> GetMeasurementsList(int progenyId, int accessLevel, string timeZone)
+        public static async Task<List<Measurement>> GetMeasurementsList(int progenyId, int accessLevel)
         {
             bool online = Online();
             if (online)
@@ -3407,10 +3320,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
-                        foreach (Measurement mesItem in measurementsList)
-                        {
-                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
-                        }
                         await SecureStorage.SetAsync("MeasurementsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
                         return measurementsList;
                     }
@@ -3429,10 +3338,6 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
-                        foreach (Measurement mesItem in measurementsList)
-                        {
-                            mesItem.Date = TimeZoneInfo.ConvertTimeFromUtc(mesItem.Date, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
-                        }
                         await SecureStorage.SetAsync("MeasurementsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
                         return measurementsList;
                     }

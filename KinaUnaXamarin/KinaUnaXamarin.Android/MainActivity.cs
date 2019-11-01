@@ -8,6 +8,9 @@ using Android.OS;
 using Android.Util;
 using Android.Widget;
 using FFImageLoading.Forms.Platform;
+using KinaUnaXamarin.Models.KinaUna;
+using KinaUnaXamarin.Views;
+using Newtonsoft.Json;
 using PanCardView.Droid;
 using Plugin.CurrentActivity;
 using Xamarin;
@@ -70,20 +73,27 @@ namespace KinaUnaXamarin.Droid
                 return;
 
             }
-            else
+            if (App.Current.MainPage is AppShell appShell)
             {
-                if (_doubleBackToExitPressedOnce)
+                if (appShell.CurrentItem.Title == "Home")
                 {
-                    base.OnBackPressed();
-                    Java.Lang.JavaSystem.Exit(0);
-                    return;
+                    if (_doubleBackToExitPressedOnce)
+                    {
+                        base.OnBackPressed();
+                        Java.Lang.JavaSystem.Exit(0);
+                        return;
+                    }
+
+
+                    this._doubleBackToExitPressedOnce = true;
+                    Toast.MakeText(this, "Press Back again to exit", ToastLength.Short).Show(); // Todo: Translate the message.
+
+                    new Handler().PostDelayed(() => { _doubleBackToExitPressedOnce = false; }, 2000);
                 }
-
-
-                this._doubleBackToExitPressedOnce = true;
-                Toast.MakeText(this, "Press Back again to exit", ToastLength.Short).Show(); // Todo: Translate the message.
-
-                new Handler().PostDelayed(() => { _doubleBackToExitPressedOnce = false; }, 2000);
+                else
+                {
+                    appShell.CurrentItem = new HomePage();
+                }
             }
         }
 
@@ -92,7 +102,11 @@ namespace KinaUnaXamarin.Droid
             if (intent.Extras != null)
             {
                 var message = intent.GetStringExtra("message");
-                (App.Current.MainPage as AppShell)?.AddMessage(message);
+                var title = intent.GetStringExtra("title");
+                var notData = intent.GetStringExtra("notData");
+                int tItemNumber = 0;
+                int.TryParse(notData, out tItemNumber);
+                (App.Current.MainPage as AppShell)?.AddMessage(title, message, tItemNumber);
             }
 
             base.OnNewIntent(intent);

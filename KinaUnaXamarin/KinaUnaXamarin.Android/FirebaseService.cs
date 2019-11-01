@@ -8,6 +8,8 @@ using Android.OS;
 using Android.Support.V4.App;
 using Android.Util;
 using Firebase.Messaging;
+using KinaUnaXamarin.Models.KinaUna;
+using Newtonsoft.Json;
 using Xamarin.Essentials;
 
 namespace KinaUnaXamarin.Droid
@@ -51,12 +53,12 @@ namespace KinaUnaXamarin.Droid
             base.OnMessageReceived(message);
             string messageBody = string.Empty;
             string title = string.Empty;
+            string tItem = string.Empty;
             if (message.GetNotification() != null)
             {
                 messageBody = message.GetNotification().Body;
                 title = message.GetNotification().Title;
             }
-
             // NOTE: test messages sent via the Azure portal will be received here
             else
             {
@@ -69,21 +71,28 @@ namespace KinaUnaXamarin.Droid
                 {
                     messageBody = message.Data["message"];
                 }
+
+                if (message.Data.ContainsKey("notData"))
+                {
+                    tItem = message.Data["notData"];
+                    
+                }
                 // messageBody = message.Data.Values.First();
             }
 
             // convert the incoming message to a local notification
-            SendLocalNotification(messageBody, title);
+            SendLocalNotification(title, messageBody, tItem);
 
             // send the incoming message directly to the MainPage
             // SendMessageToMainPage(messageBody);
         }
 
-        void SendLocalNotification(string body, string title)
+        void SendLocalNotification(string title, string body, string timeLineItem)
         {
             var intent = new Intent(this, typeof(MainActivity));
             intent.AddFlags(ActivityFlags.ClearTop);
             intent.PutExtra("message", body);
+            intent.PutExtra("notData", timeLineItem);
             var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.OneShot);
 
             if (string.IsNullOrEmpty(title))
@@ -108,9 +117,11 @@ namespace KinaUnaXamarin.Droid
             notificationManager.Notify(0, notificationBuilder.Build());
         }
 
-        void SendMessageToMainPage(string body)
+        void SendMessageToMainPage(string title, string body, string timeLineItem)
         {
-            (App.Current.MainPage as AppShell)?.AddMessage(body);
+            int timeLineId = 0;
+            int.TryParse(timeLineItem, out timeLineId);
+            (App.Current.MainPage as AppShell)?.AddMessage(title, body, timeLineId);
         }
     }
 }

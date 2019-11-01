@@ -810,4 +810,7 @@
   <data name="ShowOnlyActive" xml:space="preserve">
     <value>Vis kun aktive kontakter</value>
   </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Meddelelser</value>
+  </data>
 </root>

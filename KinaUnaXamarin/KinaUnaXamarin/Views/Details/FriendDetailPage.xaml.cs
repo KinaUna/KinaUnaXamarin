@@ -181,7 +181,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             await CheckAccount();
             _viewModel.CurrentFriend =
-                await ProgenyService.GetFriend(_viewModel.CurrentFriendId, _accessToken, _userInfo.Timezone);
+                await ProgenyService.GetFriend(_viewModel.CurrentFriendId, _accessToken);
 
             _viewModel.AccessLevel = _viewModel.CurrentFriend.AccessLevel;
             _viewModel.CurrentFriend.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentFriend.ProgenyId);

@@ -15,5 +15,11 @@ namespace KinaUnaXamarin.Models.KinaUna
         public string AuthorImage { get; set; }
         
         public bool IsAuthor { get; set; }
+
+        public Progeny Progeny { get; set; }
+
+        public int ItemType { get; set; }
+
+        public string ItemId { get; set; }
     }
 }

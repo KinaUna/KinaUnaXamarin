@@ -213,7 +213,7 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateContacts()
         {
             _viewModel.IsBusy = true;
-            List<Contact> contactsList = await ProgenyService.GetProgenyContacts(_viewModel.Progeny.Id, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            List<Contact> contactsList = await ProgenyService.GetProgenyContacts(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
             if (ActiveContactsOnlySwitch.IsToggled)
             {
                 contactsList = contactsList.Where(c => c.Active).ToList();

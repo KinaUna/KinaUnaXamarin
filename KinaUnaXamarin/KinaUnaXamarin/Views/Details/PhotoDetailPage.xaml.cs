@@ -476,7 +476,8 @@ namespace KinaUnaXamarin.Views
             if (!String.IsNullOrEmpty(AddCommentEditor.Text))
             {
                 AddCommentButton.IsEnabled = false;
-                await ProgenyService.AddComment(_viewModel.CurrentPictureViewModel.CommentThreadNumber, AddCommentEditor.Text);
+                
+                await ProgenyService.AddComment(_viewModel.CurrentPictureViewModel.CommentThreadNumber, AddCommentEditor.Text, _viewModel.Progeny, _viewModel.CurrentPictureViewModel.PictureId.ToString(), (int)KinaUnaTypes.TimeLineType.Photo );
                 AddCommentEditor.Text = "";
                 await GetComments();
                 AddCommentButton.IsEnabled = true;
@@ -489,6 +490,9 @@ namespace KinaUnaXamarin.Views
             string commentIdString = deleteButton.CommandParameter.ToString();
             int.TryParse(commentIdString, out int commentId);
             Comment comment = _commentsPageViewModel.CommentsCollection.SingleOrDefault(c => c.CommentId == commentId);
+            comment.Progeny = _viewModel.Progeny;
+            comment.ItemId = _viewModel.CurrentPictureViewModel.PictureId.ToString();
+            comment.ItemType = (int) KinaUnaTypes.TimeLineType.Photo;
             if (comment != null)
             {
                 var ci = CrossMultilingual.Current.CurrentCultureInfo;

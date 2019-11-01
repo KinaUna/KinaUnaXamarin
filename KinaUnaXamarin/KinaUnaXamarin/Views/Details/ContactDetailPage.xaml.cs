@@ -62,6 +62,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.Tags = contactItem.Tags;
             ContactImage.Source = contactItem.PictureLink;
             _viewModel.Active = contactItem.Active;
+            _viewModel.Date = contactItem.DateAdded;
             BindingContext = _viewModel;
             
         }
@@ -196,7 +197,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             await CheckAccount();
             _viewModel.CurrentContact =
-                await ProgenyService.GetContact(_viewModel.CurrentContactId, _accessToken, _userInfo.Timezone);
+                await ProgenyService.GetContact(_viewModel.CurrentContactId, _accessToken);
 
             _viewModel.AccessLevel = _viewModel.CurrentContact.AccessLevel;
             _viewModel.CurrentContact.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentContact.ProgenyId);
@@ -211,14 +212,13 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CanUserEditItems = false;
             }
 
+            _viewModel.Date = _viewModel.CurrentContact.DateAdded;
             if (_viewModel.Date.HasValue)
             {
-                _viewModel.DateYear = _viewModel.CurrentContact.DateAdded.Value.Year;
-                _viewModel.DateMonth = _viewModel.CurrentContact.DateAdded.Value.Month;
-                _viewModel.DateDay = _viewModel.CurrentContact.DateAdded.Value.Day;
+                _viewModel.DateYear = _viewModel.Date.Value.Year;
+                _viewModel.DateMonth = _viewModel.Date.Value.Month;
+                _viewModel.DateDay = _viewModel.Date.Value.Day;
             }
-
-            _viewModel.Date = _viewModel.CurrentContact.DateAdded;
             
             _viewModel.CurrentContactId = _viewModel.CurrentContact.ContactId;
             _viewModel.AccessLevel = _viewModel.CurrentContact.AccessLevel;
@@ -301,8 +301,8 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentContact.AccessLevel = _viewModel.AccessLevel;
                 _viewModel.CurrentContact.Active = _viewModel.Active;
 
-                DateTime frnDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
-                _viewModel.CurrentContact.DateAdded = frnDate;
+                DateTime contDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
+                _viewModel.CurrentContact.DateAdded = contDate;
 
                 if (string.IsNullOrEmpty(_filePath) || !File.Exists(_filePath))
                 {

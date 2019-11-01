@@ -203,7 +203,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PageNumber = 1;
             }
 
-            MeasurementsListPage measurementsListPage = await ProgenyService.GetMeasurementsListPage(_viewModel.PageNumber, 20, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            MeasurementsListPage measurementsListPage = await ProgenyService.GetMeasurementsListPage(_viewModel.PageNumber, 20, _viewChild, _viewModel.UserAccessLevel, 1);
             if (measurementsListPage.MeasurementsList != null)
             {
                 measurementsListPage.MeasurementsList =

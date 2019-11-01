@@ -212,7 +212,7 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateFriends()
         {
             _viewModel.IsBusy = true;
-            List<Friend> friendsList = await ProgenyService.GetFriendsList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            List<Friend> friendsList = await ProgenyService.GetFriendsList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
             List<Friend> filteredFriends = new List<Friend>();
 
             if (PersonalCheckBox.IsChecked && ToyCheckBox.IsChecked && ParentCheckBox.IsChecked &&
