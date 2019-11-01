@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  IgnorableNamespaces="uap mp">
+
+  <Identity
+    Name="38968KinaUna.KinaUnaXamarin"
+    Publisher="CN=permo"
+    Version="0.1.71.0" />
+
+  <mp:PhoneIdentity PhoneProductId="b5c7080d-b8b6-4225-a53d-151e95947353" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+
+  <Properties>
+    <DisplayName>KinaUna Xamarin</DisplayName>
+    <PublisherDisplayName>KinaUna</PublisherDisplayName>
+    <Logo>Assets\UWPIcons\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Universal" MinVersion="10.0.0.0" MaxVersionTested="10.0.0.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="x-generate"/>
+  </Resources>
+
+  <Applications>
+    <Application Id="App"
+      Executable="$targetnametoken$.exe"
+      EntryPoint="KinaUnaXamarin.UWP.App">
+      <uap:VisualElements
+        DisplayName="KinaUna Xamarin"
+        Description="KinaUna Xamarin"
+        BackgroundColor="transparent"
+        Square150x150Logo="Assets\UWPIcons\MediumTile.png"
+        Square44x44Logo="Assets\UWPIcons\AppIcon.png">
+        <uap:DefaultTile ShortName="KinaUna" Square71x71Logo="Assets\UWPIcons\SmallTile.png" Wide310x150Logo="Assets\UWPIcons\WideTile.png" Square310x310Logo="Assets\UWPIcons\LargeTile.png">
+          <uap:ShowNameOnTiles>
+            <uap:ShowOn Tile="square310x310Logo"/>
+            <uap:ShowOn Tile="wide310x150Logo"/>
+            <uap:ShowOn Tile="square150x150Logo"/>
+          </uap:ShowNameOnTiles>
+        </uap:DefaultTile>
+        <uap:SplashScreen BackgroundColor="#822993" Image="Assets\UWPIcons\SplashScreen.png"/>
+      </uap:VisualElements>
+      <Extensions>
+        <uap:Extension Category="windows.protocol">
+          <uap:Protocol Name="kinaunaxamarinclients">
+            <uap:Logo>kinaunalogo96x96.png</uap:Logo>
+            <uap:DisplayName>KinaUna Login Callback Protocol</uap:DisplayName>
+          </uap:Protocol>
+        </uap:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <Capability Name="internetClient" />
+    <uap:Capability Name="videosLibrary"/>
+    <uap:Capability Name="picturesLibrary"/>
+    <DeviceCapability Name="location"/>
+    <DeviceCapability Name="webcam"/>
+  </Capabilities>
+</Package>

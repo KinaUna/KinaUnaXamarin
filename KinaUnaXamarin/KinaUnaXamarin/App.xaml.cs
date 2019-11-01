@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using KinaUnaXamarin.Resources;
 using Xamarin.Forms;
@@ -9,6 +11,7 @@ namespace KinaUnaXamarin
 {
     public partial class App : Application
     {
+        static Database _database;
 
         public App()
         {
@@ -43,6 +46,18 @@ namespace KinaUnaXamarin
         protected override void OnResume()
         {
             // Handle when your app resumes
+        }
+
+        public static Database Database
+        {
+            get
+            {
+                if (_database == null)
+                {
+                    _database = new Database(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "kinauna.db3"));
+                }
+                return _database;
+            }
         }
     }
 }
