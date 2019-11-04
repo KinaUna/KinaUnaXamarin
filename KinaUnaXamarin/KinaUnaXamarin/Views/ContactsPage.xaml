@@ -20,6 +20,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <CollectionView x:Name="ContactsCollectionView" ItemsSource="{Binding ContactItems}" ItemSizingStrategy="MeasureAllItems" SelectionChanged="ContactsCollectionView_OnSelectionChanged"  SelectionMode="Single">
                 <CollectionView.ItemsLayout >
                     <GridItemsLayout Orientation="Vertical"

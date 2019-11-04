@@ -366,6 +366,8 @@ namespace KinaUnaXamarin.Views
                 {
                     _viewModel.VocabularyPlotModel.Series.Add(vocabularyStemSeries);
                 }
+
+                _viewModel.VocabularyPlotModel.InvalidatePlot(true);
             }
             
             

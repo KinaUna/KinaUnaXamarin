@@ -18,6 +18,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <ScrollView>
                 <Grid x:Name="MeasurementsStatsGrid" Margin="5">
                     <Grid.RowDefinitions>

@@ -224,7 +224,7 @@ namespace KinaUnaXamarin.Services
                         var commentsListString = await result.Content.ReadAsStringAsync();
                         List<Comment> commentsList = JsonConvert.DeserializeObject<List<Comment>>(commentsListString);
                         string userEmail = await UserService.GetUserEmail();
-                        UserInfo userInfo = JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
+                        UserInfo userInfo = await App.Database.GetUserInfoAsync(userEmail); // JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
                         string userTimezone = userInfo.Timezone;
 
                         try
@@ -1463,7 +1463,11 @@ namespace KinaUnaXamarin.Services
                         {
                             pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
-
+                        if (string.IsNullOrEmpty(pictureViewModel.Tags))
+                        {
+                            pictureViewModel.Tags = "";
+                        }
+                        
                         pictureViewModel.CommentsCount = pictureViewModel.CommentsList.Count;
                         ImageService.Instance.LoadUrl(pictureViewModel.PictureLink).DownSample(height: 440, allowUpscale: true).Preload();
                         //await SecureStorage.SetAsync("PictureViewModel" + pictureId, JsonConvert.SerializeObject(pictureViewModel));
@@ -1490,6 +1494,10 @@ namespace KinaUnaXamarin.Services
                         if (pictureViewModel.PictureTime.HasValue)
                         {
                             pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
+                        }
+                        if (string.IsNullOrEmpty(pictureViewModel.Tags))
+                        {
+                            pictureViewModel.Tags = "";
                         }
 
                         pictureViewModel.CommentsCount = pictureViewModel.CommentsList.Count;
@@ -2943,7 +2951,8 @@ namespace KinaUnaXamarin.Services
                         List<UserAccess> accessList = JsonConvert.DeserializeObject<List<UserAccess>>(accessListString);
                         if (accessList != null)
                         {
-                            await SecureStorage.SetAsync("AccessList" + Constants.DefaultChildId, JsonConvert.SerializeObject(accessList));
+                            // await SecureStorage.SetAsync("AccessList" + Constants.DefaultChildId, JsonConvert.SerializeObject(accessList));
+                            await App.Database.SaveProgenyAccessListAsync(progenyId, accessList);
                             return accessList;
                         }
 
@@ -2961,26 +2970,19 @@ namespace KinaUnaXamarin.Services
                         List<UserAccess> accessList = JsonConvert.DeserializeObject<List<UserAccess>>(accessListString);
                         if (accessList != null)
                         {
-                                await SecureStorage.SetAsync("AccessList" + progenyId, JsonConvert.SerializeObject(accessList));
-                                foreach (UserAccess uAccess in accessList)
-                                {
-                                    Console.WriteLine("TEST UA: + UserName: " + uAccess.User.UserName);
-                                    Console.WriteLine("TEST UA: + UserId: " + uAccess.User.Id);
-                                    Console.WriteLine("TEST UA: + UserName: " + uAccess.User.Email);
-
-                                }
+                                // await SecureStorage.SetAsync("AccessList" + progenyId, JsonConvert.SerializeObject(accessList));
+                                await App.Database.SaveProgenyAccessListAsync(progenyId, accessList);
                                 return accessList;
                         }
                     }
                 }
             }
 
-            string offlineListString = await SecureStorage.GetAsync("AccessList" + progenyId);
-            if (string.IsNullOrEmpty(offlineListString))
+            List<UserAccess> offlineList = await App.Database.GetProgenyAccessListAsync(progenyId);
+            if (offlineList == null)
             {
-                return new List<UserAccess>();
+                offlineList = new List<UserAccess>();
             }
-            List<UserAccess> offlineList = JsonConvert.DeserializeObject<List<UserAccess>>(offlineListString);
             return offlineList;
             
         }
@@ -3054,7 +3056,8 @@ namespace KinaUnaXamarin.Services
                                 TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
                             slpItem.SleepDuration = eOffset - sOffset;
                         }
-                        await SecureStorage.SetAsync("SleepListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        // await SecureStorage.SetAsync("SleepListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        await App.Database.SaveSleepListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, sleepList);
                         return sleepList;
                     }
                     else
@@ -3082,7 +3085,8 @@ namespace KinaUnaXamarin.Services
                                 TimeZoneInfo.FindSystemTimeZoneById(timezone).GetUtcOffset(slpItem.SleepEnd));
                             slpItem.SleepDuration = eOffset - sOffset;
                         }
-                        await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        // await SecureStorage.SetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        await App.Database.SaveSleepListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, sleepList);
                         return sleepList;
                     }
                     else
@@ -3093,12 +3097,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string sleepString = await SecureStorage.GetAsync("SleepListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(sleepString))
+                SleepListPage sleepList = await App.Database.GetSleepListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
+                if (sleepList == null)
                 {
-                    return new SleepListPage();
+                    sleepList = new SleepListPage();
                 }
-                SleepListPage sleepList = JsonConvert.DeserializeObject<SleepListPage>(sleepString);
                 return sleepList;
             }
         }
@@ -3122,7 +3125,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendsString = await result.Content.ReadAsStringAsync();
                         List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
-                        await SecureStorage.SetAsync("FriendList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        // await SecureStorage.SetAsync("FriendList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        await App.Database.SaveFriendsListAsync(progenyId, accessLevel, frnList);
                         return frnList;
                     }
                     else
@@ -3140,7 +3144,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var friendsString = await result.Content.ReadAsStringAsync();
                         List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
-                        await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        // await SecureStorage.SetAsync("FriendList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(frnList));
+                        await App.Database.SaveFriendsListAsync(progenyId, accessLevel, frnList);
                         return frnList;
                     }
                     else
@@ -3151,12 +3156,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string friendsString = await SecureStorage.GetAsync("FriendList" + progenyId + "Al" + accessLevel);
-                if (string.IsNullOrEmpty(friendsString))
-                {
-                    return new List<Friend>();
-                }
-                List<Friend> frnList = JsonConvert.DeserializeObject<List<Friend>>(friendsString);
+                List<Friend> frnList = await App.Database.GetFriendsListAsync(progenyId, accessLevel);
                 return frnList;
             }
         }
@@ -3300,7 +3300,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
-                        await SecureStorage.SetAsync("MeasurementsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        // await SecureStorage.SetAsync("MeasurementsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        await App.Database.SaveMeasurementsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, measurementsList);
                         return measurementsList;
                     }
                     else
@@ -3318,7 +3319,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
-                        await SecureStorage.SetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        // await SecureStorage.SetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(measurementsList));
+                        await App.Database.SaveMeasurementsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, measurementsList);
                         return measurementsList;
                     }
                     else
@@ -3329,12 +3331,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string measurementsString = await SecureStorage.GetAsync("MeasurementsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(measurementsString))
+                MeasurementsListPage measurementsList = await App.Database.GetMeasurementsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
+                if (measurementsList == null)
                 {
-                    return new MeasurementsListPage();
+                    measurementsList = new MeasurementsListPage();
                 }
-                MeasurementsListPage measurementsList = JsonConvert.DeserializeObject<MeasurementsListPage>(measurementsString);
                 return measurementsList;
             }
         }
@@ -3358,7 +3359,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
-                        await SecureStorage.SetAsync("MeasurementsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        // await SecureStorage.SetAsync("MeasurementsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        await App.Database.SaveMeasurementsListAsync(progenyId, accessLevel, measurementsList);
                         return measurementsList;
                     }
                     else
@@ -3376,7 +3378,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var measurementsString = await result.Content.ReadAsStringAsync();
                         List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
-                        await SecureStorage.SetAsync("MeasurementsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        // await SecureStorage.SetAsync("MeasurementsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(measurementsList));
+                        await App.Database.SaveMeasurementsListAsync(progenyId, accessLevel, measurementsList);
                         return measurementsList;
                     }
                     else
@@ -3387,12 +3390,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string measurementsString = await SecureStorage.GetAsync("MeasurementsList" + progenyId + "Al" + accessLevel);
-                if (string.IsNullOrEmpty(measurementsString))
-                {
-                    return new List<Measurement>();
-                }
-                List<Measurement> measurementsList = JsonConvert.DeserializeObject<List<Measurement>>(measurementsString);
+                List<Measurement> measurementsList = await App.Database.GetMeasurementsListAsync(progenyId, accessLevel);
                 return measurementsList;
             }
         }
@@ -3436,8 +3434,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var skillsString = await result.Content.ReadAsStringAsync();
                         SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsString);
-                        
-                        await SecureStorage.SetAsync("SkillsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        //await SecureStorage.SetAsync("SkillsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        await App.Database.SaveSkillsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, skillsListPage);
                         return skillsListPage;
                     }
                     else
@@ -3455,8 +3453,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var skillsString = await result.Content.ReadAsStringAsync();
                         SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsString);
-
-                        await SecureStorage.SetAsync("SkillsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        // await SecureStorage.SetAsync("SkillsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(skillsListPage));
+                        await App.Database.SaveSkillsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, skillsListPage);
                         return skillsListPage;
                     }
                     else
@@ -3467,12 +3465,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string skillsListPageString = await SecureStorage.GetAsync("SkillsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(skillsListPageString))
+                SkillsListPage skillsListPage = await App.Database.GetSkillsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
+                if (skillsListPage == null)
                 {
-                    return new SkillsListPage();
+                    skillsListPage = new SkillsListPage();
                 }
-                SkillsListPage skillsListPage = JsonConvert.DeserializeObject<SkillsListPage>(skillsListPageString);
                 return skillsListPage;
             }
         }
@@ -3516,8 +3513,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var vocabularyString = await result.Content.ReadAsStringAsync();
                         VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyString);
-
-                        await SecureStorage.SetAsync("VocabularyListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        // await SecureStorage.SetAsync("VocabularyListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        await App.Database.SaveVocabularyListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, vocabularyListPage);
                         return vocabularyListPage;
                     }
                     else
@@ -3535,8 +3532,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var vocabularyString = await result.Content.ReadAsStringAsync();
                         VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyString);
-
-                        await SecureStorage.SetAsync("VocabularyListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        // await SecureStorage.SetAsync("VocabularyListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(vocabularyListPage));
+                        await App.Database.SaveVocabularyListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, vocabularyListPage);
                         return vocabularyListPage;
                     }
                     else
@@ -3547,12 +3544,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string vocabularyListPageString = await SecureStorage.GetAsync("VocabularyListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(vocabularyListPageString))
+                VocabularyListPage vocabularyListPage = await App.Database.GetVocabularyListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
+                if (vocabularyListPage == null)
                 {
-                    return new VocabularyListPage();
+                    vocabularyListPage = new VocabularyListPage();
                 }
-                VocabularyListPage vocabularyListPage = JsonConvert.DeserializeObject<VocabularyListPage>(vocabularyListPageString);
                 return vocabularyListPage;
             }
         }
@@ -3583,7 +3579,8 @@ namespace KinaUnaXamarin.Services
                                 vocabItem.Date = TimeZoneInfo.ConvertTimeFromUtc(vocabItem.Date.Value, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
                             }
                         }
-                        await SecureStorage.SetAsync("VocabularyList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        // await SecureStorage.SetAsync("VocabularyList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        await App.Database.SaveVocabularyListAsync(progenyId, accessLevel, vocabularyList);
                         return vocabularyList;
                     }
                     else
@@ -3608,7 +3605,8 @@ namespace KinaUnaXamarin.Services
                                 vocabItem.Date = TimeZoneInfo.ConvertTimeFromUtc(vocabItem.Date.Value, TimeZoneInfo.FindSystemTimeZoneById(timeZone));
                             }
                         }
-                        await SecureStorage.SetAsync("VocabularyList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        // await SecureStorage.SetAsync("VocabularyList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vocabularyList));
+                        await App.Database.SaveVocabularyListAsync(progenyId, accessLevel, vocabularyList);
                         return vocabularyList;
                     }
                     else
@@ -3619,12 +3617,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string vocabularyString = await SecureStorage.GetAsync("VocabularyList" + progenyId + "Al" + accessLevel);
-                if (string.IsNullOrEmpty(vocabularyString))
-                {
-                    return new List<VocabularyItem>();
-                }
-                List<VocabularyItem> vocabularyList = JsonConvert.DeserializeObject<List<VocabularyItem>>(vocabularyString);
+                List<VocabularyItem> vocabularyList = await App.Database.GetVocabularyListAsync(progenyId, accessLevel);
                 return vocabularyList;
             }
         }
@@ -3688,7 +3681,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var vaccinationsString = await result.Content.ReadAsStringAsync();
                         List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
-                        await SecureStorage.SetAsync("VaccinationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        // await SecureStorage.SetAsync("VaccinationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        await App.Database.SaveVaccinationsListAsync(progenyId, accessLevel, vaccinationsList);
                         return vaccinationsList;
                     }
                     else
@@ -3706,7 +3700,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var vaccinationsString = await result.Content.ReadAsStringAsync();
                         List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
-                        await SecureStorage.SetAsync("VaccinationsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        // await SecureStorage.SetAsync("VaccinationsList" + progenyId + "Al" + accessLevel, JsonConvert.SerializeObject(vaccinationsList));
+                        await App.Database.SaveVaccinationsListAsync(progenyId, accessLevel, vaccinationsList);
                         return vaccinationsList;
                     }
                     else
@@ -3717,12 +3712,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string vaccinationsString = await SecureStorage.GetAsync("VaccinationsList" + progenyId + "Al" + accessLevel);
-                if (string.IsNullOrEmpty(vaccinationsString))
+                List<Vaccination> vaccinationsList = await App.Database.GetVaccinationsListAsync(progenyId,accessLevel);
+                if (vaccinationsList == null)
                 {
-                    return new List<Vaccination>();
+                    vaccinationsList = new List<Vaccination>();
                 }
-                List<Vaccination> vaccinationsList = JsonConvert.DeserializeObject<List<Vaccination>>(vaccinationsString);
                 return vaccinationsList;
             }
         }
@@ -3841,8 +3835,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var notesString = await result.Content.ReadAsStringAsync();
                         NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesString);
-
-                        await SecureStorage.SetAsync("NotesListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        // await SecureStorage.SetAsync("NotesListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        await App.Database.SaveNotesListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, notesListPage);
                         return notesListPage;
                     }
                     else
@@ -3860,8 +3854,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var notesString = await result.Content.ReadAsStringAsync();
                         NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesString);
-
-                        await SecureStorage.SetAsync("NotesListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        //await SecureStorage.SetAsync("NotesListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(notesListPage));
+                        await App.Database.SaveNotesListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, notesListPage);
                         return notesListPage;
                     }
                     else
@@ -3872,12 +3866,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string notesListPageString = await SecureStorage.GetAsync("NotesListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(notesListPageString))
-                {
-                    return new NotesListPage();
-                }
-                NotesListPage notesListPage = JsonConvert.DeserializeObject<NotesListPage>(notesListPageString);
+                NotesListPage notesListPage = await App.Database.GetNotesListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
                 return notesListPage;
             }
         }
@@ -3912,7 +3901,8 @@ namespace KinaUnaXamarin.Services
                             }
                         }
 
-                        await SecureStorage.SetAsync("LocationsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
+                        // await SecureStorage.SetAsync("LocationsListPage" + Constants.DefaultChildId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
+                        await App.Database.SaveLocationsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, locationsListPage);
                         return locationsListPage;
                     }
                     else
@@ -3940,7 +3930,8 @@ namespace KinaUnaXamarin.Services
                                 }
                             }
                         }
-                        await SecureStorage.SetAsync("LocationsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
+                        // await SecureStorage.SetAsync("LocationsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(locationsListPage));
+                        await App.Database.SaveLocationsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder, locationsListPage);
                         return locationsListPage;
                     }
                     else
@@ -3951,12 +3942,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string locationsListPageString = await SecureStorage.GetAsync("LocationsListPage" + progenyId + "Page" + pageNumber + "Size" + pageSize + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(locationsListPageString))
+                LocationsListPage locationsListPage = await App.Database.GetLocationsListPageAsync(progenyId, accessLevel, pageNumber, pageSize, sortOrder);
+                if (locationsListPage == null)
                 {
-                    return new LocationsListPage();
+                    locationsListPage = new LocationsListPage();
                 }
-                LocationsListPage locationsListPage = JsonConvert.DeserializeObject<LocationsListPage>(locationsListPageString);
                 return locationsListPage;
             }
         }
@@ -3990,8 +3980,8 @@ namespace KinaUnaXamarin.Services
                                 }
                             }
                         }
-
-                        await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        // await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        await App.Database.SaveLocationsListAsync(progenyId, accessLevel, locationsList);
                         return locationsList;
                     }
                     else
@@ -4019,7 +4009,8 @@ namespace KinaUnaXamarin.Services
                                 }
                             }
                         }
-                        await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        // await SecureStorage.SetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel, JsonConvert.SerializeObject(locationsList));
+                        await App.Database.SaveLocationsListAsync(progenyId, accessLevel, locationsList);
                         return locationsList;
                     }
                     else
@@ -4030,12 +4021,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string locationsListString = await SecureStorage.GetAsync("LocationsList" + Constants.DefaultChildId + "Al" + accessLevel);
-                if (string.IsNullOrEmpty(locationsListString))
-                {
-                    return new List<Location>();
-                }
-                List<Location> locationsList = JsonConvert.DeserializeObject<List<Location>>(locationsListString);
+                List<Location> locationsList = await App.Database.GeLocationsListAsync(progenyId, accessLevel);
                 return locationsList;
             }
         }
@@ -4078,9 +4064,11 @@ namespace KinaUnaXamarin.Services
 
                             picture.CommentsCount = picture.Comments.Count;
                             //ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true);
-                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                            //await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                            await App.Database.SavePictureAsync(picture);
                         }
-                        await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        //await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        await App.Database.SavePicturesListAsync(progenyId, userAccessLevel, pictureList);
                         return pictureList;
                     }
                     else
@@ -4107,10 +4095,12 @@ namespace KinaUnaXamarin.Services
                             }
                             picture.CommentsCount = picture.Comments.Count;
                             //ImageService.Instance.LoadUrl(picture.PictureLink600).DownSample(height: 440, allowUpscale: true);
-                            await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                            // await SecureStorage.SetAsync("Picture" + picture.PictureId, JsonConvert.SerializeObject(picture));
+                            await App.Database.SavePictureAsync(picture);
                         }
 
-                        await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        //await SecureStorage.SetAsync("PictureList" + progenyId + "Al" + userAccessLevel, JsonConvert.SerializeObject(pictureList));
+                        await App.Database.SavePicturesListAsync(progenyId, userAccessLevel, pictureList);
                         return pictureList;
                     }
                     else
@@ -4121,12 +4111,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string pictureListString = await SecureStorage.GetAsync("PictureList" + progenyId + "Al" + userAccessLevel);
-                if (string.IsNullOrEmpty(pictureListString))
-                {
-                    return new List<Picture>();
-                }
-                List<Picture> pictureList = JsonConvert.DeserializeObject<List<Picture>>(pictureListString);
+                List<Picture> pictureList = await App.Database.GetPicturesListAsync(progenyId, userAccessLevel);
                 return pictureList;
             }
         }
@@ -4150,8 +4135,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var sleepString = await result.Content.ReadAsStringAsync();
                         List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
-                        
-                        await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        // await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        await App.Database.SaveSleepDetailsAsync( accessLevel, sleepId, sortOrder, sleepList);
                         return sleepList;
                     }
                     else
@@ -4175,7 +4160,8 @@ namespace KinaUnaXamarin.Services
                             slpItem.SleepEnd = TimeZoneInfo.ConvertTimeFromUtc(slpItem.SleepEnd, TimeZoneInfo.FindSystemTimeZoneById(timezone));
                             
                         }
-                        await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        // await SecureStorage.SetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder, JsonConvert.SerializeObject(sleepList));
+                        await App.Database.SaveSleepDetailsAsync(accessLevel, sleepId, sortOrder, sleepList);
                         return sleepList;
                     }
                     else
@@ -4186,12 +4172,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string sleepString = await SecureStorage.GetAsync("SleepDetails" + "SleepId" + sleepId + "Al" + accessLevel + "Sort" + sortOrder);
-                if (string.IsNullOrEmpty(sleepString))
+                List<Sleep> sleepList = await App.Database.GetSleepDetailsAsync(accessLevel, sleepId, sortOrder);
+                if (sleepList == null)
                 {
-                    return new List<Sleep>();
+                    sleepList = new List<Sleep>();
                 }
-                List<Sleep> sleepList = JsonConvert.DeserializeObject<List<Sleep>>(sleepString);
                 return sleepList;
             }
         }
@@ -4347,8 +4332,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var timeLineItemString = await result.Content.ReadAsStringAsync();
                         TimeLineItem timeLineItem = JsonConvert.DeserializeObject<TimeLineItem>(timeLineItemString);
-                        await SecureStorage.SetAsync("TimeLineItem" + itemId + "Type" + (int)timeLineType,
-                            JsonConvert.SerializeObject(timeLineItem));
+                        // await SecureStorage.SetAsync("TimeLineItem" + itemId + "Type" + (int)timeLineType, JsonConvert.SerializeObject(timeLineItem));
+                        await App.Database.SaveTimeLineItemByItemIdAsync(itemId, (int)timeLineType, timeLineItem);
                         return timeLineItem;
                     }
                     else
@@ -4359,12 +4344,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string timeLineItemString = await SecureStorage.GetAsync("TimeLineItem" + itemId + "Type" + (int)timeLineType);
-                if (string.IsNullOrEmpty(timeLineItemString))
-                {
-                    return new TimeLineItem();
-                }
-                TimeLineItem timeLineItem = JsonConvert.DeserializeObject<TimeLineItem>(timeLineItemString);
+                TimeLineItem timeLineItem = await App.Database.GetTimeLineItemByItemIdAsync(itemId, (int)timeLineType);
                 return timeLineItem;
             }
         }
@@ -4605,7 +4585,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var autoSuggestListString = await result.Content.ReadAsStringAsync();
                         List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
-                        await SecureStorage.SetAsync("LocationAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        // await SecureStorage.SetAsync("LocationAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        await App.Database.SaveLocationAutoSuggestListAsync(progenyId, accessLevel, autoSuggestList);
                         return autoSuggestList;
                     }
                     else
@@ -4616,12 +4597,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string autoSuggestListString = await SecureStorage.GetAsync("LocationAutoSuggestList" + progenyId + "AL" + accessLevel);
-                if (string.IsNullOrEmpty(autoSuggestListString))
+                List<string> autoSuggestList = await App.Database.GetLocationAutoSuggestListAsync(progenyId, accessLevel);
+                if (autoSuggestList == null)
                 {
-                    return new List<string>();
+                    autoSuggestList = new List<string>();
                 }
-                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
                 return autoSuggestList;
             }
         }
@@ -4651,7 +4631,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var autoSuggestListString = await result.Content.ReadAsStringAsync();
                         List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
-                        await SecureStorage.SetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        // await SecureStorage.SetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        await App.Database.SaveTagsAutoSuggestListAsync(progenyId, accessLevel, autoSuggestList);
                         return autoSuggestList;
                     }
                     else
@@ -4662,12 +4643,11 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string autoSuggestListString = await SecureStorage.GetAsync("TagsAutoSuggestList" + progenyId + "AL" + accessLevel);
-                if (string.IsNullOrEmpty(autoSuggestListString))
+                List<string> autoSuggestList = await App.Database.GetLocationAutoSuggestListAsync(progenyId, accessLevel);
+                if (autoSuggestList == null)
                 {
-                    return new List<string>();
+                    autoSuggestList = new List<string>();
                 }
-                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
                 return autoSuggestList;
             }
         }
@@ -4697,7 +4677,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var autoSuggestListString = await result.Content.ReadAsStringAsync();
                         List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
-                        await SecureStorage.SetAsync("CategoryAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        // await SecureStorage.SetAsync("CategoryAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        await App.Database.SaveCategoryAutoSuggestListAsync(progenyId, accessLevel, autoSuggestList);
                         return autoSuggestList;
                     }
                     else
@@ -4708,12 +4689,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string autoSuggestListString = await SecureStorage.GetAsync("CategoryAutoSuggestList" + progenyId + "AL" + accessLevel);
-                if (string.IsNullOrEmpty(autoSuggestListString))
-                {
-                    return new List<string>();
-                }
-                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                List<string> autoSuggestList = await App.Database.GetLocationAutoSuggestListAsync(progenyId, accessLevel);
                 return autoSuggestList;
             }
         }
@@ -4743,7 +4719,8 @@ namespace KinaUnaXamarin.Services
                     {
                         var autoSuggestListString = await result.Content.ReadAsStringAsync();
                         List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
-                        await SecureStorage.SetAsync("ContextAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        // await SecureStorage.SetAsync("ContextAutoSuggestList" + progenyId + "AL" + accessLevel, JsonConvert.SerializeObject(autoSuggestList));
+                        await App.Database.SaveContextAutoSuggestListAsync(progenyId, accessLevel, autoSuggestList);
                         return autoSuggestList;
                     }
                     else
@@ -4754,12 +4731,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string autoSuggestListString = await SecureStorage.GetAsync("ContextAutoSuggestList" + progenyId + "AL" + accessLevel);
-                if (string.IsNullOrEmpty(autoSuggestListString))
-                {
-                    return new List<string>();
-                }
-                List<string> autoSuggestList = JsonConvert.DeserializeObject<List<string>>(autoSuggestListString);
+                List<string> autoSuggestList = await App.Database.GetLocationAutoSuggestListAsync(progenyId, accessLevel);
                 return autoSuggestList;
             }
         }

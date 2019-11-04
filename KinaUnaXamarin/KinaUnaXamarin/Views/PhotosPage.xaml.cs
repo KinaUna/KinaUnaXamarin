@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
@@ -81,11 +82,15 @@ namespace KinaUnaXamarin.Views
         {
             base.OnSizeAllocated(width, height); //must be called
             int columns = (int)Math.Floor(width / 200);
+            
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                columns = (int)Math.Floor(Application.Current.MainPage.Width / 200);
+            }
             if (columns < 1)
             {
                 columns = 1;
             }
-            
             PhotosListView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
         }
 
@@ -213,7 +218,7 @@ namespace KinaUnaXamarin.Views
             {
                 _photosViewModel.PageNumber = 1;
             }
-            _photosViewModel.TagsCollection.Clear();
+            // _photosViewModel.TagsCollection.Clear();
             
             PicturePage photoPage = await ProgenyService.GetPicturePage(_photosViewModel.PageNumber, 8, _viewChild, _photosViewModel.UserAccessLevel, _userInfo.Timezone, 1, _photosViewModel.TagFilter);
             if (photoPage.PicturesList != null)
@@ -229,7 +234,10 @@ namespace KinaUnaXamarin.Views
                     tagsList.Sort();
                     foreach (string tagString in tagsList)
                     {
-                        _photosViewModel.TagsCollection.Add(tagString);
+                        if (!string.IsNullOrEmpty(tagString))
+                        {
+                            _photosViewModel.TagsCollection.Add(tagString);
+                        }
                     }
                 }
             }

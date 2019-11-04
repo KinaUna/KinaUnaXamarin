@@ -25,7 +25,10 @@ namespace KinaUnaXamarin.Views
         public SleepPage()
         {
             InitializeComponent();
-
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                SleepListView.Header = null;
+            }
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;

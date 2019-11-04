@@ -26,7 +26,10 @@ namespace KinaUnaXamarin.Views
         public VocabularyPage()
         {
             InitializeComponent();
-
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                VocabularyListView.Header = null;
+            }
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;

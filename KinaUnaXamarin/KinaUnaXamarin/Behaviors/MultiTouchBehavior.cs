@@ -245,9 +245,20 @@ namespace KinaUnaXamarin.Behaviors
         private void StartScaling()
         {
             _startScale = _parent.Content.Scale;
-
-            _parent.Content.AnchorX = 0;
-            _parent.Content.AnchorY = 0;
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _parent.Content.AnchorX = 0;
+                    _parent.Content.AnchorY = 0;
+                });
+            }
+            else
+            {
+                _parent.Content.AnchorX = 0;
+                _parent.Content.AnchorY = 0;
+            }
+            
         }
 
         private void ExecuteScaling(double scale, double x, double y)

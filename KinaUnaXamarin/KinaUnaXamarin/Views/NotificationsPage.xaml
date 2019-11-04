@@ -11,6 +11,11 @@
              Title="{i18n:Translate Notifications}">
     <ContentPage.Content>
         <Grid BackgroundColor="#3A2051">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout Orientation="Vertical" Margin="10">
                     <Label Text="{i18n:Translate Notifications}" TextColor="White"></Label>
                     <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged">

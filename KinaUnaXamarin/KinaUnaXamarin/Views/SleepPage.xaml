@@ -19,7 +19,12 @@
         <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
+        <Grid BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
@@ -40,15 +45,18 @@
                             <Label Grid.Column="0" Margin="5,0,0,0"
                                    Text="{i18n:Translate Start}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold"
+                                   TextColor="DarkSlateGray"/>
                             <Label Grid.Column="1" Margin="0,0,0,0"
                                    Text="{i18n:Translate End}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" 
+                                   TextColor="DarkSlateGray"/>
                             <Label Grid.Column="2" Margin="0,0,0,0"
                                    Text="{i18n:Translate Duration}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold"
+                                   TextColor="DarkSlateGray"/>
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
@@ -65,21 +73,21 @@
                                 </Grid.ColumnDefinitions>
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="End" HorizontalOptions="FillAndExpand" HeightRequest="2" Color="LightGray"></BoxView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                    <Label Text="{Binding SleepStart, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
-                                    <Label Text="{Binding SleepStart, StringFormat='{0:HH:mm}'}" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding SleepStart, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="DarkSlateGray"></Label>
+                                    <Label Text="{Binding SleepStart, StringFormat='{0:HH:mm}'}" TextColor="DarkSlateGray" FontAttributes="Bold"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                                    <Label Text="{Binding SleepEnd, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
-                                    <Label Text="{Binding SleepEnd, StringFormat='{0:HH:mm}'}" FontAttributes="Bold"></Label>
+                                    <Label Text="{Binding SleepEnd, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="DarkSlateGray"></Label>
+                                    <Label Text="{Binding SleepEnd, StringFormat='{0:HH:mm}'}" TextColor="DarkSlateGray" FontAttributes="Bold"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                    <Label Text="{Binding SleepDuration, StringFormat=\{0:h\\:mm\}}" VerticalOptions="End"></Label>
+                                    <Label Text="{Binding SleepDuration, StringFormat=\{0:h\\:mm\}}" VerticalOptions="End" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Grid>
+                <Grid BackgroundColor="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>
                     </Grid.RowDefinitions>

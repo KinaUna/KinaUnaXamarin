@@ -437,6 +437,9 @@ namespace KinaUnaXamarin.Views
                     _viewModel.PlotModelHeight.Series.Add(heightStemSeries);
                     _viewModel.PlotModelWeight.Series.Add(weightStemSeries);
                 }
+
+                _viewModel.PlotModelHeight.InvalidatePlot(true);
+                _viewModel.PlotModelWeight.InvalidatePlot(true);
             }
             
             

@@ -26,7 +26,10 @@ namespace KinaUnaXamarin.Views
         public MeasurementsPage()
         {
             InitializeComponent();
-
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                MeasurementsListView.Header = null;
+            }
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;

@@ -20,6 +20,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
@@ -40,15 +45,15 @@
                             <Label Grid.Column="0" Margin="5,0,0,0"
                                    Text="{i18n:Translate Name}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                             <Label Grid.Column="1" Margin="0,0,0,0"
                                    Text="{i18n:Translate Description}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                             <Label Grid.Column="2" Margin="0,0,0,0"
                                    Text="{i18n:Translate Date}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
@@ -65,13 +70,13 @@
                                 </Grid.ColumnDefinitions>
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="End" HorizontalOptions="FillAndExpand" HeightRequest="2" Color="LightGray"></BoxView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                    <Label Text="{Binding VaccinationName}"></Label>
+                                    <Label Text="{Binding VaccinationName}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                                    <Label Text="{Binding VaccinationDescription}"></Label>
+                                    <Label Text="{Binding VaccinationDescription}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                    <Label Text="{Binding VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
+                                    <Label Text="{Binding VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                             </Grid>
                         </DataTemplate>

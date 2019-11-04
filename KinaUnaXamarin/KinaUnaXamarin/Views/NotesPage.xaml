@@ -21,6 +21,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout>
                 <ListView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" HasUnevenRows="True" ItemSelected="NotesListView_OnItemSelected"  SelectionMode="Single">
                     <ListView.ItemTemplate>
@@ -33,7 +38,7 @@
                                                 <Label Text="{Binding Title}" Margin="5" FontAttributes="Bold" FontSize="16" TextColor="White" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Start" />
                                             </Frame>
                                             <Frame BackgroundColor="White" Padding="5" Margin="5">
-                                                <controls:HtmlLabel Html="{Binding Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5" BackgroundColor="White"></controls:HtmlLabel>
+                                                <Label Text="{Binding Content}" TextType="Html" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="5" BackgroundColor="White" TextColor="DarkSlateGray"></Label>
                                             </Frame>
                                             <!--<WebView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0" HeightRequest="500">
                                             <WebView.Source>
@@ -53,7 +58,6 @@
                             </ViewCell>
                         </DataTemplate>
                     </ListView.ItemTemplate>
-                        
                 </ListView>
                 <Grid BackgroundColor="White">
                     <Grid.RowDefinitions>
@@ -66,10 +70,10 @@
                     </Grid.ColumnDefinitions>
                     <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
                     <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" >
-                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0"></Label>
-                        <Label Text="{Binding PageNumber}"></Label>
-                        <Label Text="{i18n:Translate Of} "></Label>
-                        <Label Text="{Binding PageCount}"></Label>
+                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0" TextColor="DarkSlateGray"></Label>
+                        <Label Text="{Binding PageNumber}" TextColor="DarkSlateGray"></Label>
+                        <Label Text="{i18n:Translate Of} " TextColor="DarkSlateGray"></Label>
+                        <Label Text="{Binding PageCount}" TextColor="DarkSlateGray"></Label>
                     </StackLayout>
                     <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
                 </Grid>

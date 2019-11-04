@@ -20,6 +20,11 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid>
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
@@ -27,7 +32,6 @@
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
-
                 </StackLayout>
                 <CollectionView x:Name="SkillsListView" ItemsSource="{Binding SkillsItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="SkillsListView_OnSelectionChanged" SelectionMode="Single" >
                     <CollectionView.Header>
@@ -40,15 +44,15 @@
                             <Label Grid.Column="0" Margin="5,0,0,0"
                                    Text="{i18n:Translate Name}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                             <Label Grid.Column="1" Margin="0,0,0,0"
                                    Text="{i18n:Translate Description}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                             <Label Grid.Column="2" Margin="0,0,0,0"
                                    Text="{i18n:Translate FirstObservation}"
                                    FontSize="Small"
-                                   FontAttributes="Bold" />
+                                   FontAttributes="Bold" TextColor="DarkSlateGray" />
                         </Grid>
                     </CollectionView.Header>
                     <CollectionView.ItemTemplate>
@@ -65,19 +69,19 @@
                                 </Grid.ColumnDefinitions>
                                 <BoxView Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" VerticalOptions="End" HorizontalOptions="FillAndExpand" HeightRequest="2" Color="LightGray"></BoxView>
                                 <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Vertical">
-                                    <Label Text="{Binding Name}"></Label>
+                                    <Label Text="{Binding Name}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical">
-                                    <Label Text="{Binding Description}"></Label>
+                                    <Label Text="{Binding Description}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                                 <StackLayout Grid.Row="0" Grid.Column="2" Orientation="Vertical">
-                                    <Label Text="{Binding SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}"></Label>
+                                    <Label Text="{Binding SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="DarkSlateGray"></Label>
                                 </StackLayout>
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Grid>
+                <Grid BackgroundColor="White">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>
                     </Grid.RowDefinitions>
@@ -88,10 +92,10 @@
                     </Grid.ColumnDefinitions>
                     <Button x:Name="NewerButton" Grid.Row="0" Grid.Column="0" Text="{i18n:Translate Newer}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="NewerButton_OnClicked"></Button>
                     <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal">
-                        <Label Text="{i18n:Translate PageColon}" Margin="0,0,5,0"></Label>
-                        <Label Text="{Binding PageNumber}"></Label>
-                        <Label Text="{i18n:Translate Of} "></Label>
-                        <Label Text="{Binding PageCount}"></Label>
+                        <Label Text="{i18n:Translate PageColon}" TextColor="DarkSlateGray" Margin="0,0,5,0"></Label>
+                        <Label Text="{Binding PageNumber}" TextColor="DarkSlateGray"></Label>
+                        <Label Text="{i18n:Translate Of} " TextColor="DarkSlateGray"></Label>
+                        <Label Text="{Binding PageCount}" TextColor="DarkSlateGray"></Label>
                     </StackLayout>
                     <Button x:Name="OlderButton" Grid.Row="0" Grid.Column="2" Text="{i18n:Translate Older}" BackgroundColor="Purple" TextColor="LightGoldenrodYellow" Clicked="OlderButton_OnClicked"></Button>
                 </Grid>

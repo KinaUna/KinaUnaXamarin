@@ -18,13 +18,18 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <ScrollView>
                 <Grid x:Name="SleepStatsGrid" Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="500"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <Frame Grid.Row="0">
+                    <Frame Grid.Row="0" BackgroundColor="White">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition></ColumnDefinition>
@@ -38,21 +43,21 @@
                                 <RowDefinition Height="Auto"></RowDefinition>
                                 <RowDefinition Height="Auto"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate TotalSleepRecorded}" Margin="5"></Label>
-                            <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepTitle" Grid.Row="1" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDay}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLastYear}" Margin="5"></Label>
-                            <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepYearTitle" Grid.Row="3" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLastYear}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLast30Days}" Margin="5"></Label>
-                            <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}" Margin="5"></Label>
-                            <Label x:Name="AverageSleepMonthTitle" Grid.Row="5" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLast30Days} " Margin="5"></Label>
-                            <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}" Margin="5"></Label>
+                            <Label Grid.Row="0" Grid.Column="0" Text="{i18n:Translate TotalSleepRecorded}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="TotalSleepLabel" Grid.Row="0" Grid.Column="1" Text="{Binding SleepTotal, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepTitle" Grid.Row="1" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDay}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepTotalLabel" Grid.Row="1" Grid.Column="1" Text="{Binding TotalAverage, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLastYear}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="SleepLastYearLabel" Grid.Row="2" Grid.Column="1" Text="{Binding SleepLastYear, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepYearTitle" Grid.Row="3" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLastYear}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepLastYearLabel" Grid.Row="3" Grid.Column="1" Text="{Binding LastYearAverage, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate SleepRecordedInTheLast30Days}" Margin="5" TextColor="DarkSlateGray"></Label>
+                            <Label x:Name="SleepLastDaysLabel" Grid.Row="4" Grid.Column="1" Text="{Binding SleepLastMonth, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepMonthTitle" Grid.Row="5" Grid.Column="0" Text="{i18n:Translate AverageSleepPerDayInTheLast30Days}" TextColor="DarkSlateGray" Margin="5"></Label>
+                            <Label x:Name="AverageSleepLastDaysLabel" Grid.Row="5" Grid.Column="1" Text="{Binding LastMonthAverage, StringFormat='{0:g}'}" TextColor="DarkSlateGray" Margin="5"></Label>
                         </Grid>
                     </Frame>
-                    <Frame Grid.Row="1">
+                    <Frame Grid.Row="1" BackgroundColor="White">
                         <oxy:PlotView  Model="{Binding SleepPlotModel}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="0,15,0,0"></oxy:PlotView>
                     </Frame>
                 </Grid>
@@ -63,14 +68,14 @@
             <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
             <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
-                <Label Text="{i18n:Translate ChartOptions}"></Label>
-                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate Start}"></Label>
+                <Label Text="{i18n:Translate ChartOptions}" TextColor="DarkSlateGray"></Label>
+                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate Start}" TextColor="DarkSlateGray"></Label>
                 <DatePicker Margin="40, 0, 0, 0" x:Name="StartDatePicker" Date="{Binding StartDate}" MinimumDate="{Binding FirstDate}" MaximumDate="{Binding Source={x:Reference EndDatePicker}, Path=Date}" Format="dd MMM yyyy"></DatePicker>
-                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate End}"></Label>
+                <Label Margin="20, 10, 0, 0" Text="{i18n:Translate End}" TextColor="DarkSlateGray"></Label>
                 <DatePicker Margin="40, 10, 0, 0" x:Name="EndDatePicker" Date="{Binding EndDate}" MinimumDate="{Binding Source={x:Reference StartDatePicker}, Path=Date}" MaximumDate="{Binding LastDate}" Format="dd MMM yyyy"></DatePicker>
-                <Label Text="{i18n:Translate ChartType}"></Label>
+                <Label Text="{i18n:Translate ChartType}" TextColor="DarkSlateGray"></Label>
                 <Picker x:Name="ChartTypePicker" ItemsSource="{Binding ChartTypeList}"></Picker>
-                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}"></Button>
+                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}" BackgroundColor="DarkGreen"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>

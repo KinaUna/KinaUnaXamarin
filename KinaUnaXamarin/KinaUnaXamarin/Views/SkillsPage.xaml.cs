@@ -26,7 +26,10 @@ namespace KinaUnaXamarin.Views
         public SkillsPage()
         {
             InitializeComponent();
-
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                SkillsListView.Header = null;
+            }
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;

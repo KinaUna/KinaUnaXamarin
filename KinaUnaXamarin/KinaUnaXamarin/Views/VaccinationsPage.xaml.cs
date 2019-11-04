@@ -26,7 +26,10 @@ namespace KinaUnaXamarin.Views
         public VaccinationsPage()
         {
             InitializeComponent();
-
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                VaccinationsListView.Header = null;
+            }
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await Reload();

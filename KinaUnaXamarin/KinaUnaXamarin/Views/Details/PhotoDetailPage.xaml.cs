@@ -26,6 +26,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
+    [QueryProperty("PictureId", "pictureId")]
     public partial class PhotoDetailPage : ContentPage
     {
         private readonly PhotoDetailViewModel _viewModel;
@@ -39,6 +40,15 @@ namespace KinaUnaXamarin.Views
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
         private CommentsPageViewModel _commentsPageViewModel;
 
+        public PhotoDetailPage()
+        {
+            InitializeComponent();
+            _viewModel = new PhotoDetailViewModel();
+            _viewModel.CurrentPictureId = 0;
+            BindingContext = _viewModel;
+            ContentGrid.BindingContext = _viewModel;
+        }
+
         public PhotoDetailPage(int pictureId)
         {
             InitializeComponent();
@@ -46,6 +56,17 @@ namespace KinaUnaXamarin.Views
             _viewModel.CurrentPictureId = pictureId;
             BindingContext = _viewModel;
             ContentGrid.BindingContext = _viewModel;
+        }
+
+        public string PictureId
+        {
+            set
+            {
+                int pictureId = 0;
+                bool parsed = int.TryParse(Uri.UnescapeDataString(value), out pictureId);
+                _viewModel.CurrentPictureId = pictureId;
+                
+            }
         }
 
         protected override async void OnAppearing()
@@ -543,17 +564,17 @@ namespace KinaUnaXamarin.Views
             _viewModel.LocationAutoSuggestList = await ProgenyService.GetLocationAutoSuggestList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
             _viewModel.TagsAutoSuggestList = await ProgenyService.GetTagsAutoSuggestList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
 
-            TagsEditor.Text = _viewModel.CurrentPictureViewModel.Tags;
+            TagsEditor.Text = _viewModel.CurrentPictureViewModel?.Tags ?? "";
             if (_viewModel.CurrentPictureViewModel.PictureTime.HasValue)
             {
                 PhotoDatePicker.Date = _viewModel.CurrentPictureViewModel.PictureTime.Value.Date;
                 PhotoTimePicker.Time = _viewModel.CurrentPictureViewModel.PictureTime.Value.TimeOfDay;
             }
 
-            LocationEntry.Text = _viewModel.CurrentPictureViewModel.Location;
-            LatitudeEntry.Text = _viewModel.CurrentPictureViewModel.Latitude;
-            LongitudeEntry.Text = _viewModel.CurrentPictureViewModel.Longtitude;
-            AltitudeEntry.Text = _viewModel.CurrentPictureViewModel.Altitude;
+            LocationEntry.Text = _viewModel.CurrentPictureViewModel?.Location ?? "";
+            LatitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Latitude ?? "";
+            LongitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Longtitude ?? "";
+            AltitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Altitude ?? "";
             AccessLevelPicker.SelectedIndex = _viewModel.CurrentPictureViewModel.AccessLevel;
 
             DeleteButton.IsVisible = true;

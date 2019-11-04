@@ -37,16 +37,17 @@ namespace KinaUnaXamarin.Services
                 {
                     var userinfoString = await result.Content.ReadAsStringAsync();
                     UserInfo userinfo = JsonConvert.DeserializeObject<UserInfo>(userinfoString);
-                    await SecureStorage.SetAsync("UserInfo" + userEmail, JsonConvert.SerializeObject(userinfo));
+                    // await SecureStorage.SetAsync("UserInfo" + userEmail, JsonConvert.SerializeObject(userinfo));
+                    await App.Database.SaveUserInfoAsync(userinfo);
                     return userinfo;
                 }
                 else
                 {
                     // Todo: Handle errors
-                    string userinfoString = await SecureStorage.GetAsync("UserInfo" + userEmail);
-                    if (!string.IsNullOrEmpty(userinfoString))
+                    // string userinfoString = await SecureStorage.GetAsync("UserInfo" + userEmail);
+                    UserInfo userinfo = await App.Database.GetUserInfoAsync(userEmail);
+                    if (userinfo != null)
                     {
-                        UserInfo userinfo = JsonConvert.DeserializeObject<UserInfo>(userinfoString);
                         return userinfo;
                     }
 
@@ -55,10 +56,9 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string userinfoString = await SecureStorage.GetAsync("UserInfo" + userEmail);
-                if (!string.IsNullOrEmpty(userinfoString))
+                UserInfo userinfo = await App.Database.GetUserInfoAsync(userEmail);
+                if (userinfo != null)
                 {
-                    UserInfo userinfo = JsonConvert.DeserializeObject<UserInfo>(userinfoString);
                     return userinfo;
                 }
 
@@ -82,7 +82,8 @@ namespace KinaUnaXamarin.Services
                 {
                     string resultString = await result.Content.ReadAsStringAsync();
                     string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
-                    await SecureStorage.SetAsync("ProfilePicture" + pictureId, pictureResultString);
+                    // await SecureStorage.SetAsync("ProfilePicture" + pictureId, pictureResultString);
+                    await App.Database.SaveUserPictureAsync(pictureId, pictureResultString);
                     return pictureResultString;
                 }
                 else
@@ -93,7 +94,8 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string pictureResultString = await SecureStorage.GetAsync("ProfilePicture" + pictureId);
+                // string pictureResultString = await SecureStorage.GetAsync("ProfilePicture" + pictureId);
+                string pictureResultString = await App.Database.GetUserPictureAsync(pictureId);
                 if (!string.IsNullOrEmpty(pictureResultString))
                 {
                     return pictureResultString;
@@ -410,6 +412,17 @@ namespace KinaUnaXamarin.Services
         public static async Task<bool> LogoutIdsAsync()
         {
             await DeRegisterDevice();
+            await App.Database.ResetAll();
+            try
+            {
+                string pnsHandle = await SecureStorage.GetAsync("PnsHandle");
+                SecureStorage.RemoveAll();
+                await SecureStorage.SetAsync("PnsHandle", pnsHandle);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
 
             var browser = DependencyService.Get<IBrowser>();
             
@@ -438,18 +451,7 @@ namespace KinaUnaXamarin.Services
             LogoutRequest logoutRequest = new LogoutRequest();
             logoutRequest.IdTokenHint = idToken;
             await oidcClient.LogoutAsync(logoutRequest);
-
-            try
-            {
-                string pnsHandle = await SecureStorage.GetAsync("PnsHandle");
-                SecureStorage.RemoveAll();
-                await SecureStorage.SetAsync("PnsHandle", pnsHandle);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
+            
             return true;
         }
 

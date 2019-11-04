@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using SQLite;
 
 namespace KinaUnaXamarin.Models
 {
     public class PicturePageList
     {
+        [PrimaryKey, AutoIncrement]
+        public int DbId { get; set; }
         public int ProgenyId { get; set; }
         public int PageNumber { get; set; }
         public int PageSize { get; set; }

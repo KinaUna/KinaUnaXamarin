@@ -259,7 +259,7 @@ namespace KinaUnaXamarin.Views
                 EditButton.Text = IconFont.ContentSave;
                 
                 HtmlWebViewSource htmlSource = new HtmlWebViewSource();
-                htmlSource.BaseUrl = DependencyService.Get<IBaseUrl>().Get();
+                // htmlSource.BaseUrl = DependencyService.Get<IBaseUrl>().Get();
                 htmlSource.Html = DependencyService.Get<IBaseUrl>().GetQuillHtml().Replace("!!Content!!", _viewModel.Content);
                 
                 ContentWebView.Source = htmlSource;

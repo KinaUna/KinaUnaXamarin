@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,12 +7,11 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
-using MvvmHelpers;
-using Newtonsoft.Json;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Application = Xamarin.Forms.Application;
 using Location = KinaUnaXamarin.Models.KinaUna.Location;
 
 namespace KinaUnaXamarin.Views
@@ -69,14 +67,14 @@ namespace KinaUnaXamarin.Views
                 {
                     try
                     {
-                        _feedModel.Progeny = JsonConvert.DeserializeObject<Progeny>(await SecureStorage.GetAsync("ProgenyObject" + userviewchild));
+                        _feedModel.Progeny = await App.Database.GetProgenyAsync(_viewChild);
                     }
                     catch (Exception)
                     {
                         _feedModel.Progeny = await ProgenyService.GetProgeny(_viewChild);
                     }
                     
-                    _userInfo = JsonConvert.DeserializeObject<UserInfo>(await SecureStorage.GetAsync("UserInfo" + userEmail));
+                    _userInfo = await App.Database.GetUserInfoAsync(userEmail);
                 }
                 BindingContext = _feedModel;
             }
@@ -393,24 +391,54 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            if (_screenWidth != width || _screenHeight != height)
+
+
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                _screenWidth = width;
-                _screenHeight = height;
-                
-                if (Device.Idiom == TargetIdiom.Desktop)
+                if (_screenWidth != Application.Current.MainPage.Width || _screenHeight != Application.Current.MainPage.Height)
                 {
-                    if (width > 1100)
+                    _screenWidth = Application.Current.MainPage.Width;
+                    _screenHeight = Application.Current.MainPage.Height;
+
+                    if (_screenWidth > 800) //if (width > height && width > 800)
                     {
+                        ProgenyDetailsStackLayout.WidthRequest = _screenWidth * 0.4;
+                        ProgenyTimeInfoStackLayout.WidthRequest = _screenWidth * 0.4;
+
+                        if (_feedModel != null)
+                        {
+                            _feedModel.ImageLinkWidth = (int)(_screenWidth * 0.4 - 20);
+                        }
+                        ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 2, 5);
+                        UpcomingEventsStatckLayout.Margin = new Thickness(3, 0, 5, 5);
+                        LatestPostsStackLayout.Margin = new Thickness(3, 0, 5, 5);
+                        ContainerStackLayout.Margin = new Thickness(0, 0, 0, 0);
                         ContainerStackLayout.Orientation = StackOrientation.Horizontal;
                     }
                     else
                     {
+                        ProgenyDetailsStackLayout.WidthRequest = _screenWidth * 0.9;
+                        ProgenyTimeInfoStackLayout.WidthRequest = _screenWidth * 0.9;
+                        if (_feedModel != null)
+                        {
+                            _feedModel.ImageLinkWidth = (int)(_screenWidth - 20);
+                        }
+
+                        ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
+                        UpcomingEventsStatckLayout.Margin = new Thickness(5, 5, 5, 5);
+                        LatestPostsStackLayout.Margin = new Thickness(5, 0, 5, 5);
+                        ContainerStackLayout.Margin = new Thickness(0, 0, 0, 0);
                         ContainerStackLayout.Orientation = StackOrientation.Vertical;
                     }
                 }
-                else
+            }
+            else
+            {
+                if (_screenWidth != width || _screenHeight != height)
                 {
+                    _screenWidth = width;
+                    _screenHeight = height;
+
                     if (width > height && (width - ProgenyDetailsStackLayout.WidthRequest) > 200) //if (width > height && width > 800)
                     {
                         ProgenyDetailsStackLayout.WidthRequest = (int)(width * 6 / 11);
@@ -430,14 +458,13 @@ namespace KinaUnaXamarin.Views
                         {
                             _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
                         }
-                        
+
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
                         UpcomingEventsStatckLayout.Margin = new Thickness(5, 0, 5, 5);
                         LatestPostsStackLayout.Margin = new Thickness(5, 0, 5, 5);
                         ContainerStackLayout.Orientation = StackOrientation.Vertical;
                     }
                 }
-
             }
         }
 
@@ -470,9 +497,11 @@ namespace KinaUnaXamarin.Views
                 if (timeLineItem.ItemObject is Picture picture)
                 {
                     PhotoDetailPage photoPage = new PhotoDetailPage(picture.PictureId);
+                    
                     // Reset selection
                     TimeLineListView.SelectedItem = null;
-                    await Shell.Current.Navigation.PushModalAsync(photoPage);
+                    // await Shell.Current.GoToAsync($"photodetailpage?pictureId={picture.PictureId}");
+                    await Shell.Current.Navigation.PushAsync(photoPage);
                 }
 
                 if (timeLineItem.ItemObject is Video video)
@@ -480,14 +509,14 @@ namespace KinaUnaXamarin.Views
                     VideoDetailPage videoPage = new VideoDetailPage(video.VideoId);
                     // Reset selection
                     TimeLineListView.SelectedItem = null;
-                    await Shell.Current.Navigation.PushModalAsync(videoPage);
+                    await Shell.Current.Navigation.PushAsync(videoPage);
                 }
 
                 if (timeLineItem.ItemObject is Sleep sleep)
                 {
                     SleepDetailPage sleepDetailPage = new SleepDetailPage(sleep);
                     TimeLineListView.SelectedItem = null;
-                    await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
+                    await Shell.Current.Navigation.PushAsync(sleepDetailPage);
                 }
 
                 if (timeLineItem.ItemObject is CalendarItem calendarItem)

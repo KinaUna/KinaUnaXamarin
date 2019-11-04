@@ -234,7 +234,15 @@ namespace KinaUnaXamarin.Views
             }
 
             _timelineModel.MaxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            TimelineStartDatePicker.MaximumDate = _timelineModel.MaxDate;
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                Device.BeginInvokeOnMainThread(() => { TimelineStartDatePicker.MaximumDate = _timelineModel.MaxDate; });
+            }
+            else
+            {
+                TimelineStartDatePicker.MaximumDate = _timelineModel.MaxDate;
+            }
+                
             // TimeLineListView.ScrollTo(timeLineList.FirstOrDefault(), ScrollToPosition.Start, false);
         }
 

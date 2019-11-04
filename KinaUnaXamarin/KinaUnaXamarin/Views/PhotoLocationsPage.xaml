@@ -26,13 +26,17 @@
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout">
                 <maps:Map x:Name="LocationsMap" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
                           PinClicked="LocationsMap_OnPinClicked"
                           MapType="Street"
                           HeightRequest="300"
-                          WidthRequest="300"
-                          >
+                          WidthRequest="300">
                 </maps:Map>
                 <CollectionView x:Name="LocationCollectionView" ItemsSource="{Binding NearbyPictures}"
                                 SelectionChanged="LocationCollectionView_OnSelectionChanged" SelectionMode="Single">

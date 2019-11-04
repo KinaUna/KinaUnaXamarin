@@ -312,6 +312,8 @@ namespace KinaUnaXamarin.Views
                 durationAxis.Key = "DurationAxis";
                 durationAxis.Minimum = 0; //_viewModel.MinValue -1;
                 durationAxis.Maximum = _viewModel.MaxValue; // + 1;
+                durationAxis.AbsoluteMinimum = 0; //_viewModel.MinValue -1;
+                durationAxis.AbsoluteMaximum = _viewModel.MaxValue; // + 1;
                 durationAxis.Position = AxisPosition.Left;
                 durationAxis.MajorStep = 1;
                 durationAxis.MinorStep = 0.5;
@@ -325,6 +327,8 @@ namespace KinaUnaXamarin.Views
                 dateAxis.Key = "DateAxis";
                 dateAxis.Minimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
                 dateAxis.Maximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
+                dateAxis.AbsoluteMinimum = DateTimeAxis.ToDouble(StartDatePicker.Date);
+                dateAxis.AbsoluteMaximum = DateTimeAxis.ToDouble(EndDatePicker.Date);
                 dateAxis.Position = AxisPosition.Bottom;
                 dateAxis.AxislineColor = OxyColor.FromRgb(0, 0, 0);
                 dateAxis.StringFormat = "dd-MMM-yyyy";
@@ -336,8 +340,9 @@ namespace KinaUnaXamarin.Views
 
                 _viewModel.SleepPlotModel = new PlotModel();
                 _viewModel.SleepPlotModel.Background = OxyColors.White;
-                _viewModel.SleepPlotModel.Axes.Add(durationAxis);
                 _viewModel.SleepPlotModel.Axes.Add(dateAxis);
+                _viewModel.SleepPlotModel.Axes.Add(durationAxis);
+                
                 _viewModel.SleepPlotModel.LegendPosition = LegendPosition.BottomCenter;
                 _viewModel.SleepPlotModel.LegendBackground = OxyColors.LightYellow;
 
@@ -362,6 +367,7 @@ namespace KinaUnaXamarin.Views
                 {
                     _viewModel.SleepPlotModel.Series.Add(sleepStemSeries);
                 }
+                _viewModel.SleepPlotModel.InvalidatePlot(true);
             }
             
             

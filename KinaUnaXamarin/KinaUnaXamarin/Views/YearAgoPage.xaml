@@ -128,7 +128,7 @@
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="locationsicon.png"></Image>
+                                <Image Source="locationsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding LocationObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding LocationObject.Name}" TextColor="White"></Label>
@@ -143,7 +143,7 @@
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="vocabularyicon.png"></Image>
+                                <Image Source="vocabularyicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding VocabularyObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding VocabularyObject.Word}" TextColor="White"></Label>
@@ -157,7 +157,7 @@
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="skillsicon.png"></Image>
+                                <Image Source="skillsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding SkillObject.SkillFirstObservation, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding SkillObject.Name}" TextColor="White"></Label>
@@ -170,7 +170,7 @@
                     <Frame CornerRadius="5" BackgroundColor="BlueViolet" Margin="10" Padding="10" HeightRequest="350">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="friendsicon.png"></Image>
+                                <Image Source="friendsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding FriendObject.FriendSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding FriendObject.Name}" TextColor="White"></Label>
@@ -188,7 +188,7 @@
                     <Frame CornerRadius="5" BackgroundColor="DarkRed" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="measurementsicon.png"></Image>
+                                <Image Source="measurementsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding MeasurementObject.Date, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <StackLayout Orientation="Horizontal">
@@ -236,12 +236,12 @@
                     <Frame CornerRadius="5" BackgroundColor="DarkOliveGreen" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10" >
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="notesicon.png"></Image>
+                                <Image Source="notesicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding NoteObject.CreatedDate, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding NoteObject.Title}" TextColor="White"></Label>
                             <StackLayout Padding="5" Margin="5" BackgroundColor="White">
-                                <controls:HtmlLabel Html="{Binding NoteObject.Content}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White"></controls:HtmlLabel>
+                                <Label Text="{Binding NoteObject.Content}" TextType="Html" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BackgroundColor="White"></Label>
                             </StackLayout>
                         </StackLayout>
                     </Frame>
@@ -252,7 +252,7 @@
                     <Frame CornerRadius="5" BackgroundColor="Purple" Margin="10" Padding="10" HeightRequest="350">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="contactsicon.png"></Image>
+                                <Image Source="contactsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding ContactObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding ContactObject.DisplayName}" TextColor="White"></Label>
@@ -271,7 +271,7 @@
                     <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
-                                <Image Source="vaccinationsicon.png"></Image>
+                                <Image Source="vaccinationsicon.png" HeightRequest="25" WidthRequest="25"></Image>
                                 <Label Text="{Binding VaccinationObject.VaccinationDate, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding VaccinationObject.VaccinationName}" TextColor="White"></Label>
@@ -281,7 +281,7 @@
             </DataTemplate>
             <DataTemplate x:Key="DateHeaderTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame Margin="-5, 25, -5, 0" Padding="10" HeightRequest="30">
+                    <Frame Margin="-5, 25, -5, 0" Padding="10" HeightRequest="30" BackgroundColor="WhiteSmoke">
                         <Label Text="{Binding DateHeaderObject.DateText}" TextColor="DimGray" FontSize="16" FontAttributes="Bold"></Label>
                     </Frame>
                 </ViewCell>
@@ -317,7 +317,12 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid>
+        <Grid BackgroundColor="White">
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
