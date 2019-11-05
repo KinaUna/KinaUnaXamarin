@@ -239,9 +239,11 @@ namespace KinaUnaXamarin.Views
 
                 _selectedProgenyId = _myChildrenViewModel.Progeny.Id;
 
-                TimeZoneInfo progenyTimeZoneInfo =
-                    _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz =>
-                        tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
+                TimeZoneInfo progenyTimeZoneInfo = _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
+                if (progenyTimeZoneInfo == null)
+                {
+                    progenyTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(_myChildrenViewModel.Progeny.TimeZone);
+                }
                 _myChildrenViewModel.SelectedTimeZone = progenyTimeZoneInfo;
                 //int timeZoneIndex = _myChildrenViewModel.TimeZoneList.IndexOf(progenyTimeZoneInfo);
                 //TimeZonePicker.SelectedIndex = timeZoneIndex;
@@ -260,20 +262,28 @@ namespace KinaUnaXamarin.Views
         {
             _myChildrenViewModel.EditMode = false;
             EditButton.Text = IconFont.AccountEdit;
-            _myChildrenViewModel.Progeny = (Progeny) ProgenyCollectionView.SelectedItem;
-            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-            //if (_myChildrenViewModel.Progeny.BirthDay.HasValue)
-            //{
-            //    BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
-            //    BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
-            //}
+            Progeny prog = (Progeny)ProgenyCollectionView.SelectedItem;
+            if (prog != null)
+            {
+                _myChildrenViewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
+                ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                //if (_myChildrenViewModel.Progeny.BirthDay.HasValue)
+                //{
+                //    BirthdayDatePicker.Date = _myChildrenViewModel.Progeny.BirthDay.Value.Date;
+                //    BirthdayTimePicker.Time = _myChildrenViewModel.Progeny.BirthDay.Value.TimeOfDay;
+                //}
 
-            TimeZoneInfo progenyTimeZoneInfo =
-                _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz =>
-                    tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
-            _myChildrenViewModel.SelectedTimeZone = progenyTimeZoneInfo;
-            ChildPicture.Source = _myChildrenViewModel.ProfilePicture;
-            _selectedProgenyId = _myChildrenViewModel.Progeny.Id;
+                TimeZoneInfo progenyTimeZoneInfo =
+                    _myChildrenViewModel.TimeZoneList.SingleOrDefault(tz =>
+                        tz.DisplayName == _myChildrenViewModel.Progeny.TimeZone);
+                if (progenyTimeZoneInfo == null)
+                {
+                    progenyTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(_myChildrenViewModel.Progeny.TimeZone);
+                }
+                _myChildrenViewModel.SelectedTimeZone = progenyTimeZoneInfo;
+                ChildPicture.Source = _myChildrenViewModel.ProfilePicture;
+                _selectedProgenyId = _myChildrenViewModel.Progeny.Id;
+            }
             _filePath = "";
             MessageLabel.Text = "";
             MessageLabel.IsVisible = false;

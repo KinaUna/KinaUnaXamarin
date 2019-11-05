@@ -6,33 +6,44 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.AboutPage"
-             Title="About">
+             Title="About"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView BackgroundColor="WhiteSmoke">
             <StackLayout Spacing="25" Padding="15">
                 <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
                        HorizontalOptions="Center" Margin="0, 10, 0, 20" />
                 <Label Text="Kina Una for Android - Beta" FontAttributes="Bold"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
                 <Label Text="Website:" FontAttributes="Bold" Margin="0, 20, 0, 0"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
                 <Label Text="https://www.kinauna.com"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
                 <Label Text="Support:" FontAttributes="Bold" Margin="0, 20, 0, 0"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
                 <Label Text="support@kinauna.com"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
                 <Label Text="Source Code:" Margin="0, 20, 0, 0"
-                       HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold"></Label>
-                <Label Text="https://github.com/KinaUna/KinaUnaXamarin" HorizontalOptions="Center" LineBreakMode="WordWrap"></Label>
+                       HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold"
+                       TextColor="DarkSlateGray"></Label>
+                <Label Text="https://github.com/KinaUna/KinaUnaXamarin"
+                       HorizontalOptions="Center"
+                       LineBreakMode="WordWrap"
+                       TextColor="DarkSlateGray"></Label>
                 <Label x:Name="VersionLabel" Margin="0, 20, 0, 0"
                        VerticalOptions="Start" 
-                       HorizontalOptions="CenterAndExpand" />
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray"/>
             </StackLayout>
         </ScrollView>
         

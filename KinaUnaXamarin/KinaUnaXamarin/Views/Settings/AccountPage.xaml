@@ -9,7 +9,8 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AccountPage"
              Visual="Material"
-             Title="{i18n:Translate Account}">
+             Title="{i18n:Translate Account}"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.BindingContext>
         <viewModels:AccountViewModel></viewModels:AccountViewModel>
     </ContentPage.BindingContext>
@@ -21,7 +22,7 @@
                      Clicked="ProgenyToolBarItem_OnClicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ScrollView>
+        <ScrollView BackgroundColor="WhiteSmoke">
             <StackLayout x:Name="LoginStackLayout" Orientation="Vertical" Margin="5">
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
@@ -30,27 +31,27 @@
                 <Grid Margin="5, 0, 5, 20" IsVisible="{Binding LoggedIn}">
                     <StackLayout Orientation="Vertical" Margin="0, 0, 80, 0">
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{i18n:Translate UserName}"></Label>
+                            <Label Text="{i18n:Translate UserName}" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="UsernameEntry" Text="{Binding Username}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{i18n:Translate FullName}"></Label>
-                            <Entry x:Name="FullNameEntry" Text="{Binding FullName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="False"></Entry>
+                            <Label Text="{i18n:Translate FullName}"  TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="FullNameEntry" Text="{Binding FullName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="False" BackgroundColor="WhiteSmoke"></Entry>
                             <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Entry>
                             <Entry x:Name="MiddleNameEntry" Text="{Binding MiddleName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Entry>
                             <Entry x:Name="LastNameEntry" Text="{Binding LastName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="Email"></Label>
+                            <Label Text="Email" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="UserEmailEntry" Text="{Binding Email}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="False"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{i18n:Translate TimeZone}"></Label>
+                            <Label Text="{i18n:Translate TimeZone}" TextColor="DarkSlateGray"></Label>
                             <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" ></Picker>
                             <!--<Label x:Name="TimezoneLabel" Text="{Binding Timezone}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10, 0, 0, 10"></Label>-->
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{i18n:Translate ProfilePicture}"></Label>
+                            <Label Text="{i18n:Translate ProfilePicture}" TextColor="DarkSlateGray"></Label>
                             <Image x:Name="ProfileImage" HeightRequest="80" WidthRequest="80" Aspect="AspectFit" Source="{Binding ProfilePicture}" HorizontalOptions="Start" Margin="10, 0, 0, 10"></Image>
                             <Button x:Name="SelectPictureButton" Text="{i18n:Translate SelectImage}" IsVisible="{Binding EditMode}" IsEnabled="{Binding EditMode}" HorizontalOptions="Start" Clicked="SelectPictureButton_OnClicked"></Button>
                         </StackLayout>

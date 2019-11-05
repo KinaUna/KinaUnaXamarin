@@ -61,6 +61,19 @@ namespace KinaUnaXamarin
 
         void UpdateLanguage()
         {
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                Device.BeginInvokeOnMainThread(SetLanguageStrings);
+            }
+            else
+            {
+                SetLanguageStrings();
+            }
+            
+        }
+
+        void SetLanguageStrings()
+        {
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
             LanguageTabItem.Title = resmgr.Value.GetString("Language", ci);
             AccountTabItem.Title = resmgr.Value.GetString("Account", ci);

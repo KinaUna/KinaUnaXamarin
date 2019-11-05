@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using System.Windows.Input;
 using KinaUnaXamarin.Models.KinaUna;
+using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
+using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels.MyFamily
 {
@@ -15,9 +18,12 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         private bool _editMode;
         private UserAccess _selectedAccessLevel;
         private bool _anyChildren;
+        private bool _isLoggedIn;
+        private bool _loggedOut;
 
         public UserAccessViewModel()
         {
+            LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             UserAccessCollection = new ObservableCollection<UserAccess>();
             _accessLevelList = new List<string>();
@@ -86,6 +92,33 @@ namespace KinaUnaXamarin.ViewModels.MyFamily
         {
             get => _anyChildren;
             set => SetProperty(ref _anyChildren, value);
+        }
+
+        public bool LoggedOut
+        {
+            get => _loggedOut;
+            set => SetProperty(ref _loggedOut, value);
+        }
+
+        public ICommand LoginCommand
+        {
+            get;
+            private set;
+        }
+
+        public async void Login()
+        {
+            IsLoggedIn = await UserService.LoginIdsAsync();
+            if (IsLoggedIn)
+            {
+                LoggedOut = !IsLoggedIn;
+            }
+        }
+
+        public bool IsLoggedIn
+        {
+            get => _isLoggedIn;
+            set => SetProperty(ref _isLoggedIn, value);
         }
     }
 }

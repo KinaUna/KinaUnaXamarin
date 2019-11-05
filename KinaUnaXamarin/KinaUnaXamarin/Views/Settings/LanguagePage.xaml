@@ -8,12 +8,12 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              Title="{i18n:Translate Language}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
-        <StackLayout Padding="20" VerticalOptions="StartAndExpand">
-            <Label x:Name="SelectLanguageLabel"  Text="{i18n:Translate SelectLanguage}"  />
+        <StackLayout Padding="20" VerticalOptions="StartAndExpand" BackgroundColor="WhiteSmoke">
+            <Label x:Name="SelectLanguageLabel"  Text="{i18n:Translate SelectLanguage}" TextColor="DarkSlateGray"  />
             <Picker x:Name="picker" SelectedIndexChanged="Picker_OnSelectedIndexChanged" />
-            <!--<Button Text="{i18n:Translate Save}" Clicked="OnUpdateLangugeClicked" BackgroundColor="Green" TextColor="White" ImageSource="{x:Static models:IconFont.ContentSave}"></Button>-->
             <Frame x:Name="SaveButtonFrame" CornerRadius="5" BackgroundColor="Green">
                 <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                     <Label Text="{x:Static models:IconFont.ContentSave}"
@@ -28,7 +28,7 @@
                 </Frame.GestureRecognizers>
             </Frame>
             <StackLayout Orientation="Vertical" HorizontalOptions="End">
-                <Label x:Name="WarningLabel" Text="{i18n:Translate ChangeLanguageWarning}"></Label>
+                <Label x:Name="WarningLabel" Text="{i18n:Translate ChangeLanguageWarning}" TextColor="DarkSlateGray"></Label>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

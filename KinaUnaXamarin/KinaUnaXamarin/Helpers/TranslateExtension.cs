@@ -23,7 +23,7 @@ namespace KinaUnaXamarin.Helpers
                 return "";
 
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
-
+            
             var translation = resmgr.Value.GetString(Text, ci);
 
             if (translation == null)

@@ -7,10 +7,12 @@ using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Helpers;
+using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels.MyFamily;
 using Plugin.Multilingual;
+using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -24,6 +26,9 @@ namespace KinaUnaXamarin.Views
         private bool _online = true;
         private bool _reload;
         private int _selectedProgenyId;
+        private int _viewChild = Constants.DefaultChildId;
+        private UserInfo _userInfo;
+        private string _accessToken;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
         
@@ -46,6 +51,7 @@ namespace KinaUnaXamarin.Views
             if (_reload)
             {
                 _reload = false;
+                await CheckAccount();
                 await Reload();
             }
         }
@@ -63,6 +69,95 @@ namespace KinaUnaXamarin.Views
             if (internetAccess != _online)
             {
                 await Reload();
+            }
+        }
+
+        private async Task CheckAccount()
+        {
+            string userEmail = await UserService.GetUserEmail();
+            _accessToken = await UserService.GetAuthAccessToken();
+            bool accessTokenCurrent = false;
+            if (_accessToken != "")
+            {
+                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
+                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+
+                if (!accessTokenCurrent)
+                {
+                    bool loginSuccess = await UserService.LoginIdsAsync();
+                    if (loginSuccess)
+                    {
+                        _accessToken = await UserService.GetAuthAccessToken();
+                        accessTokenCurrent = true;
+                    }
+
+                    await Reload();
+                }
+            }
+
+            if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
+            {
+
+                _viewModel.IsLoggedIn = false;
+                _viewModel.LoggedOut = true;
+                _accessToken = "";
+                _userInfo = OfflineDefaultData.DefaultUserInfo;
+
+            }
+            else
+            {
+                _viewModel.IsLoggedIn = true;
+                _viewModel.LoggedOut = false;
+                _userInfo = await UserService.GetUserInfo(userEmail);
+            }
+
+            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+            bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
+            if (!viewchildParsed)
+            {
+                _viewChild = _userInfo.ViewChild;
+            }
+            if (_viewChild == 0)
+            {
+                if (_userInfo.ViewChild != 0)
+                {
+                    _viewChild = _userInfo.ViewChild;
+                }
+                else
+                {
+                    _viewChild = Constants.DefaultChildId;
+                }
+            }
+
+            if (String.IsNullOrEmpty(_userInfo.Timezone))
+            {
+                _userInfo.Timezone = Constants.DefaultTimeZone;
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
+            }
+            catch (Exception)
+            {
+                _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
+            }
+
+            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
+            }
+            catch (Exception)
+            {
+                progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
+            }
+            _viewModel.Progeny = progeny;
+
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
+            _viewModel.ProgenyCollection.Clear();
+            foreach (Progeny prog in progenyList)
+            {
+                _viewModel.ProgenyCollection.Add(prog);
             }
         }
 
@@ -136,21 +231,25 @@ namespace KinaUnaXamarin.Views
             _viewModel.EditMode = false;
             _viewModel.IsBusy = true;
             _viewModel.Progeny = (Progeny)ProgenyCollectionView.SelectedItem;
-            ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
-            _selectedProgenyId = _viewModel.Progeny.Id;
-            
-            List<UserAccess> userAccessList = await ProgenyService.GetProgenyAccessList(_selectedProgenyId);
-            _viewModel.UserAccessCollection.Clear();
-            foreach (UserAccess ua in userAccessList)
+            if (_viewModel.Progeny != null)
             {
-                ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
-                if (string.IsNullOrEmpty(ua.User.UserName))
+                ProgenyCollectionView.ScrollTo(ProgenyCollectionView.SelectedItem);
+                _selectedProgenyId = _viewModel.Progeny.Id;
+
+                List<UserAccess> userAccessList = await ProgenyService.GetProgenyAccessList(_selectedProgenyId);
+                _viewModel.UserAccessCollection.Clear();
+                foreach (UserAccess ua in userAccessList)
                 {
-                    ua.User.UserName = ua.User.Email;
+                    ua.AccessLevelString = _viewModel.AccessLevelList[ua.AccessLevel];
+                    if (string.IsNullOrEmpty(ua.User.UserName))
+                    {
+                        ua.User.UserName = ua.User.Email;
+                    }
+                    _viewModel.UserAccessCollection.Add(ua);
                 }
-                _viewModel.UserAccessCollection.Add(ua);
+                UserAccessCollectionView.ScrollTo(0);
             }
-            UserAccessCollectionView.ScrollTo(0);
+            
             _viewModel.IsBusy = false;
         }
 

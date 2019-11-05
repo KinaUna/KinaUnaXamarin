@@ -9,7 +9,8 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="{i18n:Translate UserAccess}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
@@ -74,16 +75,16 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding User.UserName}" FontAttributes="Bold"></Label>
-                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding UserId}" ></Label>
+                                <Label Grid.Row="0" Grid.Column="0" Text="{Binding User.UserName}" FontAttributes="Bold" TextColor="DarkSlateGray"></Label>
+                                <Label Grid.Row="1" Grid.Column="0"  Text="{Binding UserId}" TextColor="DarkSlateGray" ></Label>
                                 <StackLayout Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
-                                    <Label  Text="{Binding User.FirstName}" ></Label>
-                                    <Label  Text="{Binding User.MiddleName}" ></Label>
-                                    <Label  Text="{Binding User.LastName}" ></Label>
+                                    <Label  Text="{Binding User.FirstName}" TextColor="DarkSlateGray" ></Label>
+                                    <Label  Text="{Binding User.MiddleName}" TextColor="DarkSlateGray" ></Label>
+                                    <Label  Text="{Binding User.LastName}" TextColor="DarkSlateGray" ></Label>
                                 </StackLayout>
                                 <StackLayout  Grid.Row="3" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="FillAndExpand" >
-                                    <Label Text="{i18n:Translate AccessLevel}" ></Label>
-                                    <Label Text=":"></Label>
+                                    <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" ></Label>
+                                    <Label Text=":" TextColor="DarkSlateGray"></Label>
                                     <Label Text="{Binding AccessLevelString}" TextColor="Black" ></Label>
                                 </StackLayout>
                             </Grid>
@@ -91,31 +92,39 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <ScrollView Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding EditMode}">
-                <Grid VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" Margin="5" BackgroundColor="AliceBlue" Padding="15" >
+            <BoxView Grid.Row="0" Grid.RowSpan="2" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" IsVisible="{Binding EditMode}" BackgroundColor="Black" Opacity="0.5"></BoxView>
+            <ScrollView Grid.Row="0" Grid.RowSpan="2" IsVisible="{Binding EditMode}" HorizontalOptions="Center" VerticalOptions="Center">
+                <Grid VerticalOptions="Center" HorizontalOptions="Center" Margin="5" BackgroundColor="AliceBlue" Padding="15" >
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <StackLayout Grid.Row="0" Orientation="Vertical">
-                        <Label Text="{Binding SelectedAccess.User.UserName}" FontAttributes="Bold"></Label>
-                        <Label Text="{Binding SelectedAccess.User.Email}"></Label>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <StackLayout Grid.Row="0" Orientation="Vertical" HorizontalOptions="Start">
+                        <Label Text="{Binding SelectedAccess.User.UserName}" FontAttributes="Bold" TextColor="DarkSlateGray"></Label>
+                        <Label Text="{Binding SelectedAccess.User.Email}" TextColor="DarkSlateGray"></Label>
                     </StackLayout>
-                    <StackLayout Grid.Row="1" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                    <StackLayout Grid.Row="1" Margin="5" BackgroundColor="White" HorizontalOptions="Start">
+                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                         <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}"></Picker>
                     </StackLayout>
-                    <StackLayout Grid.Row="2" Orientation="Horizontal">
+                    <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Start">
                         <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked" VerticalOptions="Center"></Button>
                         <Button x:Name="CancelAccessButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelAccessButton_OnClicked" VerticalOptions="Center"></Button>
                     </StackLayout>
-                    <StackLayout Grid.Row="3" Margin="0, 20, 0, 0">
+                    <StackLayout Grid.Row="3" Margin="0, 20, 0, 0" HorizontalOptions="End">
                         <Button x:Name="DeleteAccessButton" Text="{i18n:Translate Delete}" TextColor="White" BackgroundColor="#f44336" Clicked="DeleteAccessButton_OnClicked" FontSize="8" HeightRequest="40" HorizontalOptions="Center"></Button>
                     </StackLayout>
                 </Grid>
             </ScrollView>
+            <StackLayout Grid.Row="0" BackgroundColor="Black" VerticalOptions="Start" IsVisible="{Binding LoggedOut}">
+                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                        BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            </StackLayout>
             <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
                 <Label Text="{i18n:Translate NoChildrenFound}"></Label>
             </StackLayout>

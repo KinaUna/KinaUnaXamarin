@@ -29,8 +29,10 @@
                 <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
-                        BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+                <StackLayout BackgroundColor="Black" VerticalOptions="Start" IsVisible="{Binding LoggedOut}">
+                    <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
+                            BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+                </StackLayout>
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>

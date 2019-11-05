@@ -501,7 +501,7 @@ namespace KinaUnaXamarin.Views
                     // Reset selection
                     TimeLineListView.SelectedItem = null;
                     // await Shell.Current.GoToAsync($"photodetailpage?pictureId={picture.PictureId}");
-                    await Shell.Current.Navigation.PushAsync(photoPage);
+                    await Shell.Current.Navigation.PushModalAsync(photoPage);
                 }
 
                 if (timeLineItem.ItemObject is Video video)
@@ -509,14 +509,14 @@ namespace KinaUnaXamarin.Views
                     VideoDetailPage videoPage = new VideoDetailPage(video.VideoId);
                     // Reset selection
                     TimeLineListView.SelectedItem = null;
-                    await Shell.Current.Navigation.PushAsync(videoPage);
+                    await Shell.Current.Navigation.PushModalAsync(videoPage);
                 }
 
                 if (timeLineItem.ItemObject is Sleep sleep)
                 {
                     SleepDetailPage sleepDetailPage = new SleepDetailPage(sleep);
                     TimeLineListView.SelectedItem = null;
-                    await Shell.Current.Navigation.PushAsync(sleepDetailPage);
+                    await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
                 }
 
                 if (timeLineItem.ItemObject is CalendarItem calendarItem)
