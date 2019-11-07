@@ -179,7 +179,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetCalendarItem(_viewModel.CurrentEventId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentEvent.AccessLevel;
-            _viewModel.CurrentEvent.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentEvent.ProgenyId);
+            _viewModel.CurrentEvent.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentEvent.ProgenyId);
 
             if (_viewModel.CurrentEvent.StartTime.HasValue)
             {
@@ -482,6 +482,11 @@ namespace KinaUnaXamarin.Views
             {
                 autoSuggestBox.Text = e.SelectedItem.ToString();
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

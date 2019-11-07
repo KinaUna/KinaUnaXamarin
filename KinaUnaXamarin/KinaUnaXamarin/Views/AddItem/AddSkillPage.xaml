@@ -8,7 +8,8 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddSkillPage"
              Title="{i18n:Translate AddSkill}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
@@ -46,25 +47,25 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate SkillName}"></Label>
+                            <Label Text="{i18n:Translate SkillName}" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="SkillNameEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Description}"></Label>
+                            <Label Text="{i18n:Translate Description}" TextColor="DarkSlateGray"></Label>
                             <Editor x:Name="DescriptionEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Category}"></Label>
+                            <Label Text="{i18n:Translate Category}" TextColor="DarkSlateGray"></Label>
                             <forms:AutoSuggestBox x:Name="CategoryEntry" Text=""  TextChanged="CategoryEntry_OnTextChanged" QuerySubmitted="CategoryEntry_OnQuerySubmitted" SuggestionChosen="CategoryEntry_OnSuggestionChosen" TextColor="Black" Margin="15, 0, 0, 0"></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FirstObservation}"></Label>
+                            <Label Text="{i18n:Translate FirstObservation}" TextColor="DarkSlateGray"></Label>
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="FirstObservationDatePicker" Format="dd MMM yyyy" Date="{Binding Date}"></DatePicker>
                             </StackLayout>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>

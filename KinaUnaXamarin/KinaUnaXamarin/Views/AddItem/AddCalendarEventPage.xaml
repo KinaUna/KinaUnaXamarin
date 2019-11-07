@@ -8,12 +8,13 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddCalendarEventPage"
              Title="{i18n:Translate AddCalendarEvent}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <ScrollView>
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
-                    <Label Text="{i18n:Translate AddCalendarEventFor}"></Label>
+                    <Label Text="{i18n:Translate AddCalendarEventFor}" TextColor="DarkSlateGray"></Label>
                     <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -45,42 +46,42 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Title}"></Label>
-                        <Entry x:Name="TitleEntry" Text=""></Entry>
+                        <Label Text="{i18n:Translate Title}" TextColor="DarkSlateGray"></Label>
+                        <Entry x:Name="TitleEntry" Text="" BackgroundColor="White" TextColor="Black"></Entry>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Start}"></Label>
+                        <Label Text="{i18n:Translate Start}" TextColor="DarkSlateGray"></Label>
                         <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="CalendarEventStartDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventStartDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="CalendarEventStartTimePicker" Format="HH:mm" PropertyChanged="CalendarEventStartTimePicker_OnPropertyChanged"></TimePicker>
+                            <DatePicker x:Name="CalendarEventStartDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventStartDatePicker_OnDateSelected" BackgroundColor="White" TextColor="Black"></DatePicker>
+                            <TimePicker x:Name="CalendarEventStartTimePicker" Format="HH:mm" PropertyChanged="CalendarEventStartTimePicker_OnPropertyChanged" BackgroundColor="White" TextColor="Black"></TimePicker>
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate End}"></Label>
+                        <Label Text="{i18n:Translate End}" TextColor="DarkSlateGray"></Label>
                         <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="CalendarEventEndDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventEndDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="CalendarEventEndTimePicker" Format="HH:mm" PropertyChanged="CalendarEventEndTimePicker_OnPropertyChanged"></TimePicker>
+                            <DatePicker x:Name="CalendarEventEndDatePicker" Format="dd MMM yyyy" DateSelected="CalendarEventEndDatePicker_OnDateSelected" BackgroundColor="White" TextColor="Black"></DatePicker>
+                            <TimePicker x:Name="CalendarEventEndTimePicker" Format="HH:mm" PropertyChanged="CalendarEventEndTimePicker_OnPropertyChanged" BackgroundColor="White" TextColor="Black"></TimePicker>
                         </StackLayout>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Notes}"></Label>
-                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
+                        <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
+                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}" BackgroundColor="White" TextColor="Black"></Editor>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Location}"></Label>
-                        <forms:AutoSuggestBox x:Name="LocationEntry" Text=""  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                        <Label Text="{i18n:Translate Location}" TextColor="DarkSlateGray"></Label>
+                        <forms:AutoSuggestBox x:Name="LocationEntry" Text=""  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" BackgroundColor="White" TextColor="Black" ></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Context}"></Label>
-                        <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                        <Label Text="{i18n:Translate Context}" TextColor="DarkSlateGray"></Label>
+                        <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" BackgroundColor="White" TextColor="Black"></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AllDay}"></Label>
+                        <Label Text="{i18n:Translate AllDay}" TextColor="DarkSlateGray"></Label>
                         <CheckBox x:Name="AllDayCheckBox"></CheckBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}"></Label>
-                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">

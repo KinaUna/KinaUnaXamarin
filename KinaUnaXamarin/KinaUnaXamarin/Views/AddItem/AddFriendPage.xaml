@@ -8,13 +8,14 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddFriendPage"
              Title="{i18n:Translate AddFriend}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
                 <Grid>
                     <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddFriendFor}"></Label>
+                        <Label Text="{i18n:Translate AddFriendFor}" TextColor="DarkSlateGray"></Label>
                         <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -46,39 +47,39 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Name}"></Label>
-                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="Black" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" >
-                            <Label Text="{i18n:Translate Description}"></Label>
-                            <Editor x:Name="DescriptionEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
+                            <Label Text="{i18n:Translate Description}" TextColor="DarkSlateGray"></Label>
+                            <Editor x:Name="DescriptionEditor" AutoSize="TextChanges" Text="{Binding Notes}" TextColor="Black" BackgroundColor="White"></Editor>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FriendSince}"></Label>
+                            <Label Text="{i18n:Translate FriendSince}" TextColor="DarkSlateGray"></Label>
                             <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="FriendSinceDatePicker" Format="dd MMM yyyy"></DatePicker>
+                                <DatePicker x:Name="FriendSinceDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black"></DatePicker>
                             </StackLayout>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FriendTypeLabel}"></Label>
-                            <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}" SelectedIndex="{Binding FriendType}" ></Picker>
+                            <Label Text="{i18n:Translate FriendTypeLabel}" TextColor="DarkSlateGray"></Label>
+                            <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}" SelectedIndex="{Binding FriendType}"  BackgroundColor="White" TextColor="Black"></Picker>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Context}"></Label>
-                            <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                            <Label Text="{i18n:Translate Context}" TextColor="DarkSlateGray"></Label>
+                            <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black"  BackgroundColor="White"></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Notes}"></Label>
-                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" ></Editor>
+                            <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
+                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" TextColor="Black" BackgroundColor="White"></Editor>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Tags"></Label>
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
+                            <Label Text="Tags" TextColor="DarkSlateGray"></Label>
+                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                         </StackLayout>
                         <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
                         <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>

@@ -182,7 +182,7 @@ namespace KinaUnaXamarin.Views
 
             _viewModel.Date = _viewModel.CurrentMeasurement.Date;
             _viewModel.AccessLevel = _viewModel.CurrentMeasurement.AccessLevel;
-            _viewModel.CurrentMeasurement.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentMeasurement.ProgenyId);
+            _viewModel.CurrentMeasurement.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentMeasurement.ProgenyId);
 
             _viewModel.DateYear = _viewModel.CurrentMeasurement.Date.Year;
             _viewModel.DateMonth = _viewModel.CurrentMeasurement.Date.Month;
@@ -320,6 +320,11 @@ namespace KinaUnaXamarin.Views
                 }
                 _viewModel.IsBusy = false;
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

@@ -178,7 +178,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetVaccination(_viewModel.CurrentVaccinationId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentVaccination.AccessLevel;
-            _viewModel.CurrentVaccination.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVaccination.ProgenyId);
+            _viewModel.CurrentVaccination.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVaccination.ProgenyId);
 
             _viewModel.DateYear = _viewModel.CurrentVaccination.VaccinationDate.Year;
             _viewModel.DateMonth = _viewModel.CurrentVaccination.VaccinationDate.Month;
@@ -294,6 +294,11 @@ namespace KinaUnaXamarin.Views
                 }
                 _viewModel.IsBusy = false;
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

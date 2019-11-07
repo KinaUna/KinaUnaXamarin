@@ -9,13 +9,14 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AddItem.AddNotePage"
              Title="{i18n:Translate AddNote}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
                 <Grid>
                     <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddNoteFor}"></Label>
+                        <Label Text="{i18n:Translate AddNoteFor}" TextColor="DarkSlateGray"></Label>
                         <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -47,27 +48,27 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Title}"></Label>
-                            <Entry x:Name="TitleEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
+                            <Label Text="{i18n:Translate Title}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="TitleEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Content}"></Label>
-                            <controls:ExtendedWebView x:Name="ContentWebView" HeightRequest="300" Focused="ContentWebView_OnFocused"></controls:ExtendedWebView>
+                            <Label Text="{i18n:Translate Content}" TextColor="DarkSlateGray"></Label>
+                            <controls:ExtendedWebView x:Name="ContentWebView" HeightRequest="300" Focused="ContentWebView_OnFocused" BackgroundColor="White"></controls:ExtendedWebView>
                             <!--<Editor x:Name="ContentEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>-->
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Category}"></Label>
-                            <forms:AutoSuggestBox x:Name="CategoryEntry" Text=""  TextChanged="CategoryEntry_OnTextChanged" QuerySubmitted="CategoryEntry_OnQuerySubmitted" SuggestionChosen="CategoryEntry_OnSuggestionChosen" TextColor="Black" Margin="15, 0, 0, 0"></forms:AutoSuggestBox>
+                            <Label Text="{i18n:Translate Category}" TextColor="DarkSlateGray"></Label>
+                            <forms:AutoSuggestBox x:Name="CategoryEntry" Text=""  TextChanged="CategoryEntry_OnTextChanged" QuerySubmitted="CategoryEntry_OnQuerySubmitted" SuggestionChosen="CategoryEntry_OnSuggestionChosen" TextColor="Black" Margin="15, 0, 0, 0" BackgroundColor="White"></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Date}"></Label>
+                            <Label Text="{i18n:Translate Date}" TextColor="DarkSlateGray"></Label>
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="NoteDatePicker" Format="dd MMM yyyy" Date="{Binding Date}"></DatePicker>
                                 <TimePicker x:Name="NoteTimePicker" Format="HH:mm" Time="{Binding Time}"></TimePicker>
                             </StackLayout>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>

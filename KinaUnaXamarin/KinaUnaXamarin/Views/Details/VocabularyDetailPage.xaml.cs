@@ -174,7 +174,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetVocabularyItem(_viewModel.CurrentVocabularyItemId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentVocabularyItem.AccessLevel;
-            _viewModel.CurrentVocabularyItem.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVocabularyItem.ProgenyId);
+            _viewModel.CurrentVocabularyItem.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentVocabularyItem.ProgenyId);
             if (_viewModel.CurrentVocabularyItem.Date.HasValue)
             {
                 _viewModel.DateYear = _viewModel.CurrentVocabularyItem.Date.Value.Year;
@@ -294,6 +294,11 @@ namespace KinaUnaXamarin.Views
                 }
                 _viewModel.IsBusy = false;
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

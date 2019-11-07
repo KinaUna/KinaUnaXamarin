@@ -184,7 +184,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetFriend(_viewModel.CurrentFriendId, _accessToken);
 
             _viewModel.AccessLevel = _viewModel.CurrentFriend.AccessLevel;
-            _viewModel.CurrentFriend.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentFriend.ProgenyId);
+            _viewModel.CurrentFriend.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentFriend.ProgenyId);
 
             if (_viewModel.CurrentFriend.FriendSince.HasValue)
             {
@@ -501,6 +501,11 @@ namespace KinaUnaXamarin.Views
             {
                 autoSuggestBox.Text = e.SelectedItem.ToString();
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

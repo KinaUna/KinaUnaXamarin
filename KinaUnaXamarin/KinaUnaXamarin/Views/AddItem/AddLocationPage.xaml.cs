@@ -204,7 +204,7 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 if (myLocation != null)
                 {
-                    LatitudeEntry.Text = myLocation.Longitude.ToString();
+                    LatitudeEntry.Text = myLocation.Latitude.ToString();
                     LongitudeEntry.Text = myLocation.Longitude.ToString();
                 }
             }

@@ -46,6 +46,5 @@
                        TextColor="DarkSlateGray"/>
             </StackLayout>
         </ScrollView>
-        
     </ContentPage.Content>
 </ContentPage>

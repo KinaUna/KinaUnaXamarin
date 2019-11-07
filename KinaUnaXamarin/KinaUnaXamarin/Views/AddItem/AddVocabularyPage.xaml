@@ -7,7 +7,8 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              x:Class="KinaUnaXamarin.Views.AddItem.AddVocabularyPage"
              Title="{i18n:Translate AddVocabulary}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
@@ -45,29 +46,29 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Word}"></Label>
+                            <Label Text="{i18n:Translate Word}" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="WordEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate SoundsLike}"></Label>
+                            <Label Text="{i18n:Translate SoundsLike}" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="SoundsLikeEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Description}"></Label>
+                            <Label Text="{i18n:Translate Description}" TextColor="DarkSlateGray"></Label>
                             <Editor x:Name="DescriptionEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Language}"></Label>
+                            <Label Text="{i18n:Translate Language}" TextColor="DarkSlateGray"></Label>
                             <Entry x:Name="LanguageEntry" Text="" TextColor="Black" Margin="15, 0, 0, 0"></Entry>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Date}"></Label>
+                            <Label Text="{i18n:Translate Date}" TextColor="DarkSlateGray"></Label>
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="WordDatePicker" Format="dd MMM yyyy" Date="{Binding Date}"></DatePicker>
                             </StackLayout>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>

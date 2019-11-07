@@ -180,7 +180,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentSleep = sleepList[0];
                 _viewModel.AccessLevel = _viewModel.CurrentSleep.AccessLevel;
                 _viewModel.Rating = _viewModel.CurrentSleep.SleepRating;
-                _viewModel.CurrentSleep.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSleep.ProgenyId);
+                _viewModel.CurrentSleep.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSleep.ProgenyId);
                 _viewModel.Duration = _viewModel.CurrentSleep.SleepDuration;
 
                 sleepList = sleepList.OrderByDescending(s => s.SleepStart).ToList();
@@ -386,6 +386,11 @@ namespace KinaUnaXamarin.Views
                 }
                 _viewModel.IsBusy = false;
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

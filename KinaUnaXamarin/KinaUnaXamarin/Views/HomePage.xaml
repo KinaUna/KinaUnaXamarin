@@ -103,7 +103,7 @@
             </DataTemplate>
             <DataTemplate x:Key="CalendarTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#5A4071" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
@@ -126,7 +126,7 @@
             </DataTemplate>
             <DataTemplate x:Key="LocationTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#5A4071" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="locationsicon.png" HeightRequest="25" WidthRequest="25"></Image>
@@ -514,7 +514,7 @@
                                    BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
                                         <StackLayout Orientation="Vertical" Padding="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="calendaricon.png" />
+                                                <Image Source="calendaricon.png" HeightRequest="25" WidthRequest="25" />
                                                 <Label x:Name="EventStart1" Text="" TextColor="Orange" FontSize="13"
                                                FontAttributes="Bold" />
                                             </StackLayout>
@@ -525,7 +525,7 @@
                                    BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
                                         <StackLayout Orientation="Vertical" Padding="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="calendaricon.png" />
+                                                <Image Source="calendaricon.png" HeightRequest="25" WidthRequest="25" />
                                                 <Label x:Name="EventStart2" Text="" TextColor="Orange" FontSize="13"
                                                FontAttributes="Bold" />
                                             </StackLayout>
@@ -536,7 +536,7 @@
                                    BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
                                         <StackLayout Orientation="Vertical" Padding="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="calendaricon.png" />
+                                                <Image Source="calendaricon.png" HeightRequest="25" WidthRequest="25" />
                                                 <Label x:Name="EventStart3" Text="" TextColor="Orange" FontSize="13"
                                                FontAttributes="Bold" />
                                             </StackLayout>
@@ -547,7 +547,7 @@
                                    BackgroundColor="#3A2051" Margin="10" Padding="10" IsVisible="False">
                                         <StackLayout Orientation="Vertical" Padding="10">
                                             <StackLayout Orientation="Horizontal">
-                                                <Image Source="calendaricon.png" />
+                                                <Image Source="calendaricon.png" HeightRequest="25" WidthRequest="25" />
                                                 <Label x:Name="EventStart4" Text="" TextColor="Orange" FontSize="13"
                                                FontAttributes="Bold" />
                                             </StackLayout>

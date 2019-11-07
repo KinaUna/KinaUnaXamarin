@@ -412,7 +412,7 @@ namespace KinaUnaXamarin.Services
         public static async Task<bool> LogoutIdsAsync()
         {
             await DeRegisterDevice();
-            await App.Database.ResetAll();
+            App.Database.ResetAll();
             try
             {
                 string pnsHandle = await SecureStorage.GetAsync("PnsHandle");

@@ -8,13 +8,14 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddContactPage"
              Title="{i18n:Translate AddContact}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
                 <Grid>
                     <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddContactFor}"></Label>
+                        <Label Text="{i18n:Translate AddContactFor}" TextColor="DarkSlateGray"></Label>
                         <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
@@ -46,86 +47,86 @@
                             </CollectionView.ItemTemplate>
                         </CollectionView>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FirstName}"></Label>
-                            <Entry x:Name="FirstNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate FirstName}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="FirstNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White"  TextColor="DarkSlateGray"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate MiddleName}"></Label>
-                            <Entry x:Name="MiddleNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate MiddleName}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="MiddleNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate LastName}"></Label>
-                            <Entry x:Name="LastNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate LastName}"  TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="LastNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate DisplayName}"></Label>
-                            <Entry x:Name="DisplayNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate DisplayName}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="DisplayNameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AddressLine1}"></Label>
-                            <Entry x:Name="AddressLine1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate AddressLine1}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="AddressLine1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AddressLine2}"></Label>
-                            <Entry x:Name="AddressLine2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate AddressLine2}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="AddressLine2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate City}"></Label>
-                            <Entry x:Name="CityEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate City}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="CityEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate StateOrRegion}"></Label>
-                            <Entry x:Name="StateEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate StateOrRegion}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="StateEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate PostalCode}"></Label>
-                            <Entry x:Name="PostalCodeEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate PostalCode}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="PostalCodeEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Country}"></Label>
-                            <Entry x:Name="CountryEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate Country}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="CountryEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Email 1"></Label>
-                            <Entry x:Name="Email1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="Email 1" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="Email1Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Email 2"></Label>
-                            <Entry x:Name="Email2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="Email 2" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="Email2Entry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate PhoneNumber}"></Label>
-                            <Entry x:Name="PhoneNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate PhoneNumber}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="PhoneNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate MobileNumber}"></Label>
-                            <Entry x:Name="MobileNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="{i18n:Translate MobileNumber}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="MobileNumberEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Website"></Label>
-                            <Entry x:Name="WebsiteEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged"></Entry>
+                            <Label Text="Website" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="WebsiteEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="DarkSlateGray" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Context}"></Label>
-                            <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                            <Label Text="{i18n:Translate Context}" TextColor="DarkSlateGray"></Label>
+                            <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen"  TextColor="DarkSlateGray" BackgroundColor="White" ></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Notes}"></Label>
-                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" ></Editor>
+                            <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
+                            <Editor x:Name="NotesEditor" AutoSize="TextChanges"  TextColor="DarkSlateGray" BackgroundColor="White"></Editor>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Tags"></Label>
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
+                            <Label Text="Tags" TextColor="DarkSlateGray"></Label>
+                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="DarkSlateGray" BackgroundColor="White" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Date}"></Label>
-                            <DatePicker x:Name="ContactDatePicker" Format="dd MMM yyyy" ></DatePicker>
+                            <Label Text="{i18n:Translate Date}" TextColor="DarkSlateGray"></Label>
+                            <DatePicker x:Name="ContactDatePicker" Format="dd MMM yyyy"  BackgroundColor="White" TextColor="Black"></DatePicker>
                         </StackLayout>
-                        <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
-                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
+                        <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png" BackgroundColor="DarkGray"></Image>
+                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked" ></Button>
                         <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
                         </StackLayout>
                         <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                         <StackLayout Orientation="Horizontal">

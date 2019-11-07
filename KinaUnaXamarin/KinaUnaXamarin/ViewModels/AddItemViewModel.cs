@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using KinaUnaXamarin.Models;
+﻿using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
 
@@ -120,7 +114,7 @@ namespace KinaUnaXamarin.ViewModels
                     addCalendarItem.Description = "Event hinzufügen";
                 }
                 addCalendarItem.Icon = IconFont.Calendar;
-                addCalendarItem.BackgroundColor = "#5A4071";
+                addCalendarItem.BackgroundColor = "#3A2051";
                 ItemList.Add(addCalendarItem);
 
                 AddItemModel addFriendItem = new AddItemModel();
@@ -174,7 +168,7 @@ namespace KinaUnaXamarin.ViewModels
                     addLocationItem.Description = "Ort hinzufügen";
                 }
                 addLocationItem.Icon = IconFont.MapMarkerCheck;
-                addLocationItem.BackgroundColor = "#221021";
+                addLocationItem.BackgroundColor = "#5A4071";
                 ItemList.Add(addLocationItem);
 
                 AddItemModel addMeasurementItem = new AddItemModel();

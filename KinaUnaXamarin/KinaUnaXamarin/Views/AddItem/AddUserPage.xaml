@@ -6,7 +6,8 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.AddItem.AddUserPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <Grid>
             <ScrollView>
@@ -43,11 +44,11 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                     <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="Email"></Label>
-                        <Entry x:Name="EmailEntry" HorizontalOptions="FillAndExpand" TextChanged="EmailEntry_OnTextChanged" Keyboard="Email"></Entry>
+                        <Label Text="Email" TextColor="DarkSlateGray"></Label>
+                        <Entry x:Name="EmailEntry" HorizontalOptions="FillAndExpand" TextChanged="EmailEntry_OnTextChanged" Keyboard="Email" TextColor="Black"></Entry>
                     </StackLayout>
                     <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}"></Label>
+                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
                         <Picker HorizontalOptions="StartAndExpand" x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                     </StackLayout>
                     <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>

@@ -190,7 +190,7 @@
                    IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}">
                 <Frame.GestureRecognizers>
                     <PanGestureRecognizer PanUpdated="FrameOnPanUpdated" />
-                    <TapGestureRecognizer Tapped="FrameOnTap" NumberOfTapsRequired="2"></TapGestureRecognizer>
+                    <TapGestureRecognizer Tapped="FrameOnTap" NumberOfTapsRequired="1"></TapGestureRecognizer>
                 </Frame.GestureRecognizers>
                 <StackLayout Spacing="5">
                     <BoxView HeightRequest="8" CornerRadius="4" WidthRequest="60" BackgroundColor="Gray" HorizontalOptions="Center"/>

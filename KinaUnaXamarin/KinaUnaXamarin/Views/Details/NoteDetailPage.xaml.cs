@@ -180,7 +180,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetNote(_viewModel.CurrentNoteId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentNote.AccessLevel;
-            _viewModel.CurrentNote.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentNote.ProgenyId);
+            _viewModel.CurrentNote.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentNote.ProgenyId);
             _viewModel.Date = _viewModel.CurrentNote.CreatedDate;
             _viewModel.Time = _viewModel.CurrentNote.CreatedDate.TimeOfDay;
             _viewModel.DateYear = _viewModel.CurrentNote.CreatedDate.Year;
@@ -400,6 +400,11 @@ namespace KinaUnaXamarin.Views
                 ContentWebView.HeightRequest = _webViewHeight + 25.0;
             }
 
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

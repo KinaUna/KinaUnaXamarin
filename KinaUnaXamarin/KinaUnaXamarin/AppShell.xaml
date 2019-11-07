@@ -12,8 +12,7 @@
        FlyoutHeaderBehavior="CollapseOnScroll"
        x:Class="KinaUnaXamarin.AppShell"
        Visual="Material"
-       FlyoutBackgroundColor="#4A1061"
-       >
+       FlyoutBackgroundColor="#4A1061">
 
     <Shell.Resources>
         <Style x:Key="BaseStyle" 
@@ -49,7 +48,7 @@
 
     <Shell.ItemTemplate>
         <DataTemplate>
-            <Grid Margin="10" x:Name="FlyoutItemGrid">
+            <Grid Margin="10" x:Name="FlyoutItemGrid" BackgroundColor="#3A2051">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"></RowDefinition>
                 </Grid.RowDefinitions>

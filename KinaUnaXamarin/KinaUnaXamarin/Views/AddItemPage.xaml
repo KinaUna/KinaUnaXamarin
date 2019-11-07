@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AddItemPage"
              Title="{i18n:Translate AddItem}"
-             BackgroundColor="#3A2051">
+             BackgroundColor="Black">
     <ContentPage.Content>
         <Grid>
             <ScrollView>

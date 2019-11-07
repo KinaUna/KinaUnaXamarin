@@ -39,7 +39,7 @@
                     <DataTemplate x:DataType="modelsKinaUna:Friend">
                         <Grid Margin="5">
                             <Frame CornerRadius="5" BackgroundColor="MediumPurple" Margin="5" Padding="0">
-                                <Grid>
+                                <Grid RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"></RowDefinition>
                                         <RowDefinition Height="180"></RowDefinition>

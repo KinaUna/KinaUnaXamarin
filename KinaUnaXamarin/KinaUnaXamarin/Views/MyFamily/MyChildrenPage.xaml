@@ -90,7 +90,6 @@
                             <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges"  ></Editor>
                         </StackLayout>
                         <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" ></Label>
-
                         <StackLayout Orientation="Horizontal" Margin="5">
                             <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>
                             <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>

@@ -3747,7 +3747,7 @@ namespace KinaUnaXamarin.Services
             {
                 try
                 {
-                    TimeZoneInfo.FindSystemTimeZoneById(await UserService.GetUserTimezone());
+                    calendarItem.Progeny.TimeZone = await UserService.GetUserTimezone();
                 }
                 catch (Exception)
                 {

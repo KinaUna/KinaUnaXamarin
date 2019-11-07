@@ -60,6 +60,11 @@ namespace KinaUnaXamarin.Views.AddItem
             string userTimeZone = await UserService.GetUserTimezone();
             TimeZoneInfo userTimeZoneInfo =
                 _addChildViewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
+            if (userTimeZoneInfo == null)
+            {
+                userTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
+            }
+
             int timeZoneIndex = _addChildViewModel.TimeZoneList.IndexOf(userTimeZoneInfo);
             TimeZonePicker.SelectedIndex = timeZoneIndex;
         }

@@ -9,7 +9,7 @@
   <Identity
     Name="38968KinaUna.KinaUnaXamarin"
     Publisher="CN=permo"
-    Version="0.1.72.0" />
+    Version="0.1.73.0" />
 
   <mp:PhoneIdentity PhoneProductId="b5c7080d-b8b6-4225-a53d-151e95947353" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

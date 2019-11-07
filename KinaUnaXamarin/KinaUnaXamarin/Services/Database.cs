@@ -70,7 +70,7 @@ namespace KinaUnaXamarin.Services
             _database.CreateTableAsync<UserPictureDto>().Wait();
         }
 
-        public async Task ResetAll()
+        public void ResetAll()
         {
             
             _database.DeleteAllAsync<ProgenyDto>().Wait();

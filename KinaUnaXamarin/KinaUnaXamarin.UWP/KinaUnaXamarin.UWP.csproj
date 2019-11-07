@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseUrl.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -139,6 +140,9 @@
     <Content Include="adminicon.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Assets\QuillEditor.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\UWPIcons\AppIcon.altform-lightunplated_targetsize-16.png" />
     <Content Include="Assets\UWPIcons\AppIcon.altform-lightunplated_targetsize-24.png" />
@@ -393,7 +397,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Fonts\materialdesignicons-webfont.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <ItemGroup />

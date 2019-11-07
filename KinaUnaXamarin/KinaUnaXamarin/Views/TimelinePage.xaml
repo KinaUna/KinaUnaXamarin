@@ -104,7 +104,7 @@
             </DataTemplate>
             <DataTemplate x:Key="CalendarTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#5A4071" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#3A2051" Margin="10" Padding="10">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="25"></RowDefinition>
@@ -127,7 +127,7 @@
             </DataTemplate>
             <DataTemplate x:Key="LocationTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame CornerRadius="5" BackgroundColor="#221021" Margin="10" Padding="10">
+                    <Frame CornerRadius="5" BackgroundColor="#5A4071" Margin="10" Padding="10">
                         <StackLayout Orientation="Vertical" Padding="10">
                             <StackLayout Orientation="Horizontal">
                                 <Image Source="locationsicon.png" HeightRequest="25" WidthRequest="25"></Image>
@@ -285,7 +285,7 @@
             </DataTemplate>
             <DataTemplate x:Key="DateHeaderTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
-                    <Frame Margin="-5, 25, -5, 0" Padding="10" HeightRequest="30" BackgroundColor="WhiteSmoke">
+                    <Frame Margin="-5, 0, -5, 0" Padding="10, 25, 10, 10" HeightRequest="30" BackgroundColor="WhiteSmoke">
                         <Label Text="{Binding DateHeaderObject.DateText}" TextColor="DimGray" FontSize="16" FontAttributes="Bold"></Label>
                     </Frame>
                 </ViewCell>

@@ -813,4 +813,13 @@
   <data name="Notifications" xml:space="preserve">
     <value>Meddelelser</value>
   </data>
+  <data name="Calendar" xml:space="preserve">
+    <value>Kalender</value>
+  </data>
+  <data name="Close" xml:space="preserve">
+    <value>Luk</value>
+  </data>
+  <data name="Contact" xml:space="preserve">
+    <value>Kontakt</value>
+  </data>
 </root>

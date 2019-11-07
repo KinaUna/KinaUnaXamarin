@@ -189,7 +189,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetLocation(_viewModel.CurrentLocationId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentLocation.AccessLevel;
-            _viewModel.CurrentLocation.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentLocation.ProgenyId);
+            _viewModel.CurrentLocation.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentLocation.ProgenyId);
 
             if (_viewModel.CurrentLocation.Date.HasValue)
             {
@@ -438,6 +438,11 @@ namespace KinaUnaXamarin.Views
                 //}
                 //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

@@ -179,7 +179,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetSkill(_viewModel.CurrentSkillItemId, _accessToken, _userInfo.Timezone);
 
             _viewModel.AccessLevel = _viewModel.CurrentSkillItem.AccessLevel;
-            _viewModel.CurrentSkillItem.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSkillItem.ProgenyId);
+            _viewModel.CurrentSkillItem.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentSkillItem.ProgenyId);
             if (_viewModel.CurrentSkillItem.SkillFirstObservation.HasValue)
             {
                 _viewModel.DateYear = _viewModel.CurrentSkillItem.SkillFirstObservation.Value.Year;
@@ -357,6 +357,11 @@ namespace KinaUnaXamarin.Views
             {
                 autoSuggestBox.Text = e.SelectedItem.ToString();
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

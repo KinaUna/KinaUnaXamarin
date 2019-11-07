@@ -200,7 +200,7 @@ namespace KinaUnaXamarin.Views
                 await ProgenyService.GetContact(_viewModel.CurrentContactId, _accessToken);
 
             _viewModel.AccessLevel = _viewModel.CurrentContact.AccessLevel;
-            _viewModel.CurrentContact.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentContact.ProgenyId);
+            _viewModel.CurrentContact.Progeny = _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.CurrentContact.ProgenyId);
             
             _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.CurrentContact.ProgenyId);
             if (_viewModel.UserAccessLevel == 0)
@@ -651,6 +651,11 @@ namespace KinaUnaXamarin.Views
             }
             Uri websiteUri = new Uri(uriString);
             await Browser.OpenAsync(websiteUri, BrowserLaunchMode.SystemPreferred);
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

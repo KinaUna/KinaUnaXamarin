@@ -8,12 +8,13 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.AddItem.AddPhotoPage"
              Title="{i18n:Translate AddPhoto}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <ScrollView>
             <Grid>
                 <StackLayout Orientation="Vertical" Margin="5">
-                    <Label Text="{i18n:Translate AddPhotoFor}"></Label>
+                    <Label Text="{i18n:Translate AddPhotoFor}" TextColor="DarkSlateGray"></Label>
                     <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
@@ -47,16 +48,16 @@
                     <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
                     <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}"></Label>
-                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="Tags"></Label>
-                        <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
+                        <Label Text="Tags" TextColor="DarkSlateGray"></Label>
+                        <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" BackgroundColor="White"></forms:AutoSuggestBox>
                     </StackLayout>
                     <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Location}"></Label>
-                        <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                        <Label Text="{i18n:Translate Location}" TextColor="DarkSlateGray"></Label>
+                        <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"  TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" BackgroundColor="White"></forms:AutoSuggestBox>
                     </StackLayout>
                     <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
                     <StackLayout Orientation="Horizontal">
