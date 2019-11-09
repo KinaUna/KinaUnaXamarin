@@ -10,8 +10,8 @@
              Title="{i18n:Translate AddItem}"
              BackgroundColor="Black">
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
+        <StackLayout Orientation="Vertical" Spacing="0">
+            <Grid VerticalOptions="FillAndExpand">
                 <StackLayout Orientation="Vertical" Margin="10">
                     <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
                     <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
@@ -50,10 +50,19 @@
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-            </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+            </Grid>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
             </StackLayout>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

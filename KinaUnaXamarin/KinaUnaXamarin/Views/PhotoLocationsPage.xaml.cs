@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -88,9 +89,6 @@ namespace KinaUnaXamarin.Views
         private async Task Reload()
         {
             _viewModel.IsBusy = true;
-            await CheckAccount();
-
-            await UpdateLocations();
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)
@@ -105,6 +103,10 @@ namespace KinaUnaXamarin.Views
                 OfflineStackLayout.IsVisible = true;
             }
 
+            await CheckAccount();
+
+            await UpdateLocations();
+            
             _viewModel.IsBusy = false;
         }
 
@@ -217,21 +219,19 @@ namespace KinaUnaXamarin.Views
             _viewModel.PictureItems.Clear();
             _viewModel.PictureItems.Clear();
             List<Picture> allPictures = await ProgenyService.GetPicturesList(_viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone);
+            List<double> latitudes = new List<double>();
+            List<double> longitudes = new List<double>();
             // List<Picture> validPictures = new List<Picture>();
             if (allPictures != null && allPictures.Count > 0)
             {
-                List<double> latitudes = new List<double>();
-                List<double> longitudes = new List<double>();
-
                 foreach (Picture picture in allPictures)
                 {
-                    
                     if (!string.IsNullOrEmpty(picture.Latitude) && !string.IsNullOrEmpty(picture.Longtitude))
                     {
                         double lat;
-                        bool validLat = double.TryParse(picture.Latitude, out lat);
+                        bool validLat = double.TryParse(picture.Latitude, NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
                         double lon;
-                        bool validLon = double.TryParse(picture.Longtitude, out lon);
+                        bool validLon = double.TryParse(picture.Longtitude, NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
 
                         if (validLat && validLon)
                         {
@@ -258,24 +258,8 @@ namespace KinaUnaXamarin.Views
                                 LocationsMap.Pins.Add(pin);
                                 latitudes.Add(pin.Position.Latitude);
                                 longitudes.Add(pin.Position.Longitude);
-
-                                if (latitudes.Any() && longitudes.Any())
-                                {
-                                    double lowestLat = latitudes.Min();
-                                    double highestLat = latitudes.Max();
-                                    double lowestLong = longitudes.Min();
-                                    double highestLong = longitudes.Max();
-                                    double finalLat = (lowestLat + highestLat) / 2;
-                                    double finalLong = (lowestLong + highestLong) / 2;
-                                    double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat,
-                                        highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
-                                    LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
-                                        Distance.FromKilometers(distance)));
-
-                                    //_viewModel.PictureItems.ReplaceRange(validPictures);
-                                }
+                                
                             }
-                            
                             //validPictures.Add(picture);
                             _viewModel.PictureItems.Add(picture);
                         }
@@ -283,6 +267,21 @@ namespace KinaUnaXamarin.Views
                 }
             }
 
+            if (latitudes.Any() && longitudes.Any())
+            {
+                double lowestLat = latitudes.Min();
+                double highestLat = latitudes.Max();
+                double lowestLong = longitudes.Min();
+                double highestLong = longitudes.Max();
+                double finalLat = (lowestLat + highestLat) / 2;
+                double finalLong = (lowestLong + highestLong) / 2;
+                double distance = DistanceCalculation.GeoCodeCalc.CalcDistance(lowestLat, lowestLong, highestLat,
+                    highestLong, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
+                LocationsMap.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(finalLat, finalLong),
+                    Distance.FromKilometers(distance)));
+
+                //_viewModel.PictureItems.ReplaceRange(validPictures);
+            }
             _viewModel.IsBusy = false;
         }
         
@@ -332,24 +331,50 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            if (_screenWidth != width || _screenHeight != height)
-            {
-                _screenWidth = width;
-                _screenHeight = height;
 
-                if (width > height)
+            if (Device.RuntimePlatform == Device.UWP)
+            {
+                if (_screenWidth != Application.Current.MainPage.Width || _screenHeight != Application.Current.MainPage.Height)
                 {
-                    LocationsMap.HeightRequest = _screenHeight - 15;
-                    LocationsMap.WidthRequest = _screenWidth / 2.5;
-                    ContainerStackLayout.Orientation = StackOrientation.Horizontal;
-                }
-                else
-                {
-                    LocationsMap.HeightRequest = _screenHeight / 2.5;
-                    LocationsMap.WidthRequest = _screenWidth - 15;
-                    ContainerStackLayout.Orientation = StackOrientation.Vertical;
+                    _screenWidth = Application.Current.MainPage.Width;
+                    _screenHeight = Application.Current.MainPage.Height;
+
+                    if (_screenWidth > _screenHeight)
+                    {
+                        LocationsMap.HeightRequest = _screenHeight - 15;
+                        LocationsMap.WidthRequest = _screenWidth / 2.5;
+                        ContainerStackLayout.Orientation = StackOrientation.Horizontal;
+                    }
+                    else
+                    {
+                        LocationsMap.HeightRequest = _screenHeight / 2.5;
+                        LocationsMap.WidthRequest = _screenWidth - 15;
+                        ContainerStackLayout.Orientation = StackOrientation.Vertical;
+                    }
                 }
             }
+            else
+            {
+                if (_screenWidth != width || _screenHeight != height)
+                {
+                    _screenWidth = width;
+                    _screenHeight = height;
+
+                    if (width > height)
+                    {
+                        LocationsMap.HeightRequest = _screenHeight - 15;
+                        LocationsMap.WidthRequest = _screenWidth / 2.5;
+                        ContainerStackLayout.Orientation = StackOrientation.Horizontal;
+                    }
+                    else
+                    {
+                        LocationsMap.HeightRequest = _screenHeight / 2.5;
+                        LocationsMap.WidthRequest = _screenWidth - 15;
+                        ContainerStackLayout.Orientation = StackOrientation.Vertical;
+                    }
+                }
+            }
+            
         }
 
         private void LocationsMap_OnPinClicked(object sender, PinClickedEventArgs e)
@@ -363,18 +388,18 @@ namespace KinaUnaXamarin.Views
                 if (clickedPicture != null)
                 {
                     double clickedLat;
-                    bool clickedLatValid = double.TryParse(clickedPicture.Latitude, out clickedLat);
+                    bool clickedLatValid = double.TryParse(clickedPicture.Latitude, NumberStyles.Any, CultureInfo.InvariantCulture, out clickedLat);
                     double clickedLon;
-                    bool clickedLonValid = double.TryParse(clickedPicture.Longtitude, out clickedLon);
+                    bool clickedLonValid = double.TryParse(clickedPicture.Longtitude, NumberStyles.Any, CultureInfo.InvariantCulture, out clickedLon);
 
                     if (clickedLatValid && clickedLonValid)
                     {
                         foreach (Picture picture in _viewModel.PictureItems)
                         {
                             double lat;
-                            bool validLat = double.TryParse(picture.Latitude, out lat);
+                            bool validLat = double.TryParse(picture.Latitude, NumberStyles.Any, CultureInfo.InvariantCulture, out lat);
                             double lon;
-                            bool validLon = double.TryParse(picture.Longtitude, out lon);
+                            bool validLon = double.TryParse(picture.Longtitude, NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
                             if (validLat && validLon)
                             {
                                 Position position = new Position(lat, lon);

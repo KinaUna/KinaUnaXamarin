@@ -6,11 +6,12 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
              BackgroundColor="#3A2051"
              Title="{i18n:Translate SelectChild}">
     <ContentPage.Content>
-        <ScrollView>
+        <StackLayout Orientation="Vertical" Spacing="0">
             <StackLayout Orientation="Vertical" Margin="10">
                 <Label Text="{i18n:Translate SelectChild}" TextColor="White"></Label>
                 <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
@@ -45,6 +46,15 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
             </StackLayout>
-        </ScrollView>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

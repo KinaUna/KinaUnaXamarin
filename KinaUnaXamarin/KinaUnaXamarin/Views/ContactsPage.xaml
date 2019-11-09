@@ -68,7 +68,7 @@
                                         <Label Grid.Row="7" Text="{i18n:Translate Context}"></Label>
                                         <Label Grid.Row="8" Text="{Binding Context}"  HorizontalOptions="EndAndExpand" TextColor="Azure"></Label>
                                     </Grid>
-                                    <Frame Grid.Row="0" BackgroundColor="DarkOrange" Padding="0" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
+                                    <Frame Grid.Row="0" BackgroundColor="DarkOrange" Padding="0" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" CornerRadius="0" >
                                         <Label Text="{Binding DisplayName}" Margin="5" FontAttributes="Bold" FontSize="14" TextColor="White" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
                                     </Frame>
                                 </Grid>

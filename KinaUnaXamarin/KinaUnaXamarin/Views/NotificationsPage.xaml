@@ -5,46 +5,59 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.NotificationsPage"
              Visual="Material"
              Title="{i18n:Translate Notifications}">
     <ContentPage.Content>
-        <Grid BackgroundColor="#3A2051">
-            <Grid.Margin>
-                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
-                    <On Platform="UWP">0,0,40,0</On>
-                </OnPlatform>
-            </Grid.Margin>
-            <StackLayout Orientation="Vertical" Margin="10">
-                    <Label Text="{i18n:Translate Notifications}" TextColor="White"></Label>
+        <StackLayout Orientation="Vertical" Spacing="0">
+            <Grid BackgroundColor="#3A2051">
+                <Grid.Margin>
+                    <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                        <On Platform="UWP">0,0,40,0</On>
+                    </OnPlatform>
+                </Grid.Margin>
+                <StackLayout Orientation="Vertical" Margin="10">
+                    <Label x:Name="TitleLabel" Text="{i18n:Translate Notifications}" TextColor="White"></Label>
                     <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="modelsKinaUna:MobileNotification">
-                            <Grid Padding="10">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                    <RowDefinition Height="Auto" />
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="50" />
-                                    <ColumnDefinition Width="*" />
-                                </Grid.ColumnDefinitions>
-                                <BoxView Color="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" />
-                                <BoxView Color="#343a40" Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" Grid.RowSpan="3" IsVisible="{Binding Read}"/>
-                                <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding IconLink}" BackgroundColor="Black" Aspect="AspectFit" HeightRequest="50" WidthRequest="50" />
-                                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontAttributes="Bold" FontSize="15" TextColor="White" Margin="20, 0 , 5, 0"/>
-                                <Label Grid.Row="2" Grid.Column="1" Text="{Binding Time, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" HorizontalOptions="EndAndExpand" FontSize="10" TextColor="DarkOrange" Margin="0, 5 , 5, 5"/>
-                                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Message}" TextColor="LightGray" Margin="20, 0, 5, 5"/>
+                                <Grid Padding="10">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <BoxView Color="Black" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Grid.RowSpan="3" />
+                                    <BoxView Color="#343a40" Grid.Column="0" Grid.Row="0"  Grid.ColumnSpan="2" Grid.RowSpan="3" IsVisible="{Binding Read}"/>
+                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding IconLink}" BackgroundColor="Black" Aspect="AspectFit" HeightRequest="50" WidthRequest="50" />
+                                    <Label Grid.Row="0" Grid.Column="1" Text="{Binding Title}" FontAttributes="Bold" FontSize="15" TextColor="White" Margin="20, 0 , 5, 0"/>
+                                    <Label Grid.Row="2" Grid.Column="1" Text="{Binding Time, StringFormat='{0:dd-MMM-yyyy HH:mm:ss}'}" HorizontalOptions="EndAndExpand" FontSize="10" TextColor="DarkOrange" Margin="0, 5 , 5, 5"/>
+                                    <Label Grid.Row="1" Grid.Column="1" Text="{Binding Message}" TextColor="LightGray" Margin="20, 0, 5, 5"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
                 </StackLayout>
-            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+            </Grid>
+            <StackLayout x:Name="CloseStackLayout" Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
             </StackLayout>
-        </Grid>
+        </StackLayout>
+        
     </ContentPage.Content>
 </ContentPage>

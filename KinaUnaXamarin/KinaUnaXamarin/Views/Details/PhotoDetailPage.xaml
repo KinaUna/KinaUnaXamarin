@@ -29,7 +29,7 @@
                   RelativeLayout.HeightConstraint=
                   "{ConstraintExpression Type=RelativeToParent,
                                 Property=Height,
-                                Factor=0.94}">
+                                Factor=0.89}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -139,7 +139,8 @@
                         <StackLayout Grid.Row="1" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                             <StackLayout Orientation="Horizontal">
                                 <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
-                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker> <!--Todo: Add Seconds to timePicker-->
+                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker>
+                                <!--Todo: Add Seconds to timePicker-->
                             </StackLayout>
                         </StackLayout>
                         <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Location}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
@@ -180,7 +181,7 @@
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 
                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
-                        Property=Height,Factor=.94,Constant=0}"
+                        Property=Height,Factor=.87,Constant=0}"
                    RelativeLayout.WidthConstraint="{ConstraintExpression
                         Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression
@@ -253,7 +254,7 @@
                     </StackLayout>
                 </StackLayout>
             </Frame>
-            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End">
+            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End" Margin="0, 0, 0, 45">
                 <Grid VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>
@@ -328,6 +329,18 @@
                     </Grid>
                 </Grid>
             </RelativeLayout>
+            <StackLayout Orientation="Horizontal" BackgroundColor="DarkSlateBlue" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.91}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.09}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" VerticalOptions="End" Padding="0">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
+            </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

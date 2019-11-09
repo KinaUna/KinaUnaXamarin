@@ -913,5 +913,26 @@ namespace KinaUnaXamarin.Views
                 //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
             }
         }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            if (_viewModel.ShowComments)
+            {
+                _viewModel.ShowComments = false;
+            }
+            else
+            {
+                if (_viewModel.EditMode)
+                {
+                    PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.EditMode = false;
+                }
+                else
+                {
+                    await Shell.Current.Navigation.PopModalAsync();
+                }
+            }
+        }
     }
 }

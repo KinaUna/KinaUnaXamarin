@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
@@ -29,6 +27,16 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            if (Shell.Current.Navigation.ModalStack.Any())
+            {
+                TitleLabel.IsVisible = true;
+                CloseStackLayout.IsVisible = true;
+            }
+            else
+            {
+                TitleLabel.IsVisible = false;
+                CloseStackLayout.IsVisible = false;
+            }
             await Reload();
         }
 
@@ -180,6 +188,11 @@ namespace KinaUnaXamarin.Views
 
             NotificationsListCollectionView.SelectedItem = null;
             await Reload();
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

@@ -8,10 +8,10 @@
 
   <Identity
     Name="38968KinaUna.KinaUnaXamarin"
-    Publisher="CN=permo"
-    Version="0.1.73.0" />
+    Publisher="CN=BE5324AA-73CC-4753-B1A6-C8558EA95B79"
+    Version="0.1.74.0" />
 
-  <mp:PhoneIdentity PhoneProductId="b5c7080d-b8b6-4225-a53d-151e95947353" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="5b491a9d-0728-4322-994c-bb8f9bdc4d88" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>KinaUna Xamarin</DisplayName>

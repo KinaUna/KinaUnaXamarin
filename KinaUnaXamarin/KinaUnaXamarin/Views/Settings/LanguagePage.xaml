@@ -12,6 +12,11 @@
              BackgroundColor="WhiteSmoke">
     <ContentPage.Content>
         <StackLayout Padding="20" VerticalOptions="StartAndExpand" BackgroundColor="WhiteSmoke">
+            <StackLayout.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </StackLayout.Margin>
             <Label x:Name="SelectLanguageLabel"  Text="{i18n:Translate SelectLanguage}" TextColor="DarkSlateGray"  />
             <Picker x:Name="picker" SelectedIndexChanged="Picker_OnSelectedIndexChanged" />
             <Frame x:Name="SaveButtonFrame" CornerRadius="5" BackgroundColor="Green">

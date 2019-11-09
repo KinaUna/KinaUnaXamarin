@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -154,6 +155,11 @@ namespace KinaUnaXamarin.Views
                     Shell.Current.Navigation.PushModalAsync(new AddChildPage());
                 }
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

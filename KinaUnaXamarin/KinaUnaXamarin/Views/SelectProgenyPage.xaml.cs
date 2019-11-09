@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.IO;
 using FFImageLoading;
 using KinaUnaXamarin.Models.KinaUna;
@@ -64,6 +65,11 @@ namespace KinaUnaXamarin.Views
             }
             
             MessagingCenter.Send(this, "Reload");
+            await Shell.Current.Navigation.PopModalAsync();
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
             await Shell.Current.Navigation.PopModalAsync();
         }
     }

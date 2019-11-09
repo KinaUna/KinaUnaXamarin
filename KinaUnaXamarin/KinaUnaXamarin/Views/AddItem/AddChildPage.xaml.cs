@@ -29,6 +29,7 @@ namespace KinaUnaXamarin.Views.AddItem
         {
             InitializeComponent();
             _addChildViewModel = new AddChildViewModel();
+            BindingContext = _addChildViewModel;
             IReadOnlyCollection<TimeZoneInfo> timeZoneList = TimeZoneInfo.GetSystemTimeZones();
             foreach (TimeZoneInfo timeZoneInfo in timeZoneList)
             {

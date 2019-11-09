@@ -67,7 +67,7 @@
                                         <Label Grid.Row="4" Text="{i18n:Translate FriendType}"></Label>
                                         <Label Grid.Row="5" Text="{Binding Type, Converter={StaticResource FriendTypeConverter}}" HorizontalOptions="EndAndExpand" TextColor="Azure"></Label>
                                     </Grid>
-                                    <Frame Grid.Row="0" BackgroundColor="MediumVioletRed" Padding="0" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" >
+                                    <Frame Grid.Row="0" BackgroundColor="MediumVioletRed" Padding="0" Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="Start" CornerRadius="0" >
                                         <Label Text="{Binding Name}" Margin="5" FontAttributes="Bold" FontSize="14" TextColor="White" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center" />
                                     </Frame>
                                 </Grid>

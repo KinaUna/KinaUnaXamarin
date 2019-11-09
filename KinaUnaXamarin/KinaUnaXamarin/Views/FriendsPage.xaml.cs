@@ -23,6 +23,8 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
+        private double _screenWidth;
+        private double _screenHeight;
 
         public FriendsPage()
         {
@@ -81,14 +83,34 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            int columns = (int)Math.Floor(width / 200);
-            if (columns < 1)
+            int columns = 2;
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                columns = 1;
+                _screenWidth = Application.Current.MainPage.Width;
+                _screenHeight = Application.Current.MainPage.Height;
+                columns = (int)Math.Floor(_screenWidth / 200);
+                if (columns < 1)
+                {
+                    columns = 1;
+                }
+                _viewModel.Columns = columns;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    FriendsCollectionView.ItemsLayout =
+                            new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+                });
+                
             }
-
-            _viewModel.Columns = columns;
-            FriendsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+            else
+            {
+                columns = (int)Math.Floor(width / 200);
+                if (columns < 1)
+                {
+                    columns = 1;
+                }
+                _viewModel.Columns = columns;
+                FriendsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+            }
         }
 
         private async Task Reload()
