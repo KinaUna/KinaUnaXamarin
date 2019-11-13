@@ -70,12 +70,19 @@ namespace KinaUnaXamarin.Views
             var networkInfo = Connectivity.NetworkAccess;
 
             string userTimeZone = await UserService.GetUserTimezone();
+            if (string.IsNullOrEmpty(userTimeZone))
+            {
+                userTimeZone = Constants.DefaultTimeZone;
+            }
+
             TimeZoneInfo userTimeZoneInfo =
                 _viewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
+
             if (userTimeZoneInfo == null)
             {
                 userTimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
             }
+
             int timeZoneIndex = _viewModel.TimeZoneList.IndexOf(userTimeZoneInfo);
             TimeZonePicker.SelectedIndex = timeZoneIndex;
 

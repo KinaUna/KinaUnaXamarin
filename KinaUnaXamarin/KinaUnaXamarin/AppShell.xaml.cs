@@ -51,7 +51,7 @@ namespace KinaUnaXamarin
             _routes.Add("useraccess", typeof(UserAccessPage));
             _routes.Add("locations", typeof(LocationsPage));
             _routes.Add("photolocations", typeof(PhotoLocationsPage));
-            _routes.Add("notifications", typeof(NotificationsPage));
+            _routes.Add("notifications", typeof(NotificationsPageNav));
             _routes.Add("photodetailpage", typeof(PhotoDetailPage));
             foreach (var item in _routes)
             {

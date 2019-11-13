@@ -15,18 +15,6 @@ namespace KinaUnaXamarin.Droid
     [IntentFilter(new[] { "com.google.firebase.INSTANCE_ID_EVENT" })]
     public class FirebaseRegistrationService : FirebaseMessagingService // FirebaseInstanceIdService
     {
-        //public override async void OnTokenRefresh()
-        //{
-        //    string token = FirebaseInstanceId.Instance.Token;
-
-        //    // NOTE: logging the token is not recommended in production but during
-        //    // development it is useful to test messages directly from Firebase
-        //    Log.Info(AzureNotificationsConstants.DebugTag, $"Token received: {token}");
-
-        //    await SecureStorage.SetAsync("FirebaseToken", token);
-        //    await SendRegistrationToServer(token);
-        //}
-
         public override void OnNewToken(string token)
         {
             SecureStorage.SetAsync("FirebaseToken", token);

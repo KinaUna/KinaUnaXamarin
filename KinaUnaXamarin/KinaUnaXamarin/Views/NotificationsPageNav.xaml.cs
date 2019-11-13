@@ -11,12 +11,12 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NotificationsPage : ContentPage
+    public partial class NotificationsPageNav : ContentPage
     {
         private readonly ObservableRangeCollection<MobileNotification> _notificationsList;
         
 
-        public NotificationsPage()
+        public NotificationsPageNav()
         {
             _notificationsList = new ObservableRangeCollection<MobileNotification>();
             InitializeComponent();
@@ -178,11 +178,6 @@ namespace KinaUnaXamarin.Views
 
             NotificationsListCollectionView.SelectedItem = null;
             await Reload();
-        }
-
-        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
-        {
-            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

@@ -234,7 +234,7 @@
                           Title="{i18n:Translate Notifications}"
                           Icon="{x:Static models:IconFont.BellAlert}"
                           Route="notifications"
-                          ContentTemplate="{DataTemplate views:NotificationsPage}">
+                          ContentTemplate="{DataTemplate views:NotificationsPageNav}">
             </ShellContent>
         </Tab>
     </FlyoutItem>

@@ -226,7 +226,12 @@ namespace KinaUnaXamarin.Services
         public async Task<UserAccess> GetUserAccessAsync(string email, int progenyId)
         {
             UserAccessDto uaDto = await _database.Table<UserAccessDto>().FirstOrDefaultAsync(u => u.Email.ToUpper() == email.ToUpper() && u.ProgenyId == progenyId);
-            UserAccess ua = JsonConvert.DeserializeObject<UserAccess>(uaDto.UserAccessString);
+            UserAccess ua = new UserAccess();
+            if (uaDto != null)
+            {
+                ua = JsonConvert.DeserializeObject<UserAccess>(uaDto.UserAccessString);
+            }
+            
             return ua;
         }
         public async Task<int> SaveUserAccessAsync(UserAccess userAccess)

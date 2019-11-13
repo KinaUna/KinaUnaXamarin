@@ -11,12 +11,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CardsView" Version="2.3.4" />
+    <PackageReference Include="CardsView" Version="2.3.6" />
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView" Version="1.0.7" />
     <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox" Version="0.7.0" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
     <PackageReference Include="IdentityModel.OidcClient" Version="2.9.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="OxyPlot.Xamarin.Forms" Version="1.1.0-unstable0011" />
     <PackageReference Include="Plugin.Multilingual" Version="1.0.2" />
     <PackageReference Include="Refractored.MvvmHelpers" Version="1.3.0" />
@@ -93,6 +93,9 @@
     </Compile>
     <Compile Update="Views\Details\LocationDetailPage.xaml.cs">
       <DependentUpon>LocationDetailPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\NotificationsPageNav.xaml.cs">
+      <DependentUpon>NotificationsPageNav.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\PhotoLocationsPage.xaml.cs">
       <DependentUpon>PhotoLocationsPage.xaml</DependentUpon>

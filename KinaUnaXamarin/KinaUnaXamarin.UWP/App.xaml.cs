@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Networking.PushNotifications;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,6 +20,9 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using FFImageLoading.Config;
 using FFImageLoading.Forms;
+using Newtonsoft.Json.Linq;
+using Xamarin.Essentials;
+using Microsoft.WindowsAzure.Messaging;
 
 namespace KinaUnaXamarin.UWP
 {
@@ -42,6 +48,7 @@ namespace KinaUnaXamarin.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
+            InitNotificationsAsync();
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -114,6 +121,21 @@ namespace KinaUnaXamarin.UWP
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
             deferral.Complete();
+        }
+
+        private async void InitNotificationsAsync()
+        {
+            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+            Debug.WriteLine($"Received token: {channel.Uri}");
+            await SecureStorage.SetAsync("PnsHandle", channel.Uri).ConfigureAwait(false);
+
+            var hub = new NotificationHub(AzureNotificationsConstants.NotificationHubName, AzureNotificationsConstants.ListenConnectionString);
+            var result = await hub.RegisterNativeAsync(channel.Uri).ConfigureAwait(false);
+
+            if (result.RegistrationId != null)
+            {
+                await SecureStorage.SetAsync("RegistrationId", result.RegistrationId).ConfigureAwait(false);
+            }
         }
     }
 }

@@ -376,20 +376,23 @@ namespace KinaUnaXamarin.Services
             // string progenyListString = await SecureStorage.GetAsync("ProgenyList" + userEmail);
             string progenyListString = await App.Database.GetProgenyListAsync(userEmail);
             List<Progeny> progenyList = JsonConvert.DeserializeObject<List<Progeny>>(progenyListString);
-            foreach (Progeny progeny in progenyList)
+            if (progenyList != null)
             {
-                int al = 5;
-                try
+                foreach (Progeny progeny in progenyList)
                 {
-                    al = await GetAccessLevel(progeny.Id);
-                }
-                catch (Exception)
-                {
-                    al = 5;
-                }
-                if (al == 0)
-                {
-                    progenyListResult.Add(progeny);
+                    int al = 5;
+                    try
+                    {
+                        al = await GetAccessLevel(progeny.Id);
+                    }
+                    catch (Exception)
+                    {
+                        al = 5;
+                    }
+                    if (al == 0)
+                    {
+                        progenyListResult.Add(progeny);
+                    }
                 }
             }
 
@@ -1463,6 +1466,12 @@ namespace KinaUnaXamarin.Services
                         {
                             pictureViewModel.PictureTime = TimeZoneInfo.ConvertTimeFromUtc(pictureViewModel.PictureTime.Value, TimeZoneInfo.FindSystemTimeZoneById(userTimezone));
                         }
+
+                        if (string.IsNullOrEmpty(pictureViewModel.Location))
+                        {
+                            pictureViewModel.Location = "";
+                        }
+
                         if (string.IsNullOrEmpty(pictureViewModel.Tags))
                         {
                             pictureViewModel.Tags = "";
@@ -1734,6 +1743,16 @@ namespace KinaUnaXamarin.Services
                                 videoViewModel.VideoLink = "https://web.kinauna.com/videos/youtube?link=" + videoViewModel.VideoLink;
                             }
                         }
+                        
+                        if (string.IsNullOrEmpty(videoViewModel.Location))
+                        {
+                            videoViewModel.Location = "";
+                        }
+
+                        if (string.IsNullOrEmpty(videoViewModel.Tags))
+                        {
+                            videoViewModel.Tags = "";
+                        }
                         // await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
                         await App.Database.SaveVideoViewModelAsync(videoViewModel);
 
@@ -1770,6 +1789,16 @@ namespace KinaUnaXamarin.Services
                                 
                                 videoViewModel.VideoLink = "https://web.kinauna.com/videos/youtube?link=" + videoViewModel.VideoLink;
                             }
+                        }
+
+                        if (string.IsNullOrEmpty(videoViewModel.Location))
+                        {
+                            videoViewModel.Location = "";
+                        }
+
+                        if (string.IsNullOrEmpty(videoViewModel.Tags))
+                        {
+                            videoViewModel.Tags = "";
                         }
                         //await SecureStorage.SetAsync("VideoViewModel" + videoId, JsonConvert.SerializeObject(videoViewModel));
                         await App.Database.SaveVideoViewModelAsync(videoViewModel);

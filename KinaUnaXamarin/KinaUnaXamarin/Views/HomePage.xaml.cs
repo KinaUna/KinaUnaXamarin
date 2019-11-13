@@ -223,12 +223,15 @@ namespace KinaUnaXamarin.Views
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _feedModel.ProgenyCollection.Clear();
             _feedModel.CanUserAddItems = false;
-            foreach (Progeny prog in progenyList)
+            if (progenyList != null && progenyList.Any())
             {
-                _feedModel.ProgenyCollection.Add(prog);
-                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                foreach (Progeny prog in progenyList)
                 {
-                    _feedModel.CanUserAddItems = true;
+                    _feedModel.ProgenyCollection.Add(prog);
+                    if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                    {
+                        _feedModel.CanUserAddItems = true;
+                    }
                 }
             }
 

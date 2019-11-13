@@ -121,11 +121,9 @@
                     </StackLayout>
                 </Grid>
             </ScrollView>
-            <StackLayout Grid.Row="0" BackgroundColor="Black" VerticalOptions="Start" IsVisible="{Binding LoggedOut}">
-                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
-                        BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-            </StackLayout>
-            <StackLayout Grid.Row="0" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
+            <Button Grid.Row="0" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+            <StackLayout Grid.Row="1" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
                 <Label Text="{i18n:Translate NoChildrenFound}"></Label>
             </StackLayout>
             <ActivityIndicator Grid.Row="1" IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>

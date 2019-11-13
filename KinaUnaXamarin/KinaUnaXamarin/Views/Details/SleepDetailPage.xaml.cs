@@ -199,7 +199,9 @@ namespace KinaUnaXamarin.Views
                 _viewModel.EndDay = _viewModel.CurrentSleep.SleepEnd.Day;
                 _viewModel.EndHours = _viewModel.CurrentSleep.SleepEnd.Hour;
                 _viewModel.EndMinutes = _viewModel.CurrentSleep.SleepEnd.Minute;
+                SleepStartDatePicker.Date = new DateTime(_viewModel.CurrentSleep.SleepStart.Year, _viewModel.CurrentSleep.SleepStart.Month, _viewModel.CurrentSleep.SleepStart.Day);
                 SleepStartTimePicker.Time = new TimeSpan(_viewModel.CurrentSleep.SleepStart.Hour, _viewModel.CurrentSleep.SleepStart.Minute, 0);
+                SleepEndDatePicker.Date = new DateTime(_viewModel.CurrentSleep.SleepEnd.Year, _viewModel.CurrentSleep.SleepEnd.Month, _viewModel.CurrentSleep.SleepEnd.Day);
                 SleepEndTimePicker.Time = new TimeSpan(_viewModel.CurrentSleep.SleepEnd.Hour, _viewModel.CurrentSleep.SleepEnd.Minute, 0);
             }
 
@@ -237,7 +239,7 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
-
+                CheckDates();
                 DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
                 _viewModel.CurrentSleep.SleepStart = start;
@@ -276,38 +278,24 @@ namespace KinaUnaXamarin.Views
 
         private void SleepStartDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.StartYear = SleepStartDatePicker.Date.Year;
-            _viewModel.StartMonth = SleepStartDatePicker.Date.Month;
-            _viewModel.StartDay = SleepStartDatePicker.Date.Day;
-            _viewModel.StartHours = SleepStartDatePicker.Date.Hour;
-            _viewModel.StartMinutes = SleepStartDatePicker.Date.Minute;
             CheckDates();
             CalculateDuration();
         }
 
         private void SleepStartTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _viewModel.StartHours = SleepStartTimePicker.Time.Hours;
-            _viewModel.StartMinutes = SleepStartTimePicker.Time.Minutes;
             CheckDates();
             CalculateDuration();
         }
 
         private void SleepEndDatePicker_OnDateSelected(object sender, DateChangedEventArgs e)
         {
-            _viewModel.EndYear = SleepEndDatePicker.Date.Year;
-            _viewModel.EndMonth = SleepEndDatePicker.Date.Month;
-            _viewModel.EndDay = SleepEndDatePicker.Date.Day;
-            _viewModel.EndHours = SleepEndDatePicker.Date.Hour;
-            _viewModel.EndMinutes = SleepEndDatePicker.Date.Minute;
             CheckDates();
             CalculateDuration();
         }
 
         private void SleepEndTimePicker_OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            _viewModel.EndHours = SleepEndTimePicker.Time.Hours;
-            _viewModel.EndMinutes = SleepEndTimePicker.Time.Minutes;
             CheckDates();
             CalculateDuration();
 
@@ -315,22 +303,42 @@ namespace KinaUnaXamarin.Views
 
         private void CheckDates()
         {
-            DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
-            DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
+            if (_viewModel.EditMode)
+            {
+                _viewModel.StartYear = SleepStartDatePicker.Date.Year;
+                _viewModel.StartMonth = SleepStartDatePicker.Date.Month;
+                _viewModel.StartDay = SleepStartDatePicker.Date.Day;
+                _viewModel.StartHours = SleepStartDatePicker.Date.Hour;
+                _viewModel.StartMinutes = SleepStartDatePicker.Date.Minute;
+                _viewModel.StartHours = SleepStartTimePicker.Time.Hours;
+                _viewModel.StartMinutes = SleepStartTimePicker.Time.Minutes;
 
-            if (start > end)
-            {
-                EditButton.IsEnabled = false;
-                MessageLabel.Text = "Error: Start is after End.";
-                MessageLabel.BackgroundColor = Color.Red;
-                MessageLabel.IsVisible = true;
+                _viewModel.EndYear = SleepEndDatePicker.Date.Year;
+                _viewModel.EndMonth = SleepEndDatePicker.Date.Month;
+                _viewModel.EndDay = SleepEndDatePicker.Date.Day;
+                _viewModel.EndHours = SleepEndDatePicker.Date.Hour;
+                _viewModel.EndMinutes = SleepEndDatePicker.Date.Minute;
+                _viewModel.EndHours = SleepEndTimePicker.Time.Hours;
+                _viewModel.EndMinutes = SleepEndTimePicker.Time.Minutes;
+
+                DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
+                DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
+
+                if (start > end && _viewModel.EditMode)
+                {
+                    EditButton.IsEnabled = false;
+                    MessageLabel.Text = "Error: Start is after End.";
+                    MessageLabel.BackgroundColor = Color.Red;
+                    MessageLabel.IsVisible = true;
+                }
+                else
+                {
+                    EditButton.IsEnabled = true;
+                    MessageLabel.Text = "";
+                    MessageLabel.IsVisible = false;
+                }
             }
-            else
-            {
-                EditButton.IsEnabled = true;
-                MessageLabel.Text = "";
-                MessageLabel.IsVisible = false;
-            }
+            
         }
 
         private void CalculateDuration()
