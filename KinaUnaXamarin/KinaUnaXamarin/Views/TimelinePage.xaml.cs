@@ -234,7 +234,7 @@ namespace KinaUnaXamarin.Views
             }
 
             _timelineModel.MaxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
-            if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
             {
                 Device.BeginInvokeOnMainThread(() => { TimelineStartDatePicker.MaximumDate = _timelineModel.MaxDate; });
             }

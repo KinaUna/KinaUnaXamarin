@@ -48,7 +48,7 @@ namespace KinaUnaXamarin.UWP
         /// <param name="e">Details about the launch request and process.</param>
         protected override void OnLaunched(LaunchActivatedEventArgs e)
         {
-            InitNotificationsAsync();
+            //InitNotificationsAsync();
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
@@ -123,19 +123,19 @@ namespace KinaUnaXamarin.UWP
             deferral.Complete();
         }
 
-        private async void InitNotificationsAsync()
-        {
-            var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
-            Debug.WriteLine($"Received token: {channel.Uri}");
-            await SecureStorage.SetAsync("PnsHandle", channel.Uri).ConfigureAwait(false);
+        //private async void InitNotificationsAsync()
+        //{
+        //    var channel = await PushNotificationChannelManager.CreatePushNotificationChannelForApplicationAsync();
+        //    Debug.WriteLine($"Received token: {channel.Uri}");
+        //    await SecureStorage.SetAsync("PnsHandle", channel.Uri).ConfigureAwait(false);
 
-            var hub = new NotificationHub(AzureNotificationsConstants.NotificationHubName, AzureNotificationsConstants.ListenConnectionString);
-            var result = await hub.RegisterNativeAsync(channel.Uri).ConfigureAwait(false);
+        //    var hub = new NotificationHub(AzureNotificationsConstants.NotificationHubName, AzureNotificationsConstants.ListenConnectionString);
+        //    var result = await hub.RegisterNativeAsync(channel.Uri).ConfigureAwait(false);
 
-            if (result.RegistrationId != null)
-            {
-                await SecureStorage.SetAsync("RegistrationId", result.RegistrationId).ConfigureAwait(false);
-            }
-        }
+        //    if (result.RegistrationId != null)
+        //    {
+        //        await SecureStorage.SetAsync("RegistrationId", result.RegistrationId).ConfigureAwait(false);
+        //    }
+        //}
     }
 }

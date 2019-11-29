@@ -35,7 +35,7 @@ namespace KinaUnaXamarin.Droid
                 "CollectionView_Experimental", "FastRenderers_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);  // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/map
+            Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);  // https://github.com/amay077/Xamarin.Forms.GoogleMaps/blob/master/README.md
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //Android.Glide.Forms.Init(); // https://github.com/jonathanpeppers/glidex
             FFImageLoading.Forms.Platform.CachedImageRenderer

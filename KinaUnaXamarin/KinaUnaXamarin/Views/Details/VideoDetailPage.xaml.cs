@@ -493,6 +493,8 @@ namespace KinaUnaXamarin.Views
         private async void EditClicked(object sender, EventArgs e)
         {
             await UpdateEditInfo();
+            VideoCarousel.VerticalOptions = LayoutOptions.Start;
+            _viewModel.VideoVerticalOptions = LayoutOptions.Start;
             _viewModel.EditMode = true;
         }
 
@@ -535,6 +537,8 @@ namespace KinaUnaXamarin.Views
         private async void CancelButton_OnClicked(object sender, EventArgs e)
         {
             DeleteButton.IsVisible = true;
+            VideoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+            _viewModel.VideoVerticalOptions = LayoutOptions.FillAndExpand;
             _viewModel.EditMode = false;
             if (_dataChanged)
             {
@@ -711,6 +715,8 @@ namespace KinaUnaXamarin.Views
             {
                 if (_viewModel.EditMode)
                 {
+                    VideoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.VideoVerticalOptions = LayoutOptions.FillAndExpand;
                     _viewModel.EditMode = false;
                 }
                 else
@@ -865,6 +871,27 @@ namespace KinaUnaXamarin.Views
                 //    autoSuggestBox.Text = autoSuggestBox.Text + ", " + tagString;
                 //}
                 //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
+            }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            if (_viewModel.ShowComments)
+            {
+                _viewModel.ShowComments = false;
+            }
+            else
+            {
+                if (_viewModel.EditMode)
+                {
+                    VideoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.VideoVerticalOptions = LayoutOptions.FillAndExpand;
+                    _viewModel.EditMode = false;
+                }
+                else
+                {
+                    await Shell.Current.Navigation.PopModalAsync();
+                }
             }
         }
     }

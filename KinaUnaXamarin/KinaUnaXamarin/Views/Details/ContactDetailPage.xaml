@@ -146,6 +146,12 @@
                            Grid.Column="0"
                            Text="{i18n:Translate Date}"
                            FontSize="14" TextColor="DarkSlateGray"/>
+                        <Label Grid.Row="21"
+                               Grid.Column="0"
+                               Text="{i18n:Translate AccessLevel}"
+                               FontSize="14" TextColor="DarkSlateGray"
+                               IsVisible="{Binding EditMode}">
+                        </Label>
                         <Label Grid.Row="1"
                            Grid.Column="1"
                            Text="{Binding FirstName}"
@@ -346,7 +352,6 @@
                             <DatePicker x:Name="ContactDatePicker" Format="dd MMM yyyy" DateSelected="ContactDatePicker_OnDateSelected"></DatePicker>
                         </StackLayout>
                         <StackLayout  Grid.Row="21" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="22" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">

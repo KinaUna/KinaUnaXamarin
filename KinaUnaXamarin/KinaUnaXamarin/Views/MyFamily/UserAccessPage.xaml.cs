@@ -155,9 +155,12 @@ namespace KinaUnaXamarin.Views
 
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _viewModel.ProgenyCollection.Clear();
-            foreach (Progeny prog in progenyList)
+            if (progenyList.Any())
             {
-                _viewModel.ProgenyCollection.Add(prog);
+                foreach (Progeny prog in progenyList)
+                {
+                    _viewModel.ProgenyCollection.Add(prog);
+                }
             }
         }
 

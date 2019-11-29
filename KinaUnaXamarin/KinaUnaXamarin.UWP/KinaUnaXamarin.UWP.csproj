@@ -234,6 +234,7 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
     </Content>
+    <Content Include="icon_large_beta.png" />
     <Content Include="ic_stat_kinaunalogo_300x300.png">
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
       <SubType>Designer</SubType>
@@ -353,7 +354,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CardsView">
-      <Version>2.3.6</Version>
+      <Version>2.3.7</Version>
     </PackageReference>
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView">
       <Version>1.0.7</Version>
@@ -365,7 +366,7 @@
       <Version>3.2.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers">
-      <Version>2.9.7</Version>
+      <Version>2.9.8</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -403,7 +404,7 @@
       <Version>2.4.11.982</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.3.0.947036</Version>
+      <Version>4.3.0.991211</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.GoogleMaps">
       <Version>3.3.0</Version>

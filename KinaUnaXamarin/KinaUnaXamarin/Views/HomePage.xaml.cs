@@ -311,7 +311,7 @@ namespace KinaUnaXamarin.Views
             EventFrame3.IsVisible = false;
             EventFrame4.IsVisible = false;
             _feedModel.EventsList = new List<CalendarItem>();
-            List<CalendarItem> eventsList = await ProgenyService.GetUpcommingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
+            List<CalendarItem> eventsList = await ProgenyService.GetUpcomingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
             int eventListCurrent = 0;
             
             if (eventsList.Any())

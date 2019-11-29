@@ -28,6 +28,7 @@ namespace KinaUnaXamarin.Views
             _viewModel = new AccountViewModel();
             LoginStackLayout.BindingContext = _viewModel;
             _viewModel.LoggedIn = false;
+            _viewModel.LoggedOut = true;
             _reload = true;
             IReadOnlyCollection<TimeZoneInfo> timeZoneList = TimeZoneInfo.GetSystemTimeZones();
             foreach (TimeZoneInfo timeZoneInfo in timeZoneList)
@@ -75,6 +76,15 @@ namespace KinaUnaXamarin.Views
                 userTimeZone = Constants.DefaultTimeZone;
             }
 
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(userTimeZone);
+            }
+            catch (Exception)
+            {
+                userTimeZone = TZConvert.WindowsToIana(userTimeZone);
+            }
+
             TimeZoneInfo userTimeZoneInfo =
                 _viewModel.TimeZoneList.SingleOrDefault(tz => tz.DisplayName == userTimeZone);
 
@@ -102,6 +112,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.Timezone = await UserService.GetUserTimezone();
                 _viewModel.UserId = await UserService.GetUserId();
                 UserInfo userInfo = await UserService.GetUserInfo(_viewModel.Email);
+                
                 if (!string.IsNullOrEmpty(userInfo.ProfilePicture))
                 {
                     _viewModel.ProfilePicture = await UserService.GetUserPicture(userInfo.ProfilePicture);
@@ -115,6 +126,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.FirstName = userInfo.FirstName;
                 _viewModel.MiddleName = userInfo.MiddleName;
                 _viewModel.LastName = userInfo.LastName;
+                
                 bool accessTokenCurrent = UserService.IsAccessTokenCurrent(await UserService.GetAuthAccessTokenExpires());
                 string accessToken = await UserService.GetAuthAccessToken();
                 if (String.IsNullOrEmpty(accessToken) || !accessTokenCurrent)

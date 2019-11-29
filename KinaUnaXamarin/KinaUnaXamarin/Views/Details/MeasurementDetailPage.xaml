@@ -69,6 +69,11 @@
                            Grid.Column="0"
                            Text="{i18n:Translate EyeColor}"
                            FontSize="14" />
+                        <Label Grid.Row="6" 
+                               Grid.Column="0"
+                               Text="{i18n:Translate AccessLevel}"
+                               FontSize="14"
+                               IsVisible="{Binding EditMode}"></Label>
                         <Label Grid.Row="0"
                            Grid.Column="1"
                            Text="{Binding Date, StringFormat='{0:dd-MMM-yyyy}'}"
@@ -137,7 +142,6 @@
                             <Entry x:Name="EyeColorEntry" Text="{Binding EyeColor}"></Entry>
                         </StackLayout>
                         <StackLayout  Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Label Text="{i18n:Translate AccessLevel}"></Label>
                             <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">

@@ -39,6 +39,7 @@ namespace KinaUnaXamarin.ViewModels
         private int _videoSeconds;
         private List<string> _locationAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
+        private LayoutOptions _videoVerticalOptions;
 
         public VideoDetailViewModel()
         {
@@ -243,6 +244,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _videoSeconds;
             set => SetProperty(ref _videoSeconds, value);
+        }
+
+        public LayoutOptions VideoVerticalOptions
+        {
+            get => _videoVerticalOptions;
+            set => SetProperty(ref _videoVerticalOptions, value);
         }
     }
 }

@@ -232,57 +232,57 @@ namespace KinaUnaXamarin.Services
                 await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
             }
 
-            if (Device.RuntimePlatform == Device.UWP)
-            {
-                string registrationId = "";
-                string pnsHandle = "";
-                try
-                {
-                    registrationId = await SecureStorage.GetAsync("RegistrationId");
-                    pnsHandle = await SecureStorage.GetAsync("PnsHandle");
-                }
-                catch (Exception)
-                {
-                    if (string.IsNullOrEmpty(pnsHandle))
-                    {
-                        return;
-                    }
-                }
+            //if (Device.RuntimePlatform == Device.UWP)
+            //{
+            //    string registrationId = "";
+            //    string pnsHandle = "";
+            //    try
+            //    {
+            //        registrationId = await SecureStorage.GetAsync("RegistrationId");
+            //        pnsHandle = await SecureStorage.GetAsync("PnsHandle");
+            //    }
+            //    catch (Exception)
+            //    {
+            //        if (string.IsNullOrEmpty(pnsHandle))
+            //        {
+            //            return;
+            //        }
+            //    }
 
-                var client = new HttpClient();
-                client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
-                string accessToken = await UserService.GetAuthAccessToken();
-                client.SetBearerToken(accessToken);
+            //    var client = new HttpClient();
+            //    client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
+            //    string accessToken = await UserService.GetAuthAccessToken();
+            //    client.SetBearerToken(accessToken);
 
-                if (string.IsNullOrEmpty(registrationId))
-                {
-                    var response = await client.PostAsync("api/register/", new StringContent("", System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        registrationId = await response.Content.ReadAsStringAsync();
-                        registrationId = registrationId.Substring(1, registrationId.Length - 2);
-                        await SecureStorage.SetAsync("RegistrationId", registrationId);
-                    }
-                }
+            //    if (string.IsNullOrEmpty(registrationId))
+            //    {
+            //        var response = await client.PostAsync("api/register/", new StringContent("", System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            //        if (response.IsSuccessStatusCode)
+            //        {
+            //            registrationId = await response.Content.ReadAsStringAsync();
+            //            registrationId = registrationId.Substring(1, registrationId.Length - 2);
+            //            await SecureStorage.SetAsync("RegistrationId", registrationId);
+            //        }
+            //    }
 
-                DeviceRegistration deviceRegistration = new DeviceRegistration();
-                deviceRegistration.Platform = "wns";
-                deviceRegistration.Handle = pnsHandle;
-                List<string> tags = new List<string>();
-                foreach (string str in AzureNotificationsConstants.SubscriptionTags)
-                {
-                    tags.Add(str);
-                }
+            //    DeviceRegistration deviceRegistration = new DeviceRegistration();
+            //    deviceRegistration.Platform = "wns";
+            //    deviceRegistration.Handle = pnsHandle;
+            //    List<string> tags = new List<string>();
+            //    foreach (string str in AzureNotificationsConstants.SubscriptionTags)
+            //    {
+            //        tags.Add(str);
+            //    }
 
-                string userEmail = await GetUserEmail();
-                tags.Add("userEmail:" + userEmail.ToUpper());
-                foreach (Progeny progeny in await ProgenyService.GetProgenyList(await GetUserEmail()))
-                {
-                    tags.Add("progenyId:" + progeny.Id);
-                }
-                deviceRegistration.Tags = tags.ToArray();
-                await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
-            }
+            //    string userEmail = await GetUserEmail();
+            //    tags.Add("userEmail:" + userEmail.ToUpper());
+            //    foreach (Progeny progeny in await ProgenyService.GetProgenyList(await GetUserEmail()))
+            //    {
+            //        tags.Add("progenyId:" + progeny.Id);
+            //    }
+            //    deviceRegistration.Tags = tags.ToArray();
+            //    await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+            //}
         }
 
         private static async Task DeRegisterDevice()
@@ -421,6 +421,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return Constants.DefaultTimeZone;
             }
         }
@@ -433,6 +434,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return Constants.DefaultChildId.ToString();
             }
         }

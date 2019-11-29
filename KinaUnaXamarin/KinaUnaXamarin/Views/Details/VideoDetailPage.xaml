@@ -49,7 +49,7 @@
                 IsViewReusingEnabled="True">
                     <panCardView:CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:VideoViewModel">
-                            <ContentView>
+                            <ContentView VerticalOptions="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.VideoVerticalOptions}">
                                 <Grid Margin="0" IsClippedToBounds="True">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"></RowDefinition>
@@ -330,6 +330,18 @@
                     </Grid>
                 </Grid>
             </RelativeLayout>
+            <StackLayout Orientation="Horizontal" BackgroundColor="DarkSlateBlue" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand"
+                         RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
+                         RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.91}"
+                         RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.09}">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" VerticalOptions="End" Padding="0">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
+            </StackLayout>
         </RelativeLayout>
     </ContentPage.Content>
 </ContentPage>

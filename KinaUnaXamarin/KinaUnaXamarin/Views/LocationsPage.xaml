@@ -128,7 +128,7 @@
                        HorizontalOptions="Center" />
             </StackLayout>
             <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
-                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" VerticalOptions="Start" />
             <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}"
                          BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5" />
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />
