@@ -14,6 +14,9 @@
     <ContentPage.BindingContext>
         <viewModels:AccountViewModel></viewModels:AccountViewModel>
     </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
@@ -68,7 +71,7 @@
                     <ActivityIndicator x:Name="AccountAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
                 </Grid>
                 <!--<Label x:Name="MessageLabel" Text="{Binding Message}" TextColor="Blue" Margin="10"></Label>-->
-                <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="#4caf50" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
+                <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="#4caf50" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
                 <Button x:Name="LogOutButton" Command="{Binding LogoutCommand}" IsVisible="{Binding LoggedIn}" Text="{i18n:Translate LogOut}" BackgroundColor="MediumVioletRed" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>
             </StackLayout>
         </ScrollView>

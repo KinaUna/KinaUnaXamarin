@@ -1974,7 +1974,7 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    string pictureViewApiPath = "api/publicaccess/videoviewmodel/" + videoId + "/" + userAccessLevel + "?sortBy=" + sortBy;
+                    string pictureViewApiPath = "api/publicaccess/videoviewmodelmobile/" + videoId + "/" + userAccessLevel + "?sortBy=" + sortBy;
                     try
                     {
                         var result = await client.GetAsync(pictureViewApiPath).ConfigureAwait(false);
@@ -3593,7 +3593,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/sleep/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getsleeplistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4590,7 +4590,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/notes/getnoteslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getnoteslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4658,7 +4658,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/locations/getlocationslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false); // Todo: Change to PublicAccess API
+                        var result = await client.GetAsync("api/publicaccess/getlocationslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false); // Todo: Change to PublicAccess API
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4750,7 +4750,7 @@ namespace KinaUnaXamarin.Services
                 if (String.IsNullOrEmpty(accessToken))
                 {
 
-                    var result = await client.GetAsync("api/locations/progeny/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false); // Todo: Change to PublicAccess API
+                    var result = await client.GetAsync("api/publicaccess/locationslist/" + progenyId + "?accessLevel=" + accessLevel).ConfigureAwait(false); // Todo: Change to PublicAccess API
 
                     if (result.IsSuccessStatusCode)
                     {
@@ -4924,7 +4924,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/sleep/getsleepdetails?sleepId=" + sleepId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getsleepdetails?sleepId=" + sleepId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {

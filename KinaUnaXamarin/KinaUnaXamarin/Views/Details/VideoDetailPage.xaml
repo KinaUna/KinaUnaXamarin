@@ -29,7 +29,7 @@
                   RelativeLayout.HeightConstraint=
                   "{ConstraintExpression Type=RelativeToParent,
                                 Property=Height,
-                                Factor=0.94}">
+                                Factor=0.89}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="0"></RowDefinition>
                     <RowDefinition Height="*"></RowDefinition>
@@ -59,7 +59,7 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+                                    <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="2000">
 
                                     </controls:ExtendedWebView>
                                     <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
@@ -182,7 +182,7 @@
             <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 
                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
-                        Property=Height,Factor=.94,Constant=0}"
+                        Property=Height,Factor=.87,Constant=0}"
                    RelativeLayout.WidthConstraint="{ConstraintExpression
                         Type=RelativeToParent,Property=Width,Factor=1,Constant=0}"
                    RelativeLayout.HeightConstraint="{ConstraintExpression
@@ -255,7 +255,7 @@
                     </StackLayout>
                 </StackLayout>
             </Frame>
-            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End">
+            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End" Margin="0, 0, 0, 45">
                 <Grid VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*"></RowDefinition>

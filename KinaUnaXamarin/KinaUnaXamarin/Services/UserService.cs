@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using IdentityModel.OidcClient;
@@ -31,26 +32,32 @@ namespace KinaUnaXamarin.Services
                 client.SetBearerToken(accessToken);
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
 
-                var result = await client.GetAsync("api/userinfo/byemail/" + userEmail).ConfigureAwait(false);
+                try
+                {
+                    var result = await client.GetAsync("api/userinfo/byemail/" + userEmail).ConfigureAwait(false);
 
-                if (result.IsSuccessStatusCode)
-                {
-                    var userinfoString = await result.Content.ReadAsStringAsync();
-                    UserInfo userinfo = JsonConvert.DeserializeObject<UserInfo>(userinfoString);
-                    // await SecureStorage.SetAsync("UserInfo" + userEmail, JsonConvert.SerializeObject(userinfo));
-                    await App.Database.SaveUserInfoAsync(userinfo);
-                    return userinfo;
-                }
-                else
-                {
-                    // Todo: Handle errors
-                    // string userinfoString = await SecureStorage.GetAsync("UserInfo" + userEmail);
-                    UserInfo userinfo = await App.Database.GetUserInfoAsync(userEmail);
-                    if (userinfo != null)
+                    if (result.IsSuccessStatusCode)
                     {
+                        var userinfoString = await result.Content.ReadAsStringAsync();
+                        UserInfo userinfo = JsonConvert.DeserializeObject<UserInfo>(userinfoString);
+                        await App.Database.SaveUserInfoAsync(userinfo);
                         return userinfo;
                     }
+                    else
+                    {
+                        // Todo: Handle errors
+                        UserInfo userinfo = await App.Database.GetUserInfoAsync(userEmail);
+                        if (userinfo != null)
+                        {
+                            return userinfo;
+                        }
 
+                        return OfflineDefaultData.DefaultUserInfo;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
                     return OfflineDefaultData.DefaultUserInfo;
                 }
             }
@@ -76,25 +83,31 @@ namespace KinaUnaXamarin.Services
                 client.SetBearerToken(accessToken);
                 client.BaseAddress = new Uri(Constants.MediaApiUrl);
 
-                var result = await client.GetAsync("api/pictures/getprofilepicture/" + pictureId).ConfigureAwait(false);
+                try
+                {
+                    var result = await client.GetAsync("api/pictures/getprofilepicture/" + pictureId).ConfigureAwait(false);
 
-                if (result.IsSuccessStatusCode)
-                {
-                    string resultString = await result.Content.ReadAsStringAsync();
-                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
-                    // await SecureStorage.SetAsync("ProfilePicture" + pictureId, pictureResultString);
-                    await App.Database.SaveUserPictureAsync(pictureId, pictureResultString);
-                    return pictureResultString;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        string resultString = await result.Content.ReadAsStringAsync();
+                        string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                        await App.Database.SaveUserPictureAsync(pictureId, pictureResultString);
+                        return pictureResultString;
+                    }
+                    else
+                    {
+                        // Todo: Handle errors
+                        return Constants.ProfilePicture;
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    // Todo: Handle errors
+                    Debug.WriteLine(e.Message);
                     return Constants.ProfilePicture;
                 }
             }
             else
             {
-                // string pictureResultString = await SecureStorage.GetAsync("ProfilePicture" + pictureId);
                 string pictureResultString = await App.Database.GetUserPictureAsync(pictureId);
                 if (!string.IsNullOrEmpty(pictureResultString))
                 {
@@ -199,8 +212,9 @@ namespace KinaUnaXamarin.Services
                     pnsHandle = await SecureStorage.GetAsync("PnsHandle");
                     registrationId = await SecureStorage.GetAsync("RegistrationId");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex.Message);
                     return;
                 }
 
@@ -229,7 +243,16 @@ namespace KinaUnaXamarin.Services
                     tags.Add("progenyId:" + progeny.Id);
                 }
                 deviceRegistration.Tags = tags.ToArray();
-                await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
+
+
+                try
+                {
+                    await client.PutAsync("api/register/" + registrationId, new StringContent(JsonConvert.SerializeObject(deviceRegistration), Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
             }
 
             //if (Device.RuntimePlatform == Device.UWP)
@@ -294,18 +317,26 @@ namespace KinaUnaXamarin.Services
                 {
                     registerId = await SecureStorage.GetAsync("RegistrationId");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine(ex.Message);
                     return;
                 }
                 var client = new HttpClient();
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
                 client.SetBearerToken(accessToken);
-                var result = await client.DeleteAsync("api/register/" + registerId).ConfigureAwait(false);
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    SecureStorage.Remove("NotificationRegistrationId");
+                    var result = await client.DeleteAsync("api/register/" + registerId).ConfigureAwait(false);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        SecureStorage.Remove("NotificationRegistrationId");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
                 }
             }
         }
@@ -324,6 +355,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -336,6 +368,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -363,6 +396,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -380,6 +414,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -397,6 +432,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -409,6 +445,7 @@ namespace KinaUnaXamarin.Services
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "Error: " + ex.Message;
             }
         }
@@ -445,8 +482,9 @@ namespace KinaUnaXamarin.Services
             {
                 return await SecureStorage.GetAsync("UserLanguage");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex.Message);
                 return "";
             }
         }
@@ -525,13 +563,21 @@ namespace KinaUnaXamarin.Services
                 fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
                 MultipartFormDataContent content = new MultipartFormDataContent();
                 content.Add(fileStreamContent);
-                var result = await client.PostAsync("api/pictures/uploadprofilepicture/", content).ConfigureAwait(false);
-
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    string resultString = await result.Content.ReadAsStringAsync();
-                    string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
-                    return pictureResultString;
+                    var result = await client.PostAsync("api/pictures/uploadprofilepicture/", content).ConfigureAwait(false);
+
+                    if (result.IsSuccessStatusCode)
+                    {
+                        string resultString = await result.Content.ReadAsStringAsync();
+                        string pictureResultString = Regex.Replace(resultString, @"([|""|])", "");
+                        return pictureResultString;
+                    }
+                }
+                catch (Exception ex)
+                {
+                   Debug.WriteLine(ex.Message);
+                   return "";
                 }
             }
 
@@ -546,27 +592,35 @@ namespace KinaUnaXamarin.Services
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
                 client.SetBearerToken(accessToken);
-                var result = await client.PutAsync("api/userinfo/" + updatedUserInfo.UserId, new StringContent(JsonConvert.SerializeObject(updatedUserInfo), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    string resultString = await result.Content.ReadAsStringAsync();
-                    UserInfo resultUserInfo = JsonConvert.DeserializeObject<UserInfo>(resultString);
+                    var result = await client.PutAsync("api/userinfo/" + updatedUserInfo.UserId, new StringContent(JsonConvert.SerializeObject(updatedUserInfo), Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        string resultString = await result.Content.ReadAsStringAsync();
+                        UserInfo resultUserInfo = JsonConvert.DeserializeObject<UserInfo>(resultString);
 
-                    await SecureStorage.SetAsync(Constants.UserNameKey, resultUserInfo.UserName);
-                    await SecureStorage.SetAsync(Constants.UserFirstNameKey, resultUserInfo.FirstName);
-                    await SecureStorage.SetAsync(Constants.UserMiddleNameKey, resultUserInfo.MiddleName);
-                    await SecureStorage.SetAsync(Constants.UserLastNameKey, resultUserInfo.LastName);
-                    try
-                    {
-                        TimeZoneInfo.FindSystemTimeZoneById(resultUserInfo.Timezone);
-                    }
-                    catch (Exception)
-                    {
-                        resultUserInfo.Timezone = TZConvert.WindowsToIana(resultUserInfo.Timezone);
-                    }
-                    await SecureStorage.SetAsync(Constants.UserTimezoneKey, resultUserInfo.Timezone);
+                        await SecureStorage.SetAsync(Constants.UserNameKey, resultUserInfo.UserName);
+                        await SecureStorage.SetAsync(Constants.UserFirstNameKey, resultUserInfo.FirstName);
+                        await SecureStorage.SetAsync(Constants.UserMiddleNameKey, resultUserInfo.MiddleName);
+                        await SecureStorage.SetAsync(Constants.UserLastNameKey, resultUserInfo.LastName);
+                        try
+                        {
+                            TimeZoneInfo.FindSystemTimeZoneById(resultUserInfo.Timezone);
+                        }
+                        catch (Exception)
+                        {
+                            resultUserInfo.Timezone = TZConvert.WindowsToIana(resultUserInfo.Timezone);
+                        }
+                        await SecureStorage.SetAsync(Constants.UserTimezoneKey, resultUserInfo.Timezone);
                     
-                    return resultUserInfo;
+                        return resultUserInfo;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return new UserInfo();
                 }
             }
 
@@ -593,22 +647,30 @@ namespace KinaUnaXamarin.Services
                 {
                     client.SetBearerToken(accessToken);
 
-                    var result = await client.GetAsync("api/notifications/latest/" + count + "/" + start + "/" + language).ConfigureAwait(false);
+                    try
+                    {
+                        var result = await client.GetAsync("api/notifications/latest/" + count + "/" + start + "/" + language).ConfigureAwait(false);
 
-                    string userTimeZone = await GetUserTimezone();
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var notificationsString = await result.Content.ReadAsStringAsync();
-                        List<MobileNotification> notificationsList = JsonConvert.DeserializeObject<List<MobileNotification>>(notificationsString);
-                        foreach (MobileNotification notif in notificationsList)
+                        string userTimeZone = await GetUserTimezone();
+                        if (result.IsSuccessStatusCode)
                         {
-                            notif.Time = TimeZoneInfo.ConvertTimeFromUtc(notif.Time, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                            var notificationsString = await result.Content.ReadAsStringAsync();
+                            List<MobileNotification> notificationsList = JsonConvert.DeserializeObject<List<MobileNotification>>(notificationsString);
+                            foreach (MobileNotification notif in notificationsList)
+                            {
+                                notif.Time = TimeZoneInfo.ConvertTimeFromUtc(notif.Time, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                            }
+                            await SecureStorage.SetAsync("NotificationsList" + count + "start" + start + "lang" + language, JsonConvert.SerializeObject(notificationsList));
+                            return notificationsList;
                         }
-                        await SecureStorage.SetAsync("NotificationsList" + count + "start" + start + "lang" + language, JsonConvert.SerializeObject(notificationsList));
-                        return notificationsList;
+                        else
+                        {
+                            return new List<MobileNotification>();
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
+                        Debug.WriteLine(ex.Message);
                         return new List<MobileNotification>();
                     }
                 }
@@ -633,12 +695,20 @@ namespace KinaUnaXamarin.Services
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
                 client.SetBearerToken(accessToken);
-                var result = await client.PutAsync("api/notifications/" + notification.NotificationId, new StringContent(JsonConvert.SerializeObject(notification), System.Text.Encoding.UTF8, "application/json")).ConfigureAwait(false);
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    string resultString = await result.Content.ReadAsStringAsync();
-                    MobileNotification resultItem = JsonConvert.DeserializeObject<MobileNotification>(resultString);
-                    return resultItem;
+                    var result = await client.PutAsync("api/notifications/" + notification.NotificationId, new StringContent(JsonConvert.SerializeObject(notification), Encoding.UTF8, "application/json")).ConfigureAwait(false);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        string resultString = await result.Content.ReadAsStringAsync();
+                        MobileNotification resultItem = JsonConvert.DeserializeObject<MobileNotification>(resultString);
+                        return resultItem;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return notification;
                 }
             }
 
@@ -653,12 +723,20 @@ namespace KinaUnaXamarin.Services
                 client.BaseAddress = new Uri(Constants.ProgenyApiUrl);
                 string accessToken = await UserService.GetAuthAccessToken();
                 client.SetBearerToken(accessToken);
-                var result = await client.DeleteAsync("api/notifications/" + notification.NotificationId).ConfigureAwait(false);
-                if (result.IsSuccessStatusCode)
+                try
                 {
-                    MobileNotification deleteNotification = new MobileNotification();
-                    deleteNotification.NotificationId = 0;
-                    return deleteNotification;
+                    var result = await client.DeleteAsync("api/notifications/" + notification.NotificationId).ConfigureAwait(false);
+                    if (result.IsSuccessStatusCode)
+                    {
+                        MobileNotification deleteNotification = new MobileNotification();
+                        deleteNotification.NotificationId = 0;
+                        return deleteNotification;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return notification;
                 }
             }
 
