@@ -3913,7 +3913,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/measurements/getmeasurementslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getmeasurementslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -3985,7 +3985,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/measurements/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/measurementslist/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4081,7 +4081,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/skills/getskillslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getskillslistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4181,7 +4181,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/vocabulary/getvocabularylistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/getvocabularylistpage?pageSize=" + pageSize + "&pageIndex=" + pageNumber + "&progenyId=" + Constants.DefaultChildId + "&accessLevel=" + accessLevel + "&sortBy=" + sortOrder).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4253,7 +4253,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/vocabulary/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/vocabularylist/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
@@ -4391,7 +4391,7 @@ namespace KinaUnaXamarin.Services
                 {
                     try
                     {
-                        var result = await client.GetAsync("api/vaccinations/progeny/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
+                        var result = await client.GetAsync("api/publicaccess/vaccinationslist/" + Constants.DefaultChildId + "?accessLevel=" + accessLevel).ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)
                         {
