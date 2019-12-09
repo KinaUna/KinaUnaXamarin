@@ -31,7 +31,9 @@ namespace KinaUnaXamarin.Views
         public HomePage()
         {
             InitializeComponent();
-
+            _feedModel = new HomeFeedViewModel();
+            _feedModel.LatestPosts = new List<TimeLineItem>();
+            BindingContext = _feedModel;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
 
             MessagingCenter.Subscribe<HomeFeedViewModel>(this, "Reload", async (sender) =>
@@ -56,8 +58,6 @@ namespace KinaUnaXamarin.Views
             
             if (_reload)
             {
-                _feedModel = new HomeFeedViewModel();
-
                 _userInfo = OfflineDefaultData.DefaultUserInfo;
 
                 string userEmail = await UserService.GetUserEmail();
@@ -76,7 +76,7 @@ namespace KinaUnaXamarin.Views
                     
                     _userInfo = await App.Database.GetUserInfoAsync(userEmail);
                 }
-                BindingContext = _feedModel;
+                
             }
 
             var networkAccess = Connectivity.NetworkAccess;
@@ -367,11 +367,9 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateTimeLine()
         {
             LatestPostsStackLayout.IsVisible = false;
-            _feedModel.LatestPosts = new List<TimeLineItem>();
             _feedModel.TimeLineItems.Clear();
             _feedModel.LatestPosts = await ProgenyService.GetLatestPosts(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _userInfo.Timezone);
             
-
             if (_feedModel.LatestPosts.Any())
             {
                 LatestPostsStackLayout.IsVisible = true;

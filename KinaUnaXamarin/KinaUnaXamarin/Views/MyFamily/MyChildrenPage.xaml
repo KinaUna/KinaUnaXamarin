@@ -64,35 +64,44 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Name}" IsEnabled="{Binding EditMode}" BackgroundColor="White"></Entry>
+                            <Label Text="{Binding Progeny.Name}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Name}" IsVisible="{Binding EditMode}" BackgroundColor="White" TextColor="Black"></Entry>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate DisplayName}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.NickName}" IsEnabled="{Binding EditMode}" BackgroundColor="White"></Entry>
+                            <Label Text="{Binding Progeny.NickName}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.NickName}" IsVisible="{Binding EditMode}" BackgroundColor="White" TextColor="Black"></Entry>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate Birthday}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="BirthDayLabel" Text="{Binding ProgenyBirthDay, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" IsEnabled="False" IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}"></Entry>
+                            <Label x:Name="BirthDayLabel" Text="{Binding ProgenyBirthDay, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" 
+                                   IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}" TextColor="Black"
+                                   BackgroundColor="WhiteSmoke" Margin="10, 0, 0, 10"></Label>
                             <StackLayout Orientation="Horizontal" IsVisible="{Binding EditMode}">
-                                <DatePicker x:Name="BirthdayDatePicker"  Date="{Binding ProgenyBirthDay.Date}" Format="dd-MMM-yyyy"></DatePicker>
-                                <TimePicker x:Name="BirthdayTimePicker" Time="{Binding ProgenyBirthDay.TimeOfDay}" ></TimePicker>
+                                <DatePicker x:Name="BirthdayDatePicker"  Date="{Binding ProgenyBirthDay.Date}" Format="dd-MMM-yyyy" BackgroundColor="White" TextColor="Black"></DatePicker>
+                                <TimePicker x:Name="BirthdayTimePicker" Time="{Binding ProgenyBirthDay.TimeOfDay}" BackgroundColor="White" TextColor="Black" ></TimePicker>
                             </StackLayout>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate TimeZone}" TextColor="DarkSlateGray"></Label>
-                            <Entry Text="{Binding SelectedTimeZone.DisplayName}" IsEnabled="False" IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="White"></Entry>
-                            <Picker HorizontalOptions="FillAndExpand"  x:Name="TimeZonePicker" ItemsSource="{Binding TimeZoneList}" ItemDisplayBinding="{Binding DisplayName}" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}" SelectedItem="{Binding SelectedTimeZone}" TextColor="DarkSlateGray" ></Picker>
+                            <Label Text="{Binding SelectedTimeZone.DisplayName}" IsEnabled="False"
+                                   IsVisible="{Binding EditMode, Converter={StaticResource InverseBoolConverter}}" 
+                                   BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10"></Label>
+                            <Picker HorizontalOptions="FillAndExpand"  x:Name="TimeZonePicker" ItemsSource="{Binding TimeZoneList}"
+                                    ItemDisplayBinding="{Binding DisplayName}" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"
+                                    SelectedItem="{Binding SelectedTimeZone}" TextColor="Black" BackgroundColor="White" ></Picker>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate ProfilePicture}" TextColor="DarkSlateGray"></Label>
                             <Image x:Name="ChildPicture" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="{Binding ProfilePicture}" Margin="3"></Image>
                             <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"></Button>
                         </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="White">
+                        <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate Administrators}" TextColor="DarkSlateGray"></Label>
-                            <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsEnabled="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges" BackgroundColor="White" ></Editor>
+                            <Label Text="{Binding Progeny.Admins}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <Editor x:Name="AdministratorsEntry" HorizontalOptions="FillAndExpand" Text="{Binding Progeny.Admins}" IsVisible="{Binding EditMode}" VerticalOptions="StartAndExpand" Keyboard="Email" AutoSize="TextChanges" BackgroundColor="White" TextColor="Black" ></Editor>
                         </StackLayout>
                         <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" ></Label>
                         <StackLayout Orientation="Horizontal" Margin="5">

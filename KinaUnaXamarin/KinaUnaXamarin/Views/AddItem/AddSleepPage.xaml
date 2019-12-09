@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -8,78 +9,111 @@
              x:Class="KinaUnaXamarin.Views.AddItem.AddSleepPage"
              Title="{i18n:Translate AddSleep}"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <ScrollView>
-            <Grid>
-                <StackLayout Orientation="Vertical" Margin="5">
-                    <Label Text="{i18n:Translate AddSleepFor}"></Label>
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
-                                        <RowDefinition Height="60" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40" />
-                                        <ColumnDefinition Width="160" />
-                                    </Grid.ColumnDefinitions>
-                                    <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
-                                       Aspect="AspectFit"
-                                       WidthRequest="40" />
-                                    <Label Grid.Row="0" Grid.Column="1"
-                                       Text="{Binding NickName}"
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       TextColor="Black"
-                                       Margin="10, 0 , 0, 0"/>
-                                    <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding Name}"
-                                       TextColor="DarkSlateGray"
-                                       Margin="10, 0, 0, 0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Start}" TextColor="DarkSlateGray"></Label>
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <ScrollView VerticalOptions="FillAndExpand">
+                <Grid>
+                    <StackLayout Orientation="Vertical" Margin="5">
+                        <Label Text="{i18n:Translate AddSleepFor}" />
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
+                                        SelectionMode="Single" HeightRequest="105">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20" />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                               Source="{Binding PictureLink}"
+                                               Aspect="AspectFit"
+                                               WidthRequest="40" />
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               Text="{Binding NickName}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="Black"
+                                               Margin="10, 0 , 0, 0" />
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               TextColor="DarkSlateGray"
+                                               Margin="10, 0, 0, 0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Start}" TextColor="DarkSlateGray" />
+                            <StackLayout Orientation="Horizontal">
+                                <DatePicker x:Name="SleepStartDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black"
+                                            DateSelected="SleepStartDatePicker_OnDateSelected" />
+                                <TimePicker x:Name="SleepStartTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black"
+                                            PropertyChanged="SleepStartTimePicker_OnPropertyChanged" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate End}" TextColor="DarkSlateGray" />
+                            <StackLayout Orientation="Horizontal">
+                                <DatePicker x:Name="SleepEndDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black"
+                                            DateSelected="SleepEndDatePicker_OnDateSelected" />
+                                <TimePicker x:Name="SleepEndTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black"
+                                            PropertyChanged="SleepEndTimePicker_OnPropertyChanged" />
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Rating}" TextColor="DarkSlateGray" />
+                            <Label Text="{Binding Rating}" TextColor="Black" Margin="15, 0, 0, 0" />
+                            <!--<Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="3" ValueChanged="RatingSlider_OnValueChanged"></Slider>-->
+                            <Stepper x:Name="RatingStepper" Minimum="1" Maximum="5" Increment="1"
+                                     Value="{Binding Rating}" />
+                        </StackLayout>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray" />
+                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}" BackgroundColor="White" TextColor="Black" />
+                        </StackLayout>
+                        <StackLayout Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"
+                                    SelectedIndex="{Binding AccessLevel}" />
+                        </StackLayout>
+                        <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
                         <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="SleepStartDatePicker" Format="dd MMM yyyy" DateSelected="SleepStartDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="SleepStartTimePicker" Format="HH:mm" PropertyChanged="SleepStartTimePicker_OnPropertyChanged"></TimePicker>
+                            <Button x:Name="SaveSleepButton" Text="{i18n:Translate Save}" TextColor="White"
+                                    BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked" />
+                            <Button x:Name="CancelSleepButton" Text="{i18n:Translate Cancel}" TextColor="White"
+                                    BackgroundColor="DimGray" Clicked="CancelSleepButton_OnClicked" />
                         </StackLayout>
                     </StackLayout>
-                    <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate End}" TextColor="DarkSlateGray"></Label>
-                        <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="SleepEndDatePicker" Format="dd MMM yyyy" DateSelected="SleepEndDatePicker_OnDateSelected"></DatePicker>
-                            <TimePicker x:Name="SleepEndTimePicker" Format="HH:mm" PropertyChanged="SleepEndTimePicker_OnPropertyChanged"></TimePicker>
-                        </StackLayout>
-                    </StackLayout>
-                    <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Rating}" TextColor="DarkSlateGray"></Label>
-                        <Label Text="{Binding Rating}" TextColor="Black" Margin="15, 0, 0, 0"></Label>
-                        <!--<Slider x:Name="RatingSlider" Minimum="1" Maximum="5" Value="3" ValueChanged="RatingSlider_OnValueChanged"></Slider>-->
-                        <Stepper x:Name="RatingStepper" Minimum="1" Maximum="5" Increment="1" Value="{Binding Rating}" ></Stepper>
-                    </StackLayout>
-                    <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
-                        <Editor x:Name="NotesEditor" AutoSize="TextChanges" Text="{Binding Notes}"></Editor>
-                    </StackLayout>
-                    <StackLayout Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
-                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
-                    </StackLayout>
-                    <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-                    <StackLayout Orientation="Horizontal">
-                        <Button x:Name="SaveSleepButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveSleepButton_OnClicked"></Button>
-                        <Button x:Name="CancelSleepButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelSleepButton_OnClicked"></Button>
-                    </StackLayout>
+                    <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                       IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
+                                       HorizontalOptions="FillAndExpand" Margin="50" />
+                </Grid>
+            </ScrollView>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
+                         HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}"
+                           FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24"
+                           VerticalTextAlignment="Center" />
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18"
+                           VerticalTextAlignment="Center" />
                 </StackLayout>
-                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-            </Grid>
-        </ScrollView>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

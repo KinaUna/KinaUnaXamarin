@@ -322,5 +322,10 @@ namespace KinaUnaXamarin.Views.AddItem
                 //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
             }
         }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
+        }
     }
 }

@@ -211,5 +211,10 @@ namespace KinaUnaXamarin.Views.AddItem
 
             _addSleepViewModel.IsBusy = false;
         }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
+        }
     }
 }

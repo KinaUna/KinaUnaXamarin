@@ -15,7 +15,12 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              xmlns:autoSuggest="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              Visual="Material"
-             x:Name="VideoDetailContentPage">
+             x:Name="VideoDetailContentPage"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
@@ -125,47 +130,47 @@
                         <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5, 0, 5, 0" BackgroundColor="White">
                             <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
                             <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
                                 <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
                             </StackLayout>
                             <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
                             <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
                                 <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
                             </StackLayout>
                             <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
                             <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40"></Entry>
+                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
                                 <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
                             </StackLayout>
                         </StackLayout>
                         <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
                         <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                             <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
-                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker>
+                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black" ></DatePicker>
+                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black" ></TimePicker>
                                 <!--Todo: Add Seconds to timePicker-->
                             </StackLayout>
                         </StackLayout>
                         <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
                         <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></autoSuggest:AutoSuggestBox>
+                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" ></autoSuggest:AutoSuggestBox>
                         </StackLayout>
                         <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
                         <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="LatitudeEntry" ></Entry>
+                            <Entry x:Name="LatitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
                         <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="LongitudeEntry" ></Entry>
+                            <Entry x:Name="LongitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
                         <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="AltitudeEntry" ></Entry>
+                            <Entry x:Name="AltitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
                         <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" >
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"></Picker>
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
                             <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>

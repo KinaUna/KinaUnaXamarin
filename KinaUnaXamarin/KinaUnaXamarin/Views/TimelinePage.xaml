@@ -12,7 +12,8 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.TimelinePage"
              Title="{i18n:Translate Timeline}"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="DarkGray">
     <ContentPage.BindingContext>
         <viewModels:TimelineFeedViewModel></viewModels:TimelineFeedViewModel>
     </ContentPage.BindingContext>
@@ -327,7 +328,10 @@
                     <On Platform="UWP">0,0,40,0</On>
                 </OnPlatform>
             </Grid.Margin>
-            <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
+            <Grid x:Name="ContainerStackLayout" VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
                 <!--<CollectionView 
                     x:Name="TimeLineCollectionView" 
                     ItemTemplate="{StaticResource TimeLineTemplateSelector}"
@@ -340,9 +344,10 @@
                     RemainingItemsThresholdReached="TimeLineCollectionView_OnRemainingItemsThresholdReached"></CollectionView>-->
                 <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
                           Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement"
+                          BackgroundColor="White"
                           ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
-            </StackLayout>
+            </Grid>
             <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>

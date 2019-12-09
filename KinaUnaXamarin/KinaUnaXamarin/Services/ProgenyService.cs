@@ -1142,7 +1142,7 @@ namespace KinaUnaXamarin.Services
                     try
                     {
                         var result = await client
-                            .GetAsync("api/publicaccess/progenylatest/" + progenyId + "/" + accessLevel + "/" + 5 + "/" + 0 + "/" + startTime.Year + "/" + startTime.Month + "/" + startTime.Day)
+                            .GetAsync("api/publicaccess/progenylatest/" + progenyId + "/" + accessLevel + "/" + 5 + "/" + 0 )
                             .ConfigureAwait(false);
 
                         if (result.IsSuccessStatusCode)

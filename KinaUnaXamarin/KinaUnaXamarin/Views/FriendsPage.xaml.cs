@@ -29,7 +29,11 @@ namespace KinaUnaXamarin.Views
         public FriendsPage()
         {
             InitializeComponent();
-            
+            _viewModel = new FriendsViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerGrid.BindingContext = _viewModel;
+            BindingContext = _viewModel;
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -47,11 +51,7 @@ namespace KinaUnaXamarin.Views
 
             if (_reload)
             {
-                _viewModel = new FriendsViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerGrid.BindingContext = _viewModel;
-                BindingContext = _viewModel;
-                SortByPicker.SelectedIndex = 0;
+               SortByPicker.SelectedIndex = 0;
             }
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;

@@ -8,13 +8,18 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.AddItemPage"
              Title="{i18n:Translate AddItem}"
-             BackgroundColor="Black">
+             BackgroundColor="Black"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Spacing="0">
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
             <Grid VerticalOptions="FillAndExpand">
-                <StackLayout Orientation="Vertical" Margin="10">
+                <StackLayout Orientation="Vertical" Margin="10" VerticalOptions="FillAndExpand">
                     <Label Text="{i18n:Translate AddItem}" TextColor="White"></Label>
-                    <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged">
+                    <CollectionView x:Name="AddItemListCollectionView" SelectionMode="Single" SelectionChanged="AddItemListCollectionView_OnSelectionChanged" VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="models:AddItemModel">
                                 <Grid Padding="10" Margin="0" >

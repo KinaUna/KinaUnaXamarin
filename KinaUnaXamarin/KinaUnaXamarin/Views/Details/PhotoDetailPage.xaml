@@ -15,7 +15,13 @@
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:autoSuggest="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              x:Class="KinaUnaXamarin.Views.PhotoDetailPage"
-             Visual="Material">
+             Visual="Material"
+             BackgroundColor="#3A2051"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
@@ -133,35 +139,35 @@
                         </Grid.ColumnDefinitions>
                         <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="0" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
-                            <autoSuggest:AutoSuggestBox x:Name="TagsEditor" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></autoSuggest:AutoSuggestBox>
+                            <autoSuggest:AutoSuggestBox x:Name="TagsEditor" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" BackgroundColor="White" ></autoSuggest:AutoSuggestBox>
                         </StackLayout>
                         <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="1" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" IsVisible="{Binding EditMode}">
                             <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" ></DatePicker>
-                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" ></TimePicker>
+                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black" ></DatePicker>
+                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black" ></TimePicker>
                                 <!--Todo: Add Seconds to timePicker-->
                             </StackLayout>
                         </StackLayout>
                         <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate Location}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="2" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
-                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" ></autoSuggest:AutoSuggestBox>
+                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" BackgroundColor="White"></autoSuggest:AutoSuggestBox>
                         </StackLayout>
                         <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="3" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
-                            <Entry x:Name="LatitudeEntry" ></Entry>
+                            <Entry x:Name="LatitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="4" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
-                            <Entry x:Name="LongitudeEntry" ></Entry>
+                            <Entry x:Name="LongitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout Grid.Row="5" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White">
-                            <Entry x:Name="AltitudeEntry" ></Entry>
+                            <Entry x:Name="AltitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                         </StackLayout>
                         <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="0,5" TextColor="Black" BackgroundColor="#AAFFFFFF" VerticalOptions="Start" HorizontalOptions="End"></Label>
                         <StackLayout  Grid.Row="6" Grid.Column="1" Margin="0,5,5,5" BackgroundColor="White" >
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"></Picker>
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="7" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
                             <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>

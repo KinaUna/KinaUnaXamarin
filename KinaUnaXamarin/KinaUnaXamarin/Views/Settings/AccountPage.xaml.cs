@@ -123,6 +123,7 @@ namespace KinaUnaXamarin.Views
                 }
 
                 ProfileImage.Source = _viewModel.ProfilePicture;
+                
                 _viewModel.FirstName = userInfo.FirstName;
                 _viewModel.MiddleName = userInfo.MiddleName;
                 _viewModel.LastName = userInfo.LastName;

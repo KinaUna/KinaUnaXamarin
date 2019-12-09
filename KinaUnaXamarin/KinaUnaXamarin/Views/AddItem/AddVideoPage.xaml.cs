@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -356,6 +355,11 @@ namespace KinaUnaXamarin.Views.AddItem
                 //}
                 //autoSuggestBox.Text = autoSuggestBox.Text + e.SelectedItem.ToString();
             }
+        }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
         }
     }
 }

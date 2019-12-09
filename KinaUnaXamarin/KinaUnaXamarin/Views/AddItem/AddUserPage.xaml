@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -7,58 +8,87 @@
              x:Class="KinaUnaXamarin.Views.AddItem.AddUserPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
-                <StackLayout Orientation="Vertical" Margin="5" >
-                    <Label Text="{i18n:Translate AddUserFor}" FontSize="16" Margin="0, 0, 5, 0"></Label>
-                    <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105">
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Padding="10">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="20" />
-                                        <RowDefinition Height="60" />
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="40" />
-                                        <ColumnDefinition Width="160" />
-                                    </Grid.ColumnDefinitions>
-                                    <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
-                                       Aspect="AspectFit"
-                                       WidthRequest="40" />
-                                    <Label Grid.Row="0" Grid.Column="1"
-                                       Text="{Binding NickName}"
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       TextColor="Black"
-                                       Margin="10, 0 , 0, 0"/>
-                                    <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding Name}"
-                                       TextColor="DarkSlateGray"
-                                       Margin="10, 0, 0, 0"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="Email" TextColor="DarkSlateGray"></Label>
-                        <Entry x:Name="EmailEntry" HorizontalOptions="FillAndExpand" TextChanged="EmailEntry_OnTextChanged" Keyboard="Email" TextColor="Black"></Entry>
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <StackLayout Orientation="Vertical" Margin="5">
+                        <Label Text="{i18n:Translate AddUserFor}" FontSize="16" Margin="0, 0, 5, 0" />
+                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
+                                        SelectionMode="Single" HeightRequest="105">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Padding="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="20" />
+                                            <RowDefinition Height="60" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="40" />
+                                            <ColumnDefinition Width="160" />
+                                        </Grid.ColumnDefinitions>
+                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                               Source="{Binding PictureLink}"
+                                               Aspect="AspectFit"
+                                               WidthRequest="40" />
+                                        <Label Grid.Row="0" Grid.Column="1"
+                                               Text="{Binding NickName}"
+                                               FontAttributes="Bold"
+                                               FontSize="16"
+                                               TextColor="Black"
+                                               Margin="10, 0 , 0, 0" />
+                                        <Label Grid.Row="1" Grid.Column="1"
+                                               Text="{Binding Name}"
+                                               TextColor="DarkSlateGray"
+                                               Margin="10, 0, 0, 0" />
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="Email" TextColor="DarkSlateGray" />
+                            <Entry x:Name="EmailEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                                   TextChanged="EmailEntry_OnTextChanged" Keyboard="Email" TextColor="Black" />
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
+                            <Picker HorizontalOptions="StartAndExpand" x:Name="AccessLevelPicker" BackgroundColor="White" TextColor="Black"
+                                    ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" />
+                        </StackLayout>
+                        <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
+                        <StackLayout Orientation="Horizontal" Margin="5">
+                            <Button x:Name="SaveUserButton" Text="{i18n:Translate Save}" TextColor="White"
+                                    BackgroundColor="#4caf50" Clicked="SaveUserButton_OnClicked" IsEnabled="False" />
+                            <Button x:Name="CancelUserButton" Text="{i18n:Translate Cancel}" TextColor="White"
+                                    BackgroundColor="DimGray" Clicked="CancelUserButton_OnClicked" />
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
-                        <Picker HorizontalOptions="StartAndExpand" x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
-                    </StackLayout>
-                    <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-                    <StackLayout Orientation="Horizontal" Margin="5">
-                        <Button x:Name="SaveUserButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveUserButton_OnClicked" IsEnabled="False" ></Button>
-                        <Button x:Name="CancelUserButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelUserButton_OnClicked"></Button>
-                    </StackLayout>
+                </ScrollView>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand" Margin="50" />
+            </Grid>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
+                         HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}"
+                           FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24"
+                           VerticalTextAlignment="Center" />
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18"
+                           VerticalTextAlignment="Center" />
                 </StackLayout>
-            </ScrollView>
-            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-        </Grid>
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

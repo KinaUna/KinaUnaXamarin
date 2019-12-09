@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CardsView" Version="2.3.7" />
+    <PackageReference Include="CardsView" Version="2.3.8" />
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView" Version="1.0.7" />
     <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox" Version="0.7.0" />
     <PackageReference Include="IdentityModel" Version="3.10.10" />
@@ -26,7 +26,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991211" />  
+    <PackageReference Include="Xamarin.Forms" Version="4.3.0.991221" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />  
     <PackageReference Include="Xamarin.Forms.GoogleMaps" Version="3.3.0" />
   </ItemGroup>

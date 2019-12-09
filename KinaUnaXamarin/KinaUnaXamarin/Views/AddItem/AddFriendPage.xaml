@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -9,91 +10,139 @@
              x:Class="KinaUnaXamarin.Views.AddItem.AddFriendPage"
              Title="{i18n:Translate AddFriend}"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
-                <Grid>
-                    <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddFriendFor}" TextColor="DarkSlateGray"></Label>
-                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="10">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="20" />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40" />
-                                            <ColumnDefinition Width="160" />
-                                        </Grid.ColumnDefinitions>
-                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
-                                       Aspect="AspectFit"
-                                       WidthRequest="40" />
-                                        <Label Grid.Row="0" Grid.Column="1"
-                                       Text="{Binding NickName}"
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       TextColor="Black"
-                                       Margin="10, 0 , 0, 0"/>
-                                        <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding Name}"
-                                       TextColor="DarkSlateGray"
-                                       Margin="10, 0, 0, 0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" TextColor="Black" BackgroundColor="White"></Entry>
-                        </StackLayout>
-                        <StackLayout Margin="5" >
-                            <Label Text="{i18n:Translate Description}" TextColor="DarkSlateGray"></Label>
-                            <Editor x:Name="DescriptionEditor" AutoSize="TextChanges" Text="{Binding Notes}" TextColor="Black" BackgroundColor="White"></Editor>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FriendSince}" TextColor="DarkSlateGray"></Label>
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <StackLayout Orientation="Vertical" Margin="5">
+                            <Label Text="{i18n:Translate AddFriendFor}" TextColor="DarkSlateGray" />
+                            <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
+                                            SelectionMode="Single" HeightRequest="105"
+                                            SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20" />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="160" />
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                   Source="{Binding PictureLink}"
+                                                   Aspect="AspectFit"
+                                                   WidthRequest="40" />
+                                            <Label Grid.Row="0" Grid.Column="1"
+                                                   Text="{Binding NickName}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"
+                                                   TextColor="Black"
+                                                   Margin="10, 0 , 0, 0" />
+                                            <Label Grid.Row="1" Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   TextColor="DarkSlateGray"
+                                                   Margin="10, 0, 0, 0" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand"
+                                       TextChanged="NameEntry_OnTextChanged" TextColor="Black" BackgroundColor="White" />
+                            </StackLayout>
+                            <StackLayout Margin="5">
+                                <Label Text="{i18n:Translate Description}" TextColor="DarkSlateGray" />
+                                <Editor x:Name="DescriptionEditor" AutoSize="TextChanges" Text="{Binding Notes}"
+                                        TextColor="Black" BackgroundColor="White" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate FriendSince}" TextColor="DarkSlateGray" />
+                                <StackLayout Orientation="Horizontal">
+                                    <DatePicker x:Name="FriendSinceDatePicker" Format="dd MMM yyyy"
+                                                BackgroundColor="White" TextColor="Black" />
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate FriendTypeLabel}" TextColor="DarkSlateGray" />
+                                <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}"
+                                        SelectedIndex="{Binding FriendType}" BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Context}" TextColor="DarkSlateGray" />
+                                <forms:AutoSuggestBox x:Name="ContextEntry" Text=""
+                                                      TextChanged="ContextEntry_OnTextChanged"
+                                                      QuerySubmitted="ContextEntry_OnQuerySubmitted"
+                                                      SuggestionChosen="ContextEntry_OnSuggestionChosen"
+                                                      TextColor="Black" BackgroundColor="White" />
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray" />
+                                <Editor x:Name="NotesEditor" AutoSize="TextChanges" TextColor="Black"
+                                        BackgroundColor="White" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="Tags" TextColor="DarkSlateGray" />
+                                <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}"
+                                                      TextChanged="TagsEditor_OnTextChanged"
+                                                      QuerySubmitted="TagsEditor_OnQuerySubmitted"
+                                                      SuggestionChosen="TagsEditor_OnSuggestionChosen"
+                                                      TextColor="Black" BackgroundColor="White"
+                                                      UpdateTextOnSelect="False" />
+                            </StackLayout>
+                            <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand"
+                                   Source="photosicon.png" />
+                            <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}"
+                                    Clicked="SelectImageButton_OnClicked" />
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
+                                <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"
+                                        SelectedIndex="{Binding AccessLevel}" />
+                            </StackLayout>
+                            <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
                             <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="FriendSinceDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black"></DatePicker>
+                                <Button x:Name="SaveFriendButton" Text="{i18n:Translate Save}" TextColor="White"
+                                        BackgroundColor="#4caf50" Clicked="SaveFriendButton_OnClicked"
+                                        IsEnabled="False" />
+                                <Button x:Name="CancelFriendButton" Text="{i18n:Translate Cancel}" TextColor="White"
+                                        BackgroundColor="DimGray" Clicked="CancelFriendButton_OnClicked" />
                             </StackLayout>
                         </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate FriendTypeLabel}" TextColor="DarkSlateGray"></Label>
-                            <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}" SelectedIndex="{Binding FriendType}"  BackgroundColor="White" TextColor="Black"></Picker>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Context}" TextColor="DarkSlateGray"></Label>
-                            <forms:AutoSuggestBox x:Name="ContextEntry" Text=""  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black"  BackgroundColor="White"></forms:AutoSuggestBox>
-                        </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
-                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" TextColor="Black" BackgroundColor="White"></Editor>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Tags" TextColor="DarkSlateGray"></Label>
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
-                        </StackLayout>
-                        <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand" Source="photosicon.png"></Image>
-                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
-                        </StackLayout>
-                        <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-                        <StackLayout Orientation="Horizontal">
-                            <Button x:Name="SaveFriendButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveFriendButton_OnClicked" IsEnabled="False"></Button>
-                            <Button x:Name="CancelFriendButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelFriendButton_OnClicked"></Button>
-                        </StackLayout>
-                    </StackLayout>
-                </Grid>
-            </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                    </Grid>
+                </ScrollView>
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red"
+                             HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand" Margin="50" />
+            </Grid>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
+                         HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}"
+                           FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24"
+                           VerticalTextAlignment="Center" />
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18"
+                           VerticalTextAlignment="Center" />
+                </StackLayout>
             </StackLayout>
-            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

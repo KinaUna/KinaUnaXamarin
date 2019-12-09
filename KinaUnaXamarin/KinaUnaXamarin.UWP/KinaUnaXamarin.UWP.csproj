@@ -354,7 +354,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="CardsView">
-      <Version>2.3.7</Version>
+      <Version>2.3.8</Version>
     </PackageReference>
     <PackageReference Include="DLToolkit.Forms.Controls.ImageCropView">
       <Version>1.0.7</Version>
@@ -404,7 +404,7 @@
       <Version>2.4.11.982</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.3.0.991211</Version>
+      <Version>4.3.0.991221</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.GoogleMaps">
       <Version>3.3.0</Version>

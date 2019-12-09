@@ -21,6 +21,9 @@ namespace KinaUnaXamarin.Models.KinaUna
         public bool VisibleBefore { get; set; }
 
         [JsonIgnore]
+        public bool AddedToListView { get; set; }
+
+        [JsonIgnore]
         public Picture PictureObject
         {
             get

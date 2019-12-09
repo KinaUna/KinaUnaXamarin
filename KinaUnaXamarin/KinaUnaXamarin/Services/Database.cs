@@ -593,6 +593,7 @@ namespace KinaUnaXamarin.Services
             Sleep sleepItem = JsonConvert.DeserializeObject<Sleep>(sleepDto.SleepString);
             return sleepItem;
         }
+
         public async Task<int> SaveSleepAsync(Sleep sleep)
         {
             SleepDto sleepDto = await _database.Table<SleepDto>().FirstOrDefaultAsync(s => s.SleepId == sleep.SleepId);

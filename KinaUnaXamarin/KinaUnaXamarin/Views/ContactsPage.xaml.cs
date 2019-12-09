@@ -27,7 +27,11 @@ namespace KinaUnaXamarin.Views
         public ContactsPage()
         {
             InitializeComponent();
-            
+            _viewModel = new ContactsViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerGrid.BindingContext = _viewModel;
+            BindingContext = _viewModel;
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -45,10 +49,6 @@ namespace KinaUnaXamarin.Views
 
             if (_reload)
             {
-                _viewModel = new ContactsViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerGrid.BindingContext = _viewModel;
-                BindingContext = _viewModel;
                 SortByPicker.SelectedIndex = 0;
             }
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;

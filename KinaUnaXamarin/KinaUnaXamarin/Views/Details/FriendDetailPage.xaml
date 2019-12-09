@@ -11,7 +11,12 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.FriendDetailPage"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
@@ -140,28 +145,28 @@
                            TextColor="Black"
                            IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"/>
                         <StackLayout Grid.Row="1" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Entry x:Name="NameEntry" Text="{Binding Name}"></Entry>
+                            <Entry x:Name="NameEntry" Text="{Binding Name}" BackgroundColor="White" TextColor="Black"></Entry>
                         </StackLayout>
                         <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Editor x:Name="DescriptionEditor" Text="{Binding Description}" AutoSize="TextChanges"></Editor>
+                            <Editor x:Name="DescriptionEditor" Text="{Binding Description}" AutoSize="TextChanges" BackgroundColor="White" TextColor="Black"></Editor>
                         </StackLayout>
                         <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <DatePicker x:Name="FriendDatePicker" Format="dd MMM yyyy" DateSelected="FriendDatePicker_OnDateSelected"></DatePicker>
+                            <DatePicker x:Name="FriendDatePicker" Format="dd MMM yyyy" DateSelected="FriendDatePicker_OnDateSelected" BackgroundColor="White" TextColor="Black"></DatePicker>
                         </StackLayout>
                         <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}" SelectedIndex="{Binding FriendType}" ></Picker>
+                            <Picker x:Name="FriendTypePicker" ItemsSource="{Binding FriendTypeList}" SelectedIndex="{Binding FriendType}" BackgroundColor="White" TextColor="Black" ></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <forms:AutoSuggestBox x:Name="ContextEntry" Text="{Binding Context}"  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" TextColor="Black" ></forms:AutoSuggestBox>
+                            <forms:AutoSuggestBox x:Name="ContextEntry" Text="{Binding Context}"  TextChanged="ContextEntry_OnTextChanged" QuerySubmitted="ContextEntry_OnQuerySubmitted" SuggestionChosen="ContextEntry_OnSuggestionChosen" BackgroundColor="White" TextColor="Black" ></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Editor x:Name="NotesEditor" Text="{Binding Notes}" AutoSize="TextChanges"></Editor>
+                            <Editor x:Name="NotesEditor" Text="{Binding Notes}" AutoSize="TextChanges" BackgroundColor="White" TextColor="Black"></Editor>
                         </StackLayout>
                         <StackLayout Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
+                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" BackgroundColor="White" TextColor="Black" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
                         </StackLayout>
                         <StackLayout  Grid.Row="8" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}"></Picker>
+                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
                         </StackLayout>
                         <StackLayout Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End">
                             <Button x:Name="EditButton" Text="{x:Static models:IconFont.CalendarEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="EditButton_OnClicked"></Button>

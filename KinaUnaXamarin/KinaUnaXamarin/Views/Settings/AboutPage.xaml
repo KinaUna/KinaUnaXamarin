@@ -13,7 +13,7 @@
             <StackLayout Spacing="25" Padding="15">
                 <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
                        HorizontalOptions="Center" Margin="0, 10, 0, 20" />
-                <Label Text="Kina Una for Android - Beta" FontAttributes="Bold"
+                <Label Text="Kina Una Xamarin App" FontAttributes="Bold"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
                        TextColor="DarkSlateGray"/>

@@ -114,5 +114,10 @@ namespace KinaUnaXamarin.Views.AddItem
                 SaveUserButton.IsEnabled = true;
             }
         }
+
+        private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PopModalAsync();
+        }
     }
 }

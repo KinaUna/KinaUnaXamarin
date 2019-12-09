@@ -27,6 +27,11 @@ namespace KinaUnaXamarin.Views
         public YearAgoPage()
         {
             InitializeComponent();
+            _timelineModel = new TimelineFeedViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerStackLayout.BindingContext = _timelineModel;
+            BindingContext = _timelineModel;
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await Reload();
@@ -43,10 +48,6 @@ namespace KinaUnaXamarin.Views
             base.OnAppearing();
             if (_reload)
             {
-                _timelineModel = new TimelineFeedViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerStackLayout.BindingContext = _timelineModel;
-                BindingContext = _timelineModel;
                 _timelineModel.SelectedYear = DateTime.UtcNow.Year;
                 _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
                 _timelineModel.SelectedDay = DateTime.UtcNow.Day;
@@ -196,16 +197,18 @@ namespace KinaUnaXamarin.Views
 
         private async Task UpdateTimeLine()
         {
+            Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Clear(); });
+
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth, _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLineYearAgo(_timelineModel.Progeny.Id,
                 _timelineModel.UserAccessLevel, _userInfo.Timezone).ConfigureAwait(false);
-            _timelineModel.TimeLineItems.Clear();
+            
             if (timeLineList.Any())
             {
                 foreach (TimeLineItem ti in timeLineList)
                 {
                     ti.VisibleBefore = false;
-                    _timelineModel.TimeLineItems.Add(ti);
+                    Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Add(ti); });
                 }
                 
                 // RemainingItemsThreshold not implemented yet. When it is available try out CollectionView instead of ListView.

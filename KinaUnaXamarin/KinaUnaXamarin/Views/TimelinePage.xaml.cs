@@ -21,17 +21,22 @@ namespace KinaUnaXamarin.Views
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private TimelineFeedViewModel _timelineModel;
+        private readonly TimelineFeedViewModel _timelineModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
-        private string lastItemDateString;
+        private string _lastItemDateString;
         private int _dateHeaderCount = 0;
+        private List<TimeLineItem> _timeLineList;
 
         public TimelinePage()
         {
             InitializeComponent();
-
+            _timeLineList = new List<TimeLineItem>();
+            _timelineModel = new TimelineFeedViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            BindingContext = _timelineModel;
+            ContainerStackLayout.BindingContext = _timelineModel;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             TimeLineListView.ItemAppearing += ItemAppearingEvent;
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
@@ -44,15 +49,12 @@ namespace KinaUnaXamarin.Views
                 await Reload();
             });
         }
-
+        
         protected override async void OnAppearing()
         {
+            base.OnAppearing();
             if (_reload)
             {
-                _timelineModel = new TimelineFeedViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerStackLayout.BindingContext = _timelineModel;
-                BindingContext = _timelineModel;
                 _timelineModel.SelectedYear = DateTime.UtcNow.Year;
                 _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
                 _timelineModel.SelectedDay = DateTime.UtcNow.Day;
@@ -77,8 +79,6 @@ namespace KinaUnaXamarin.Views
             }
 
             _reload = false;
-            base.OnAppearing();
-            
         }
 
         protected override void OnDisappearing()
@@ -208,30 +208,16 @@ namespace KinaUnaXamarin.Views
     
         private async Task UpdateTimeLine()
         {
-            DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth, _timelineModel.SelectedDay);
-            List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(_timelineModel.Progeny.Id,
-                _timelineModel.UserAccessLevel, 6, 0, _userInfo.Timezone, timeLineStart, "").ConfigureAwait(false);
-            _timelineModel.TimeLineItems.Clear();
-            _dateHeaderCount = 0;
-            if (timeLineList.Any())
+            _timeLineList = new List<TimeLineItem>();
+            // Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Clear(); });
+            while (_timelineModel.TimeLineItems.Count > 0)
             {
-                foreach (TimeLineItem ti in timeLineList)
-                {
-                    ti.VisibleBefore = false;
-                    if (ti.ItemType == 9999)
-                    {
-                        _dateHeaderCount++;
-                    }
-                    _timelineModel.TimeLineItems.Add(ti);
-                }
-
-                lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-                // _timelineModel.TimeLineItems.ReplaceRange(timeLineList);
-
-                // RemainingItemsThreshold not implemented yet. When it is available try out CollectionView instead of ListView.
-                // https://github.com/xamarin/Xamarin.Forms/issues/5623
-                
+                _timelineModel.TimeLineItems.RemoveAt(0);
             }
+
+            _dateHeaderCount = 0;
+            _lastItemDateString = "";
+
 
             _timelineModel.MaxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
@@ -242,8 +228,16 @@ namespace KinaUnaXamarin.Views
             {
                 TimelineStartDatePicker.MaximumDate = _timelineModel.MaxDate;
             }
-                
-            // TimeLineListView.ScrollTo(timeLineList.FirstOrDefault(), ScrollToPosition.Start, false);
+
+            await LoadItems(0, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
+            if (Device.RuntimePlatform == Device.iOS)
+            {
+                Device.BeginInvokeOnMainThread( async() => { await ShowNextItem(); });
+            }
+            else
+            {
+                await ShowNextItem();
+            }
         }
 
         private async void ItemAppearingEvent(object sender, ItemVisibilityEventArgs e)
@@ -255,17 +249,69 @@ namespace KinaUnaXamarin.Views
             }
             
             int progenyId = tItem.ProgenyId;
-            if (!_timelineModel.CanLoadMore || _timelineModel.TimeLineItems.Count == 0 || tItem.VisibleBefore || progenyId != _timelineModel.Progeny.Id)
+            if (progenyId != _timelineModel.Progeny.Id)
                 return;
-
-            //hit bottom!
-            if (_timelineModel.TimeLineItems.Count > 5)
+            tItem.VisibleBefore = true;
+            int itemsNotVisibleBeforeCount = _timelineModel.TimeLineItems.Where(t => t.VisibleBefore == false).Count();
+            if (_timelineModel.CanLoadMore && itemsNotVisibleBeforeCount < 20)
             {
-                if (tItem.ItemId == (_timelineModel.TimeLineItems[_timelineModel.TimeLineItems.Count - 5]).ItemId && !tItem.VisibleBefore)
+                await LoadItems(_timeLineList.Count - _dateHeaderCount, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
+            }
+
+            if (_timelineModel.CanShowMore)
+            {
+                await ShowNextItem();
+            }
+        }
+
+        private async Task ShowNextItem()
+        {
+            if (_timelineModel.CanShowMore && _timeLineList.Count - _timelineModel.TimeLineItems.Count < 25)
+            {
+                _timelineModel.CanShowMore = false;
+                int start = _timelineModel.TimeLineItems.Count;
+                if (start < 1)
                 {
-                    await LoadItems(_timelineModel.TimeLineItems.Count - _dateHeaderCount, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
+                    start = 1;
                 }
-                tItem.VisibleBefore = true;
+
+                List<TimeLineItem> itemsToAdd = new List<TimeLineItem>();
+                
+                if (_timeLineList.Count > start)
+                {
+                    int itemsToAddCount = 5;
+                    while (itemsToAddCount > 0)
+                    {
+                        TimeLineItem newItem = _timeLineList.FirstOrDefault(t => t.AddedToListView == false);
+                        if (newItem != null)
+                        {
+                            if (!_timelineModel.TimeLineItems.Contains(newItem))
+                            {
+                                newItem.AddedToListView = true;
+                                itemsToAdd.Add(newItem);
+                            }
+                        }
+
+                        itemsToAddCount--;
+                    }
+
+                    if (itemsToAdd.Any())
+                    {
+                        if (Device.RuntimePlatform == Device.iOS)
+                        {
+                            
+                            Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.AddRange(itemsToAdd); });
+                            await Task.Delay(500);
+                        }
+                        else
+                        {
+                            _timelineModel.TimeLineItems.AddRange(itemsToAdd);
+                        }
+                    }
+                }
+
+                
+                _timelineModel.CanShowMore = true;
             }
         }
 
@@ -276,7 +322,7 @@ namespace KinaUnaXamarin.Views
             DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth,
                 _timelineModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 10, startItem, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
+                _timelineModel.UserAccessLevel, 5, startItem, userTimeZone, timeLineStart, _lastItemDateString).ConfigureAwait(false);
             if (timeLineList.Any())
             {
                 foreach (TimeLineItem ti in timeLineList)
@@ -286,28 +332,10 @@ namespace KinaUnaXamarin.Views
                     {
                         _dateHeaderCount++;
                     }
-                    _timelineModel.TimeLineItems.Add(ti);
+                    _timeLineList.Add(ti);
+
                 }
-                lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-                // _timelineModel.TimeLineItems.AddRange(timeLineList);
-            }
-            
-            // Run GetTimeLine a second time to add more items.
-            timeLineList = await ProgenyService.GetTimeLine(progenyId,
-                _timelineModel.UserAccessLevel, 15, startItem + 10, userTimeZone, timeLineStart, lastItemDateString).ConfigureAwait(false);
-            if (timeLineList.Any())
-            {
-                foreach (TimeLineItem ti in timeLineList)
-                {
-                    ti.VisibleBefore = false;
-                    if (ti.ItemType == 9999)
-                    {
-                        _dateHeaderCount++;
-                    }
-                    _timelineModel.TimeLineItems.Add(ti);
-                }
-                lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
-                // _timelineModel.TimeLineItems.AddRange(timeLineList);
+                _lastItemDateString = timeLineList.Last().ProgenyTime.ToLongDateString();
             }
             
             _timelineModel.CanLoadMore = true;

@@ -39,23 +39,26 @@
                 <Grid Margin="5, 0, 5, 20" IsVisible="{Binding LoggedIn}">
                     <StackLayout Orientation="Vertical" Margin="0, 0, 80, 0">
                         <StackLayout Orientation="Vertical">
-                            <Label Text="{i18n:Translate UserName}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="UsernameEntry" Text="{Binding Username}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" BackgroundColor="WhiteSmoke"></Entry>
+                            <Label Text="{i18n:Translate UserName}" TextColor="DarkSlateGray" BackgroundColor="WhiteSmoke"></Label>
+                            <Label Text="{Binding Username}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <Entry x:Name="UsernameEntry" Text="{Binding Username}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode}" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
                             <Label Text="{i18n:Translate FullName}"  TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="FullNameEntry" Text="{Binding FullName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="False" BackgroundColor="WhiteSmoke"></Entry>
-                            <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}" BackgroundColor="WhiteSmoke"></Entry>
-                            <Entry x:Name="MiddleNameEntry" Text="{Binding MiddleName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}" BackgroundColor="WhiteSmoke"></Entry>
-                            <Entry x:Name="LastNameEntry" Text="{Binding LastName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}" BackgroundColor="WhiteSmoke"></Entry>
+                            <Label x:Name="FullNameEntry" Text="{Binding FullName}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="True" BackgroundColor="WhiteSmoke"></Label>
+                            <Entry x:Name="FirstNameEntry" Text="{Binding FirstName}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode}" BackgroundColor="White"></Entry>
+                            <Entry x:Name="MiddleNameEntry" Text="{Binding MiddleName}" TextColor="Black" Margin="10, 0, 0, 10"  IsVisible="{Binding EditMode}" BackgroundColor="White"></Entry>
+                            <Entry x:Name="LastNameEntry" Text="{Binding LastName}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode}" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
                             <Label Text="Email" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="UserEmailEntry" Text="{Binding Email}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="False" BackgroundColor="WhiteSmoke"></Entry>
+                            <Label Text="{Binding Email}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="True"></Label>
+                            <Entry x:Name="UserEmailEntry" Text="{Binding Email}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="False" BackgroundColor="White"></Entry>
                         </StackLayout>
                         <StackLayout Orientation="Vertical">
                             <Label Text="{i18n:Translate TimeZone}" TextColor="DarkSlateGray"></Label>
-                            <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}" TextColor="Green" Margin="10, 0, 0, 10" IsEnabled="{Binding EditMode}" ></Picker>
+                            <Label Text="{Binding Timezone}" BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}"></Label>
+                            <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}" TextColor="Black" Margin="10, 0, 0, 10" IsVisible="{Binding EditMode}" BackgroundColor="White" ></Picker>
                             <!--<Label x:Name="TimezoneLabel" Text="{Binding Timezone}" TextColor="Green" IsVisible="{Binding LoggedIn}" Margin="10, 0, 0, 10"></Label>-->
                         </StackLayout>
                         <StackLayout Orientation="Vertical">

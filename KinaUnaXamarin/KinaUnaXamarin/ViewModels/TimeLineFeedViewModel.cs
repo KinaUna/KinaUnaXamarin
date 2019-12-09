@@ -20,6 +20,7 @@ namespace KinaUnaXamarin.ViewModels
         private int _selectedDay;
         private DateTime _maximumDate;
         private bool _canUserAddItems;
+        private bool _canShowMore;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -28,6 +29,7 @@ namespace KinaUnaXamarin.ViewModels
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             TimeLineItems = new ObservableRangeCollection<TimeLineItem>();
+            _canShowMore = true;
         }
 
         public bool LoggedOut
@@ -103,6 +105,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _isLoggedIn;
             set => SetProperty(ref _isLoggedIn, value);
+        }
+
+        public bool CanShowMore
+        {
+            get => _canShowMore;
+            set => SetProperty(ref _canShowMore, value);
         }
     }
 }

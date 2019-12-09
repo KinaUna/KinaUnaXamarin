@@ -12,6 +12,7 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              Title="{i18n:Translate OnThisDay}"
              Visual="Material"
+             BackgroundColor="DarkGray"
              x:Class="KinaUnaXamarin.Views.YearAgoPage">
     <ContentPage.BindingContext>
         <viewModels:TimelineFeedViewModel></viewModels:TimelineFeedViewModel>
@@ -332,6 +333,7 @@
                 <!--<CollectionView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}" Margin="0" ItemSizingStrategy="MeasureAllItems"></CollectionView>-->
                 <ListView x:Name="TimeLineListView" ItemTemplate="{StaticResource TimeLineTemplateSelector}" ItemsSource="{Binding TimeLineItems}"
                           Margin="0" HasUnevenRows="True" SeparatorVisibility="None" VerticalOptions="FillAndExpand" CachingStrategy="RecycleElement"
+                          BackgroundColor="White"
                           ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
             </StackLayout>

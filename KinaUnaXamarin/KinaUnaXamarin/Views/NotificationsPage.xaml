@@ -9,7 +9,12 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.NotificationsPage"
              Visual="Material"
-             Title="{i18n:Translate Notifications}">
+             Title="{i18n:Translate Notifications}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0">
             <Grid BackgroundColor="#3A2051">

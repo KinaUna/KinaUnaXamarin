@@ -18,7 +18,7 @@
                 </OnPlatform>
             </StackLayout.Margin>
             <Label x:Name="SelectLanguageLabel"  Text="{i18n:Translate SelectLanguage}" TextColor="DarkSlateGray"  />
-            <Picker x:Name="picker" SelectedIndexChanged="Picker_OnSelectedIndexChanged" />
+            <Picker x:Name="picker" SelectedIndexChanged="Picker_OnSelectedIndexChanged" TextColor="Black" BackgroundColor="White" />
             <Frame x:Name="SaveButtonFrame" CornerRadius="5" BackgroundColor="Green">
                 <StackLayout Orientation="Horizontal" VerticalOptions="Center" HorizontalOptions="Center">
                     <Label Text="{x:Static models:IconFont.ContentSave}"

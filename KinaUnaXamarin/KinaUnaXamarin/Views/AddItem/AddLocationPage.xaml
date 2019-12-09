@@ -1,4 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
@@ -9,121 +10,173 @@
              x:Class="KinaUnaXamarin.Views.AddItem.AddLocationPage"
              Title="{i18n:Translate AddLocation}"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
-                <Grid>
-                    <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddLocationFor}" TextColor="DarkSlateGray"></Label>
-                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="10">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="20" />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40" />
-                                            <ColumnDefinition Width="160" />
-                                        </Grid.ColumnDefinitions>
-                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2"/>
-                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding PictureLink}"
-                                       Aspect="AspectFit"
-                                       WidthRequest="40" />
-                                        <Label Grid.Row="0" Grid.Column="1"
-                                       Text="{Binding NickName}"
-                                       FontAttributes="Bold"
-                                       FontSize="16"
-                                       TextColor="Black"
-                                       Margin="10, 0 , 0, 0"/>
-                                        <Label Grid.Row="1" Grid.Column="1"
-                                       Text="{Binding Name}"
-                                       TextColor="DarkSlateGray"
-                                       Margin="10, 0, 0, 0"/>
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate NameOrLabel}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="NameEntry" Text="" HorizontalOptions="FillAndExpand" TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="Black"></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Street}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="StreetEntry" Text="" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black"></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate HouseNumber}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="HouseNumberEntry" Text="" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate District}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="DistrictEntry" Text="" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate City}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="CityEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate PostalCode}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="PostalCodeEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black"></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate County}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="CountyEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate StateOrRegion}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="StateEntry" HorizontalOptions="FillAndExpand"  BackgroundColor="White" TextColor="Black"></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Country}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="CountryEntry" HorizontalOptions="FillAndExpand"  BackgroundColor="White" TextColor="Black"></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Latitude}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="LatitudeEntry" HorizontalOptions="FillAndExpand" Keyboard="Numeric" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Longitude}" TextColor="DarkSlateGray"></Label>
-                            <Entry x:Name="LongitudeEntry" HorizontalOptions="FillAndExpand" Keyboard="Numeric" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical">
-                            <Button x:Name="GetMyLocationButton" Text="{i18n:Translate GetLocation }" Clicked="GetMyLocationButton_OnClicked"></Button>
-                        </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Date}" TextColor="DarkSlateGray"></Label>
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <StackLayout Orientation="Vertical" Margin="5">
+                            <Label Text="{i18n:Translate AddLocationFor}" TextColor="DarkSlateGray" />
+                            <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
+                                            SelectionMode="Single" HeightRequest="105"
+                                            SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20" />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="160" />
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                                   Source="{Binding PictureLink}"
+                                                   Aspect="AspectFit"
+                                                   WidthRequest="40" />
+                                            <Label Grid.Row="0" Grid.Column="1"
+                                                   Text="{Binding NickName}"
+                                                   FontAttributes="Bold"
+                                                   FontSize="16"
+                                                   TextColor="Black"
+                                                   Margin="10, 0 , 0, 0" />
+                                            <Label Grid.Row="1" Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   TextColor="DarkSlateGray"
+                                                   Margin="10, 0, 0, 0" />
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate NameOrLabel}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="NameEntry" Text="" HorizontalOptions="FillAndExpand"
+                                       TextChanged="NameEntry_OnTextChanged" BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Street}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="StreetEntry" Text="" HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate HouseNumber}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="HouseNumberEntry" Text="" HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate District}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="DistrictEntry" Text="" HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate City}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="CityEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                                       TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate PostalCode}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="PostalCodeEntry" HorizontalOptions="FillAndExpand"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate County}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="CountyEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                                       TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate StateOrRegion}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="StateEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                                       TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Country}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="CountryEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White"
+                                       TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Latitude}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="LatitudeEntry" HorizontalOptions="FillAndExpand" Keyboard="Numeric"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Longitude}" TextColor="DarkSlateGray" />
+                                <Entry x:Name="LongitudeEntry" HorizontalOptions="FillAndExpand" Keyboard="Numeric"
+                                       BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical">
+                                <Button x:Name="GetMyLocationButton" Text="{i18n:Translate GetLocation }"
+                                        Clicked="GetMyLocationButton_OnClicked" />
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Date}" TextColor="DarkSlateGray" />
+                                <StackLayout Orientation="Horizontal">
+                                    <DatePicker x:Name="LocationDatePicker" Format="dd MMM yyyy" Date="{Binding Date}"
+                                                BackgroundColor="White" TextColor="Black" />
+                                    <TimePicker x:Name="LocationTimePicker" Format="HH:mm" Time="{Binding Time}"
+                                                BackgroundColor="White" TextColor="Black" />
+                                </StackLayout>
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray" />
+                                <Editor x:Name="NotesEditor" AutoSize="TextChanges" BackgroundColor="White"
+                                        TextColor="Black" />
+                            </StackLayout>
+                            <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                                <Label Text="Tags" TextColor="DarkSlateGray" />
+                                <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}"
+                                                      TextChanged="TagsEditor_OnTextChanged"
+                                                      QuerySubmitted="TagsEditor_OnQuerySubmitted"
+                                                      SuggestionChosen="TagsEditor_OnSuggestionChosen"
+                                                      TextColor="Black" BackgroundColor="White"
+                                                      UpdateTextOnSelect="False" />
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
+                                <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"
+                                        SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black" />
+                            </StackLayout>
+                            <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
                             <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="LocationDatePicker" Format="dd MMM yyyy" Date="{Binding Date}" BackgroundColor="White" TextColor="Black"></DatePicker>
-                                <TimePicker x:Name="LocationTimePicker" Format="HH:mm" Time="{Binding Time}" BackgroundColor="White" TextColor="Black"></TimePicker>
+                                <Button x:Name="SaveLocationButton" Text="{i18n:Translate Save}" TextColor="White"
+                                        BackgroundColor="#4caf50" Clicked="SaveLocationButton_OnClicked"
+                                        IsEnabled="False" />
+                                <Button x:Name="CancelLocationButton" Text="{i18n:Translate Cancel}" TextColor="White"
+                                        BackgroundColor="DimGray" Clicked="CancelLocationButton_OnClicked" />
                             </StackLayout>
                         </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Notes}" TextColor="DarkSlateGray"></Label>
-                            <Editor x:Name="NotesEditor" AutoSize="TextChanges" BackgroundColor="White" TextColor="Black" ></Editor>
-                        </StackLayout>
-                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                            <Label Text="Tags" TextColor="DarkSlateGray"></Label>
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" UpdateTextOnSelect="False" ></forms:AutoSuggestBox>
-                        </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
-                        </StackLayout>
-                        <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-                        <StackLayout Orientation="Horizontal">
-                            <Button x:Name="SaveLocationButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveLocationButton_OnClicked" IsEnabled="False"></Button>
-                            <Button x:Name="CancelLocationButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelLocationButton_OnClicked"></Button>
-                        </StackLayout>
-                    </StackLayout>
-                </Grid>
-            </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                    </Grid>
+                </ScrollView>
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red"
+                             HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16"
+                           HorizontalOptions="Center" />
+                </StackLayout>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand" Margin="50" />
+            </Grid>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
+                         HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped" />
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}"
+                           FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24"
+                           VerticalTextAlignment="Center" />
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18"
+                           VerticalTextAlignment="Center" />
+                </StackLayout>
             </StackLayout>
-            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>

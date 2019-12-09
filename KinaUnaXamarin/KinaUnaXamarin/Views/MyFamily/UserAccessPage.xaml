@@ -64,8 +64,8 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="modelsKinaUna:UserAccess">
-                        <Frame Margin="5" Padding="5" >
-                            <Grid Margin="0" Padding="5" BackgroundColor="White" HorizontalOptions="FillAndExpand">
+                        <Frame Margin="5" Padding="5" BackgroundColor="WhiteSmoke" >
+                            <Grid Margin="0" Padding="5" BackgroundColor="WhiteSmoke" HorizontalOptions="FillAndExpand">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="40"></RowDefinition>
                                     <RowDefinition Height="30"></RowDefinition>
@@ -108,9 +108,9 @@
                         <Label Text="{Binding SelectedAccess.User.UserName}" FontAttributes="Bold" TextColor="DarkSlateGray"></Label>
                         <Label Text="{Binding SelectedAccess.User.Email}" TextColor="DarkSlateGray"></Label>
                     </StackLayout>
-                    <StackLayout Grid.Row="1" Margin="5" BackgroundColor="White" HorizontalOptions="Start">
+                    <StackLayout Grid.Row="1" Margin="5" Padding="10" BackgroundColor="WhiteSmoke" HorizontalOptions="Start">
                         <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray"></Label>
-                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}"></Picker>
+                        <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" SelectedIndex="{Binding SelectedAccess.AccessLevel}" BackgroundColor="White" TextColor="Black"></Picker>
                     </StackLayout>
                     <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Start">
                         <Button x:Name="SaveAccessButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveAccessButton_OnClicked" VerticalOptions="Center"></Button>

@@ -27,7 +27,7 @@
                 </OnPlatform>
             </Grid.Margin>
             <StackLayout>
-                <ListView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" HasUnevenRows="True" ItemSelected="NotesListView_OnItemSelected"  SelectionMode="Single">
+                <ListView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" HasUnevenRows="True" ItemSelected="NotesListView_OnItemSelected"  SelectionMode="Single" BackgroundColor="White">
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Note">
                             <ViewCell>

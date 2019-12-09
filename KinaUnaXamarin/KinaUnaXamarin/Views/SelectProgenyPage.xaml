@@ -9,12 +9,17 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.SelectProgenyPage"
              BackgroundColor="#3A2051"
-             Title="{i18n:Translate SelectChild}">
+             Title="{i18n:Translate SelectChild}"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Spacing="0">
-            <StackLayout Orientation="Vertical" Margin="10">
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <StackLayout Orientation="Vertical" Margin="10" VerticalOptions="FillAndExpand">
                 <Label Text="{i18n:Translate SelectChild}" TextColor="White"></Label>
-                <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged">
+                <CollectionView x:Name="ProgenyListCollectionView" SelectionMode="Single" SelectionChanged="ProgenyListCollectionView_OnSelectionChanged" VerticalOptions="FillAndExpand">
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Progeny">
                             <Grid Padding="10">

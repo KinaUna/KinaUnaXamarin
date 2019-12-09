@@ -7,47 +7,64 @@
              x:Class="KinaUnaXamarin.Views.AddItem.AddChildPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              Visual="Material"
-             BackgroundColor="WhiteSmoke">
+             BackgroundColor="WhiteSmoke"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             ios:Page.UseSafeArea="true">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+    </ContentPage.Padding>
     <ContentPage.Content>
-        <Grid>
-            <ScrollView>
-                <StackLayout Orientation="Vertical" Margin="5" >
-                    <Label Text="{i18n:Translate AddChild}" FontSize="16" Margin="0, 0, 5, 0" TextColor="DarkSlateGray"></Label>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray"></Label>
-                        <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="DarkSlateGray" ></Entry>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate DisplayName}" TextColor="DarkSlateGray"></Label>
-                        <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" TextChanged="DisplayNameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate Birthday}" TextColor="DarkSlateGray"></Label>
-                        <StackLayout Orientation="Horizontal">
-                            <DatePicker x:Name="BirthdayDatePicker" BackgroundColor="White" TextColor="Black"></DatePicker>
-                            <TimePicker x:Name="BirthdayTimePicker" BackgroundColor="White" TextColor="Black"></TimePicker>
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid VerticalOptions="FillAndExpand">
+                <ScrollView>
+                    <StackLayout Orientation="Vertical" Margin="5" >
+                        <Label Text="{i18n:Translate AddChild}" FontSize="16" Margin="0, 0, 5, 0" TextColor="DarkSlateGray"></Label>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Name}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="NameEntry" HorizontalOptions="FillAndExpand" BackgroundColor="White" TextColor="DarkSlateGray" ></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate DisplayName}" TextColor="DarkSlateGray"></Label>
+                            <Entry x:Name="DisplayNameEntry" HorizontalOptions="FillAndExpand" TextChanged="DisplayNameEntry_OnTextChanged" BackgroundColor="White" TextColor="DarkSlateGray"></Entry>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate Birthday}" TextColor="DarkSlateGray"></Label>
+                            <StackLayout Orientation="Horizontal">
+                                <DatePicker x:Name="BirthdayDatePicker" BackgroundColor="White" TextColor="Black"></DatePicker>
+                                <TimePicker x:Name="BirthdayTimePicker" BackgroundColor="White" TextColor="Black"></TimePicker>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate TimeZone}" TextColor="DarkSlateGray"></Label>
+                            <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}" BackgroundColor="White" TextColor="Black"></Picker>
+                        </StackLayout>
+                        <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
+                            <Label Text="{i18n:Translate ProfilePicture}" TextColor="DarkSlateGray"></Label>
+                            <Image x:Name="UploadImage" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="photosicon.png" BackgroundColor="DarkGray"></Image>
+                            <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
+                        </StackLayout>
+                        <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
+                        <StackLayout Orientation="Horizontal" Margin="5">
+                            <Button x:Name="SaveChildButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveChildButton_OnClicked" IsEnabled="False"></Button>
+                            <Button x:Name="CancelChildButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelChildButton_OnClicked"></Button>
                         </StackLayout>
                     </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate TimeZone}" TextColor="DarkSlateGray"></Label>
-                        <Picker HorizontalOptions="StartAndExpand" x:Name="TimeZonePicker" ItemDisplayBinding="{Binding DisplayName}" BackgroundColor="White" TextColor="Black"></Picker>
-                    </StackLayout>
-                    <StackLayout Orientation="Vertical" Margin="5" BackgroundColor="White">
-                        <Label Text="{i18n:Translate ProfilePicture}" TextColor="DarkSlateGray"></Label>
-                        <Image x:Name="UploadImage" HeightRequest="100" HorizontalOptions="FillAndExpand" Source="photosicon.png" BackgroundColor="DarkGray"></Image>
-                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}" Clicked="SelectImageButton_OnClicked"></Button>
-                    </StackLayout>
-                    <Label x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15"></Label>
-                    <StackLayout Orientation="Horizontal" Margin="5">
-                        <Button x:Name="SaveChildButton" Text="{i18n:Translate Save}" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveChildButton_OnClicked" IsEnabled="False"></Button>
-                        <Button x:Name="CancelChildButton" Text="{i18n:Translate Cancel}" TextColor="White" BackgroundColor="DimGray" Clicked="CancelChildButton_OnClicked"></Button>
-                    </StackLayout>
+                </ScrollView>
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-            </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
-                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+            </Grid>
+            <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                </StackLayout>
             </StackLayout>
-            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
-        </Grid>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
