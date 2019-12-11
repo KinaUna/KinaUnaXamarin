@@ -26,7 +26,7 @@ namespace KinaUnaXamarin.Views
         public VaccinationsPage()
         {
             InitializeComponent();
-            if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
             {
                 VaccinationsListView.Header = null;
             }
@@ -107,8 +107,7 @@ namespace KinaUnaXamarin.Views
             bool accessTokenCurrent = false;
             if (_accessToken != "")
             {
-                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
-                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
                 if (!accessTokenCurrent)
                 {

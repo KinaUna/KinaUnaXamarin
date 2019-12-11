@@ -173,8 +173,7 @@ namespace KinaUnaXamarin.Views
             bool accessTokenCurrent = false;
             if (_accessToken != "")
             {
-                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
-                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
                 if (!accessTokenCurrent)
                 {
@@ -291,6 +290,7 @@ namespace KinaUnaXamarin.Views
         private async void CardsView_OnItemAppearing(CardsView view, ItemAppearingEventArgs args)
         {
             _viewModel.IsZoomed = false;
+
             _viewModel.IsBusy = true;
             // var ciView = view.CurrentView..SingleOrDefault(c => c.GetType() == typeof(CachedImage));
             if (view.CurrentView != null)
@@ -299,15 +299,13 @@ namespace KinaUnaXamarin.Views
                 if (ciView != null)
                 {
 
-                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                    if (ciView.Behaviors.Any() && ciView.Behaviors[0] is MultiTouchBehavior mtb)
                     {
                         mtb.OnAppearing();
                     }
                 }
             }
-
             
-
             if (_viewModel.PhotoItems.Any())
             {
                 if (_viewModel.CanLoadMore && _viewModel.CurrentIndex < 1)
@@ -375,7 +373,7 @@ namespace KinaUnaXamarin.Views
                 if (ciView != null)
                 {
 
-                    if (ciView.Behaviors[0] is MultiTouchBehavior mtb)
+                    if (ciView.Behaviors.Any() && ciView.Behaviors[0] is MultiTouchBehavior mtb)
                     {
                         await mtb.OnDisAppearing();
                     }

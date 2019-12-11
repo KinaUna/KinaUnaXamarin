@@ -26,7 +26,7 @@ namespace KinaUnaXamarin.Views
         public MeasurementsPage()
         {
             InitializeComponent();
-            if (Device.RuntimePlatform == Device.UWP)
+            if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
             {
                 MeasurementsListView.Header = null;
             }
@@ -109,8 +109,7 @@ namespace KinaUnaXamarin.Views
             bool accessTokenCurrent = false;
             if (_accessToken != "")
             {
-                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
-                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
                 if (!accessTokenCurrent)
                 {

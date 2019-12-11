@@ -25,6 +25,7 @@
                      Clicked="ProgenyToolBarItem_OnClicked" />
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
         <ResourceDictionary>
             <DataTemplate x:Key="PhotoTemplate" x:DataType="modelsKinaUna:TimeLineItem">
                 <ViewCell>
@@ -567,7 +568,7 @@
                     </StackLayout>
                 </ScrollView>
             </StackLayout>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <ActivityIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />

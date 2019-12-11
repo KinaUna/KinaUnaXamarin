@@ -34,7 +34,7 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>
-                <CollectionView x:Name="MeasurementsListView" ItemsSource="{Binding MeasurementItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="MeasurementsListView_OnSelectionChanged" SelectionMode="Single" >
+                <CollectionView x:Name="MeasurementsListView" ItemsSource="{Binding MeasurementItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="MeasurementsListView_OnSelectionChanged" SelectionMode="Single" VerticalOptions="FillAndExpand" >
                     <CollectionView.Header>
                         <Grid BackgroundColor="LightGray">
                             <Grid.ColumnDefinitions>

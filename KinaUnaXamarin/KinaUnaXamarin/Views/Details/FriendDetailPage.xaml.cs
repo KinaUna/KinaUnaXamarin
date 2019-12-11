@@ -95,8 +95,7 @@ namespace KinaUnaXamarin.Views
             bool accessTokenCurrent = false;
             if (_accessToken != "")
             {
-                string accessTokenExpires = await UserService.GetAuthAccessTokenExpires();
-                accessTokenCurrent = UserService.IsAccessTokenCurrent(accessTokenExpires);
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
                 if (!accessTokenCurrent)
                 {

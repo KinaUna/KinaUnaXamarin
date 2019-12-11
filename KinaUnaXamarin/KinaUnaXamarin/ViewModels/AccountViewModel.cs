@@ -134,7 +134,7 @@ namespace KinaUnaXamarin.ViewModels
             LoggedIn = await UserService.LoginIdsAsync();
             if (LoggedIn)
             {
-                Message = await UserService.GetAuthAccessTokenExpires();
+                Message = "";
                 Username = await UserService.GetUsername();
                 FullName = await UserService.GetFullname();
                 Email = await UserService.GetUserEmail();

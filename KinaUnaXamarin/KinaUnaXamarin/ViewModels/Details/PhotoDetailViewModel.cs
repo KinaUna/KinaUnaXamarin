@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Collections.Generic;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
 using Xamarin.Forms;
@@ -18,7 +14,6 @@ namespace KinaUnaXamarin.ViewModels
         private bool _loggedOut;
         private Progeny _progeny;
         private bool _isLoggedIn;
-        private bool _isNotZoomed = true;
         private bool _isZoomed;
         private double _imageHeight;
         private double _imageWidth;
@@ -166,19 +161,9 @@ namespace KinaUnaXamarin.ViewModels
         public bool IsZoomed
         {
             get => _isZoomed;
-            set
-            {
-                SetProperty(ref _isZoomed, value);
-                IsNotZoomed = !_isZoomed;
-            }
+            set => SetProperty(ref _isZoomed, value);
         }
-
-        public bool IsNotZoomed
-        {
-            get => _isNotZoomed;
-            set => SetProperty(ref _isNotZoomed, value);
-        }
-
+        
         public double ImageHeight
         {
             get => _imageHeight;

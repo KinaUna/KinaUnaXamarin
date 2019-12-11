@@ -49,10 +49,10 @@
                 ItemAppearing="CardsView_OnItemAppearing"
                 ItemDisappearing="PhotoCarousel_OnItemDisappearing"
                 IsCyclical="False"
-                IsUserInteractionEnabled="{Binding IsNotZoomed}"
-                IsPanSwipeEnabled ="{Binding IsNotZoomed}"
+                IsUserInteractionEnabled="{Binding IsZoomed,Converter={StaticResource InverseBoolConverter}}"
+                IsPanSwipeEnabled ="{Binding IsZoomed,Converter={StaticResource InverseBoolConverter}}"
                 IsVerticalSwipeEnabled="False"
-                IsPanInteractionEnabled="{Binding IsNotZoomed}"
+                IsPanInteractionEnabled="{Binding IsZoomed,Converter={StaticResource InverseBoolConverter}}"
                 IsViewReusingEnabled="True">
                     <panCardView:CarouselView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:PictureViewModel">

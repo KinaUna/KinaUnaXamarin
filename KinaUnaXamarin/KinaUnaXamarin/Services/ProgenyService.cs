@@ -114,15 +114,11 @@ namespace KinaUnaXamarin.Services
                             {
                                 ImageService.Instance.LoadUrl(progeny.PictureLink).Preload();
                             }
-                            //await SecureStorage.SetAsync("ProgenyObject" + progenyId, JsonConvert.SerializeObject(progeny));
                             await App.Database.SaveProgenyAsync(progeny);
                             return progeny;
                         }
                         else
                         {
-
-                            //string progenyString = await SecureStorage.GetAsync("ProgenyObject" + progenyId);
-                            // progeny = JsonConvert.DeserializeObject<Progeny>(progenyString);
                             progeny = await App.Database.GetProgenyAsync(progenyId);
                             return progeny;
                         }
@@ -322,9 +318,7 @@ namespace KinaUnaXamarin.Services
                 // If user is not logged in.
                 if (String.IsNullOrEmpty(accessToken))
                 {
-
                     return new Comment();
-
                 }
                 else // If user is logged in.
                 {

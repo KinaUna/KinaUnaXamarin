@@ -43,8 +43,8 @@ namespace KinaUnaXamarin.Behaviors
         {
             _parent = _associatedObject.Parent as ContentView;
             
-            _parent?.GestureRecognizers.Remove(_panGestureRecognizer);
-            _parent?.GestureRecognizers.Add(_panGestureRecognizer);
+            // _parent?.GestureRecognizers.Remove(_panGestureRecognizer);
+            // _parent?.GestureRecognizers.Add(_panGestureRecognizer);
             _parent?.GestureRecognizers.Remove(_pinchGestureRecognizer);
             _parent?.GestureRecognizers.Add(_pinchGestureRecognizer);
             _parent?.GestureRecognizers.Remove(_tapGestureRecognizer);
@@ -125,7 +125,6 @@ namespace KinaUnaXamarin.Behaviors
             else
             {
                 // Todo: Ease in/out.
-
                 StartScaling();
                 ExecuteScaling(2, .5, .5);
                 EndGesture();
@@ -405,7 +404,13 @@ namespace KinaUnaXamarin.Behaviors
                 SetValue(IsZoomedProperty, value);
                 if (value == false)
                 {
+                    _parent?.GestureRecognizers.Remove(_panGestureRecognizer);
                     ResetZoom();
+                }
+                else
+                {
+                    _parent?.GestureRecognizers.Remove(_panGestureRecognizer);
+                    _parent?.GestureRecognizers.Add(_panGestureRecognizer);
                 }
             }
         }

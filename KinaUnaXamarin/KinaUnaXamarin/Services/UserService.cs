@@ -359,22 +359,20 @@ namespace KinaUnaXamarin.Services
                 return "Error: " + ex.Message;
             }
         }
-
-        public static async Task<string> GetAuthAccessTokenExpires()
+        
+        public static async Task<bool> IsAccessTokenCurrent()
         {
+            string accessTokenExpires = "";
             try
             {
-                return await SecureStorage.GetAsync(Constants.AuthAccessTokenExpiresKey);
+                accessTokenExpires = await SecureStorage.GetAsync(Constants.AuthAccessTokenExpiresKey);
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                return "Error: " + ex.Message;
+                accessTokenExpires = "Error: " + ex.Message;
             }
-        }
 
-        public static bool IsAccessTokenCurrent(string accessTokenExpires)
-        {
             bool accessTokenCurrentParsed = long.TryParse(accessTokenExpires, out long accessTokenTime);
             
             if (accessTokenCurrentParsed)
@@ -462,20 +460,7 @@ namespace KinaUnaXamarin.Services
                 return Constants.DefaultTimeZone;
             }
         }
-
-        public static async Task<string> GetViewChild()
-        {
-            try
-            {
-                return await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return Constants.DefaultChildId.ToString();
-            }
-        }
-
+        
         public static async Task<string> GetLanguage()
         {
             try

@@ -11,6 +11,7 @@ namespace KinaUnaXamarin.ViewModels
 {
     public class HomeFeedViewModel : BaseViewModel
     {
+        private bool _online = true;
         private int _userAccessLevel;
         private Progeny _progeny;
         private int _imageId;
@@ -41,7 +42,6 @@ namespace KinaUnaXamarin.ViewModels
         private List<CalendarItem> _eventsList;
         private List<TimeLineItem> _latestPosts;
         private bool _isLoggedIn;
-        // private ObservableRangeCollection<CalendarItem> _upcomingEvents;
         private ObservableRangeCollection<TimeLineItem> _timeLineItems;
         private bool _loggedOut;
         private int _imageLinkWidth;
@@ -52,7 +52,7 @@ namespace KinaUnaXamarin.ViewModels
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
             _timeLineItems = new ObservableRangeCollection<TimeLineItem>();
-
+            _latestPosts = new List<TimeLineItem>();
             _progeny = OfflineDefaultData.DefaultProgeny;
             _imageId = OfflineDefaultData.DefaultPicture.PictureId;
             _imageLink = OfflineDefaultData.DefaultPicture.PictureLink;
@@ -61,6 +61,18 @@ namespace KinaUnaXamarin.ViewModels
             _tags = OfflineDefaultData.DefaultPicture.Tags;
             _userAccessLevel = 5;
         }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
         

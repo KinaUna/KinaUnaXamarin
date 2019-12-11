@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace KinaUnaXamarin.Models.KinaUna
@@ -14,9 +15,18 @@ namespace KinaUnaXamarin.Models.KinaUna
         public BirthTime(DateTime bday, TimeZoneInfo bdayTz)
         {
             _birthTimeZone = bdayTz;
-            _birthDay = TimeZoneInfo.ConvertTimeToUtc(bday, bdayTz);
+            try
+            {
+                _birthDay = TimeZoneInfo.ConvertTimeToUtc(bday, bdayTz);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                _birthDay = bday;
+            }
+           
 
-            _currentDateTime = DateTime.UtcNow; // TimeZoneInfo.ConvertTimeToUtc(DateTime.Now);
+            _currentDateTime = DateTime.UtcNow;
         }
 
 

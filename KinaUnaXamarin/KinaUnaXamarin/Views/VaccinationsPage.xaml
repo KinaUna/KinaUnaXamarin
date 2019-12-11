@@ -19,7 +19,7 @@
         <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <Grid>
+        <Grid VerticalOptions="FillAndExpand">
             <Grid.Margin>
                 <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
                     <On Platform="UWP">0,0,40,0</On>
@@ -34,7 +34,7 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>
-                <CollectionView x:Name="VaccinationsListView" ItemsSource="{Binding VaccinationItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="VaccinationsListView_OnSelectionChanged" SelectionMode="Single" >
+                <CollectionView x:Name="VaccinationsListView" ItemsSource="{Binding VaccinationItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="VaccinationsListView_OnSelectionChanged" SelectionMode="Single" VerticalOptions="FillAndExpand" >
                     <CollectionView.Header>
                         <Grid BackgroundColor="LightGray">
                             <Grid.ColumnDefinitions>

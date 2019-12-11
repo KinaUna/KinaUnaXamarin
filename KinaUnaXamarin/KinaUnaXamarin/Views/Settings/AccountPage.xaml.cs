@@ -105,7 +105,6 @@ namespace KinaUnaXamarin.Views
                 LogOutButton.IsEnabled = true;
                 _viewModel.EditMode = false;
                 FullNameEntry.IsVisible = true;
-                _viewModel.Message = "Login expires: " + await UserService.GetAuthAccessTokenExpires();
                 _viewModel.Username = await UserService.GetUsername();
                 _viewModel.FullName = await UserService.GetFullname();
                 _viewModel.Email = await UserService.GetUserEmail();
@@ -128,7 +127,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.MiddleName = userInfo.MiddleName;
                 _viewModel.LastName = userInfo.LastName;
                 
-                bool accessTokenCurrent = UserService.IsAccessTokenCurrent(await UserService.GetAuthAccessTokenExpires());
+                bool accessTokenCurrent = await UserService.IsAccessTokenCurrent();
                 string accessToken = await UserService.GetAuthAccessToken();
                 if (String.IsNullOrEmpty(accessToken) || !accessTokenCurrent)
                 {
