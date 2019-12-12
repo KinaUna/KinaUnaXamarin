@@ -37,7 +37,7 @@
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}">
 
                 </StackLayout>
-                <RefreshView VerticalOptions="FillAndExpand" IsRefreshing="{Binding IsBusy}" Command="{Binding RefreshCommand}">
+                <RefreshView VerticalOptions="FillAndExpand" IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}" RefreshColor="Orange">
                     <CollectionView x:Name="VocabularyListView" ItemsSource="{Binding VocabularyItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="VocabularyListView_OnSelectionChanged" SelectionMode="Single" VerticalOptions="FillAndExpand" >
                         <CollectionView.Header>
                             <Grid BackgroundColor="LightGray">

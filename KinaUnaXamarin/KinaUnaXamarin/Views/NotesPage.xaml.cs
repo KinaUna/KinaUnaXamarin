@@ -24,11 +24,17 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
+        private double _screenWidth;
+        private double _screenHeight;
 
         public NotesPage()
         {
             InitializeComponent();
-            
+            _viewModel = new NotesViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerGrid.BindingContext = _viewModel;
+            BindingContext = _viewModel;
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;
@@ -42,18 +48,34 @@ namespace KinaUnaXamarin.Views
             });
         }
 
+        protected override async void OnSizeAllocated(double width, double height)
+        {
+
+            if (_screenWidth != width || _screenHeight != height)
+            {
+                _screenWidth = width;
+                _screenHeight = height;
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    _viewModel.NoteItems.Clear();
+                }
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    await UpdateNotes();
+                }
+            }
+            base.OnSizeAllocated(width, height); //must be called
+
+            
+
+            
+        }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            NotesListView.SelectedItem = null;
 
-            if (_reload)
-            {
-                _viewModel = new NotesViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerGrid.BindingContext = _viewModel;
-                BindingContext = _viewModel;
-                
-            }
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -69,7 +91,6 @@ namespace KinaUnaXamarin.Views
             if (_reload)
             {
                 await Reload();
-
             }
 
             _reload = false;
@@ -205,7 +226,7 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.PageNumber = 1;
             }
-
+            _viewModel.NoteItems.Clear();
             NotesListPage notesList = await ProgenyService.GetNotesPage(_viewModel.PageNumber, 5, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
 
             if (notesList.NotesList != null && notesList.NotesList.Count > 0)
@@ -216,14 +237,17 @@ namespace KinaUnaXamarin.Views
                     note.CreatedDate = TimeZoneInfo.ConvertTimeFromUtc(note.CreatedDate,
                         TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone));
                 }
-                _viewModel.NoteItems.ReplaceRange(notesList.NotesList);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _viewModel.NoteItems.ReplaceRange(notesList.NotesList);
+                });
                 _viewModel.PageNumber = notesList.PageNumber;
                 _viewModel.PageCount = notesList.TotalPages;
                 
                 Note firstNote = _viewModel.NoteItems.FirstOrDefault();
                 if (firstNote != null)
                 {
-                    NotesListView.ScrollTo(firstNote, ScrollToPosition.MakeVisible, true);
+                    NotesListView.ScrollTo(0);
                 }
             }
             
@@ -283,7 +307,7 @@ namespace KinaUnaXamarin.Views
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
         
-        private async void NotesListView_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        private async void NotesListView_OnItemSelected(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
         {
             if (NotesListView.SelectedItem is Note noteItem)
             {

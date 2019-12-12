@@ -208,16 +208,10 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateTimeLine()
         {
             _timeLineList = new List<TimeLineItem>();
-            // Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Clear(); });
-            while (_timelineModel.TimeLineItems.Count > 0)
-            {
-                _timelineModel.TimeLineItems.RemoveAt(0);
-            }
-
+            _timelineModel.TimeLineItems.Clear();
             _dateHeaderCount = 0;
             _lastItemDateString = "";
-
-
+            
             _timelineModel.MaxDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day);
             if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
             {
@@ -229,14 +223,7 @@ namespace KinaUnaXamarin.Views
             }
 
             await LoadItems(0, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
-            if (Device.RuntimePlatform == Device.iOS)
-            {
-                Device.BeginInvokeOnMainThread( async() => { await ShowNextItem(); });
-            }
-            else
-            {
-                await ShowNextItem();
-            }
+            await ShowNextItem();
         }
 
         private async void ItemAppearingEvent(object sender, ItemVisibilityEventArgs e)
@@ -251,8 +238,8 @@ namespace KinaUnaXamarin.Views
             if (progenyId != _timelineModel.Progeny.Id)
                 return;
             tItem.VisibleBefore = true;
-            int itemsNotVisibleBeforeCount = _timelineModel.TimeLineItems.Where(t => t.VisibleBefore == false).Count();
-            if (_timelineModel.CanLoadMore && itemsNotVisibleBeforeCount < 20)
+            int itemsNotVisibleBeforeCount = _timelineModel.TimeLineItems.Count(t => t.VisibleBefore == false);
+            if (_timelineModel.CanLoadMore && itemsNotVisibleBeforeCount < 30)
             {
                 await LoadItems(_timeLineList.Count - _dateHeaderCount, _timelineModel.Progeny.Id, _accessToken, _userInfo.Timezone);
             }
@@ -265,7 +252,7 @@ namespace KinaUnaXamarin.Views
 
         private async Task ShowNextItem()
         {
-            if (_timelineModel.CanShowMore && _timeLineList.Count - _timelineModel.TimeLineItems.Count < 25)
+            if (_timelineModel.CanShowMore && _timeLineList.Count - _timelineModel.TimeLineItems.Count < 30)
             {
                 _timelineModel.CanShowMore = false;
                 int start = _timelineModel.TimeLineItems.Count;
@@ -278,7 +265,7 @@ namespace KinaUnaXamarin.Views
                 
                 if (_timeLineList.Count > start)
                 {
-                    int itemsToAddCount = 5;
+                    int itemsToAddCount = 10;
                     while (itemsToAddCount > 0)
                     {
                         TimeLineItem newItem = _timeLineList.FirstOrDefault(t => t.AddedToListView == false);
@@ -296,19 +283,9 @@ namespace KinaUnaXamarin.Views
 
                     if (itemsToAdd.Any())
                     {
-                        if (Device.RuntimePlatform == Device.iOS)
-                        {
-                            
-                            Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.AddRange(itemsToAdd); });
-                            await Task.Delay(500);
-                        }
-                        else
-                        {
-                            _timelineModel.TimeLineItems.AddRange(itemsToAdd);
-                        }
+                        _timelineModel.TimeLineItems.AddRange(itemsToAdd);
                     }
                 }
-
                 
                 _timelineModel.CanShowMore = true;
             }

@@ -46,7 +46,6 @@
                                                RetryCount="3"
                                                Source = "{Binding PictureObject.PictureLink600}">
                             </forms:CachedImage>
-                            <!--<Image Grid.Row="2" Grid.Column="1" Source="{Binding ItemObject.PictureLink1200}" Aspect="AspectFit" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"></Image>-->
                         </Grid>
                     </Frame>
                 </ViewCell>

@@ -19,7 +19,7 @@ namespace KinaUnaXamarin.Views
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private FriendsViewModel _viewModel;
+        private readonly FriendsViewModel _viewModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
@@ -48,7 +48,8 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            
+            FriendsCollectionView.SelectedItem = null;
             if (_reload)
             {
                SortByPicker.SelectedIndex = 0;
@@ -80,36 +81,53 @@ namespace KinaUnaXamarin.Views
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
-        protected override void OnSizeAllocated(double width, double height)
+        protected override async void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            int columns = 2;
+            bool screenChanged = false;
             if (Device.RuntimePlatform == Device.UWP)
             {
-                _screenWidth = Application.Current.MainPage.Width;
-                _screenHeight = Application.Current.MainPage.Height;
-                columns = (int)Math.Floor(_screenWidth / 200);
-                if (columns < 1)
+                if (_screenWidth != Application.Current.MainPage.Width ||
+                    _screenHeight != Application.Current.MainPage.Height)
                 {
-                    columns = 1;
+                    _screenWidth = Application.Current.MainPage.Width;
+                    _screenHeight = Application.Current.MainPage.Height;
                 }
-                _viewModel.Columns = columns;
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    FriendsCollectionView.ItemsLayout =
-                            new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
-                });
-                
+
+                screenChanged = true;
             }
-            else
+
+            if (_screenWidth != width || _screenHeight != height)
             {
-                columns = (int)Math.Floor(width / 200);
+                _screenWidth = width;
+                _screenHeight = height;
+                screenChanged = true;
+            }
+
+            if (screenChanged)
+            {
+                int columns = (int)Math.Floor(width / 200);
+
+                if (Device.RuntimePlatform == Device.UWP)
+                {
+                    columns = (int)Math.Floor(Application.Current.MainPage.Width / 200);
+                }
                 if (columns < 1)
                 {
                     columns = 1;
                 }
-                _viewModel.Columns = columns;
-                FriendsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    await Task.Yield();
+                }
+
+                if (FriendsCollectionView.ItemsLayout is GridItemsLayout layout)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        layout.Span = columns;
+                    });
+                }
             }
         }
 
@@ -280,7 +298,11 @@ namespace KinaUnaXamarin.Views
             {
                 friendsList = filteredFriends.OrderBy(f => f.FriendSince).ToList();
             }
-            _viewModel.FriendItems.ReplaceRange(friendsList);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                _viewModel.FriendItems.ReplaceRange(friendsList);
+            });
+            
             _viewModel.IsBusy = false;
         }
 

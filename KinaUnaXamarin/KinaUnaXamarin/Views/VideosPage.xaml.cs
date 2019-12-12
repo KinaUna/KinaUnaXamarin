@@ -22,11 +22,16 @@ namespace KinaUnaXamarin.Views
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
+        private double _screenWidth;
+        private double _screenHeight;
 
         public VideosPage()
         {
             InitializeComponent();
-
+            _viewModel = new VideosPageViewModel();
+            _userInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerStackLayout.BindingContext = _viewModel;
+            BindingContext = _viewModel;
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;
@@ -45,13 +50,7 @@ namespace KinaUnaXamarin.Views
             base.OnAppearing();
 
             VideosListView.SelectedItem = null;
-            if (_reload)
-            {
-                _viewModel = new VideosPageViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerStackLayout.BindingContext = _viewModel;
-                BindingContext = _viewModel;
-            }
+            
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -99,16 +98,54 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = false;
         }
 
-        protected override void OnSizeAllocated(double width, double height)
+        protected override async void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            int columns = (int)Math.Floor(width / 200);
-            if (columns < 1)
+            bool screenChanged = false;
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                columns = 1;
+                if (_screenWidth != Application.Current.MainPage.Width ||
+                    _screenHeight != Application.Current.MainPage.Height)
+                {
+                    _screenWidth = Application.Current.MainPage.Width;
+                    _screenHeight = Application.Current.MainPage.Height;
+                }
+
+                screenChanged = true;
             }
 
-            VideosListView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+            if (_screenWidth != width || _screenHeight != height)
+            {
+                _screenWidth = width;
+                _screenHeight = height;
+                screenChanged = true;
+            }
+
+            if (screenChanged)
+            {
+                int columns = (int)Math.Floor(width / 200);
+
+                if (Device.RuntimePlatform == Device.UWP)
+                {
+                    columns = (int)Math.Floor(Application.Current.MainPage.Width / 200);
+                }
+                if (columns < 1)
+                {
+                    columns = 1;
+                }
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    await Task.Yield();
+                }
+
+                if (VideosListView.ItemsLayout is GridItemsLayout layout)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        layout.Span = columns;
+                    });
+                }
+            }
         }
 
         private async Task CheckAccount()

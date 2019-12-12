@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
@@ -18,27 +17,25 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class YearAgoPage : ContentPage
     {
-        private int _viewChild = Constants.DefaultChildId;
-        private UserInfo _userInfo;
-        private TimelineFeedViewModel _timelineModel;
-        private string _accessToken;
+        private TimelineFeedViewModel _viewModel;
         private bool _reload = true;
-        private bool _online = true;
         public YearAgoPage()
         {
             InitializeComponent();
-            _timelineModel = new TimelineFeedViewModel();
-            _userInfo = OfflineDefaultData.DefaultUserInfo;
-            ContainerStackLayout.BindingContext = _timelineModel;
-            BindingContext = _timelineModel;
+            _viewModel = new TimelineFeedViewModel();
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerStackLayout.BindingContext = _viewModel;
+            BindingContext = _viewModel;
 
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
+                await SetUserAndProgeny();
                 await Reload();
             });
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                await SetUserAndProgeny();
                 await Reload();
             });
         }
@@ -48,24 +45,17 @@ namespace KinaUnaXamarin.Views
             base.OnAppearing();
             if (_reload)
             {
-                _timelineModel.SelectedYear = DateTime.UtcNow.Year;
-                _timelineModel.SelectedMonth = DateTime.UtcNow.Month;
-                _timelineModel.SelectedDay = DateTime.UtcNow.Day;
+                _viewModel.SelectedYear = DateTime.UtcNow.Year;
+                _viewModel.SelectedMonth = DateTime.UtcNow.Month;
+                _viewModel.SelectedDay = DateTime.UtcNow.Day;
             }
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            var networkAccess = Connectivity.NetworkAccess;
-            bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if (internetAccess)
-            {
-                OfflineStackLayout.IsVisible = false;
-            }
-            else
-            {
-                OfflineStackLayout.IsVisible = true;
-            }
+            base.OnAppearing();
 
+            var networkAccess = Connectivity.NetworkAccess;
+            _viewModel.Online = networkAccess == NetworkAccess.Internet;
             if (_reload)
             {
+                await SetUserAndProgeny();
                 await Reload();
             }
 
@@ -78,97 +68,45 @@ namespace KinaUnaXamarin.Views
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
-        private async Task Reload()
+        private async Task SetUserAndProgeny()
         {
-            _timelineModel.IsBusy = true;
-            await CheckAccount();
-            await UpdateTimeLine();
-            var networkInfo = Connectivity.NetworkAccess;
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
-            if (networkInfo == NetworkAccess.Internet)
-            {
-                // Connection to internet is available
-                _online = true;
-                OfflineStackLayout.IsVisible = false;
-            }
-            else
-            {
-                _online = false;
-                OfflineStackLayout.IsVisible = true;
-            }
-            _timelineModel.IsBusy = false;
-        }
-
-        private async Task CheckAccount()
-        {
-            string userEmail = await UserService.GetUserEmail();
-            _accessToken = await UserService.GetAuthAccessToken();
-            bool accessTokenCurrent = false;
-            if (_accessToken != "")
-            {
-                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
-
-                if (!accessTokenCurrent)
-                {
-                    bool loginSuccess = await UserService.LoginIdsAsync();
-                    if (loginSuccess)
-                    {
-                        _accessToken = await UserService.GetAuthAccessToken();
-                        accessTokenCurrent = true;
-                    }
-
-                    await Reload();
-                }
-            }
-
-            if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
-            {
-
-                _timelineModel.IsLoggedIn = false;
-                _timelineModel.LoggedOut = true;
-                _accessToken = "";
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-
-            }
-            else
-            {
-                _timelineModel.IsLoggedIn = true;
-                _timelineModel.LoggedOut = false;
-                _userInfo = await UserService.GetUserInfo(userEmail);
-            }
+            _viewModel.UserEmail = await UserService.GetUserEmail();
+            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
 
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
-            if (!viewchildParsed)
+            bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
+
+            if (viewchildParsed)
             {
-                _viewChild = _userInfo.ViewChild;
-            }
-            if (_viewChild == 0)
-            {
-                if (_userInfo.ViewChild != 0)
+                _viewModel.ViewChild = viewChildId;
+                try
                 {
-                    _viewChild = _userInfo.ViewChild;
+                    _viewModel.Progeny = await App.Database.GetProgenyAsync(_viewModel.ViewChild);
                 }
-                else
+                catch (Exception)
                 {
-                    _viewChild = Constants.DefaultChildId;
+                    _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
                 }
+
+                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(_viewModel.UserEmail);
             }
 
-            if (String.IsNullOrEmpty(_userInfo.Timezone))
+            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
             {
-                _userInfo.Timezone = Constants.DefaultTimeZone;
+                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
             }
             try
             {
-                TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
+                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
             }
             catch (Exception)
             {
-                _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
+                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
             }
 
-            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
+            Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
@@ -177,37 +115,96 @@ namespace KinaUnaXamarin.Views
             {
                 progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
             }
-            _timelineModel.Progeny = progeny;
+            _viewModel.Progeny = progeny;
 
-            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
-            _timelineModel.ProgenyCollection.Clear();
-            _timelineModel.CanUserAddItems = false;
-            foreach (Progeny prog in progenyList)
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(_viewModel.UserEmail);
+            _viewModel.ProgenyCollection.Clear();
+            _viewModel.CanUserAddItems = false;
+            if (progenyList != null && progenyList.Any())
             {
-                _timelineModel.ProgenyCollection.Add(prog);
-                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                foreach (Progeny prog in progenyList)
                 {
-                    _timelineModel.CanUserAddItems = true;
+                    _viewModel.ProgenyCollection.Add(prog);
+                    if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
+                    {
+                        _viewModel.CanUserAddItems = true;
+                    }
                 }
             }
 
-            _timelineModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.ViewChild);
+        }
+
+        private async Task Reload()
+        {
+            _viewModel.IsBusy = true;
+            await CheckAccount();
+            await UpdateTimeLine();
+            
+            var networkInfo = Connectivity.NetworkAccess;
+            if (networkInfo == NetworkAccess.Internet)
+            {
+                // Connection to internet is available
+                _viewModel.Online = true;
+            }
+            else
+            {
+                _viewModel.Online = false;
+            }
+            _viewModel.IsBusy = false;
+        }
+
+        private async Task CheckAccount()
+        {
+            bool accessTokenCurrent = false;
+            if (_viewModel.AccessToken != "")
+            {
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
+
+                if (!accessTokenCurrent && _viewModel.Online)
+                {
+                    bool loginSuccess = await UserService.LoginIdsAsync();
+                    if (loginSuccess)
+                    {
+                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
+                        accessTokenCurrent = true;
+                    }
+
+                    await SetUserAndProgeny();
+                    await Reload();
+                }
+            }
+
+            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
+            {
+
+                _viewModel.IsLoggedIn = false;
+                _viewModel.LoggedOut = true;
+                _viewModel.AccessToken = "";
+                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+
+            }
+            else
+            {
+                _viewModel.IsLoggedIn = true;
+                _viewModel.LoggedOut = false;
+            }
         }
 
         private async Task UpdateTimeLine()
         {
-            Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Clear(); });
+            Device.BeginInvokeOnMainThread(() => { _viewModel.TimeLineItems.Clear(); });
 
-            DateTime timeLineStart = new DateTime(_timelineModel.SelectedYear, _timelineModel.SelectedMonth, _timelineModel.SelectedDay);
-            List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLineYearAgo(_timelineModel.Progeny.Id,
-                _timelineModel.UserAccessLevel, _userInfo.Timezone).ConfigureAwait(false);
+            DateTime timeLineStart = new DateTime(_viewModel.SelectedYear, _viewModel.SelectedMonth, _viewModel.SelectedDay);
+            List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLineYearAgo(_viewModel.Progeny.Id,
+                _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone).ConfigureAwait(false);
             
             if (timeLineList.Any())
             {
                 foreach (TimeLineItem ti in timeLineList)
                 {
                     ti.VisibleBefore = false;
-                    Device.BeginInvokeOnMainThread(() => { _timelineModel.TimeLineItems.Add(ti); });
+                    Device.BeginInvokeOnMainThread(() => { _viewModel.TimeLineItems.Add(ti); });
                 }
                 
                 // RemainingItemsThreshold not implemented yet. When it is available try out CollectionView instead of ListView.
@@ -222,7 +219,7 @@ namespace KinaUnaXamarin.Views
         
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
         {
-            SelectProgenyPage selProPage = new SelectProgenyPage(_timelineModel.ProgenyCollection);
+            SelectProgenyPage selProPage = new SelectProgenyPage(_viewModel.ProgenyCollection);
             await Shell.Current.Navigation.PushModalAsync(selProPage);
         }
         
@@ -231,9 +228,9 @@ namespace KinaUnaXamarin.Views
         {
             var networkAccess = e.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if (internetAccess != _online)
+            if (internetAccess != _viewModel.Online)
             {
-                _online = internetAccess;
+                _viewModel.Online = internetAccess;
                 await Reload();
             }
         }

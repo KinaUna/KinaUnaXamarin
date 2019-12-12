@@ -10,6 +10,7 @@ namespace KinaUnaXamarin.ViewModels
 {
     class PhotosViewModel : BaseViewModel
     {
+        
         private bool _isLoggedIn;
         private Progeny _progeny;
         private int _userAccessLevel;
@@ -19,15 +20,29 @@ namespace KinaUnaXamarin.ViewModels
         private int _pageNumber;
         private int _pageCount;
         private string _tagFilter = "";
+        private bool _online = true;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
         public ObservableCollection<string> TagsCollection { get; set; }
         public PhotosViewModel()
         {
             LoginCommand = new Command(Login);
+            ViewChild = Constants.DefaultChildId;
             ProgenyCollection = new ObservableCollection<Progeny>();
             PhotoItems = new ObservableRangeCollection<Picture>();
             TagsCollection = new ObservableCollection<string>();
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
         }
 
         public string TagFilter

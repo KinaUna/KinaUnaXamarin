@@ -21,15 +21,31 @@ namespace KinaUnaXamarin.ViewModels
         private DateTime _maximumDate;
         private bool _canUserAddItems;
         private bool _canShowMore;
+        private bool _online = true;
 
-        public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+        public ObservableCollection<Progeny> ProgenyCollection { get; }
 
         public TimelineFeedViewModel()
         {
             LoginCommand = new Command(Login);
+            ViewChild = Constants.DefaultChildId;
             ProgenyCollection = new ObservableCollection<Progeny>();
             TimeLineItems = new ObservableRangeCollection<TimeLineItem>();
             _canShowMore = true;
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public string UserEmail { get; set; }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
         }
 
         public bool LoggedOut

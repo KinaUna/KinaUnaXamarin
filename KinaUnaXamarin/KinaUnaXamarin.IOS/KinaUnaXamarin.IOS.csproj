@@ -75,7 +75,6 @@
     <Compile Include="BaseUrl_iOS.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
-    <Compile Include="Renderers\ExtendedWebViewRenderer.cs" />
     <Compile Include="SecretKeys.cs" />
     <BundleResource Include="Resources\QuillEditor.html" />
     <BundleResource Include="Resources\icon_large.png" />
@@ -664,7 +663,7 @@
       <Version>2.4.11.982</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.3.0.991221</Version>
+      <Version>4.4.0.991265</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.GoogleMaps">
       <Version>3.3.0</Version>
@@ -1155,7 +1154,9 @@
       <Visible>false</Visible>
     </ImageAsset>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Renderers\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\KinaUnaXamarin\KinaUnaXamarin.csproj">
       <Project>{5b2d4a1e-41af-4187-921d-e40331571c48}</Project>

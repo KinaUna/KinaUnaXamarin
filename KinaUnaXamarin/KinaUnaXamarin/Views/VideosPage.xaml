@@ -41,7 +41,7 @@
                     <Label x:Name="TagFilterLabel" Text="{Binding TagFilter}" FontAttributes="Bold" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" Margin="5,0,35,0"></Label>
                     <Button Text="{i18n:Translate Reset}" Clicked="ClearTagFilterButton_OnClicked" HorizontalOptions="End"></Button>
                 </StackLayout>
-                <CollectionView x:Name="VideosListView" ItemsSource="{Binding VideoItems}" Margin="2" BackgroundColor="White" SelectionChanged="VideosListView_OnSelectionChanged" SelectionMode="Single" >
+                <CollectionView x:Name="VideosListView" ItemsSource="{Binding VideoItems}" Margin="2" BackgroundColor="White" SelectionChanged="VideosListView_OnSelectionChanged" SelectionMode="Single" VerticalOptions="FillAndExpand" >
                     <CollectionView.ItemsLayout >
                         <GridItemsLayout Orientation="Vertical"
                                          Span="2" />

@@ -19,7 +19,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class HomePage : ContentPage
     {
-        private readonly HomeFeedViewModel _feedModel;
+        private readonly HomeFeedViewModel _viewModel;
         private double _screenWidth;
         private double _screenHeight;
         private bool _reload = true;
@@ -27,8 +27,8 @@ namespace KinaUnaXamarin.Views
         public HomePage()
         {
             InitializeComponent();
-            _feedModel = new HomeFeedViewModel();
-            BindingContext = _feedModel;
+            _viewModel = new HomeFeedViewModel();
+            BindingContext = _viewModel;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
 
             MessagingCenter.Subscribe<HomeFeedViewModel>(this, "Reload", async (sender) =>
@@ -53,28 +53,15 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
+            
+            var networkAccess = Connectivity.NetworkAccess;
+            _viewModel.Online = networkAccess == NetworkAccess.Internet;
             if (_reload)
             {
                 await SetUserAndProgeny();
-
-            }
-
-            var networkAccess = Connectivity.NetworkAccess;
-            bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if (internetAccess)
-            {
-                _feedModel.Online = true;
-            }
-            else
-            {
-                _feedModel.Online = false;
-            }
-            
-            if (_reload)
-            {
                 await Reload();
             }
-
+            
             _reload = false;
         }
 
@@ -86,30 +73,73 @@ namespace KinaUnaXamarin.Views
 
         private async Task SetUserAndProgeny()
         {
-            _feedModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
-            string userEmail = await UserService.GetUserEmail();
+            _viewModel.UserEmail = await UserService.GetUserEmail();
+            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
+
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
             bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
 
             if (viewchildParsed)
             {
-                _feedModel.ViewChild = viewChildId;
+                _viewModel.ViewChild = viewChildId;
                 try
                 {
-                    _feedModel.Progeny = await App.Database.GetProgenyAsync(_feedModel.ViewChild);
+                    _viewModel.Progeny = await App.Database.GetProgenyAsync(_viewModel.ViewChild);
                 }
                 catch (Exception)
                 {
-                    _feedModel.Progeny = await ProgenyService.GetProgeny(_feedModel.ViewChild);
+                    _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
                 }
 
-                _feedModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
+                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(_viewModel.UserEmail);
             }
+
+            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
+            {
+                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
+            }
+            catch (Exception)
+            {
+                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
+            }
+
+            Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
+            }
+            catch (Exception)
+            {
+                progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
+            }
+            _viewModel.Progeny = progeny;
+
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(_viewModel.UserEmail);
+            _viewModel.ProgenyCollection.Clear();
+            _viewModel.CanUserAddItems = false;
+            if (progenyList != null && progenyList.Any())
+            {
+                foreach (Progeny prog in progenyList)
+                {
+                    _viewModel.ProgenyCollection.Add(prog);
+                    if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
+                    {
+                        _viewModel.CanUserAddItems = true;
+                    }
+                }
+            }
+
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.ViewChild);
         }
         private async Task Reload()
         {
-            _feedModel.IsBusy = true;
+            _viewModel.IsBusy = true;
             UpcomingEventsStatckLayout.IsVisible = false;
             EventFrame0.IsVisible = false;
             EventFrame1.IsVisible = false;
@@ -128,112 +158,50 @@ namespace KinaUnaXamarin.Views
             if (networkInfo == NetworkAccess.Internet)
             {
                 // Connection to internet is available
-                _feedModel.Online = true;
+                _viewModel.Online = true;
             }
             else
             {
-                _feedModel.Online = false;
+                _viewModel.Online = false;
             }
-            _feedModel.IsBusy = false;
+            _viewModel.IsBusy = false;
         }
 
         private async Task CheckAccount()
         {
-            string userEmail = await UserService.GetUserEmail();
-            _feedModel.AccessToken = await UserService.GetAuthAccessToken();
             bool accessTokenCurrent = false;
-            if (_feedModel.AccessToken != "")
+            if (_viewModel.AccessToken != "")
             {
                 accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
-                if (!accessTokenCurrent && _feedModel.Online)
+                if (!accessTokenCurrent && _viewModel.Online)
                 {
                     bool loginSuccess = await UserService.LoginIdsAsync();
                     if (loginSuccess)
                     {
-                        _feedModel.AccessToken = await UserService.GetAuthAccessToken();
+                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
                         accessTokenCurrent = true;
                     }
 
+                    await SetUserAndProgeny();
                     await Reload();
                 }
             }
 
-            if (String.IsNullOrEmpty(_feedModel.AccessToken) || !accessTokenCurrent)
+            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
             {
 
-                _feedModel.IsLoggedIn = false;
-                _feedModel.LoggedOut = true;
-                _feedModel.AccessToken = "";
-                _feedModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+                _viewModel.IsLoggedIn = false;
+                _viewModel.LoggedOut = true;
+                _viewModel.AccessToken = "";
+                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
             }
             else
             {
-                _feedModel.IsLoggedIn = true;
-                _feedModel.LoggedOut = false;
-                _feedModel.UserInfo = await UserService.GetUserInfo(userEmail);
+                _viewModel.IsLoggedIn = true;
+                _viewModel.LoggedOut = false;
             }
-
-            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
-            if (!viewchildParsed)
-            {
-                _feedModel.ViewChild = _feedModel.UserInfo.ViewChild;
-            }
-            if (_feedModel.ViewChild == 0)
-            {
-                if (_feedModel.UserInfo.ViewChild != 0)
-                {
-                    _feedModel.ViewChild = _feedModel.UserInfo.ViewChild;
-                }
-                else
-                {
-                    _feedModel.ViewChild = Constants.DefaultChildId;
-                }
-            }
-
-
-            if (String.IsNullOrEmpty(_feedModel.UserInfo.Timezone))
-            {
-                _feedModel.UserInfo.Timezone = Constants.DefaultTimeZone;
-            }
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(_feedModel.UserInfo.Timezone);
-            }
-            catch (Exception)
-            {
-                _feedModel.UserInfo.Timezone = TZConvert.WindowsToIana(_feedModel.UserInfo.Timezone);
-            }
-            
-            Progeny progeny = await ProgenyService.GetProgeny(_feedModel.ViewChild);
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
-            }
-            catch (Exception)
-            {
-                progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
-            }
-            _feedModel.Progeny = progeny;
-
-            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
-            _feedModel.ProgenyCollection.Clear();
-            _feedModel.CanUserAddItems = false;
-            if (progenyList != null && progenyList.Any())
-            {
-                foreach (Progeny prog in progenyList)
-                {
-                    _feedModel.ProgenyCollection.Add(prog);
-                    if (prog.Admins.ToUpper().Contains(_feedModel.UserInfo.UserEmail.ToUpper()))
-                    {
-                        _feedModel.CanUserAddItems = true;
-                    }
-                }
-            }
-
-            _feedModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_feedModel.ViewChild);
         }
         
 
@@ -241,60 +209,60 @@ namespace KinaUnaXamarin.Views
         {
             AgeInfoStackLayout.IsVisible = false;
             RandomPictureStackLayout.IsVisible = false;
-            _feedModel.CurrentTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            _viewModel.CurrentTime = DateTime.Now.ToString(CultureInfo.InvariantCulture);
             BirthTime progBirthTime;
-            if (!String.IsNullOrEmpty(_feedModel.Progeny.NickName) && _feedModel.Progeny.BirthDay.HasValue && _feedModel.UserAccessLevel < 5)
+            if (!String.IsNullOrEmpty(_viewModel.Progeny.NickName) && _viewModel.Progeny.BirthDay.HasValue && _viewModel.UserAccessLevel < 5)
             {
-                progBirthTime = new BirthTime(_feedModel.Progeny.BirthDay.Value,
-                    TimeZoneInfo.FindSystemTimeZoneById(_feedModel.Progeny.TimeZone));
+                progBirthTime = new BirthTime(_viewModel.Progeny.BirthDay.Value,
+                    TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
             }
             else
             {
-                progBirthTime = new BirthTime(new DateTime(2018, 02, 18, 18, 02, 00), TimeZoneInfo.FindSystemTimeZoneById(_feedModel.Progeny.TimeZone));
+                progBirthTime = new BirthTime(new DateTime(2018, 02, 18, 18, 02, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
             }
 
-            _feedModel.CurrentTime = progBirthTime.CurrentTime;
-            _feedModel.Years = progBirthTime.CalcYears();
-            _feedModel.Months = progBirthTime.CalcMonths();
-            _feedModel.Weeks = progBirthTime.CalcWeeks();
-            _feedModel.Days = progBirthTime.CalcDays();
-            _feedModel.Hours = progBirthTime.CalcHours();
-            _feedModel.Minutes = progBirthTime.CalcMinutes();
-            _feedModel.NextBirthday = progBirthTime.CalcNextBirthday();
-            _feedModel.MinutesMileStone = progBirthTime.CalcMileStoneMinutes();
-            _feedModel.HoursMileStone = progBirthTime.CalcMileStoneHours();
-            _feedModel.DaysMileStone = progBirthTime.CalcMileStoneDays();
-            _feedModel.WeeksMileStone = progBirthTime.CalcMileStoneWeeks();
+            _viewModel.CurrentTime = progBirthTime.CurrentTime;
+            _viewModel.Years = progBirthTime.CalcYears();
+            _viewModel.Months = progBirthTime.CalcMonths();
+            _viewModel.Weeks = progBirthTime.CalcWeeks();
+            _viewModel.Days = progBirthTime.CalcDays();
+            _viewModel.Hours = progBirthTime.CalcHours();
+            _viewModel.Minutes = progBirthTime.CalcMinutes();
+            _viewModel.NextBirthday = progBirthTime.CalcNextBirthday();
+            _viewModel.MinutesMileStone = progBirthTime.CalcMileStoneMinutes();
+            _viewModel.HoursMileStone = progBirthTime.CalcMileStoneHours();
+            _viewModel.DaysMileStone = progBirthTime.CalcMileStoneDays();
+            _viewModel.WeeksMileStone = progBirthTime.CalcMileStoneWeeks();
 
             Picture tempPicture = OfflineDefaultData.DefaultPicture;
 
             Picture displayPicture = tempPicture;
 
-            if (_feedModel.UserAccessLevel < 5 && _feedModel.Online)
+            if (_viewModel.UserAccessLevel < 5 && _viewModel.Online)
             {
-                displayPicture = await ProgenyService.GetRandomPicture(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _feedModel.UserInfo.Timezone);
+                displayPicture = await ProgenyService.GetRandomPicture(_viewModel.Progeny.Id, _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone);
             }
-            _feedModel.ImageLink600 = displayPicture.PictureLink600;
-            _feedModel.ImageLink = displayPicture.PictureLink1200;
-            _feedModel.ImageId = displayPicture.PictureId;
-            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_feedModel.Progeny.TimeZone));
-            if (displayPicture.PictureTime != null && _feedModel.Progeny.BirthDay.HasValue)
+            _viewModel.ImageLink600 = displayPicture.PictureLink600;
+            _viewModel.ImageLink = displayPicture.PictureLink1200;
+            _viewModel.ImageId = displayPicture.PictureId;
+            PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+            if (displayPicture.PictureTime != null && _viewModel.Progeny.BirthDay.HasValue)
             {
-                DateTime picTimeBirthday = new DateTime(_feedModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
+                DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                picTime = new PictureTime(picTimeBirthday, displayPicture.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_feedModel.Progeny.TimeZone));
-                _feedModel.PicTimeValid = true;
+                picTime = new PictureTime(picTimeBirthday, displayPicture.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                _viewModel.PicTimeValid = true;
             }
 
-            _feedModel.Tags = displayPicture.Tags;
-            _feedModel.Location = displayPicture.Location;
-            _feedModel.PicTime = picTime.PictureDateTime;
-            _feedModel.PicYears = picTime.CalcYears();
-            _feedModel.PicMonths = picTime.CalcMonths();
-            _feedModel.PicWeeks = picTime.CalcWeeks();
-            _feedModel.PicDays = picTime.CalcDays();
-            _feedModel.PicHours = picTime.CalcHours();
-            _feedModel.PicMinutes = picTime.CalcMinutes();
+            _viewModel.Tags = displayPicture.Tags;
+            _viewModel.Location = displayPicture.Location;
+            _viewModel.PicTime = picTime.PictureDateTime;
+            _viewModel.PicYears = picTime.CalcYears();
+            _viewModel.PicMonths = picTime.CalcMonths();
+            _viewModel.PicWeeks = picTime.CalcWeeks();
+            _viewModel.PicDays = picTime.CalcDays();
+            _viewModel.PicHours = picTime.CalcHours();
+            _viewModel.PicMinutes = picTime.CalcMinutes();
             AgeInfoStackLayout.IsVisible = true;
             RandomPictureStackLayout.IsVisible = true;
         }
@@ -307,8 +275,8 @@ namespace KinaUnaXamarin.Views
             EventFrame2.IsVisible = false;
             EventFrame3.IsVisible = false;
             EventFrame4.IsVisible = false;
-            _feedModel.EventsList = new List<CalendarItem>();
-            List<CalendarItem> eventsList = await ProgenyService.GetUpcomingEventsList(_feedModel.Progeny.Id, _feedModel.UserAccessLevel);
+            _viewModel.EventsList = new List<CalendarItem>();
+            List<CalendarItem> eventsList = await ProgenyService.GetUpcomingEventsList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
             int eventListCurrent = 0;
             
             if (eventsList.Any())
@@ -317,8 +285,8 @@ namespace KinaUnaXamarin.Views
                 UpcomingEventsStatckLayout.IsVisible = true;
                 foreach (CalendarItem ev in eventsList)
                 {
-                    ev.StartTime = TimeZoneInfo.ConvertTimeFromUtc(ev.StartTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_feedModel.UserInfo.Timezone));
-                    ev.EndTime = TimeZoneInfo.ConvertTimeFromUtc(ev.EndTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_feedModel.UserInfo.Timezone));
+                    ev.StartTime = TimeZoneInfo.ConvertTimeFromUtc(ev.StartTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
+                    ev.EndTime = TimeZoneInfo.ConvertTimeFromUtc(ev.EndTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
                     ev.StartString = ev.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " + ev.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
 
                     if (eventListCurrent == 0)
@@ -364,13 +332,13 @@ namespace KinaUnaXamarin.Views
         private async Task UpdateTimeLine()
         {
             LatestPostsStackLayout.IsVisible = false;
-            _feedModel.TimeLineItems.Clear();
-            _feedModel.LatestPosts = await ProgenyService.GetLatestPosts(_feedModel.Progeny.Id, _feedModel.UserAccessLevel, _feedModel.UserInfo.Timezone);
+            _viewModel.TimeLineItems.Clear();
+            _viewModel.LatestPosts = await ProgenyService.GetLatestPosts(_viewModel.Progeny.Id, _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone);
             
-            if (_feedModel.LatestPosts.Any())
+            if (_viewModel.LatestPosts.Any())
             {
                 LatestPostsStackLayout.IsVisible = true;
-                _feedModel.TimeLineItems.AddRange(_feedModel.LatestPosts);
+                _viewModel.TimeLineItems.AddRange(_viewModel.LatestPosts);
             }
         }
 
@@ -382,7 +350,7 @@ namespace KinaUnaXamarin.Views
 
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
         {
-            SelectProgenyPage selProPage = new SelectProgenyPage(_feedModel.ProgenyCollection);
+            SelectProgenyPage selProPage = new SelectProgenyPage(_viewModel.ProgenyCollection);
             await Shell.Current.Navigation.PushModalAsync(selProPage);
         }
 
@@ -403,9 +371,9 @@ namespace KinaUnaXamarin.Views
                         ProgenyDetailsStackLayout.WidthRequest = _screenWidth * 0.4;
                         ProgenyTimeInfoStackLayout.WidthRequest = _screenWidth * 0.4;
 
-                        if (_feedModel != null)
+                        if (_viewModel != null)
                         {
-                            _feedModel.ImageLinkWidth = (int)(_screenWidth * 0.4 - 20);
+                            _viewModel.ImageLinkWidth = (int)(_screenWidth * 0.4 - 20);
                         }
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 2, 5);
                         UpcomingEventsStatckLayout.Margin = new Thickness(3, 0, 5, 5);
@@ -417,9 +385,9 @@ namespace KinaUnaXamarin.Views
                     {
                         ProgenyDetailsStackLayout.WidthRequest = _screenWidth * 0.9;
                         ProgenyTimeInfoStackLayout.WidthRequest = _screenWidth * 0.9;
-                        if (_feedModel != null)
+                        if (_viewModel != null)
                         {
-                            _feedModel.ImageLinkWidth = (int)(_screenWidth - 20);
+                            _viewModel.ImageLinkWidth = (int)(_screenWidth - 20);
                         }
 
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
@@ -440,9 +408,9 @@ namespace KinaUnaXamarin.Views
                     if (width > height && (width - ProgenyDetailsStackLayout.WidthRequest) > 200) //if (width > height && width > 800)
                     {
                         ProgenyDetailsStackLayout.WidthRequest = (int)(width * 6 / 11);
-                        if (_feedModel != null)
+                        if (_viewModel != null)
                         {
-                            _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                            _viewModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
                         }
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 2, 5);
                         UpcomingEventsStatckLayout.Margin = new Thickness(3, 0, 5, 5);
@@ -452,9 +420,9 @@ namespace KinaUnaXamarin.Views
                     else
                     {
                         ProgenyDetailsStackLayout.WidthRequest = width;
-                        if (_feedModel != null)
+                        if (_viewModel != null)
                         {
-                            _feedModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
+                            _viewModel.ImageLinkWidth = (int)ProgenyDetailsStackLayout.WidthRequest - 20;
                         }
 
                         ProgenyDetailsStackLayout.Margin = new Thickness(5, 0, 5, 5);
@@ -470,9 +438,9 @@ namespace KinaUnaXamarin.Views
         {
             var networkAccess = e.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if ( internetAccess != _feedModel.Online)
+            if ( internetAccess != _viewModel.Online)
             {
-                _feedModel.Online = internetAccess;
+                _viewModel.Online = internetAccess;
                 await Reload();
             }
         }
@@ -484,7 +452,7 @@ namespace KinaUnaXamarin.Views
 
         private async void RandomPhotoClickGestureRecognizer_OnClicked(object sender, EventArgs e)
         {
-            PhotoDetailPage photoPage = new PhotoDetailPage(_feedModel.ImageId);
+            PhotoDetailPage photoPage = new PhotoDetailPage(_viewModel.ImageId);
             await Shell.Current.Navigation.PushModalAsync(photoPage);
         }
 

@@ -11,6 +11,7 @@ namespace KinaUnaXamarin.ViewModels
 {
     public class HomeFeedViewModel : BaseViewModel
     {
+        private readonly ObservableRangeCollection<TimeLineItem> _timeLineItems;
         private bool _online = true;
         private int _userAccessLevel;
         private Progeny _progeny;
@@ -42,7 +43,6 @@ namespace KinaUnaXamarin.ViewModels
         private List<CalendarItem> _eventsList;
         private List<TimeLineItem> _latestPosts;
         private bool _isLoggedIn;
-        private ObservableRangeCollection<TimeLineItem> _timeLineItems;
         private bool _loggedOut;
         private int _imageLinkWidth;
         private bool _canUserAddItems;
@@ -51,8 +51,8 @@ namespace KinaUnaXamarin.ViewModels
         {
             LoginCommand = new Command(Login);
             ProgenyCollection = new ObservableCollection<Progeny>();
-            _timeLineItems = new ObservableRangeCollection<TimeLineItem>();
             _latestPosts = new List<TimeLineItem>();
+            _timeLineItems = new ObservableRangeCollection<TimeLineItem>();
             _progeny = OfflineDefaultData.DefaultProgeny;
             _imageId = OfflineDefaultData.DefaultPicture.PictureId;
             _imageLink = OfflineDefaultData.DefaultPicture.PictureLink;
@@ -74,7 +74,9 @@ namespace KinaUnaXamarin.ViewModels
 
         public string AccessToken { get; set; }
 
-        public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+        public string UserEmail { get; set; }
+
+        public ObservableCollection<Progeny> ProgenyCollection { get; }
         
         public Progeny Progeny
         {
@@ -99,16 +101,10 @@ namespace KinaUnaXamarin.ViewModels
             get => _eventsList;
             set => SetProperty(ref _eventsList, value);
         }
-        //public ObservableRangeCollection<CalendarItem> UpcomingEvents
-        //{
-        //    get => _upcomingEvents;
-        //    set => _upcomingEvents = value;
-        //}
-
+        
         public ObservableRangeCollection<TimeLineItem> TimeLineItems
         {
             get => _timeLineItems;
-            set => _timeLineItems = value;
         }
 
         public int ImageId

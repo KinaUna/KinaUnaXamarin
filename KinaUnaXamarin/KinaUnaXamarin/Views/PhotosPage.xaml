@@ -14,6 +14,7 @@
     <ContentPage.Resources>
         <ResourceDictionary>
             <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
+            <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
@@ -31,7 +32,7 @@
                 </OnPlatform>
             </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
-                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
@@ -41,13 +42,13 @@
                     <Label x:Name="TagFilterLabel" Text="{Binding TagFilter}" FontAttributes="Bold" FontSize="16" VerticalTextAlignment="Center" VerticalOptions="Center" TextColor="DarkSlateGray" Margin="5,0,35,0"></Label>
                     <Button Text="{i18n:Translate Reset}" Clicked="ClearTagFilterButton_OnClicked" HorizontalOptions="End"></Button>
                 </StackLayout>
-                <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" >
+                <CollectionView x:Name="PhotosListView" ItemsSource="{Binding PhotoItems}" Margin="2" BackgroundColor="White" SelectionChanged="PhotosListView_OnSelectionChanged" SelectionMode="Single" ItemSizingStrategy="MeasureAllItems" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                     <CollectionView.ItemsLayout >
                         <GridItemsLayout Orientation="Vertical" Span="2" />
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Picture">
-                            <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250">
+                            <Grid Padding="3" Margin="5" BackgroundColor="White" HeightRequest="250" HorizontalOptions="FillAndExpand">
                                 <Grid Padding="3" BackgroundColor="Black" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                                     <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                        RetryCount="3"
@@ -77,7 +78,7 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-                <Grid BackgroundColor="White">
+                <Grid BackgroundColor="White" VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>
                     </Grid.RowDefinitions>

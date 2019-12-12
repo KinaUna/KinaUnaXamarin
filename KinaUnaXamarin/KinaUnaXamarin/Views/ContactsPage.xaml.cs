@@ -19,10 +19,12 @@ namespace KinaUnaXamarin.Views
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
-        private ContactsViewModel _viewModel;
+        private readonly ContactsViewModel _viewModel;
         private string _accessToken;
         private bool _reload = true;
         private bool _online = true;
+        private double _screenWidth;
+        private double _screenHeight;
 
         public ContactsPage()
         {
@@ -46,7 +48,7 @@ namespace KinaUnaXamarin.Views
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-
+            ContactsCollectionView.SelectedItem = null;
             if (_reload)
             {
                 SortByPicker.SelectedIndex = 0;
@@ -78,18 +80,54 @@ namespace KinaUnaXamarin.Views
             Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
-        protected override void OnSizeAllocated(double width, double height)
+        protected override async void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            int columns = (int)Math.Floor(width / 200);
-            if (columns < 1)
+            bool screenChanged = false;
+            if (Device.RuntimePlatform == Device.UWP)
             {
-                columns = 1;
+                if (_screenWidth != Application.Current.MainPage.Width ||
+                    _screenHeight != Application.Current.MainPage.Height)
+                {
+                    _screenWidth = Application.Current.MainPage.Width;
+                    _screenHeight = Application.Current.MainPage.Height;
+                }
+
+                screenChanged = true;
             }
 
-            _viewModel.Columns = columns;
-            ContactsCollectionView.ItemsLayout = new GridItemsLayout(columns, ItemsLayoutOrientation.Vertical);
+            if (_screenWidth != width || _screenHeight != height)
+            {
+                _screenWidth = width;
+                _screenHeight = height;
+                screenChanged = true;
+            }
 
+            if (screenChanged)
+            {
+                int columns = (int)Math.Floor(width / 200);
+
+                if (Device.RuntimePlatform == Device.UWP)
+                {
+                    columns = (int)Math.Floor(Application.Current.MainPage.Width / 200);
+                }
+                if (columns < 1)
+                {
+                    columns = 1;
+                }
+                if (Device.RuntimePlatform == Device.iOS)
+                {
+                    await Task.Yield();
+                }
+
+                if (ContactsCollectionView.ItemsLayout is GridItemsLayout layout)
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        layout.Span = columns;
+                    });
+                }
+            }
         }
 
         private async Task Reload()
@@ -237,7 +275,14 @@ namespace KinaUnaXamarin.Views
                 contactsList = contactsList.OrderBy(f => f.LastName).ToList();
             }
 
-            _viewModel.ContactItems.ReplaceRange(contactsList);
+            _viewModel.ContactItems.Clear();
+            if (contactsList.Any())
+            {
+                foreach (Contact cnt in contactsList)
+                {
+                    _viewModel.ContactItems.Add(cnt);
+                }
+            }
             _viewModel.IsBusy = false;
         }
 

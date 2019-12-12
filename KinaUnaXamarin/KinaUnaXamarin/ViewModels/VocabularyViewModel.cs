@@ -26,6 +26,7 @@ namespace KinaUnaXamarin.ViewModels
         private int _pageNumber;
         private int _pageCount;
         private bool _online = true;
+        private bool _isRefreshing;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -40,7 +41,7 @@ namespace KinaUnaXamarin.ViewModels
 
         private async Task RefreshAsync()
         {
-            IsBusy = true;
+            IsRefreshing = true;
             if (PageNumber < 1)
             {
                 PageNumber = 1;
@@ -56,7 +57,13 @@ namespace KinaUnaXamarin.ViewModels
                 PageCount = vocabularyListPage.TotalPages;
                 // VocabularyListView.ScrollTo(0);
             }
-            IsBusy = false;
+            IsRefreshing = false;
+        }
+
+        public bool IsRefreshing
+        {
+            get => _isRefreshing;
+            set => SetProperty(ref _isRefreshing, value);
         }
 
         public bool Online
