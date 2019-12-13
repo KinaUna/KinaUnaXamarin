@@ -25,9 +25,10 @@
                 </OnPlatform>
             </Grid.Margin>
             <StackLayout VerticalOptions="FillAndExpand">
-                <CollectionView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" ItemSizingStrategy="MeasureAllItems" SelectionChanged="NotesListView_OnItemSelected"  SelectionMode="Single" BackgroundColor="White" VerticalOptions="FillAndExpand">
-                    <CollectionView.ItemTemplate>
+                <ListView x:Name="NotesListView" ItemsSource="{Binding NoteItems}" HasUnevenRows="True" ItemSelected="NotesListView_OnItemSelected"  SelectionMode="Single" BackgroundColor="White" VerticalOptions="FillAndExpand">
+                    <ListView.ItemTemplate>
                         <DataTemplate x:DataType="modelsKinaUna:Note">
+                            <ViewCell>
                                 <Grid Margin="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                     <Frame CornerRadius="5" BackgroundColor="DarkOliveGreen" Margin="5" Padding="0" VerticalOptions="FillAndExpand">
                                         <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" MinimumHeightRequest="500">
@@ -45,9 +46,10 @@
                                         </StackLayout>
                                     </Frame>
                                 </Grid>
+                            </ViewCell>
                         </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                    </ListView.ItemTemplate>
+                </ListView>
                 <Grid BackgroundColor="White" VerticalOptions="End">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40"></RowDefinition>

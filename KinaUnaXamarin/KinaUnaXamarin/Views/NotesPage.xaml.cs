@@ -48,28 +48,25 @@ namespace KinaUnaXamarin.Views
             });
         }
 
-        protected override async void OnSizeAllocated(double width, double height)
-        {
+        //protected override async void OnSizeAllocated(double width, double height)
+        //{
 
-            if (_screenWidth != width || _screenHeight != height)
-            {
-                _screenWidth = width;
-                _screenHeight = height;
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    _viewModel.NoteItems.Clear();
-                }
-                if (Device.RuntimePlatform == Device.iOS)
-                {
-                    await UpdateNotes();
-                }
-            }
-            base.OnSizeAllocated(width, height); //must be called
-
+        //    if (_screenWidth != width || _screenHeight != height)
+        //    {
+        //        _screenWidth = width;
+        //        _screenHeight = height;
+        //        if (Device.RuntimePlatform == Device.iOS)
+        //        {
+        //            _viewModel.NoteItems.Clear();
+        //        }
+        //        if (Device.RuntimePlatform == Device.iOS)
+        //        {
+        //            await UpdateNotes();
+        //        }
+        //    }
+        //    base.OnSizeAllocated(width, height); //must be called
             
-
-            
-        }
+        //}
 
         protected override async void OnAppearing()
         {
@@ -247,7 +244,7 @@ namespace KinaUnaXamarin.Views
                 Note firstNote = _viewModel.NoteItems.FirstOrDefault();
                 if (firstNote != null)
                 {
-                    NotesListView.ScrollTo(0);
+                    NotesListView.ScrollTo(firstNote, ScrollToPosition.MakeVisible, true);
                 }
             }
             
@@ -307,7 +304,7 @@ namespace KinaUnaXamarin.Views
             await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
         }
         
-        private async void NotesListView_OnItemSelected(object sender, SelectionChangedEventArgs selectionChangedEventArgs)
+        private async void NotesListView_OnItemSelected(object sender, SelectedItemChangedEventArgs selectedItemChangedEventArgs)
         {
             if (NotesListView.SelectedItem is Note noteItem)
             {
