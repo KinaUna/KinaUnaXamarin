@@ -9,6 +9,7 @@ using Plugin.CurrentActivity;
 
 namespace KinaUnaXamarin.Droid
 {
+    // Source: https://github.com/IdentityModel/IdentityModel.OidcClient.Samples/blob/master/XamarinForms/XamarinFormsClient/XamarinFormsClient.Android/ChromeCustomTabsBrowser.cs
     public class ChromeCustomTabsBrowser : IBrowser
     {
         private readonly Activity _context;

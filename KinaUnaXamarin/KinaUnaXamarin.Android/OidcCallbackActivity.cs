@@ -8,7 +8,7 @@ using Android.Util;
 namespace KinaUnaXamarin.Droid
 {
     // Source: https://github.com/IdentityModel/IdentityModel.OidcClient.Samples/blob/master/XamarinForms/XamarinFormsClient/XamarinFormsClient.Android/OidcCallbackActivity.cs
-    [Activity(Label = "KinaUnaXamarinOidcCallbackActivity")]
+    [Activity(Label = "OidcCallbackActivity")]
     [IntentFilter(new[] { Intent.ActionView },
         Categories = new[] { Intent.CategoryDefault, Intent.CategoryBrowsable },
         DataScheme = "kinaunaxamarinclients")]

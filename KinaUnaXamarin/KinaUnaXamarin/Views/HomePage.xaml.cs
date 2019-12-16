@@ -74,10 +74,9 @@ namespace KinaUnaXamarin.Views
         private async Task SetUserAndProgeny()
         {
             _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
-
             _viewModel.UserEmail = await UserService.GetUserEmail();
             _viewModel.AccessToken = await UserService.GetAuthAccessToken();
-
+            _viewModel.UserInfo = await UserService.GetUserInfo(_viewModel.UserEmail);
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
             bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
 
@@ -94,6 +93,10 @@ namespace KinaUnaXamarin.Views
                 }
 
                 _viewModel.UserInfo = await App.Database.GetUserInfoAsync(_viewModel.UserEmail);
+            }
+            else
+            {
+                _viewModel.ViewChild = _viewModel.UserInfo.ViewChild;
             }
 
             if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))

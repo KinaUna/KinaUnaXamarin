@@ -1,8 +1,13 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.Reflection;
+using System.Resources;
 using System.Windows.Input;
+using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using Plugin.Multilingual;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
@@ -18,6 +23,8 @@ namespace KinaUnaXamarin.ViewModels
         private int _pageNumber;
         private int _pageCount;
         private string _tagFilter = "";
+        const string ResourceId = "KinaUnaXamarin.Resources.Translations";
+        static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
         public ObservableCollection<string> TagsCollection { get; set; }
 
@@ -29,6 +36,9 @@ namespace KinaUnaXamarin.ViewModels
             ProgenyCollection = new ObservableCollection<Progeny>();
             VideoItems = new ObservableRangeCollection<Video>();
             TagsCollection = new ObservableCollection<string>();
+            var ci = CrossMultilingual.Current.CurrentCultureInfo;
+            string allTags = resmgr.Value.GetString("AllTags", ci);
+            TagsCollection.Add(allTags);
         }
 
         public string TagFilter

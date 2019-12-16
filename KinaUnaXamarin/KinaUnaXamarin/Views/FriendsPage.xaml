@@ -82,7 +82,7 @@
             </StackLayout>
             <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" VerticalOptions="Start" />
-            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="15">
                 <Label Text="{i18n:Translate Show}"></Label>
                 <Grid Margin="20, 0, 0, 0">
                     <Grid.RowDefinitions>
@@ -108,8 +108,8 @@
                     <Label Grid.Row="4" Grid.Column="1" Text="{i18n:Translate CaretakerFriends}"></Label>
                 </Grid>
                 <Label Text="{i18n:Translate SortBy}"></Label>
-                <Picker x:Name="SortByPicker" Margin="20, 0, 0, 0" ItemsSource="{Binding SortByList}"></Picker>
-                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}"></Button>
+                <Picker x:Name="SortByPicker" Margin="20, 0, 0, 0" ItemsSource="{Binding SortByList}" BackgroundColor="White" TextColor="Black"></Picker>
+                <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}" BackgroundColor="DarkGreen" TextColor="White"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
         </Grid>

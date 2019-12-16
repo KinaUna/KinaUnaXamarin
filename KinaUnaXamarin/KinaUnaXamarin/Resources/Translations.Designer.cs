@@ -394,6 +394,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to All Tags.
+        /// </summary>
+        internal static string AllTags {
+            get {
+                return ResourceManager.GetString("AllTags", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Altitude.
         /// </summary>
         internal static string Altitude {

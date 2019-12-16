@@ -98,10 +98,10 @@
                 </Grid>
             </StackLayout>
             <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}"
-                         BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="5">
+                         BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="15">
                 <Label Text="Filter by tag" TextColor="DarkSlateGray"></Label>
                 <Picker x:Name="TagFilterPicker" ItemsSource="{Binding TagsCollection}" TextColor="DarkSlateGray" BackgroundColor="White"></Picker>
-                <Button x:Name="SetTagsFilterButton" Text="Set" Clicked="SetTagsFilterButton_OnClicked"></Button>
+                <Button x:Name="SetTagsFilterButton" Text="Set" Clicked="SetTagsFilterButton_OnClicked" BackgroundColor="DarkGreen" TextColor="White"></Button>
                 <Button x:Name="ClearTagFilterButton" Text="{i18n:Translate Reset}" Clicked="ClearTagFilterButton_OnClicked"></Button>
             </StackLayout>
             <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>

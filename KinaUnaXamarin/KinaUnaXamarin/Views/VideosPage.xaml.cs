@@ -32,6 +32,7 @@ namespace KinaUnaXamarin.Views
             _userInfo = OfflineDefaultData.DefaultUserInfo;
             ContainerStackLayout.BindingContext = _viewModel;
             BindingContext = _viewModel;
+            TagFilterPicker.SelectedIndex = 0;
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 _viewModel.PageNumber = 1;
@@ -251,7 +252,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PageNumber = 1;
             }
 
-            _viewModel.TagsCollection.Clear();
+            // _viewModel.TagsCollection.Clear();
 
             VideoPage videosPage = await ProgenyService.GetVideoPage(_viewModel.PageNumber, 8, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1, _viewModel.TagFilter);
             if (videosPage.VideosList != null)
@@ -343,7 +344,7 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.ShowOptions = false;
             _viewModel.PageNumber = 1;
-            if (TagFilterPicker.SelectedIndex == -1)
+            if (TagFilterPicker.SelectedIndex < 1)
             {
                 _viewModel.TagFilter = "";
             }
@@ -361,6 +362,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.ShowOptions = false;
             _viewModel.PageNumber = 1;
             _viewModel.TagFilter = "";
+            TagFilterPicker.SelectedIndex = 0;
             await Reload();
         }
     }

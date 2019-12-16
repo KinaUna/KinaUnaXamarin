@@ -822,4 +822,7 @@
   <data name="Contact" xml:space="preserve">
     <value>Contact</value>
   </data>
+  <data name="AllTags" xml:space="preserve">
+    <value>All Tags</value>
+  </data>
 </root>

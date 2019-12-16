@@ -40,6 +40,7 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                _reload = true;
                 await Reload();
             });
         }

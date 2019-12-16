@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
@@ -29,7 +28,7 @@ namespace KinaUnaXamarin.Views
             _photosViewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
             ContainerStackLayout.BindingContext = _photosViewModel;
             BindingContext = _photosViewModel;
-
+            TagFilterPicker.SelectedIndex = 0;
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await SetUserAndProgeny();
@@ -358,7 +357,7 @@ namespace KinaUnaXamarin.Views
         {
             _photosViewModel.ShowOptions = false;
             _photosViewModel.PageNumber = 1;
-            if (TagFilterPicker.SelectedIndex == -1)
+            if (TagFilterPicker.SelectedIndex < 1 )
             {
                 _photosViewModel.TagFilter = "";
             }
@@ -376,7 +375,7 @@ namespace KinaUnaXamarin.Views
             _photosViewModel.ShowOptions = false;
             _photosViewModel.PageNumber = 1;
             _photosViewModel.TagFilter = "";
-            await Reload();
+            TagFilterPicker.SelectedIndex = 0;
         }
     }
 }

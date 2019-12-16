@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -185,6 +186,18 @@ namespace KinaUnaXamarin.Services
                     await SecureStorage.SetAsync(Constants.UserMiddleNameKey, user.MiddleName);
                     await SecureStorage.SetAsync(Constants.UserLastNameKey, user.LastName);
                     await SecureStorage.SetAsync(Constants.UserIdKey, user.Id);
+                    if (user.ViewChild == 0)
+                    {
+                        List<Progeny> progenyList = await ProgenyService.GetProgenyList(user.Email);
+                        if (progenyList.Any())
+                        {
+                            user.ViewChild = progenyList.First().Id;
+                        }
+                        else
+                        {
+                            user.ViewChild = Constants.DefaultChildId;
+                        }
+                    }
                     await SecureStorage.SetAsync(Constants.UserViewChildKey, user.ViewChild.ToString());
                     await ProgenyService.GetProgeny(user.ViewChild);
                     await UserService.GetUserInfo(user.Email);
@@ -490,6 +503,16 @@ namespace KinaUnaXamarin.Services
         {
             await DeRegisterDevice();
             App.Database.ResetAll();
+            string idToken = "";
+            try
+            {
+                idToken = await SecureStorage.GetAsync(Constants.AuthIdTokenKey);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
             try
             {
                 string pnsHandle = await SecureStorage.GetAsync("PnsHandle");
@@ -501,16 +524,6 @@ namespace KinaUnaXamarin.Services
                 Debug.WriteLine(ex.Message);
             }
             
-            string idToken = "";
-            try
-            {
-                idToken = await SecureStorage.GetAsync(Constants.AuthIdTokenKey);
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }
-
             var browser = DependencyService.Get<IBrowser>();
             var options = new OidcClientOptions
             {
