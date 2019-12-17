@@ -376,6 +376,7 @@ namespace KinaUnaXamarin.Views
             _photosViewModel.PageNumber = 1;
             _photosViewModel.TagFilter = "";
             TagFilterPicker.SelectedIndex = 0;
+            await Reload();
         }
     }
 }

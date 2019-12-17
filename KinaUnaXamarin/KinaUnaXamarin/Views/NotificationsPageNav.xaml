@@ -11,8 +11,8 @@
              Visual="Material"
              Title="{i18n:Translate Notifications}">
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Spacing="0">
-            <Grid BackgroundColor="#3A2051">
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid BackgroundColor="#3A2051" VerticalOptions="FillAndExpand">
                 <Grid.Margin>
                     <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
                         <On Platform="UWP">0,0,40,0</On>

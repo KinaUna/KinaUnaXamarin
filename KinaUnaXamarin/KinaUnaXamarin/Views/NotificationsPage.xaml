@@ -16,14 +16,14 @@
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
     </ContentPage.Padding>
     <ContentPage.Content>
-        <StackLayout Orientation="Vertical" Spacing="0">
-            <Grid BackgroundColor="#3A2051">
+        <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
+            <Grid BackgroundColor="#3A2051" VerticalOptions="FillAndExpand">
                 <Grid.Margin>
                     <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
                         <On Platform="UWP">0,0,40,0</On>
                     </OnPlatform>
                 </Grid.Margin>
-                <StackLayout Orientation="Vertical" Margin="10">
+                <StackLayout Orientation="Vertical" Margin="10" VerticalOptions="FillAndExpand">
                     <Label x:Name="TitleLabel" Text="{i18n:Translate Notifications}" TextColor="White"></Label>
                     <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged">
                         <CollectionView.ItemTemplate>
@@ -63,6 +63,5 @@
                 </StackLayout>
             </StackLayout>
         </StackLayout>
-        
     </ContentPage.Content>
 </ContentPage>
