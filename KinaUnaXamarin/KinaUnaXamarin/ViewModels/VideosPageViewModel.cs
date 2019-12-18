@@ -14,15 +14,16 @@ namespace KinaUnaXamarin.ViewModels
 {
     class VideosPageViewModel : BaseViewModel
     {
-        private bool _isLoggedIn;
+        private bool _isLoggedIn = true;
         private Progeny _progeny;
         private int _userAccessLevel;
-        private bool _loggedOut;
         private bool _showOptions;
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private int _itemsPerPage = 8;
         private string _tagFilter = "";
+        private bool _online = true;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
 
@@ -33,12 +34,25 @@ namespace KinaUnaXamarin.ViewModels
         public VideosPageViewModel()
         {
             LoginCommand = new Command(Login);
+            ViewChild = Constants.DefaultChildId;
             ProgenyCollection = new ObservableCollection<Progeny>();
             VideoItems = new ObservableRangeCollection<Video>();
             TagsCollection = new ObservableCollection<string>();
             var ci = CrossMultilingual.Current.CurrentCultureInfo;
             string allTags = resmgr.Value.GetString("AllTags", ci);
             TagsCollection.Add(allTags);
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
         }
 
         public string TagFilter
@@ -53,18 +67,19 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _pageNumber, value);
         }
 
+        public int ItemsPerPage
+        {
+            get => _itemsPerPage;
+            set => SetProperty(ref _itemsPerPage, value);
+        }
+
         public int PageCount
         {
             get => _pageCount;
             set => SetProperty(ref _pageCount, value);
         }
 
-        public bool LoggedOut
-        {
-            get => _loggedOut;
-            set => SetProperty(ref _loggedOut, value);
-        }
-
+        
         public ICommand LoginCommand
         {
             get;
@@ -74,10 +89,6 @@ namespace KinaUnaXamarin.ViewModels
         public async void Login()
         {
             IsLoggedIn = await UserService.LoginIdsAsync();
-            if (IsLoggedIn)
-            {
-                LoggedOut = !IsLoggedIn;
-            }
         }
 
         public bool CanUserAddItems

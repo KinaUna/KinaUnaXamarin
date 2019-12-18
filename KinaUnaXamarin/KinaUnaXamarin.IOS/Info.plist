@@ -7,13 +7,13 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.kinauna.xamarin</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.80</string>
+	<string>1.0.81</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.80</string>
+	<string>1.0.81</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
-	<string>11.2</string>
+	<string>12.1</string>
 	<key>UIDeviceFamily</key>
 	<array>
 		<integer>1</integer>

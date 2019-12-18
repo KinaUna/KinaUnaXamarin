@@ -25,7 +25,7 @@
                 </Grid.Margin>
                 <StackLayout Orientation="Vertical" Margin="10" VerticalOptions="FillAndExpand">
                     <Label x:Name="TitleLabel" Text="{i18n:Translate Notifications}" TextColor="White"></Label>
-                    <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged">
+                    <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged" RemainingItemsThreshold="1" RemainingItemsThresholdReached="NotificationsListCollectionView_OnRemainingItemsThresholdReached" VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="modelsKinaUna:MobileNotification">
                                 <Grid Padding="10">
@@ -53,6 +53,12 @@
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
             </Grid>
+            <StackLayout x:Name="UnreadOnlyStackLayout" Orientation="Horizontal" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{i18n:Translate UnreadOnly}" TextColor="WhiteSmoke" VerticalTextAlignment="Center"></Label>
+                    <Switch x:Name="ReadOnlySwitch" IsToggled="True" HorizontalOptions="End" Toggled="ReadOnlySwitch_OnToggled"></Switch>
+                </StackLayout>
+            </StackLayout>
             <StackLayout x:Name="CloseStackLayout" Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
                 <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>

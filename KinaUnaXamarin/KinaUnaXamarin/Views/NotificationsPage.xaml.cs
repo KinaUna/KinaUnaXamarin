@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
+using PanCardView.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,7 +15,7 @@ namespace KinaUnaXamarin.Views
     public partial class NotificationsPage : ContentPage
     {
         private readonly ObservableRangeCollection<MobileNotification> _notificationsList;
-        
+        private int _count;
 
         public NotificationsPage()
         {
@@ -32,7 +33,8 @@ namespace KinaUnaXamarin.Views
 
         private async Task Reload()
         {
-            List<MobileNotification> notifications = await UserService.GetNotificationsList(10, 0, "EN");
+            List<MobileNotification> notifications = await UserService.GetNotificationsList(10, 0, "EN", ReadOnlySwitch.IsToggled);
+            _count = notifications.Count;
             _notificationsList.ReplaceRange(notifications);
         }
 
@@ -183,6 +185,27 @@ namespace KinaUnaXamarin.Views
         private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)
         {
             await Shell.Current.Navigation.PopModalAsync();
+        }
+
+        private async void ReadOnlySwitch_OnToggled(object sender, ToggledEventArgs e)
+        {
+            await Reload();
+        }
+
+        private async void NotificationsListCollectionView_OnRemainingItemsThresholdReached(object sender, EventArgs e)
+        {
+            if (!IsBusy)
+            {
+                IsBusy = true;
+                List<MobileNotification> notifications = await UserService.GetNotificationsList(20, _count, "EN", ReadOnlySwitch.IsToggled);
+                _count += notifications.Count;
+                if (notifications.Any())
+                {
+                    _notificationsList.AddRange(notifications);
+                }
+
+                IsBusy = false;
+            }
         }
     }
 }

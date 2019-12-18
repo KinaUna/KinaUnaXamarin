@@ -14,15 +14,14 @@ namespace KinaUnaXamarin.ViewModels
 {
     class PhotosViewModel : BaseViewModel
     {
-        
-        private bool _isLoggedIn;
+        private bool _isLoggedIn = true;
         private Progeny _progeny;
         private int _userAccessLevel;
-        private bool _loggedOut;
         private bool _showOptions;
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private int _itemsPerPage = 8;
         private string _tagFilter = "";
         private bool _online = true;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
@@ -66,16 +65,16 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _pageNumber, value);
         }
 
+        public int ItemsPerPage
+        {
+            get => _itemsPerPage;
+            set => SetProperty(ref _itemsPerPage, value);
+        }
+
         public int PageCount
         {
             get => _pageCount;
             set => SetProperty(ref _pageCount, value);
-        }
-
-        public bool LoggedOut
-        {
-            get => _loggedOut;
-            set => SetProperty(ref _loggedOut, value);
         }
 
         public ICommand LoginCommand
@@ -87,10 +86,6 @@ namespace KinaUnaXamarin.ViewModels
         public async void Login()
         {
             IsLoggedIn = await UserService.LoginIdsAsync();
-            if (IsLoggedIn)
-            {
-                LoggedOut = !IsLoggedIn;
-            }
         }
 
         public bool CanUserAddItems

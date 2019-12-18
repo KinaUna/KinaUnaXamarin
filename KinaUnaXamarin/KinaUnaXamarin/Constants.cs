@@ -4,6 +4,7 @@ namespace KinaUnaXamarin
 {
     public static class Constants
     {
+        
         public const string WebUrl = "https://web.kinauna.com";
         public const string ProgenyApiUrl = "https://progenyapi.kinauna.com";
         public const string MediaApiUrl = "https://mediaapi.kinauna.com";
@@ -35,6 +36,9 @@ namespace KinaUnaXamarin
         public const string AuthAccessTokenKey = "auth_accesstoken";
         public const string AuthAccessTokenExpiresKey = "auth_accesstoken_expires";
         public const string AuthIdTokenKey = "auth_idtoken";
-        
+
+        public const string PhotosPerPage = "PhotosPerPage";
+        public const string VideosPerPage = "VideosPerPage";
+        public const string SleepPerPage = "SleepPerPage";
     }
 }

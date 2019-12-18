@@ -16,7 +16,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PhotosPage : ContentPage
     {
-        private readonly PhotosViewModel _photosViewModel;
+        private readonly PhotosViewModel _viewModel;
         private bool _reload = true;
         private double _screenWidth;
         private double _screenHeight;
@@ -24,22 +24,23 @@ namespace KinaUnaXamarin.Views
         public PhotosPage()
         {
             InitializeComponent();
-            _photosViewModel = new PhotosViewModel();
-            _photosViewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
-            ContainerStackLayout.BindingContext = _photosViewModel;
-            BindingContext = _photosViewModel;
+            _viewModel = new PhotosViewModel();
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+            ContainerStackLayout.BindingContext = _viewModel;
+            BindingContext = _viewModel;
             TagFilterPicker.SelectedIndex = 0;
+            
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
                 await SetUserAndProgeny();
-                _photosViewModel.PageNumber = 1;
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
                 await SetUserAndProgeny();
-                _photosViewModel.PageNumber = 1;
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
         }
@@ -48,31 +49,25 @@ namespace KinaUnaXamarin.Views
         {
             base.OnAppearing();
 
+            PhotosListView.SelectedItem = null;
             if (_reload)
             {
                 await SetUserAndProgeny();
-
+                await Reload();
             }
 
-            PhotosListView.SelectedItem = null;
-            
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
             {
-                _photosViewModel.Online = true;
+                _viewModel.Online = true;
             }
             else
             {
-                _photosViewModel.Online = false;
+                _viewModel.Online = false;
             }
-
-            if (_reload)
-            {
-                await Reload();
-            }
-
+            
             _reload = false;
         }
 
@@ -134,7 +129,7 @@ namespace KinaUnaXamarin.Views
 
         private async Task SetUserAndProgeny()
         {
-            _photosViewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
             string userEmail = await UserService.GetUserEmail();
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
@@ -142,36 +137,36 @@ namespace KinaUnaXamarin.Views
 
             if (viewchildParsed)
             {
-                _photosViewModel.ViewChild = viewChildId;
+                _viewModel.ViewChild = viewChildId;
                 try
                 {
-                    _photosViewModel.Progeny = await App.Database.GetProgenyAsync(_photosViewModel.ViewChild);
+                    _viewModel.Progeny = await App.Database.GetProgenyAsync(_viewModel.ViewChild);
                 }
                 catch (Exception)
                 {
-                    _photosViewModel.Progeny = await ProgenyService.GetProgeny(_photosViewModel.ViewChild);
+                    _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
                 }
 
-                _photosViewModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
+                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
             }
 
-            if (String.IsNullOrEmpty(_photosViewModel.UserInfo.Timezone))
+            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
             {
-                _photosViewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
+                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
             }
             try
             {
-                TimeZoneInfo.FindSystemTimeZoneById(_photosViewModel.UserInfo.Timezone);
+                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
             }
             catch (Exception)
             {
-                _photosViewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_photosViewModel.UserInfo.Timezone);
+                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
             }
         }
 
         private async Task Reload()
         {
-            _photosViewModel.IsBusy = true;
+            _viewModel.IsBusy = true;
             await CheckAccount();
             await UpdatePhotos();
             var networkInfo = Connectivity.NetworkAccess;
@@ -179,21 +174,21 @@ namespace KinaUnaXamarin.Views
             if (networkInfo == NetworkAccess.Internet)
             {
                 // Connection to internet is available
-                _photosViewModel.Online = true;
+                _viewModel.Online = true;
             }
             else
             {
-                _photosViewModel.Online = false;
+                _viewModel.Online = false;
             }
-            _photosViewModel.IsBusy = false;
+            _viewModel.IsBusy = false;
         }
 
         private async Task CheckAccount()
         {
             string userEmail = await UserService.GetUserEmail();
-            _photosViewModel.AccessToken = await UserService.GetAuthAccessToken();
+            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
             bool accessTokenCurrent = false;
-            if (_photosViewModel.AccessToken != "")
+            if (_viewModel.AccessToken != "")
             {
                 accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
@@ -202,7 +197,7 @@ namespace KinaUnaXamarin.Views
                     bool loginSuccess = await UserService.LoginIdsAsync();
                     if (loginSuccess)
                     {
-                        _photosViewModel.AccessToken = await UserService.GetAuthAccessToken();
+                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
                         accessTokenCurrent = true;
                     }
 
@@ -210,25 +205,23 @@ namespace KinaUnaXamarin.Views
                 }
             }
 
-            if (String.IsNullOrEmpty(_photosViewModel.AccessToken) || !accessTokenCurrent)
+            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
             {
 
-                _photosViewModel.IsLoggedIn = false;
-                _photosViewModel.LoggedOut = true;
-                _photosViewModel.AccessToken = "";
-                _photosViewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+                _viewModel.IsLoggedIn = false;
+                _viewModel.AccessToken = "";
+                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
             }
             else
             {
-                _photosViewModel.IsLoggedIn = true;
-                _photosViewModel.LoggedOut = false;
-                _photosViewModel.UserInfo = await UserService.GetUserInfo(userEmail);
+                _viewModel.IsLoggedIn = true;
+                _viewModel.UserInfo = await UserService.GetUserInfo(userEmail);
             }
 
             await SetUserAndProgeny();
             
-            Progeny progeny = await ProgenyService.GetProgeny(_photosViewModel.ViewChild);
+            Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
@@ -237,38 +230,38 @@ namespace KinaUnaXamarin.Views
             {
                 progeny.TimeZone = TZConvert.WindowsToIana(progeny.TimeZone);
             }
-            _photosViewModel.Progeny = progeny;
+            _viewModel.Progeny = progeny;
 
             List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
-            _photosViewModel.ProgenyCollection.Clear();
-            _photosViewModel.CanUserAddItems = false;
+            _viewModel.ProgenyCollection.Clear();
+            _viewModel.CanUserAddItems = false;
             foreach (Progeny prog in progenyList)
             {
-                _photosViewModel.ProgenyCollection.Add(prog);
-                if (prog.Admins.ToUpper().Contains(_photosViewModel.UserInfo.UserEmail.ToUpper()))
+                _viewModel.ProgenyCollection.Add(prog);
+                if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
                 {
-                    _photosViewModel.CanUserAddItems = true;
+                    _viewModel.CanUserAddItems = true;
                 }
             }
 
-            _photosViewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_photosViewModel.ViewChild);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.ViewChild);
         }
 
         private async Task UpdatePhotos()
         {
-            _photosViewModel.IsBusy = true;
-            if (_photosViewModel.PageNumber < 1)
+            _viewModel.IsBusy = true;
+            if (_viewModel.PageNumber < 1)
             {
-                _photosViewModel.PageNumber = 1;
+                _viewModel.PageNumber = 1;
             }
-            // _photosViewModel.TagsCollection.Clear();
-            
-            PicturePage photoPage = await ProgenyService.GetPicturePage(_photosViewModel.PageNumber, 8, _photosViewModel.ViewChild, _photosViewModel.UserAccessLevel, _photosViewModel.UserInfo.Timezone, 1, _photosViewModel.TagFilter);
+            // _viewModel.TagsCollection.Clear();
+            _viewModel.ItemsPerPage = Preferences.Get(Constants.PhotosPerPage, 8);
+            PicturePage photoPage = await ProgenyService.GetPicturePage(_viewModel.PageNumber, _viewModel.ItemsPerPage, _viewModel.ViewChild, _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone, 1, _viewModel.TagFilter);
             if (photoPage.PicturesList != null)
             {
-                _photosViewModel.PhotoItems.ReplaceRange(photoPage.PicturesList);
-                _photosViewModel.PageNumber = photoPage.PageNumber;
-                _photosViewModel.PageCount = photoPage.TotalPages;
+                _viewModel.PhotoItems.ReplaceRange(photoPage.PicturesList);
+                _viewModel.PageNumber = photoPage.PageNumber;
+                _viewModel.PageCount = photoPage.TotalPages;
                 PhotosListView.ScrollTo(0);
 
                 if (!string.IsNullOrEmpty(photoPage.TagsList))
@@ -279,33 +272,33 @@ namespace KinaUnaXamarin.Views
                     {
                         if (!string.IsNullOrEmpty(tagString))
                         {
-                            _photosViewModel.TagsCollection.Add(tagString);
+                            _viewModel.TagsCollection.Add(tagString);
                         }
                     }
                 }
             }
 
-            _photosViewModel.IsBusy = false;
+            _viewModel.IsBusy = false;
         }
         
         private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
         {
-            SelectProgenyPage selProPage = new SelectProgenyPage(_photosViewModel.ProgenyCollection);
+            SelectProgenyPage selProPage = new SelectProgenyPage(_viewModel.ProgenyCollection);
             await Shell.Current.Navigation.PushModalAsync(selProPage);
         }
 
         private void OptionsToolBarItem_OnClicked(object sender, EventArgs e)
         {
-            _photosViewModel.ShowOptions = !_photosViewModel.ShowOptions;
+            _viewModel.ShowOptions = !_viewModel.ShowOptions;
         }
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             var networkAccess = e.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if (internetAccess != _photosViewModel.Online)
+            if (internetAccess != _viewModel.Online)
             {
-                _photosViewModel.Online = internetAccess;
+                _viewModel.Online = internetAccess;
                 await Reload();
             }
         }
@@ -323,20 +316,20 @@ namespace KinaUnaXamarin.Views
         private async void NewerButton_OnClicked(object sender, EventArgs e)
         {
 
-            _photosViewModel.PageNumber--;
-            if (_photosViewModel.PageNumber < 1)
+            _viewModel.PageNumber--;
+            if (_viewModel.PageNumber < 1)
             {
-                _photosViewModel.PageNumber = _photosViewModel.PageCount;
+                _viewModel.PageNumber = _viewModel.PageCount;
             }
             await UpdatePhotos();
         }
 
         private async void OlderButton_OnClicked(object sender, EventArgs e)
         {
-            _photosViewModel.PageNumber++;
-            if (_photosViewModel.PageNumber > _photosViewModel.PageCount)
+            _viewModel.PageNumber++;
+            if (_viewModel.PageNumber > _viewModel.PageCount)
             {
-                _photosViewModel.PageNumber = 1;
+                _viewModel.PageNumber = 1;
             }
             await UpdatePhotos();
         }
@@ -355,26 +348,26 @@ namespace KinaUnaXamarin.Views
 
         private async void SetTagsFilterButton_OnClicked(object sender, EventArgs e)
         {
-            _photosViewModel.ShowOptions = false;
-            _photosViewModel.PageNumber = 1;
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
             if (TagFilterPicker.SelectedIndex < 1 )
             {
-                _photosViewModel.TagFilter = "";
+                _viewModel.TagFilter = "";
             }
             else
             {
                 string selectedTag = TagFilterPicker.SelectedItem.ToString();
-                _photosViewModel.TagFilter = selectedTag;
+                _viewModel.TagFilter = selectedTag;
             }
-
+            Preferences.Set(Constants.PhotosPerPage, _viewModel.ItemsPerPage);
             await Reload();
         }
 
         private async void ClearTagFilterButton_OnClicked(object sender, EventArgs e)
         {
-            _photosViewModel.ShowOptions = false;
-            _photosViewModel.PageNumber = 1;
-            _photosViewModel.TagFilter = "";
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
+            _viewModel.TagFilter = "";
             TagFilterPicker.SelectedIndex = 0;
             await Reload();
         }

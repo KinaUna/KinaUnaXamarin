@@ -1123,6 +1123,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Filter by tag.
+        /// </summary>
+        internal static string FilterByTag {
+            get {
+                return ResourceManager.GetString("FilterByTag", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to First Name.
         /// </summary>
         internal static string FirstName {
@@ -1263,6 +1272,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string IsNow {
             get {
                 return ResourceManager.GetString("IsNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Items per page.
+        /// </summary>
+        internal static string ItemsPerPage {
+            get {
+                return ResourceManager.GetString("ItemsPerPage", resourceCulture);
             }
         }
         
@@ -1690,6 +1708,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photos per page.
+        /// </summary>
+        internal static string PicturesPerPage {
+            get {
+                return ResourceManager.GetString("PicturesPerPage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Postal Code.
         /// </summary>
         internal static string PostalCode {
@@ -1987,6 +2014,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Unread Only:.
+        /// </summary>
+        internal static string UnreadOnly {
+            get {
+                return ResourceManager.GetString("UnreadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Upcoming Events.
         /// </summary>
         internal static string UpcomingEvents {
@@ -2073,6 +2109,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string VideoSaved {
             get {
                 return ResourceManager.GetString("VideoSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Videos per page.
+        /// </summary>
+        internal static string VideosPerPage {
+            get {
+                return ResourceManager.GetString("VideosPerPage", resourceCulture);
             }
         }
         

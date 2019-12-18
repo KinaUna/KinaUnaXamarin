@@ -15,28 +15,31 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SleepPage : ContentPage
     {
-        private int _viewChild = Constants.DefaultChildId;
-        private UserInfo _userInfo;
         private SleepViewModel _viewModel;
-        private string _accessToken;
         private bool _reload = true;
-        private bool _online = true;
-
+        
         public SleepPage()
         {
             InitializeComponent();
+            _viewModel = new SleepViewModel();
+            ContainerStackLayout.BindingContext = _viewModel;
+            BindingContext = _viewModel;
+
             if (Device.RuntimePlatform == Device.UWP || Device.RuntimePlatform == Device.iOS)
             {
                 SleepListView.Header = null;
             }
+
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
+                await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();
             });
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();
             });
@@ -47,28 +50,23 @@ namespace KinaUnaXamarin.Views
             base.OnAppearing();
 
             SleepListView.SelectedItem = null;
+
             if (_reload)
             {
-                _viewModel = new SleepViewModel();
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
-                ContainerStackLayout.BindingContext = _viewModel;
-                BindingContext = _viewModel;
+                await SetUserAndProgeny();
+                await Reload();
             }
+
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
             {
-                OfflineStackLayout.IsVisible = false;
+                _viewModel.Online = true;
             }
             else
             {
-                OfflineStackLayout.IsVisible = true;
-            }
-
-            if (_reload)
-            {
-                await Reload();
+                _viewModel.Online = false;
             }
 
             _reload = false;
@@ -85,28 +83,64 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             await CheckAccount();
             await UpdateSleep();
+
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)
             {
                 // Connection to internet is available
-                _online = true;
-                OfflineStackLayout.IsVisible = false;
+                _viewModel.Online = true;
             }
             else
             {
-                _online = false;
-                OfflineStackLayout.IsVisible = true;
+                _viewModel.Online = false;
             }
             _viewModel.IsBusy = false;
+        }
+
+        private async Task SetUserAndProgeny()
+        {
+            _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+
+            string userEmail = await UserService.GetUserEmail();
+            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
+            bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
+
+            if (viewchildParsed)
+            {
+                _viewModel.ViewChild = viewChildId;
+                try
+                {
+                    _viewModel.Progeny = await App.Database.GetProgenyAsync(_viewModel.ViewChild);
+                }
+                catch (Exception)
+                {
+                    _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
+                }
+
+                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
+            }
+
+            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
+            {
+                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
+            }
+            catch (Exception)
+            {
+                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
+            }
         }
 
         private async Task CheckAccount()
         {
             string userEmail = await UserService.GetUserEmail();
-            _accessToken = await UserService.GetAuthAccessToken();
+            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
             bool accessTokenCurrent = false;
-            if (_accessToken != "")
+            if (_viewModel.AccessToken != "")
             {
                 accessTokenCurrent = await UserService.IsAccessTokenCurrent();
 
@@ -115,7 +149,7 @@ namespace KinaUnaXamarin.Views
                     bool loginSuccess = await UserService.LoginIdsAsync();
                     if (loginSuccess)
                     {
-                        _accessToken = await UserService.GetAuthAccessToken();
+                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
                         accessTokenCurrent = true;
                     }
 
@@ -123,54 +157,23 @@ namespace KinaUnaXamarin.Views
                 }
             }
 
-            if (String.IsNullOrEmpty(_accessToken) || !accessTokenCurrent)
+            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
             {
 
                 _viewModel.IsLoggedIn = false;
-                _viewModel.LoggedOut = true;
-                _accessToken = "";
-                _userInfo = OfflineDefaultData.DefaultUserInfo;
+                _viewModel.AccessToken = "";
+                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
             }
             else
             {
                 _viewModel.IsLoggedIn = true;
-                _viewModel.LoggedOut = false;
-                _userInfo = await UserService.GetUserInfo(userEmail);
+                _viewModel.UserInfo = await UserService.GetUserInfo(userEmail);
             }
 
-            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            bool viewchildParsed = int.TryParse(userviewchild, out _viewChild);
-            if (!viewchildParsed)
-            {
-                _viewChild = _userInfo.ViewChild;
-            }
-            if (_viewChild == 0)
-            {
-                if (_userInfo.ViewChild != 0)
-                {
-                    _viewChild = _userInfo.ViewChild;
-                }
-                else
-                {
-                    _viewChild = Constants.DefaultChildId;
-                }
-            }
+            await SetUserAndProgeny();
 
-            if (String.IsNullOrEmpty(_userInfo.Timezone))
-            {
-                _userInfo.Timezone = Constants.DefaultTimeZone;
-            }
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(_userInfo.Timezone);
-            }
-            catch (Exception)
-            {
-                _userInfo.Timezone = TZConvert.WindowsToIana(_userInfo.Timezone);
-            }
-
-            Progeny progeny = await ProgenyService.GetProgeny(_viewChild);
+            Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
             try
             {
                 TimeZoneInfo.FindSystemTimeZoneById(progeny.TimeZone);
@@ -187,13 +190,13 @@ namespace KinaUnaXamarin.Views
             foreach (Progeny prog in progenyList)
             {
                 _viewModel.ProgenyCollection.Add(prog);
-                if (prog.Admins.ToUpper().Contains(_userInfo.UserEmail.ToUpper()))
+                if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
                 {
                     _viewModel.CanUserAddItems = true;
                 }
             }
 
-            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewChild);
+            _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.ViewChild);
         }
 
         private async Task UpdateSleep()
@@ -203,8 +206,8 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.PageNumber = 1;
             }
-
-            SleepListPage sleepListPage = await ProgenyService.GetSleepListPage(_viewModel.PageNumber, 20, _viewChild, _viewModel.UserAccessLevel, _userInfo.Timezone, 1);
+            _viewModel.ItemsPerPage = Preferences.Get(Constants.SleepPerPage, 20);
+            SleepListPage sleepListPage = await ProgenyService.GetSleepListPage(_viewModel.PageNumber, _viewModel.ItemsPerPage, _viewModel.ViewChild, _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone, 1);
             if (sleepListPage.SleepList != null)
             {
                 _viewModel.SleepItems.ReplaceRange(sleepListPage.SleepList);
@@ -230,9 +233,9 @@ namespace KinaUnaXamarin.Views
         {
             var networkAccess = e.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
-            if (internetAccess != _online)
+            if (internetAccess != _viewModel.Online)
             {
-                _online = internetAccess;
+                _viewModel.Online = internetAccess;
                 await Reload();
             }
         }
@@ -278,6 +281,14 @@ namespace KinaUnaXamarin.Views
                 await Shell.Current.Navigation.PushModalAsync(sleepDetailPage);
             }
 
+        }
+
+        private async void SetOptionsButton_OnClicked(object sender, EventArgs e)
+        {
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
+            Preferences.Set(Constants.SleepPerPage, _viewModel.ItemsPerPage);
+            await Reload();
         }
     }
 }

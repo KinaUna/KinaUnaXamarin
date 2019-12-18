@@ -10,10 +10,9 @@ namespace KinaUnaXamarin.ViewModels
 {
     class TimelineFeedViewModel : BaseViewModel
     {
-        private bool _isLoggedIn;
+        private bool _isLoggedIn = true;
         private Progeny _progeny;
         private int _userAccessLevel;
-        private bool _loggedOut;
         private bool _showOptions;
         private int _selectedYear;
         private int _selectedMonth;
@@ -37,7 +36,7 @@ namespace KinaUnaXamarin.ViewModels
         public int ViewChild { get; set; }
 
         public UserInfo UserInfo { get; set; }
-
+        
         public string AccessToken { get; set; }
 
         public string UserEmail { get; set; }
@@ -47,13 +46,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _online;
             set => SetProperty(ref _online, value);
         }
-
-        public bool LoggedOut
-        {
-            get => _loggedOut;
-            set => SetProperty(ref _loggedOut, value);
-        }
-
+        
         public ICommand LoginCommand
         {
             get;
@@ -63,10 +56,6 @@ namespace KinaUnaXamarin.ViewModels
         public async void Login()
         {
             IsLoggedIn = await UserService.LoginIdsAsync();
-            if (IsLoggedIn)
-            {
-                LoggedOut = !IsLoggedIn;
-            }
         }
 
         public bool CanUserAddItems

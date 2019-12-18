@@ -17,8 +17,9 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class YearAgoPage : ContentPage
     {
-        private TimelineFeedViewModel _viewModel;
+        private readonly TimelineFeedViewModel _viewModel;
         private bool _reload = true;
+
         public YearAgoPage()
         {
             InitializeComponent();
@@ -48,15 +49,21 @@ namespace KinaUnaXamarin.Views
                 _viewModel.SelectedYear = DateTime.UtcNow.Year;
                 _viewModel.SelectedMonth = DateTime.UtcNow.Month;
                 _viewModel.SelectedDay = DateTime.UtcNow.Day;
-            }
-            base.OnAppearing();
-
-            var networkAccess = Connectivity.NetworkAccess;
-            _viewModel.Online = networkAccess == NetworkAccess.Internet;
-            if (_reload)
-            {
                 await SetUserAndProgeny();
                 await Reload();
+            }
+
+            TimeLineListView.SelectedItem = null;
+
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                _viewModel.Online = true;
+            }
+            else
+            {
+                _viewModel.Online = false;
             }
 
             _reload = false;
@@ -72,9 +79,7 @@ namespace KinaUnaXamarin.Views
         {
             _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
-            _viewModel.UserEmail = await UserService.GetUserEmail();
-            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
-
+            string userEmail = await UserService.GetUserEmail();
             string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
             bool viewchildParsed = int.TryParse(userviewchild, out int viewChildId);
 
@@ -90,7 +95,7 @@ namespace KinaUnaXamarin.Views
                     _viewModel.Progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
                 }
 
-                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(_viewModel.UserEmail);
+                _viewModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
             }
 
             if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
@@ -105,6 +110,66 @@ namespace KinaUnaXamarin.Views
             {
                 _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
             }
+        }
+
+        private async Task Reload()
+        {
+            _viewModel.IsBusy = true;
+            await CheckAccount();
+            await UpdateTimeLine();
+
+            var networkInfo = Connectivity.NetworkAccess;
+
+            if (networkInfo == NetworkAccess.Internet)
+            {
+                // Connection to internet is available
+                _viewModel.Online = true;
+            }
+            else
+            {
+                _viewModel.Online = false;
+            }
+
+            _viewModel.IsBusy = false;
+        }
+
+        private async Task CheckAccount()
+        {
+            string userEmail = await UserService.GetUserEmail();
+            _viewModel.AccessToken = await UserService.GetAuthAccessToken();
+            bool accessTokenCurrent = false;
+            if (_viewModel.AccessToken != "")
+            {
+                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
+
+                if (!accessTokenCurrent)
+                {
+                    bool loginSuccess = await UserService.LoginIdsAsync();
+                    if (loginSuccess)
+                    {
+                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
+                        accessTokenCurrent = true;
+                    }
+
+                    await Reload();
+                }
+            }
+
+            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
+            {
+
+                _viewModel.IsLoggedIn = false;
+                _viewModel.AccessToken = "";
+                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
+
+            }
+            else
+            {
+                _viewModel.IsLoggedIn = true;
+                _viewModel.UserInfo = await UserService.GetUserInfo(userEmail);
+            }
+
+            await SetUserAndProgeny();
 
             Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
             try
@@ -117,78 +182,19 @@ namespace KinaUnaXamarin.Views
             }
             _viewModel.Progeny = progeny;
 
-            List<Progeny> progenyList = await ProgenyService.GetProgenyList(_viewModel.UserEmail);
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
             _viewModel.ProgenyCollection.Clear();
             _viewModel.CanUserAddItems = false;
-            if (progenyList != null && progenyList.Any())
+            foreach (Progeny prog in progenyList)
             {
-                foreach (Progeny prog in progenyList)
+                _viewModel.ProgenyCollection.Add(prog);
+                if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
                 {
-                    _viewModel.ProgenyCollection.Add(prog);
-                    if (prog.Admins.ToUpper().Contains(_viewModel.UserInfo.UserEmail.ToUpper()))
-                    {
-                        _viewModel.CanUserAddItems = true;
-                    }
+                    _viewModel.CanUserAddItems = true;
                 }
             }
 
             _viewModel.UserAccessLevel = await ProgenyService.GetAccessLevel(_viewModel.ViewChild);
-        }
-
-        private async Task Reload()
-        {
-            _viewModel.IsBusy = true;
-            await CheckAccount();
-            await UpdateTimeLine();
-            
-            var networkInfo = Connectivity.NetworkAccess;
-            if (networkInfo == NetworkAccess.Internet)
-            {
-                // Connection to internet is available
-                _viewModel.Online = true;
-            }
-            else
-            {
-                _viewModel.Online = false;
-            }
-            _viewModel.IsBusy = false;
-        }
-
-        private async Task CheckAccount()
-        {
-            bool accessTokenCurrent = false;
-            if (_viewModel.AccessToken != "")
-            {
-                accessTokenCurrent = await UserService.IsAccessTokenCurrent();
-
-                if (!accessTokenCurrent && _viewModel.Online)
-                {
-                    bool loginSuccess = await UserService.LoginIdsAsync();
-                    if (loginSuccess)
-                    {
-                        _viewModel.AccessToken = await UserService.GetAuthAccessToken();
-                        accessTokenCurrent = true;
-                    }
-
-                    await SetUserAndProgeny();
-                    await Reload();
-                }
-            }
-
-            if (String.IsNullOrEmpty(_viewModel.AccessToken) || !accessTokenCurrent)
-            {
-
-                _viewModel.IsLoggedIn = false;
-                _viewModel.LoggedOut = true;
-                _viewModel.AccessToken = "";
-                _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
-
-            }
-            else
-            {
-                _viewModel.IsLoggedIn = true;
-                _viewModel.LoggedOut = false;
-            }
         }
 
         private async Task UpdateTimeLine()

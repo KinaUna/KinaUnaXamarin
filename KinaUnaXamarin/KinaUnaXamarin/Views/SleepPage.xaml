@@ -11,6 +11,12 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              Title="{i18n:Translate Sleep}"
              Visual="Material">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
+            <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
@@ -26,13 +32,20 @@
                 </OnPlatform>
             </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
-                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
-                <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}"
+                <Button Command="{Binding LoginCommand}" IsVisible="{Binding IsLoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}"
                         BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
                 <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" VerticalOptions="Start">
-
+                    <StackLayout Orientation="Vertical" Margin="0, 10, 0, 0">
+                        <Label Text="{i18n:Translate ItemsPerPage}" TextColor="DarkSlateGray" Margin="10, 10, 0, 0"></Label>
+                        <Label x:Name="ItemsPerPageLabel" Text="{Binding ItemsPerPage}" TextColor="Black" FontSize="18" HorizontalOptions="Center"></Label>
+                        <Slider x:Name="ItemsPerPageSlider"  BackgroundColor="White" Margin="40, 10, 0, 10" Maximum="64" Minimum="4" Value="{Binding ItemsPerPage}"></Slider>
+                    </StackLayout>
+                    <StackLayout Orientation="Vertical" Margin="0, 20, 0, 10">
+                        <Button x:Name="SetTagsFilterButton" Text="{i18n:Translate Save}" Clicked="SetOptionsButton_OnClicked" BackgroundColor="DarkGreen" TextColor="White"></Button>
+                    </StackLayout>
                 </StackLayout>
                 <CollectionView x:Name="SleepListView" ItemsSource="{Binding SleepItems}" Margin="5" BackgroundColor="WhiteSmoke" SelectionChanged="SleepListView_OnSelectionChanged" SelectionMode="Single" VerticalOptions="FillAndExpand" >
                     <CollectionView.Header>

@@ -18,8 +18,8 @@
                         <On Platform="UWP">0,0,40,0</On>
                     </OnPlatform>
                 </Grid.Margin>
-                <StackLayout Orientation="Vertical" Margin="10">
-                    <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged">
+                <StackLayout Orientation="Vertical" Margin="10" VerticalOptions="FillAndExpand">
+                    <CollectionView x:Name="NotificationsListCollectionView" SelectionMode="Single" SelectionChanged="NotificationsListCollectionView_OnSelectionChanged" RemainingItemsThreshold="1" RemainingItemsThresholdReached="NotificationsListCollectionView_OnRemainingItemsThresholdReached" VerticalOptions="FillAndExpand">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="modelsKinaUna:MobileNotification">
                                 <Grid Padding="10">
@@ -47,7 +47,12 @@
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
             </Grid>
+            <StackLayout x:Name="UnreadOnlyStackLayout" Orientation="Horizontal" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand" BackgroundColor="Black">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                    <Label Text="{i18n:Translate UnreadOnly}" TextColor="WhiteSmoke" VerticalTextAlignment="Center"></Label>
+                    <Switch x:Name="ReadOnlySwitch" IsToggled="True" HorizontalOptions="End" Toggled="ReadOnlySwitch_OnToggled"></Switch>
+                </StackLayout>
+            </StackLayout>
         </StackLayout>
-        
     </ContentPage.Content>
 </ContentPage>

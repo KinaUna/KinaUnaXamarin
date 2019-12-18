@@ -825,4 +825,19 @@
   <data name="AllTags" xml:space="preserve">
     <value>Alle tags</value>
   </data>
+  <data name="FilterByTag" xml:space="preserve">
+    <value>Tag-filter</value>
+  </data>
+  <data name="PicturesPerPage" xml:space="preserve">
+    <value>Foto per side</value>
+  </data>
+  <data name="UnreadOnly" xml:space="preserve">
+    <value>Kun ulæste:</value>
+  </data>
+  <data name="VideosPerPage" xml:space="preserve">
+    <value>Videoer per side</value>
+  </data>
+  <data name="ItemsPerPage" xml:space="preserve">
+    <value>Data per side</value>
+  </data>
 </root>

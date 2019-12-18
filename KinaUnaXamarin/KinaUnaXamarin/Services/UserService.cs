@@ -625,7 +625,7 @@ namespace KinaUnaXamarin.Services
             return new UserInfo();
         }
 
-        public static async Task<List<MobileNotification>> GetNotificationsList(int count, int start, string language)
+        public static async Task<List<MobileNotification>> GetNotificationsList(int count, int start, string language, bool readOnly)
         {
             bool online = ProgenyService.Online();
             if (online)
@@ -647,18 +647,30 @@ namespace KinaUnaXamarin.Services
 
                     try
                     {
-                        var result = await client.GetAsync("api/notifications/latest/" + count + "/" + start + "/" + language).ConfigureAwait(false);
+                        HttpResponseMessage result;
+                        if (readOnly)
+                        {
+                            result = await client.GetAsync("api/notifications/unread/" + count + "/" + start + "/" + language).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            result = await client.GetAsync("api/notifications/latest/" + count + "/" + start + "/" + language).ConfigureAwait(false);
+                        }
 
                         string userTimeZone = await GetUserTimezone();
                         if (result.IsSuccessStatusCode)
                         {
                             var notificationsString = await result.Content.ReadAsStringAsync();
                             List<MobileNotification> notificationsList = JsonConvert.DeserializeObject<List<MobileNotification>>(notificationsString);
-                            foreach (MobileNotification notif in notificationsList)
+                            if (notificationsList.Any())
                             {
-                                notif.Time = TimeZoneInfo.ConvertTimeFromUtc(notif.Time, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                foreach (MobileNotification notif in notificationsList)
+                                {
+                                    notif.Time = TimeZoneInfo.ConvertTimeFromUtc(notif.Time, TimeZoneInfo.FindSystemTimeZoneById(userTimeZone));
+                                }
                             }
-                            await SecureStorage.SetAsync("NotificationsList" + count + "start" + start + "lang" + language, JsonConvert.SerializeObject(notificationsList));
+                            
+                            await SecureStorage.SetAsync("NotificationsList" + count + "start" + start + "lang" + language + "readonly" + readOnly, JsonConvert.SerializeObject(notificationsList));
                             return notificationsList;
                         }
                         else
@@ -675,7 +687,7 @@ namespace KinaUnaXamarin.Services
             }
             else
             {
-                string notificationsString = await SecureStorage.GetAsync("NotificationsList" + count + "start" + start + "lang" + language);
+                string notificationsString = await SecureStorage.GetAsync("NotificationsList" + count + "start" + start + "lang" + language + "readonly" + readOnly);
                 if (string.IsNullOrEmpty(notificationsString))
                 {
                     return new List<MobileNotification>();

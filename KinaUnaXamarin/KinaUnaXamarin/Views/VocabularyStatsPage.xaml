@@ -9,6 +9,12 @@
              xmlns:oxy="clr-namespace:OxyPlot.Xamarin.Forms;assembly=OxyPlot.Xamarin.Forms"
              Title="{i18n:Translate Vocabulary}"
              Visual="Material">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
+            <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
                      Clicked="ReloadToolbarButton_OnClicked" />
@@ -33,12 +39,17 @@
                     </Frame>
                 </Grid>
             </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
-            <Button Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" VerticalOptions="Start"
-                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
-            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="5, 0, 5, 5" Padding="15">
+            <Button Command="{Binding LoginCommand}" IsVisible="{Binding IsLoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}"
+                    BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" VerticalOptions="Start"/>
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Padding="15">
+                <StackLayout.Margin>
+                    <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 5">
+                        <On Platform="iOS">0,60,0,5</On>
+                    </OnPlatform>
+                </StackLayout.Margin>
                 <Label Text="{i18n:Translate ChartOptions}"></Label>
                 <Label Margin="20, 10, 0, 0" Text="{i18n:Translate Start}"></Label>
                 <DatePicker Margin="40, 0, 0, 0" x:Name="StartDatePicker" Date="{Binding StartDate}" 
