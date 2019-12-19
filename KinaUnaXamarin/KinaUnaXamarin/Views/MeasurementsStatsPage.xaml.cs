@@ -21,7 +21,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MeasurementsStatsPage : ContentPage
     {
-        private MeasurementsStatsViewModel _viewModel;
+        private readonly MeasurementsStatsViewModel _viewModel;
         private bool _reload = true;
         
         public MeasurementsStatsPage()

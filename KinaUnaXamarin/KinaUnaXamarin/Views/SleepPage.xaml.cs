@@ -15,7 +15,7 @@ namespace KinaUnaXamarin.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class SleepPage : ContentPage
     {
-        private SleepViewModel _viewModel;
+        private readonly SleepViewModel _viewModel;
         private bool _reload = true;
         
         public SleepPage()
@@ -32,6 +32,7 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
+                _reload = true;
                 await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();
@@ -39,6 +40,7 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                _reload = true;
                 await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();

@@ -34,15 +34,17 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
-                _viewModel.PageNumber = 1;
+                _reload = true;
                 await SetUserAndProgeny();
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
-                _viewModel.PageNumber = 1;
+                _reload = true;
                 await SetUserAndProgeny();
+                _viewModel.PageNumber = 1;
                 await Reload();
             });
         }
@@ -52,12 +54,13 @@ namespace KinaUnaXamarin.Views
             base.OnAppearing();
 
             VocabularyListView.SelectedItem = null;
+
             if (_reload)
             {
-
                 await SetUserAndProgeny();
-
+                await Reload();
             }
+
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
@@ -68,11 +71,6 @@ namespace KinaUnaXamarin.Views
             else
             {
                 _viewModel.Online = false;
-            }
-
-            if (_reload)
-            {
-                await Reload();
             }
 
             _reload = false;
@@ -89,6 +87,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.IsBusy = true;
             await CheckAccount();
             await UpdateVocabulary();
+
             var networkInfo = Connectivity.NetworkAccess;
 
             if (networkInfo == NetworkAccess.Internet)
@@ -125,6 +124,19 @@ namespace KinaUnaXamarin.Views
 
                 _viewModel.UserInfo = await App.Database.GetUserInfoAsync(userEmail);
             }
+
+            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
+            {
+                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
+            }
+            try
+            {
+                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
+            }
+            catch (Exception)
+            {
+                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
+            }
         }
 
         private async Task CheckAccount()
@@ -153,7 +165,6 @@ namespace KinaUnaXamarin.Views
             {
 
                 _viewModel.IsLoggedIn = false;
-                _viewModel.LoggedOut = true;
                 _viewModel.AccessToken = "";
                 _viewModel.UserInfo = OfflineDefaultData.DefaultUserInfo;
 
@@ -161,41 +172,10 @@ namespace KinaUnaXamarin.Views
             else
             {
                 _viewModel.IsLoggedIn = true;
-                _viewModel.LoggedOut = false;
                 _viewModel.UserInfo = await UserService.GetUserInfo(userEmail);
             }
 
-            string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
-            int viewChild = 0;
-            bool viewchildParsed = int.TryParse(userviewchild, out viewChild);
-            if (!viewchildParsed)
-            {
-                _viewModel.ViewChild = _viewModel.UserInfo.ViewChild;
-            }
-            if (viewChild == 0)
-            {
-                if (_viewModel.UserInfo.ViewChild != 0)
-                {
-                    _viewModel.ViewChild = _viewModel.UserInfo.ViewChild;
-                }
-                else
-                {
-                    _viewModel.ViewChild = Constants.DefaultChildId;
-                }
-            }
-
-            if (String.IsNullOrEmpty(_viewModel.UserInfo.Timezone))
-            {
-                _viewModel.UserInfo.Timezone = Constants.DefaultTimeZone;
-            }
-            try
-            {
-                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone);
-            }
-            catch (Exception)
-            {
-                _viewModel.UserInfo.Timezone = TZConvert.WindowsToIana(_viewModel.UserInfo.Timezone);
-            }
+            await SetUserAndProgeny();
 
             Progeny progeny = await ProgenyService.GetProgeny(_viewModel.ViewChild);
             try
@@ -231,7 +211,8 @@ namespace KinaUnaXamarin.Views
                 _viewModel.PageNumber = 1;
             }
 
-            VocabularyListPage vocabularyListPage = await ProgenyService.GetVocabularyListPage(_viewModel.PageNumber, 20, _viewModel.ViewChild, _viewModel.UserAccessLevel, 1);
+            _viewModel.ItemsPerPage = Preferences.Get(Constants.VocabularyPerPage, 20);
+            VocabularyListPage vocabularyListPage = await ProgenyService.GetVocabularyListPage(_viewModel.PageNumber, _viewModel.ItemsPerPage, _viewModel.ViewChild, _viewModel.UserAccessLevel, 1);
             if (vocabularyListPage.VocabularyList != null)
             {
                 vocabularyListPage.VocabularyList =
@@ -307,6 +288,14 @@ namespace KinaUnaXamarin.Views
                 await Shell.Current.Navigation.PushModalAsync(vocabularyDetailPage);
             }
 
+        }
+
+        private async void SetOptionsButton_OnClicked(object sender, EventArgs e)
+        {
+            _viewModel.ShowOptions = false;
+            _viewModel.PageNumber = 1;
+            Preferences.Set(Constants.VocabularyPerPage, _viewModel.ItemsPerPage);
+            await Reload();
         }
     }
 }

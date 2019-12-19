@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
@@ -11,14 +12,14 @@ namespace KinaUnaXamarin.ViewModels
 {
     class NotesViewModel:BaseViewModel
     {
-        private bool _isLoggedIn;
+        private bool _isLoggedIn = true;
         private Progeny _progeny;
-        private int _userAccessLevel;
-        private bool _loggedOut;
         private bool _showOptions;
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
+        private bool _online = true;
+        private int _itemsPerPage = 5;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
         public ObservableRangeCollection<Note> NoteItems { get; set; }
@@ -26,9 +27,29 @@ namespace KinaUnaXamarin.ViewModels
         public NotesViewModel()
         {
             LoginCommand = new Command(Login);
+            ViewChild = Constants.DefaultChildId;
+            UserInfo = OfflineDefaultData.DefaultUserInfo;
             ProgenyCollection = new ObservableCollection<Progeny>();
             NoteItems = new ObservableRangeCollection<Note>();
             
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
+        }
+
+        public int ItemsPerPage
+        {
+            get => _itemsPerPage;
+            set => SetProperty(ref _itemsPerPage, value);
         }
 
         public int PageNumber
@@ -42,12 +63,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _pageCount;
             set => SetProperty(ref _pageCount, value);
         }
-
-        public bool LoggedOut
-        {
-            get => _loggedOut;
-            set => SetProperty(ref _loggedOut, value);
-        }
+        
 
         public ICommand LoginCommand
         {
@@ -58,10 +74,6 @@ namespace KinaUnaXamarin.ViewModels
         public async void Login()
         {
             IsLoggedIn = await UserService.LoginIdsAsync();
-            if (IsLoggedIn)
-            {
-                LoggedOut = !IsLoggedIn;
-            }
         }
 
         public bool CanUserAddItems
@@ -82,11 +94,7 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _progeny, value);
         }
 
-        public int UserAccessLevel
-        {
-            get => _userAccessLevel;
-            set => SetProperty(ref _userAccessLevel, value);
-        }
+        public int UserAccessLevel { get; set; }
 
         public bool IsLoggedIn
         {

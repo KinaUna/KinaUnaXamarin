@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
@@ -14,27 +12,43 @@ namespace KinaUnaXamarin.ViewModels
 {
     class VocabularyViewModel: BaseViewModel
     {
-        private bool _isLoggedIn;
-        private int _viewChild = Constants.DefaultChildId;
-        private UserInfo _userInfo;
-        private string _accessToken;
+        private bool _isLoggedIn = true;
         private Progeny _progeny;
-        private int _userAccessLevel;
-        private bool _loggedOut;
         private bool _showOptions;
         private bool _canUserAddItems;
         private int _pageNumber;
         private int _pageCount;
         private bool _online = true;
         private bool _isRefreshing;
+        private int _itemsPerPage = 20;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
         public VocabularyViewModel()
         {
             LoginCommand = new Command(Login);
+            ViewChild = Constants.DefaultChildId;
+            UserInfo = OfflineDefaultData.DefaultUserInfo;
             ProgenyCollection = new ObservableCollection<Progeny>();
             VocabularyItems = new ObservableRangeCollection<VocabularyItem>();
+        }
+
+        public int ViewChild { get; set; }
+
+        public UserInfo UserInfo { get; set; }
+
+        public string AccessToken { get; set; }
+
+        public bool Online
+        {
+            get => _online;
+            set => SetProperty(ref _online, value);
+        }
+
+        public int ItemsPerPage
+        {
+            get => _itemsPerPage;
+            set => SetProperty(ref _itemsPerPage, value);
         }
 
         public ICommand RefreshCommand => new Command(async () => await RefreshAsync());
@@ -55,7 +69,6 @@ namespace KinaUnaXamarin.ViewModels
                 VocabularyItems.ReplaceRange(vocabularyListPage.VocabularyList);
                 PageNumber = vocabularyListPage.PageNumber;
                 PageCount = vocabularyListPage.TotalPages;
-                // VocabularyListView.ScrollTo(0);
             }
             IsRefreshing = false;
         }
@@ -65,31 +78,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _isRefreshing;
             set => SetProperty(ref _isRefreshing, value);
         }
-
-        public bool Online
-        {
-            get => _online;
-            set => SetProperty(ref _online, value);
-        }
-
-        public int ViewChild
-        {
-            get => _viewChild;
-            set => SetProperty(ref _viewChild, value);
-        }
-
-        public UserInfo UserInfo
-        {
-            get => _userInfo;
-            set => SetProperty(ref _userInfo, value);
-        }
-
-        public string AccessToken
-        {
-            get => _accessToken;
-            set => SetProperty(ref _accessToken, value);
-        }
-
+        
         public int PageNumber
         {
             get => _pageNumber;
@@ -101,13 +90,7 @@ namespace KinaUnaXamarin.ViewModels
             get => _pageCount;
             set => SetProperty(ref _pageCount, value);
         }
-
-        public bool LoggedOut
-        {
-            get => _loggedOut;
-            set => SetProperty(ref _loggedOut, value);
-        }
-
+        
         public ICommand LoginCommand
         {
             get;
@@ -117,10 +100,6 @@ namespace KinaUnaXamarin.ViewModels
         public async void Login()
         {
             IsLoggedIn = await UserService.LoginIdsAsync();
-            if (IsLoggedIn)
-            {
-                LoggedOut = !IsLoggedIn;
-            }
         }
 
         public bool CanUserAddItems
@@ -141,11 +120,7 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _progeny, value);
         }
 
-        public int UserAccessLevel
-        {
-            get => _userAccessLevel;
-            set => SetProperty(ref _userAccessLevel, value);
-        }
+        public int UserAccessLevel { get; set; }
 
         public ObservableRangeCollection<VocabularyItem> VocabularyItems { get; set; }
 

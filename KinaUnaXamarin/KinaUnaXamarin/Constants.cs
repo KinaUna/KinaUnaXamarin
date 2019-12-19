@@ -40,5 +40,9 @@ namespace KinaUnaXamarin
         public const string PhotosPerPage = "PhotosPerPage";
         public const string VideosPerPage = "VideosPerPage";
         public const string SleepPerPage = "SleepPerPage";
+        public const string MeasurementsPerPage = "MeasurementsPerPage";
+        public const string VocabularyPerPage = "VocabularyPerPage";
+        public const string NotesPerPage = "NotesPerPage";
+        public const string SkillsPerPage = "SkillsPerPage";
     }
 }
