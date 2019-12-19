@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
@@ -17,7 +18,7 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddLocationPage : ContentPage
+    public partial class AddLocationPage
     {
         private readonly AddLocationViewModel _viewModel;
         private bool _online = true;
@@ -63,7 +64,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =
@@ -119,7 +125,7 @@ namespace KinaUnaXamarin.Views.AddItem
             Location location = new Location();
             
             location.ProgenyId = progeny.Id;
-            location.AccessLevel = _viewModel?.AccessLevel ?? 0;
+            location.AccessLevel = _viewModel.AccessLevel;
             string userEmail = await UserService.GetUserEmail();
             UserInfo userinfo = await UserService.GetUserInfo(userEmail);
             location.Author = userinfo.UserId;
@@ -204,8 +210,8 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 if (myLocation != null)
                 {
-                    LatitudeEntry.Text = myLocation.Latitude.ToString();
-                    LongitudeEntry.Text = myLocation.Longitude.ToString();
+                    LatitudeEntry.Text = myLocation.Latitude.ToString(CultureInfo.InvariantCulture);
+                    LongitudeEntry.Text = myLocation.Longitude.ToString(CultureInfo.InvariantCulture);
                 }
             }
             catch (FeatureNotSupportedException)
@@ -294,7 +300,7 @@ namespace KinaUnaXamarin.Views.AddItem
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
 
                     autoSuggestBox.ItemsSource = null;

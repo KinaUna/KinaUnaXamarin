@@ -8,7 +8,7 @@
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.VaccinationDetailPage"
+             x:Class="KinaUnaXamarin.Views.Details.VaccinationDetailPage"
              Visual="Material"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true">

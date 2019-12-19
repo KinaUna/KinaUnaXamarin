@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Windows.Input;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;

@@ -1,10 +1,9 @@
-﻿using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
+﻿using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Settings
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class RegisterPage : ContentPage
+    public partial class RegisterPage
     {
         public RegisterPage()
         {

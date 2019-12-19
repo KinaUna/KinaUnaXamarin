@@ -5,7 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.RegisterPage"
+             x:Class="KinaUnaXamarin.Views.Settings.RegisterPage"
              Title="Register">
     <ContentPage.BindingContext>
         <viewModels:RegisterViewModel></viewModels:RegisterViewModel>

@@ -93,7 +93,7 @@ namespace KinaUnaXamarin.Services
                     {
                         client.SetBearerToken(accessToken);
                         var result = await client.GetAsync("api/progeny/mobile/" + progenyId).ConfigureAwait(false);
-                        Progeny progeny = new Progeny();
+                        Progeny progeny;
                         if (result.IsSuccessStatusCode)
                         {
                             var progenyString = await result.Content.ReadAsStringAsync();
@@ -424,7 +424,7 @@ namespace KinaUnaXamarin.Services
             {
                 foreach (Progeny progeny in progenyList)
                 {
-                    int al = 5;
+                    int al;
                     try
                     {
                         al = await GetAccessLevel(progeny.Id);
@@ -4662,7 +4662,7 @@ namespace KinaUnaXamarin.Services
                             {
                                 foreach (Location location in locationsListPage.LocationsList)
                                 {
-                                    if (location.Latitude != 0 && location.Longitude != 0)
+                                    if (Math.Abs(location.Latitude) > 0.00001 && Math.Abs(location.Longitude) > 0.00001)
                                     {
                                         location.Position = new Position(location.Latitude, location.Longitude);
                                     }
@@ -4699,7 +4699,7 @@ namespace KinaUnaXamarin.Services
                             {
                                 foreach(Location location in locationsListPage.LocationsList)
                                 {
-                                    if (location.Latitude != 0 && location.Longitude != 0)
+                                    if (Math.Abs(location.Latitude) > 0.00001 && Math.Abs(location.Longitude) > 0.00001)
                                     {
                                         location.Position = new Position(location.Latitude, location.Longitude);
                                     }
@@ -4754,7 +4754,7 @@ namespace KinaUnaXamarin.Services
                         {
                             foreach (Location location in locationsList)
                             {
-                                if (location.Latitude != 0 && location.Longitude != 0)
+                                if (Math.Abs(location.Latitude) > 0.00001 && Math.Abs(location.Longitude) > 0.00001)
                                 {
                                     location.Position = new Position(location.Latitude, location.Longitude);
                                 }
@@ -4782,7 +4782,7 @@ namespace KinaUnaXamarin.Services
                         {
                             foreach (Location location in locationsList)
                             {
-                                if (location.Latitude != 0 && location.Longitude != 0)
+                                if (Math.Abs(location.Latitude) > 0.00001 && Math.Abs(location.Longitude) > 0.00001)
                                 {
                                     location.Position = new Position(location.Latitude, location.Longitude);
                                 }

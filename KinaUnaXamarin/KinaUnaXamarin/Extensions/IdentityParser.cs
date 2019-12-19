@@ -37,7 +37,7 @@ namespace KinaUnaXamarin.Extensions
 
                 };
             }
-            throw new ArgumentException(message: "The principal must be a ClaimsPrincipal", paramName: nameof(principal));
+            throw new ArgumentException(message: @"The principal must be a ClaimsPrincipal", paramName: nameof(principal));
         }
     }
 }

@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.LanguagePage"
+             x:Class="KinaUnaXamarin.Views.Settings.LanguagePage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              Title="{i18n:Translate Language}"

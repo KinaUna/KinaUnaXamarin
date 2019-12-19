@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
@@ -17,10 +16,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.MyFamily
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class UserAccessPage : ContentPage
+    public partial class UserAccessPage
     {
         private readonly UserAccessViewModel _viewModel;
         private bool _online = true;
@@ -184,7 +183,12 @@ namespace KinaUnaXamarin.Views
                 {
                     string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                     bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                    Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    Progeny viewProgeny = new Progeny();
+                    if (viewchildParsed)
+                    {
+                        viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                    }
+                    
                     if (viewProgeny != null)
                     {
                         ProgenyCollectionView.SelectedItem =
@@ -326,7 +330,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteAccess", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteAccessMessage", ci) + " " + _viewModel.SelectedAccess.User.UserName + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {

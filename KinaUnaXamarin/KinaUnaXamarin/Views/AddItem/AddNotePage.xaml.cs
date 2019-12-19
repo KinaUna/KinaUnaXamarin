@@ -16,7 +16,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddNotePage : ContentPage
+    public partial class AddNotePage
     {
         private readonly AddNoteViewModel _viewModel;
         private bool _online = true;
@@ -71,7 +71,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =
@@ -244,8 +249,7 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void ContentWebView_OnFocused(object sender, FocusEventArgs e)
         {
-            string heightString = "";
-            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+            string heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
 
             bool heightParsed = double.TryParse(heightString, out _webViewHeight);
             if (heightParsed)
@@ -257,8 +261,7 @@ namespace KinaUnaXamarin.Views.AddItem
         private async void ContentWebView_OnNavigating(object sender, WebNavigatingEventArgs e)
         {
             e.Cancel = true;
-            string heightString = "";
-            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+            string heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
 
             bool heightParsed = double.TryParse(heightString, out _webViewHeight);
             if (heightParsed)

@@ -17,7 +17,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddChildPage : ContentPage
+    public partial class AddChildPage
     {
         private bool _online = true;
         private readonly AddChildViewModel _addChildViewModel;

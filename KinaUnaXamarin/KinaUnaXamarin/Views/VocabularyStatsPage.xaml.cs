@@ -19,7 +19,7 @@ namespace KinaUnaXamarin.Views
     // Uses OxyPlot, see: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VocabularyStatsPage : ContentPage
+    public partial class VocabularyStatsPage
     {
         private VocabularyStatsViewModel _viewModel;
         private bool _reload = true;

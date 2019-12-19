@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace KinaUnaXamarin.Extensions
 {
@@ -29,7 +27,7 @@ namespace KinaUnaXamarin.Extensions
             }
         }
 
-        public enum GeoCodeCalcMeasurement : int
+        public enum GeoCodeCalcMeasurement
         {
             Miles = 0,
             Kilometers = 1

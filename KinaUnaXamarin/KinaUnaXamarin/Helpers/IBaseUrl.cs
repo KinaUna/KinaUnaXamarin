@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KinaUnaXamarin.Helpers
+﻿namespace KinaUnaXamarin.Helpers
 {
     public interface IBaseUrl
     {

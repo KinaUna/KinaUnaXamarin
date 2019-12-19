@@ -9,7 +9,7 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.NoteDetailPage"
+             x:Class="KinaUnaXamarin.Views.Details.NoteDetailPage"
              Visual="Material"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              ios:Page.UseSafeArea="true">

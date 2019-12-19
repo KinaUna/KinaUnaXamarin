@@ -18,7 +18,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddContactPage : ContentPage
+    public partial class AddContactPage
     {
         private readonly AddContactViewModel _viewModel;
         private bool _online = true;
@@ -63,7 +63,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =
@@ -120,7 +125,7 @@ namespace KinaUnaXamarin.Views.AddItem
             Contact contact = new Contact();
             
             contact.ProgenyId = progeny.Id;
-            contact.AccessLevel = _viewModel?.AccessLevel ?? 0;
+            contact.AccessLevel = _viewModel.AccessLevel;
             string userEmail = await UserService.GetUserEmail();
             UserInfo userinfo = await UserService.GetUserInfo(userEmail);
             contact.Author = userinfo.UserId;
@@ -369,7 +374,7 @@ namespace KinaUnaXamarin.Views.AddItem
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
 
                     autoSuggestBox.ItemsSource = null;

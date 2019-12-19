@@ -7,6 +7,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationsPage : ContentPage
+    public partial class LocationsPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
@@ -213,7 +214,7 @@ namespace KinaUnaXamarin.Views
             LocationsMap.Pins.Clear();
             List<Location> allLocations = await ProgenyService.GetLocationsList(_viewChild, _viewModel.UserAccessLevel);
             allLocations = allLocations.OrderByDescending(l => l.Date).ToList();
-            if (allLocations != null && allLocations.Count > 0)
+            if (allLocations.Count > 0)
             {
                 List<double> latitudes = new List<double>();
                 List<double> longitudes = new List<double>();
@@ -264,7 +265,7 @@ namespace KinaUnaXamarin.Views
             Pin clickedPin = sender as Pin;
             if (clickedPin != null)
             {
-                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == (sender as Pin).Label);
+                Location clickedLocation = _viewModel.LocationItems.SingleOrDefault(l => l.Name == clickedPin.Label);
                 LocationCollectionView.ScrollTo(clickedLocation, position:ScrollToPosition.Start);
             }
         }
@@ -315,7 +316,7 @@ namespace KinaUnaXamarin.Views
         protected override void OnSizeAllocated(double width, double height)
         {
             base.OnSizeAllocated(width, height); //must be called
-            if (_screenWidth != width || _screenHeight != height)
+            if (Math.Abs(_screenWidth - width) > 0.0001 || Math.Abs(_screenHeight - height) > 0.0001)
             {
                 _screenWidth = width;
                 _screenHeight = height;

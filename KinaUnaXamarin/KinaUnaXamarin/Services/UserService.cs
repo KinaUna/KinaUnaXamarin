@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -203,7 +202,7 @@ namespace KinaUnaXamarin.Services
                     await UserService.GetUserInfo(user.Email);
                     await SecureStorage.SetAsync(Constants.UserTimezoneKey, user.TimeZone);
 
-                    await RegisterDevice(user.Email);
+                    await RegisterDevice();
                 }
                 catch (Exception ex)
                 {
@@ -214,12 +213,12 @@ namespace KinaUnaXamarin.Services
             return true;
         }
 
-        private static async Task RegisterDevice(string user)
+        private static async Task RegisterDevice()
         {
             if (Device.RuntimePlatform == Device.Android)
             {
-                string pnsHandle = "";
-                string registrationId = "";
+                string pnsHandle;
+                string registrationId;
                 try
                 {
                     pnsHandle = await SecureStorage.GetAsync("PnsHandle");
@@ -325,7 +324,7 @@ namespace KinaUnaXamarin.Services
         {
             if (Device.RuntimePlatform == Device.Android)
             {
-                string registerId = "";
+                string registerId;
                 try
                 {
                     registerId = await SecureStorage.GetAsync("RegistrationId");
@@ -375,7 +374,7 @@ namespace KinaUnaXamarin.Services
         
         public static async Task<bool> IsAccessTokenCurrent()
         {
-            string accessTokenExpires = "";
+            string accessTokenExpires;
             try
             {
                 accessTokenExpires = await SecureStorage.GetAsync(Constants.AuthAccessTokenExpiresKey);
@@ -557,8 +556,8 @@ namespace KinaUnaXamarin.Services
                 MemoryStream stream = new MemoryStream(fileBytes);
                 HttpContent fileStreamContent = new StreamContent(stream);
 
-                fileStreamContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
-                fileStreamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/octet-stream");
+                fileStreamContent.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") { Name = "file", FileName = "file" };
+                fileStreamContent.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 MultipartFormDataContent content = new MultipartFormDataContent();
                 content.Add(fileStreamContent);
                 try

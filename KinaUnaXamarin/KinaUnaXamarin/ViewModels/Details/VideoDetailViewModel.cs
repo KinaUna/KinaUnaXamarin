@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Collections.Generic;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
-namespace KinaUnaXamarin.ViewModels
+namespace KinaUnaXamarin.ViewModels.Details
 {
     class VideoDetailViewModel : BaseViewModel
     {

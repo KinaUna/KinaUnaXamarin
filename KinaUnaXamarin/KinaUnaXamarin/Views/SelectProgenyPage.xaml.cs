@@ -10,7 +10,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SelectProgenyPage : ContentPage
+    public partial class SelectProgenyPage
     {
         private readonly ObservableCollection<Progeny> _progenyList;
         public SelectProgenyPage(ObservableCollection<Progeny> progenyList)
@@ -46,13 +46,12 @@ namespace KinaUnaXamarin.Views
 
         private async void ProgenyListCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int childId = Constants.DefaultChildId;
             var selected = ProgenyListCollectionView.SelectedItem;
             foreach (Progeny progeny in _progenyList)
             {
                 if (progeny.NickName == (selected as Progeny)?.NickName)
                 {
-                    childId = progeny.Id;
+                    int childId = progeny.Id;
                     await SecureStorage.SetAsync(Constants.UserViewChildKey, childId.ToString());
                 }
 

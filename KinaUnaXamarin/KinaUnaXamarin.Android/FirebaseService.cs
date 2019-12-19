@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using WindowsAzure.Messaging;
 using Android.App;
@@ -8,8 +7,6 @@ using Android.OS;
 using Android.Support.V4.App;
 using Android.Util;
 using Firebase.Messaging;
-using KinaUnaXamarin.Models.KinaUna;
-using Newtonsoft.Json;
 using Xamarin.Essentials;
 
 namespace KinaUnaXamarin.Droid
@@ -38,9 +35,6 @@ namespace KinaUnaXamarin.Droid
                 string registrationId = reg.RegistrationId;
                 await SecureStorage.SetAsync("PnsHandle", pnsHandle);
                 await SecureStorage.SetAsync("RegistrationId", registrationId);
-                var cats = string.Join(", ", reg.Tags);
-
-                var temp = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AzureNotificationsConstants.FCMTemplateBody, AzureNotificationsConstants.SubscriptionTags);
             }
             catch (Exception e)
             {
@@ -119,8 +113,7 @@ namespace KinaUnaXamarin.Droid
 
         void SendMessageToMainPage(string title, string body, string timeLineItem)
         {
-            int timeLineId = 0;
-            int.TryParse(timeLineItem, out timeLineId);
+            int.TryParse(timeLineItem, out int timeLineId);
             (App.Current.MainPage as AppShell)?.AddMessage(title, body, timeLineId);
         }
     }

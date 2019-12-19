@@ -7,6 +7,8 @@
        xmlns:controls="clr-namespace:KinaUnaXamarin.Controls"
        xmlns:models="clr-namespace:KinaUnaXamarin.Models"
        xmlns:views="clr-namespace:KinaUnaXamarin.Views"
+       xmlns:settingsViews="clr-namespace:KinaUnaXamarin.Views.Settings"
+       xmlns:myFamilyViews="clr-namespace:KinaUnaXamarin.Views.MyFamily"
        xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
        Title="Kina Una Mobile"
        FlyoutHeaderBehavior="CollapseOnScroll"
@@ -243,13 +245,13 @@
         <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"
              Icon="childicon.png"
              Route="mychildren">
-            <ShellContent ContentTemplate="{DataTemplate views:MyChildrenPage}">
+            <ShellContent ContentTemplate="{DataTemplate myFamilyViews:MyChildrenPage}">
             </ShellContent>
         </Tab>
         <Tab Title="{i18n:Translate UserAccess}" x:Name="UserAccessTabItem"
              Icon="myfamilyicon.png"
              Route="useraccess">
-            <ShellContent ContentTemplate="{DataTemplate views:UserAccessPage}">
+            <ShellContent ContentTemplate="{DataTemplate myFamilyViews:UserAccessPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
@@ -258,19 +260,19 @@
         <Tab Title="{i18n:Translate Language}" x:Name="LanguageTabItem"
              Icon="languageicon.png"
              Route="language">
-            <ShellContent ContentTemplate="{DataTemplate views:LanguagePage}">
+            <ShellContent ContentTemplate="{DataTemplate settingsViews:LanguagePage}">
             </ShellContent>
         </Tab>
         <Tab Title="{i18n:Translate Account}" x:Name="AccountTabItem"
              Icon="useraccounticon.png"
              Route="account">
-            <ShellContent ContentTemplate="{DataTemplate views:AccountPage}">
+            <ShellContent ContentTemplate="{DataTemplate settingsViews:AccountPage}">
             </ShellContent>
         </Tab>
         <Tab Title="{i18n:Translate About}" x:Name="AboutTabItem"
              Icon="infoicon.png"
              Route="about">
-            <ShellContent ContentTemplate="{DataTemplate views:AboutPage}">
+            <ShellContent ContentTemplate="{DataTemplate settingsViews:AboutPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>

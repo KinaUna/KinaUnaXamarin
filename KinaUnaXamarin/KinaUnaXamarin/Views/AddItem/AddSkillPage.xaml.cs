@@ -16,7 +16,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddSkillPage : ContentPage
+    public partial class AddSkillPage
     {
         private readonly AddSkillViewModel _viewModel;
         private bool _online = true;
@@ -64,7 +64,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =

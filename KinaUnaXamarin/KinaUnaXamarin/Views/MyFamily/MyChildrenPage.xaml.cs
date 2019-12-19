@@ -14,10 +14,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.MyFamily
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MyChildrenPage : ContentPage
+    public partial class MyChildrenPage
     {
         private readonly MyChildrenViewModel _myChildrenViewModel;
         private bool _online = true;
@@ -209,7 +209,12 @@ namespace KinaUnaXamarin.Views
                 {
                     string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                     bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                    Progeny viewProgeny = _myChildrenViewModel.ProgenyAdminCollection.SingleOrDefault(p => p.Id == viewChild);
+                    Progeny viewProgeny = new Progeny();
+                    if (viewchildParsed)
+                    {
+                        viewProgeny = _myChildrenViewModel.ProgenyAdminCollection.SingleOrDefault(p => p.Id == viewChild);
+                    }
+                    
                     if (viewProgeny != null)
                     {
                         ProgenyCollectionView.SelectedItem =

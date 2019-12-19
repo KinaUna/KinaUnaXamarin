@@ -1,28 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
-using System.Text;
 using System.Threading.Tasks;
 using dotMorten.Xamarin.Forms;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SkillDetailPage : ContentPage
+    public partial class SkillDetailPage
     {
         private readonly SkillDetailViewModel _viewModel = new SkillDetailViewModel();
         private UserInfo _userInfo;
@@ -277,7 +273,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteSkill", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteSkillMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {

@@ -1,6 +1,4 @@
-﻿using KinaUnaXamarin.Models.KinaUna;
-
-namespace KinaUnaXamarin
+﻿namespace KinaUnaXamarin
 {
     public static class Constants
     {

@@ -1,7 +1,6 @@
 ﻿using Foundation;
 using System.Threading.Tasks;
 using IdentityModel.OidcClient.Browser;
-using SafariServices;
 using System.Diagnostics;
 using AuthenticationServices;
 using System;

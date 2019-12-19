@@ -840,4 +840,13 @@
   <data name="ItemsPerPage" xml:space="preserve">
     <value>Items per page</value>
   </data>
+  <data name="DeletePhoto" xml:space="preserve">
+    <value>Delete Photo</value>
+  </data>
+  <data name="DeletePhotoMessage" xml:space="preserve">
+    <value>Are you sure you want to delete this photo</value>
+  </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Saving...</value>
+  </data>
 </root>

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KinaUnaXamarin.Models.KinaUna
+﻿namespace KinaUnaXamarin.Models.KinaUna
 {
     public class Address
     {

@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
@@ -38,7 +35,7 @@ namespace KinaUnaXamarin.ViewModels
         private List<string> _chartTypeList;
         private double _maxValue;
         private double _minValue;
-        private OxyPlot.PlotModel _sleepPlotModel;
+        private PlotModel _sleepPlotModel;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -110,7 +107,7 @@ namespace KinaUnaXamarin.ViewModels
             set => SetProperty(ref _sleepStats, value);
         }
 
-        public OxyPlot.PlotModel SleepPlotModel
+        public PlotModel SleepPlotModel
         {
             get => _sleepPlotModel;
             set => SetProperty(ref _sleepPlotModel, value);

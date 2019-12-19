@@ -4,7 +4,7 @@ using KinaUnaXamarin.Models.KinaUna;
 using MvvmHelpers;
 using Plugin.Multilingual;
 
-namespace KinaUnaXamarin.ViewModels
+namespace KinaUnaXamarin.ViewModels.Details
 {
     class SkillDetailViewModel : BaseViewModel
     {

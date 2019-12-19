@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
-using Newtonsoft.Json;
 using Plugin.Multilingual;
-using Xamarin.Essentials;
 
 namespace KinaUnaXamarin.ViewModels.AddItem
 {
@@ -27,6 +21,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private int _endDay;
         private int _accessLevel;
         private string _notes;
+        private bool _isSaving;
         private List<string> _accessLevelList;
         private List<string> _locationAutoSuggestList;
         private List<string> _contextAutoSuggestList;
@@ -164,6 +159,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         {
             get => _contextAutoSuggestList;
             set => SetProperty(ref _contextAutoSuggestList, value);
+        }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
         }
     }
 }

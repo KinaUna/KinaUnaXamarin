@@ -17,7 +17,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddCalendarEventPage : ContentPage
+    public partial class AddCalendarEventPage
     {
         private readonly AddCalendarEventViewModel _viewModel;
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
@@ -66,7 +66,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _viewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =
@@ -145,6 +150,7 @@ namespace KinaUnaXamarin.Views.AddItem
         private async void SaveEventButton_OnClicked(object sender, EventArgs e)
         {
             _viewModel.IsBusy = true;
+            _viewModel.IsSaving = true;
             Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
             if (progeny != null)
             {
@@ -186,6 +192,7 @@ namespace KinaUnaXamarin.Views.AddItem
                         SaveEventButton.IsVisible = false;
                         CancelEventButton.Text = "Ok";
                         CancelEventButton.BackgroundColor = Color.FromHex("#4caf50");
+                        await Shell.Current.Navigation.PopModalAsync();
                     }
                 }
                 else
@@ -198,6 +205,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 ErrorLabel.IsVisible = true;
             }
 
+            _viewModel.IsSaving = false;
             _viewModel.IsBusy = false;
         }
 

@@ -5,6 +5,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -13,7 +14,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepPage : ContentPage
+    public partial class SleepPage
     {
         private readonly SleepViewModel _viewModel;
         private bool _reload = true;

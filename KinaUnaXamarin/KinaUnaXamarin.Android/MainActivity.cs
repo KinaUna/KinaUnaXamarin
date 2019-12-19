@@ -8,12 +8,9 @@ using Android.OS;
 using Android.Util;
 using Android.Widget;
 using FFImageLoading.Forms.Platform;
-using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Views;
-using Newtonsoft.Json;
 using PanCardView.Droid;
 using Plugin.CurrentActivity;
-using Xamarin;
 using Xamarin.Forms;
 using Configuration = FFImageLoading.Config.Configuration;
 
@@ -31,14 +28,14 @@ namespace KinaUnaXamarin.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-            global::Xamarin.Forms.Forms.SetFlags("Shell_Experimental", "Visual_Experimental",
+            Forms.SetFlags("Shell_Experimental", "Visual_Experimental",
                 "CollectionView_Experimental", "FastRenderers_Experimental");
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
-            global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Forms.Init(this, savedInstanceState);
             Xamarin.FormsGoogleMaps.Init(this, savedInstanceState);  // https://github.com/amay077/Xamarin.Forms.GoogleMaps/blob/master/README.md
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
             //Android.Glide.Forms.Init(); // https://github.com/jonathanpeppers/glidex
-            FFImageLoading.Forms.Platform.CachedImageRenderer
+            CachedImageRenderer
                 .Init(enableFastRenderer: true); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
             CachedImageRenderer
                 .InitImageViewHandler(); // See: https://github.com/luberda-molinet/FFImageLoading/wiki/Xamarin.Forms-API
@@ -56,14 +53,14 @@ namespace KinaUnaXamarin.Droid
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions,
-            [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
+            [GeneratedEnum] Permission[] grantResults)
         {
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
-        bool _doubleBackToExitPressedOnce = false;
+        bool _doubleBackToExitPressedOnce;
 
         public override void OnBackPressed()
         {
@@ -104,8 +101,7 @@ namespace KinaUnaXamarin.Droid
                 var message = intent.GetStringExtra("message");
                 var title = intent.GetStringExtra("title");
                 var notData = intent.GetStringExtra("notData");
-                int tItemNumber = 0;
-                int.TryParse(notData, out tItemNumber);
+                int.TryParse(notData, out int tItemNumber);
                 (App.Current.MainPage as AppShell)?.AddMessage(title, message, tItemNumber);
             }
 

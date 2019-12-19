@@ -3,9 +3,9 @@
 namespace KinaUnaXamarin.Controls
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class FlyoutHeader
+    public partial class SavingIndicator
     {
-        public FlyoutHeader()
+        public SavingIndicator()
         {
             InitializeComponent();
         }

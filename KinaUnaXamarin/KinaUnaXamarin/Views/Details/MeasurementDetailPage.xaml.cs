@@ -1,29 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Resources;
 using System.Threading.Tasks;
-using dotMorten.Xamarin.Forms;
 using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MeasurementDetailPage : ContentPage
+    public partial class MeasurementDetailPage
     {
-        private readonly MeasurementDetailViewModel _viewModel = new MeasurementDetailViewModel();
+        private readonly MeasurementDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -236,21 +232,20 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentMeasurement.Date = mesDate;
                 _viewModel.CurrentMeasurement.HairColor = _viewModel.HairColor;
                 _viewModel.CurrentMeasurement.EyeColor = _viewModel.EyeColor;
-                
-                double height = 0.0;
-                bool heightParsed = double.TryParse(_viewModel.Height, NumberStyles.Any, CultureInfo.CurrentCulture, out height);
+
+                bool heightParsed = double.TryParse(_viewModel.Height, NumberStyles.Any, CultureInfo.CurrentCulture, out double height);
                 if (heightParsed)
                 {
                     _viewModel.CurrentMeasurement.Height = height;
                 }
-                double weight = 0.0;
-                bool weightParsed = double.TryParse(_viewModel.Weight, NumberStyles.Any, CultureInfo.CurrentCulture, out weight);
+
+                bool weightParsed = double.TryParse(_viewModel.Weight, NumberStyles.Any, CultureInfo.CurrentCulture, out double weight);
                 if (weightParsed)
                 {
                     _viewModel.CurrentMeasurement.Weight = weight;
                 }
-                double circumference = 0.0;
-                bool circumferenceParsed = double.TryParse(_viewModel.Circumference, NumberStyles.Any, CultureInfo.CurrentCulture, out circumference);
+
+                bool circumferenceParsed = double.TryParse(_viewModel.Circumference, NumberStyles.Any, CultureInfo.CurrentCulture, out double circumference);
                 if (circumferenceParsed)
                 {
                     _viewModel.CurrentMeasurement.Circumference = circumference;
@@ -299,7 +294,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteMeasurement", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteMeasurementMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {

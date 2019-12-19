@@ -9,19 +9,19 @@ using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class EventDetailPage : ContentPage
+    public partial class EventDetailPage
     {
-        private readonly EventDetailViewModel _viewModel = new EventDetailViewModel();
+        private readonly EventDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -343,7 +343,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteEvent", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteEventMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {

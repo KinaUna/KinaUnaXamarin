@@ -1,23 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Collections.ObjectModel;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
-using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels
 {
     class CommentsPageViewModel: BaseViewModel
     {
-        private int _commentThread;
         public ObservableCollection<Comment> CommentsCollection { get; set; }
 
-        public CommentsPageViewModel(int commentThread)
+        public CommentsPageViewModel()
         {
-            _commentThread = commentThread;
             CommentsCollection = new ObservableCollection<Comment>();
         }
     }

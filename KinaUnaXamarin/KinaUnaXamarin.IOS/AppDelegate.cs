@@ -22,10 +22,10 @@ namespace KinaUnaXamarin.IOS
 
         public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
         {
-            Xamarin.Forms.Forms.SetFlags("CollectionView_Experimental");
-            global::Xamarin.Forms.Forms.Init();
+            Forms.SetFlags("CollectionView_Experimental");
+            Forms.Init();
             Xamarin.FormsGoogleMaps.Init(SecretKeys.GoogleMapsIOSKey);
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            CachedImageRenderer.Init();
             FFImageLoading.ImageService.Instance.Initialize(new Configuration());
             CachedImageRenderer.InitImageSourceHandler();
             CardsViewRenderer.Preserve();

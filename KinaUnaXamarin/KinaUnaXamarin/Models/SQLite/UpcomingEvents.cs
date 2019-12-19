@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace KinaUnaXamarin.Models
+namespace KinaUnaXamarin.Models.SQLite
 {
     public class UpcomingEvents
     {

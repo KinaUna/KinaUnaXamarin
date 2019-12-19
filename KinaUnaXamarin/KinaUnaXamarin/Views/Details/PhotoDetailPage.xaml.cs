@@ -14,6 +14,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using PanCardView;
 using PanCardView.EventArgs;
 using Plugin.Multilingual;
@@ -23,11 +24,11 @@ using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     [QueryProperty("PictureId", "pictureId")]
-    public partial class PhotoDetailPage : ContentPage
+    public partial class PhotoDetailPage
     {
         private readonly PhotoDetailViewModel _viewModel;
         private UserInfo _userInfo;
@@ -62,10 +63,15 @@ namespace KinaUnaXamarin.Views
         {
             set
             {
-                int pictureId = 0;
-                bool parsed = int.TryParse(Uri.UnescapeDataString(value), out pictureId);
-                _viewModel.CurrentPictureId = pictureId;
-                
+                bool parsed = int.TryParse(Uri.UnescapeDataString(value), out int pictureId);
+                if (parsed)
+                {
+                    _viewModel.CurrentPictureId = pictureId;
+                }
+                else
+                {
+                    _viewModel.CurrentPictureId = 0;
+                }
             }
         }
 
@@ -321,12 +327,11 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentPictureId = _viewModel.CurrentPictureViewModel.PictureId;
                 await UpdateEditInfo();
 
-                PictureTime picTime = new PictureTime(new DateTime(2018, 02, 18, 20, 18, 00), new DateTime(2018, 02, 18, 20, 18, 00), TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
                 if (_viewModel.CurrentPictureViewModel.PictureTime != null && _viewModel.Progeny.BirthDay.HasValue)
                 {
                     DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                    picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                    PictureTime picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentPictureViewModel.PictureTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
                     _viewModel.PicTimeValid = true;
                     _viewModel.PicYears = picTime.CalcYears();
                     _viewModel.PicMonths = picTime.CalcMonths();
@@ -429,13 +434,13 @@ namespace KinaUnaXamarin.Views
             return false;
         }
 
-        private double getClosestLockState(double TranslationY)
+        private double getClosestLockState(double translationY)
         {
             //Play with these values to adjust the locking motions - this will change depending on the amount of content ona  apge
-            var lockStates = new double[] { 0, .1, .2, .3, .4, .5, .6, .7, .8, .9 };
+            var lockStates = new[] { 0, .1, .2, .3, .4, .5, .6, .7, .8, .9 };
 
             //get the current proportion of the sheet in relation to the screen
-            var distance = Math.Abs(TranslationY);
+            var distance = Math.Abs(translationY);
             var currentProportion = distance / Height;
 
             //calculate which lockstate it's the closest to
@@ -474,7 +479,7 @@ namespace KinaUnaXamarin.Views
 
         private async Task GetComments()
         {
-            _commentsPageViewModel = new CommentsPageViewModel(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
+            _commentsPageViewModel = new CommentsPageViewModel();
             _commentsPageViewModel.CommentsCollection = new ObservableCollection<Comment>();
             List<Comment> commentsList = await ProgenyService.GetComments(_viewModel.CurrentPictureViewModel.CommentThreadNumber);
             if (commentsList.Any())
@@ -509,11 +514,11 @@ namespace KinaUnaXamarin.Views
             string commentIdString = deleteButton.CommandParameter.ToString();
             int.TryParse(commentIdString, out int commentId);
             Comment comment = _commentsPageViewModel.CommentsCollection.SingleOrDefault(c => c.CommentId == commentId);
-            comment.Progeny = _viewModel.Progeny;
-            comment.ItemId = _viewModel.CurrentPictureViewModel.PictureId.ToString();
-            comment.ItemType = (int) KinaUnaTypes.TimeLineType.Photo;
             if (comment != null)
             {
+                comment.Progeny = _viewModel.Progeny;
+                comment.ItemId = _viewModel.CurrentPictureViewModel.PictureId.ToString();
+                comment.ItemType = (int) KinaUnaTypes.TimeLineType.Photo;
                 var ci = CrossMultilingual.Current.CurrentCultureInfo;
                 string deleteTitle = resmgr.Value.GetString("DeleteTitle", ci);
                 string areYouSure = resmgr.Value.GetString("ConfirmCommentDelete", ci);
@@ -525,7 +530,6 @@ namespace KinaUnaXamarin.Views
                     await ProgenyService.DeleteComment(comment);
                     await GetComments();
                 }
-
             }
         }
 
@@ -563,7 +567,7 @@ namespace KinaUnaXamarin.Views
             _viewModel.TagsAutoSuggestList = await ProgenyService.GetTagsAutoSuggestList(_viewModel.Progeny.Id, _viewModel.UserAccessLevel);
 
             TagsEditor.Text = _viewModel.CurrentPictureViewModel?.Tags ?? "";
-            if (_viewModel.CurrentPictureViewModel.PictureTime.HasValue)
+            if (_viewModel.CurrentPictureViewModel != null && _viewModel.CurrentPictureViewModel.PictureTime.HasValue)
             {
                 PhotoDatePicker.Date = _viewModel.CurrentPictureViewModel.PictureTime.Value.Date;
                 PhotoTimePicker.Time = _viewModel.CurrentPictureViewModel.PictureTime.Value.TimeOfDay;
@@ -573,7 +577,8 @@ namespace KinaUnaXamarin.Views
             LatitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Latitude ?? "";
             LongitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Longtitude ?? "";
             AltitudeEntry.Text = _viewModel.CurrentPictureViewModel?.Altitude ?? "";
-            AccessLevelPicker.SelectedIndex = _viewModel.CurrentPictureViewModel.AccessLevel;
+            if (_viewModel.CurrentPictureViewModel != null)
+                AccessLevelPicker.SelectedIndex = _viewModel.CurrentPictureViewModel.AccessLevel;
 
             DeleteButton.IsVisible = true;
             CancelButton.IsVisible = true;
@@ -597,6 +602,9 @@ namespace KinaUnaXamarin.Views
 
         private async void SaveButton_OnClicked(object sender, EventArgs e)
         {
+            _viewModel.IsSaving = true;
+            _viewModel.IsBusy = true;
+
             Picture updatedPicture = await ProgenyService.GetPictureWithOriginalImageLink(_viewModel.CurrentPictureViewModel.PictureId, _accessToken, _userInfo.Timezone);
             updatedPicture.Progeny = _viewModel.Progeny;
             updatedPicture.Tags = TagsEditor.Text;
@@ -655,10 +663,12 @@ namespace KinaUnaXamarin.Views
                         CancelButton.Text = "Ok";
                         CancelButton.BackgroundColor = Color.FromHex("#4caf50");
                         CancelButton.IsEnabled = true;
-                        // await Reload();
+                        _viewModel.EditMode = false;
                     }
                     else
                     {
+                        _viewModel.IsBusy = false;
+                        _viewModel.IsSaving = false;
                         MessageLabel.IsVisible = true;
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
                         MessageLabel.Text = resmgr.Value.GetString("ErrorPhotoNotSaved", ci);
@@ -669,6 +679,9 @@ namespace KinaUnaXamarin.Views
                     }
                 }
             }
+
+            _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
         }
 
         private async void DeleteButton_OnClicked(object sender, EventArgs e)
@@ -677,10 +690,11 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeletePhoto", ci);
             string confirmMessage = resmgr.Value.GetString("DeletePhotoMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
+                _viewModel.IsSaving = true;
                 int deleteId = _viewModel.CurrentPictureViewModel.PictureId;
                 _viewModel.IsBusy = true;
                 _viewModel.EditMode = false;
@@ -692,7 +706,7 @@ namespace KinaUnaXamarin.Views
                     TimeLineItem tItem = await ProgenyService.GetTimeLineItemByItemId(deleteId, KinaUnaTypes.TimeLineType.Photo);
                     if (tItem != null && tItem.TimeLineId != 0)
                     {
-                        TimeLineItem updatedTimeLineItem = await ProgenyService.DeleteTimeLineItem(tItem);
+                        await ProgenyService.DeleteTimeLineItem(tItem);
                     }
                     if (_viewModel.PhotoItems.Count > 1)
                     {
@@ -737,8 +751,8 @@ namespace KinaUnaXamarin.Views
                     CancelButton.IsEnabled = true;
                 }
 
-                
-                
+
+                _viewModel.IsSaving = false;
                 _viewModel.IsBusy = false;
             }
         }
@@ -883,7 +897,7 @@ namespace KinaUnaXamarin.Views
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
                     
                     autoSuggestBox.ItemsSource = null;

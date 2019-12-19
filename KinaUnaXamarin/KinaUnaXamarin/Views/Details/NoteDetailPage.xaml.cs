@@ -9,19 +9,19 @@ using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NoteDetailPage : ContentPage
+    public partial class NoteDetailPage
     {
-        private readonly NoteDetailViewModel _viewModel = new NoteDetailViewModel();
+        private readonly NoteDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -33,8 +33,9 @@ namespace KinaUnaXamarin.Views
 
         public NoteDetailPage(Note note)
         {
-            
+            _viewModel = new NoteDetailViewModel();
             InitializeComponent();
+            
             _viewModel.CurrentNoteId = note.NoteId;
             _viewModel.NoteTitle = note.Title;
             _viewModel.Content = note.Content;
@@ -294,7 +295,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteNote", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteNoteMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
@@ -377,8 +378,7 @@ namespace KinaUnaXamarin.Views
 
         private async void ContentWebView_OnFocused(object sender, FocusEventArgs e)
         {
-            string heightString = "";
-            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+            string heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
             
             bool heightParsed = double.TryParse(heightString, out _webViewHeight);
             if (heightParsed)
@@ -390,8 +390,7 @@ namespace KinaUnaXamarin.Views
         private async void ContentWebView_OnNavigating(object sender, WebNavigatingEventArgs e)
         {
             e.Cancel = true;
-            string heightString = "";
-            heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
+            string heightString = await ContentWebView.EvaluateJavaScriptAsync("getHeight()");
 
             bool heightParsed = double.TryParse(heightString, out _webViewHeight);
             if (heightParsed)

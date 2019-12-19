@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ using Plugin.Multilingual;
 
 namespace KinaUnaXamarin
 {
-    public partial class App : Application
+    public partial class App
     {
         static Database _database;
 

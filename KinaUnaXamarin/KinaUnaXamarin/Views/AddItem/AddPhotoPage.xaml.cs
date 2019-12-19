@@ -18,7 +18,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views.AddItem
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddPhotoPage : ContentPage
+    public partial class AddPhotoPage
     {
         private readonly AddPhotoViewModel _addPhotoViewModel;
         private string _filePath;
@@ -48,7 +48,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 string userviewchild = await SecureStorage.GetAsync(Constants.UserViewChildKey);
                 bool viewchildParsed = int.TryParse(userviewchild, out int viewChild);
-                Progeny viewProgeny = _addPhotoViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                Progeny viewProgeny = new Progeny();
+                if (viewchildParsed)
+                {
+                    viewProgeny = _addPhotoViewModel.ProgenyCollection.SingleOrDefault(p => p.Id == viewChild);
+                }
+                
                 if (viewProgeny != null)
                 {
                     ProgenyCollectionView.SelectedItem =
@@ -80,7 +85,7 @@ namespace KinaUnaXamarin.Views.AddItem
             SavePhotoButton.IsEnabled = false;
             CancelPhotoButton.IsEnabled = false;
             _addPhotoViewModel.IsBusy = true;
-
+            _addPhotoViewModel.IsSaving = true;
             // Upload photo file, get a reference to the image.
             string pictureLink = await ProgenyService.UploadPictureFile(progeny.Id, _filePath);
             if (pictureLink == "")
@@ -122,7 +127,7 @@ namespace KinaUnaXamarin.Views.AddItem
                     tItem.ProgenyTime = DateTime.UtcNow;
                 }
 
-                tItem = await ProgenyService.SaveTimeLineItem(tItem);
+                await ProgenyService.SaveTimeLineItem(tItem);
             }
 
             ErrorLabel.IsVisible = true;
@@ -144,9 +149,11 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelPhotoButton.Text = "Ok";
                 CancelPhotoButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelPhotoButton.IsEnabled = true;
+                await Shell.Current.Navigation.PopModalAsync();
             }
 
             _addPhotoViewModel.IsBusy = false;
+            _addPhotoViewModel.IsSaving = false;
         }
 
         private async void CancelPhotoButton_OnClicked(object sender, EventArgs e)
@@ -311,7 +318,7 @@ namespace KinaUnaXamarin.Views.AddItem
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
 
                     autoSuggestBox.ItemsSource = null;

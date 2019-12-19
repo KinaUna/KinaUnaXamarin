@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
-using Newtonsoft.Json;
 using Plugin.Multilingual;
-using Xamarin.Essentials;
 
 namespace KinaUnaXamarin.ViewModels.AddItem
 {

@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,7 +16,7 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class YearAgoPage : ContentPage
+    public partial class YearAgoPage
     {
         private readonly TimelineFeedViewModel _viewModel;
         private bool _reload = true;
@@ -201,7 +202,6 @@ namespace KinaUnaXamarin.Views
         {
             Device.BeginInvokeOnMainThread(() => { _viewModel.TimeLineItems.Clear(); });
 
-            DateTime timeLineStart = new DateTime(_viewModel.SelectedYear, _viewModel.SelectedMonth, _viewModel.SelectedDay);
             List<TimeLineItem> timeLineList = await ProgenyService.GetTimeLineYearAgo(_viewModel.Progeny.Id,
                 _viewModel.UserAccessLevel, _viewModel.UserInfo.Timezone).ConfigureAwait(false);
             

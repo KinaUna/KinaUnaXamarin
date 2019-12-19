@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using KinaUnaXamarin.Models.KinaUna;
 using MvvmHelpers;
 using Plugin.Multilingual;
@@ -16,6 +14,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private string _location;
         private List<string> _locationAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public AddPhotoViewModel()
         {
@@ -56,6 +55,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+        
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

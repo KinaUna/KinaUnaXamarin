@@ -5,7 +5,6 @@
 
 using System;
 using System.Threading.Tasks;
-using FFImageLoading.Forms;
 using KinaUnaXamarin.Extensions;
 using Xamarin.Forms;
 
@@ -28,8 +27,8 @@ namespace KinaUnaXamarin.Behaviors
 
         private View _associatedObject;
         private DateTime _lastPinch;
-        private double _imageHeight;
-        private double _imageWidth;
+        //private double _imageHeight;
+        //private double _imageWidth;
         
 
         #endregion
@@ -293,7 +292,6 @@ namespace KinaUnaXamarin.Behaviors
         private void ResetZoom()
         {
             // Todo: Ease in/out.
-            double tempScale = _currentScale;
             StartScaling();
             ExecuteScaling(1, 0, 0);
             EndGesture();
@@ -308,12 +306,11 @@ namespace KinaUnaXamarin.Behaviors
         public void OnAppearing()
         {
             AssociatedObjectBindingContextChanged(_associatedObject, null);
-            if (_parent.Content is CachedImage cachedImage)
-            {
-                _imageHeight = cachedImage.Height;
-                _imageWidth = cachedImage.Width;
-                //ResetZoom();
-            }
+            //if (_parent.Content is CachedImage cachedImage)
+            //{
+            //    _imageHeight = cachedImage.Height;
+            //    _imageWidth = cachedImage.Width;
+            //}
         }
 
         public async Task OnDisAppearing()
@@ -380,7 +377,7 @@ namespace KinaUnaXamarin.Behaviors
                     if (newValue is bool newBool)
                     {
                         multiTouchBehavior.IsZoomed = newBool;
-                        if (newBool == true)
+                        if (newBool)
                         {
                             multiTouchBehavior.IsTranslateEnabled = true;
                         }

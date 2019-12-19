@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Resources;
 using KinaUnaXamarin.Helpers;
-using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Views;
+using KinaUnaXamarin.Views.Details;
+using KinaUnaXamarin.Views.MyFamily;
+using KinaUnaXamarin.Views.Settings;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin
 {
-    public partial class AppShell : Xamarin.Forms.Shell
+    public partial class AppShell
     {
         private readonly Dictionary<string, Type> _routes = new Dictionary<string, Type>();
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";

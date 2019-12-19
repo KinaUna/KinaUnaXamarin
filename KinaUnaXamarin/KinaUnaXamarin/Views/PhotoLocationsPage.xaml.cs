@@ -2,25 +2,23 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Extensions;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.GoogleMaps;
 using Xamarin.Forms.Xaml;
-using Location = KinaUnaXamarin.Models.KinaUna.Location;
 
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PhotoLocationsPage : ContentPage
+    public partial class PhotoLocationsPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
@@ -333,7 +331,7 @@ namespace KinaUnaXamarin.Views
 
             if (Device.RuntimePlatform == Device.UWP)
             {
-                if (_screenWidth != Application.Current.MainPage.Width || _screenHeight != Application.Current.MainPage.Height)
+                if (Math.Abs(_screenWidth - Application.Current.MainPage.Width) > 0.0001 || Math.Abs(_screenHeight - Application.Current.MainPage.Height) > 0.0001)
                 {
                     _screenWidth = Application.Current.MainPage.Width;
                     _screenHeight = Application.Current.MainPage.Height;
@@ -354,7 +352,7 @@ namespace KinaUnaXamarin.Views
             }
             else
             {
-                if (_screenWidth != width || _screenHeight != height)
+                if (Math.Abs(_screenWidth - width) > 0.0001 || Math.Abs(_screenHeight - height) > 0.0001)
                 {
                     _screenWidth = width;
                     _screenHeight = height;
@@ -401,7 +399,6 @@ namespace KinaUnaXamarin.Views
                             bool validLon = double.TryParse(picture.Longtitude, NumberStyles.Any, CultureInfo.InvariantCulture, out lon);
                             if (validLat && validLon)
                             {
-                                Position position = new Position(lat, lon);
                                 var distance = DistanceCalculation.GeoCodeCalc.CalcDistance(clickedLat, clickedLon, lat,
                                     lon, DistanceCalculation.GeoCodeCalcMeasurement.Kilometers);
                                 if (distance < _viewModel.NearbyDistance)

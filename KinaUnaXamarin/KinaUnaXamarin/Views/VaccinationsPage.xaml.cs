@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VaccinationsPage : ContentPage
+    public partial class VaccinationsPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;

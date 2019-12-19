@@ -13,87 +13,92 @@
              BackgroundColor="WhiteSmoke"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
     </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
-            <ScrollView VerticalOptions="FillAndExpand">
-                <Grid>
-                    <StackLayout Orientation="Vertical" Margin="5">
-                        <Label Text="{i18n:Translate AddPhotoFor}" TextColor="DarkSlateGray" />
-                        <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
+            <Grid VerticalOptions="FillAndExpand">
+                <ScrollView VerticalOptions="FillAndExpand">
+                    <Grid>
+                        <StackLayout Orientation="Vertical" Margin="5">
+                            <Label Text="{i18n:Translate AddPhotoFor}" TextColor="DarkSlateGray" />
+                            <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList"
                                         SelectionMode="Single" HeightRequest="105"
                                         SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
-                            <CollectionView.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Padding="10">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="20" />
-                                            <RowDefinition Height="60" />
-                                        </Grid.RowDefinitions>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="40" />
-                                            <ColumnDefinition Width="160" />
-                                        </Grid.ColumnDefinitions>
-                                        <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
-                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="10">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="20" />
+                                                <RowDefinition Height="60" />
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="40" />
+                                                <ColumnDefinition Width="160" />
+                                            </Grid.ColumnDefinitions>
+                                            <BoxView Color="White" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+                                            <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
                                                Source="{Binding PictureLink}"
                                                Aspect="AspectFit"
                                                WidthRequest="40" />
-                                        <Label Grid.Row="0" Grid.Column="1"
+                                            <Label Grid.Row="0" Grid.Column="1"
                                                Text="{Binding NickName}"
                                                FontAttributes="Bold"
                                                FontSize="16"
                                                TextColor="Black"
                                                Margin="10, 0 , 0, 0" />
-                                        <Label Grid.Row="1" Grid.Column="1"
+                                            <Label Grid.Row="1" Grid.Column="1"
                                                Text="{Binding Name}"
                                                TextColor="DarkSlateGray"
                                                Margin="10, 0, 0, 0" />
-                                    </Grid>
-                                </DataTemplate>
-                            </CollectionView.ItemTemplate>
-                        </CollectionView>
-                        <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand"
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                            <Image x:Name="UploadImage" HeightRequest="200" HorizontalOptions="FillAndExpand"
                                Source="photosicon.png" />
-                        <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}"
+                            <Button x:Name="SelectImageButton" Text="{i18n:Translate SelectImage}"
                                 Clicked="SelectImageButton_OnClicked" />
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate AccessLevel}" TextColor="DarkSlateGray" />
+                                <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}"
                                     SelectedIndex="{Binding AccessLevel}" BackgroundColor="White" TextColor="Black" />
-                        </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="Tags" TextColor="DarkSlateGray" />
-                            <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}"
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="Tags" TextColor="DarkSlateGray" />
+                                <forms:AutoSuggestBox x:Name="TagsEntry" Text="{Binding Tags}"
                                                   TextChanged="TagsEditor_OnTextChanged"
                                                   QuerySubmitted="TagsEditor_OnQuerySubmitted"
                                                   SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black"
                                                   UpdateTextOnSelect="False" BackgroundColor="White" />
-                        </StackLayout>
-                        <StackLayout Margin="5" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Location}" TextColor="DarkSlateGray" />
-                            <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"
+                            </StackLayout>
+                            <StackLayout Margin="5" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Location}" TextColor="DarkSlateGray" />
+                                <forms:AutoSuggestBox x:Name="LocationEntry" Text="{Binding Location}"
                                                   TextChanged="LocationEntry_OnTextChanged"
                                                   QuerySubmitted="LocationEntry_OnQuerySubmitted"
                                                   SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black"
                                                   BackgroundColor="White" />
-                        </StackLayout>
-                        <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
-                        <StackLayout Orientation="Horizontal">
-                            <Button x:Name="SavePhotoButton" Text="{i18n:Translate Save}" TextColor="White"
+                            </StackLayout>
+                            <Label x:Name="ErrorLabel" Text="" IsVisible="False" TextColor="White" Margin="15" />
+                            <StackLayout Orientation="Horizontal">
+                                <Button x:Name="SavePhotoButton" Text="{i18n:Translate Save}" TextColor="White"
                                     BackgroundColor="#4caf50" Clicked="SavePhotoButton_OnClicked" IsEnabled="False" />
-                            <Button x:Name="CancelPhotoButton" Text="{i18n:Translate Cancel}" TextColor="White"
+                                <Button x:Name="CancelPhotoButton" Text="{i18n:Translate Cancel}" TextColor="White"
                                     BackgroundColor="DimGray" Clicked="CancelPhotoButton_OnClicked" />
+                            </StackLayout>
                         </StackLayout>
-                    </StackLayout>
-                    <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                                       IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
-                                       HorizontalOptions="FillAndExpand" Margin="50" />
-                </Grid>
-            </ScrollView>
+                        
+                    </Grid>
+                </ScrollView>
+                <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
+                                   HorizontalOptions="FillAndExpand" Margin="50" />
+                <controls:SavingIndicator IsVisible="{Binding IsSaving}"></controls:SavingIndicator>
+            </Grid>
             <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
                          HorizontalOptions="FillAndExpand">
                 <StackLayout.GestureRecognizers>

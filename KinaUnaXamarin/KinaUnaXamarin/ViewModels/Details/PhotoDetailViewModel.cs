@@ -4,7 +4,7 @@ using MvvmHelpers;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
-namespace KinaUnaXamarin.ViewModels
+namespace KinaUnaXamarin.ViewModels.Details
 {
     class PhotoDetailViewModel : BaseViewModel
     {
@@ -32,6 +32,7 @@ namespace KinaUnaXamarin.ViewModels
         private LayoutOptions _photoVerticalOptions;
         private List<string> _locationAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public PhotoDetailViewModel()
         {
@@ -77,6 +78,12 @@ namespace KinaUnaXamarin.ViewModels
         {
             get => _currentPictureViewModel;
             set => SetProperty(ref _currentPictureViewModel, value);
+        }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
         }
 
         public LayoutOptions PhotoVerticalOptions

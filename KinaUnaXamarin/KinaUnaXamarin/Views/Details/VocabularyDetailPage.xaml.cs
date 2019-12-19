@@ -6,19 +6,19 @@ using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VocabularyDetailPage : ContentPage
+    public partial class VocabularyDetailPage
     {
-        private readonly VocabularyDetailViewModel _viewModel = new VocabularyDetailViewModel();
+        private readonly VocabularyDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -31,6 +31,7 @@ namespace KinaUnaXamarin.Views
         {
             
             InitializeComponent();
+            _viewModel = new VocabularyDetailViewModel();
             _viewModel.CurrentVocabularyItemId = vocabularyItem.WordId;
             _viewModel.Word = vocabularyItem.Word;
             _viewModel.AccessLevel = vocabularyItem.AccessLevel;
@@ -273,7 +274,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteWord", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteWordMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {

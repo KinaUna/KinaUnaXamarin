@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using MvvmHelpers;
-using Xamarin.Forms;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {

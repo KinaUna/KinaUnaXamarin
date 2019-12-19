@@ -8,7 +8,7 @@
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.VideoDetailPage"
+             x:Class="KinaUnaXamarin.Views.Details.VideoDetailPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"

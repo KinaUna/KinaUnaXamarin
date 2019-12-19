@@ -9,7 +9,7 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.LocationDetailPage"
+             x:Class="KinaUnaXamarin.Views.Details.LocationDetailPage"
              Visual="Material"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true">

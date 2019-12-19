@@ -4,15 +4,15 @@ using System.Linq;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
+using KinaUnaXamarin.Views.Details;
 using MvvmHelpers;
-using PanCardView.Extensions;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class NotificationsPageNav : ContentPage
+    public partial class NotificationsPageNav
     {
         private readonly ObservableRangeCollection<MobileNotification> _notificationsList;
         private int _count;

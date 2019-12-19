@@ -13,7 +13,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AddItemPage : ContentPage
+    public partial class AddItemPage
     {
         private bool _online = true;
         private readonly AddItemViewModel _addItemModel;

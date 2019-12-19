@@ -826,6 +826,24 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Delete Photo.
+        /// </summary>
+        internal static string DeletePhoto {
+            get {
+                return ResourceManager.GetString("DeletePhoto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to delete this photo.
+        /// </summary>
+        internal static string DeletePhotoMessage {
+            get {
+                return ResourceManager.GetString("DeletePhotoMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Delete Skill.
         /// </summary>
         internal static string DeleteSkill {
@@ -1758,6 +1776,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Save {
             get {
                 return ResourceManager.GetString("Save", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Saving....
+        /// </summary>
+        internal static string Saving {
+            get {
+                return ResourceManager.GetString("Saving", resourceCulture);
             }
         }
         

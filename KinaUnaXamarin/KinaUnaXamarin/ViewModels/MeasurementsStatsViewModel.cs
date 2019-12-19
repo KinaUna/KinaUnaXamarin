@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 

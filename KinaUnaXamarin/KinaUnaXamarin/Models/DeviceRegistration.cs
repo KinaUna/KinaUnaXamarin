@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace KinaUnaXamarin.Models
+﻿namespace KinaUnaXamarin.Models
 {
     public class DeviceRegistration
     {

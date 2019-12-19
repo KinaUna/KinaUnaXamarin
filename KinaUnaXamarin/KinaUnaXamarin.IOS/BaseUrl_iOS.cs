@@ -23,7 +23,7 @@ namespace KinaUnaXamarin.IOS
 
         public string GetQuillHtml()
         {
-            string html = "";
+            string html;
             using (var streamReader = new StreamReader(GetQuillFile()))
             {
                 html = streamReader.ReadToEnd();

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using KinaUnaXamarin.Models.KinaUna;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 

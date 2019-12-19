@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,12 +16,12 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class TimelinePage : ContentPage
+    public partial class TimelinePage
     {
         private readonly TimelineFeedViewModel _viewModel;
         private bool _reload = true;
         private string _lastItemDateString;
-        private int _dateHeaderCount = 0;
+        private int _dateHeaderCount;
         private List<TimeLineItem> _timeLineList;
 
         public TimelinePage()
@@ -72,14 +73,6 @@ namespace KinaUnaXamarin.Views
             }
 
             _reload = false;
-        }
-
-        protected override void OnDisappearing()
-        {
-            //Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
-            //TimeLineListView.ItemAppearing -= ItemAppearingEvent;
-            base.OnDisappearing();
-            
         }
 
         private async Task SetUserAndProgeny()
@@ -221,8 +214,8 @@ namespace KinaUnaXamarin.Views
                 TimelineStartDatePicker.MaximumDate = _viewModel.MaxDate;
             }
 
-            await LoadItems(0, _viewModel.Progeny.Id, _viewModel.AccessToken, _viewModel.UserInfo.Timezone);
-            await ShowNextItem();
+            await LoadItems(0, _viewModel.Progeny.Id, _viewModel.UserInfo.Timezone);
+            ShowNextItem();
         }
 
         private async void ItemAppearingEvent(object sender, ItemVisibilityEventArgs e)
@@ -240,16 +233,16 @@ namespace KinaUnaXamarin.Views
             int itemsNotVisibleBeforeCount = _viewModel.TimeLineItems.Count(t => t.VisibleBefore == false);
             if (_viewModel.CanLoadMore && itemsNotVisibleBeforeCount < 30)
             {
-                await LoadItems(_timeLineList.Count - _dateHeaderCount, _viewModel.Progeny.Id, _viewModel.AccessToken, _viewModel.UserInfo.Timezone);
+                await LoadItems(_timeLineList.Count - _dateHeaderCount, _viewModel.Progeny.Id, _viewModel.UserInfo.Timezone);
             }
 
             if (_viewModel.CanShowMore)
             {
-                await ShowNextItem();
+                ShowNextItem();
             }
         }
 
-        private async Task ShowNextItem()
+        private void ShowNextItem()
         {
             if (_viewModel.CanShowMore && _timeLineList.Count - _viewModel.TimeLineItems.Count < 30)
             {
@@ -290,7 +283,7 @@ namespace KinaUnaXamarin.Views
             }
         }
 
-        private async Task LoadItems(int startItem, int progenyId, string accessToken, string userTimeZone)
+        private async Task LoadItems(int startItem, int progenyId, string userTimeZone)
         {
             _viewModel.CanLoadMore = false;
             _viewModel.IsBusy = true;

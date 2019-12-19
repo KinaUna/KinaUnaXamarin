@@ -21,7 +21,7 @@ namespace KinaUnaXamarin.Droid
 
         public string GetQuillHtml()
         {
-            string html = "";
+            string html;
             using (var streamReader = new StreamReader(Android.App.Application.Context.Assets.Open("QuillEditor.html")))
             {
                 html = streamReader.ReadToEnd();

@@ -9,10 +9,10 @@ using Plugin.Multilingual;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Settings
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LanguagePage : ContentPage
+    public partial class LanguagePage
     {
         const string ResourceId = "KinaUnaXamarin.Resources.Translations";
         static readonly Lazy<ResourceManager> resmgr = new Lazy<ResourceManager>(() => new ResourceManager(ResourceId, typeof(TranslateExtension).GetTypeInfo().Assembly));
@@ -89,8 +89,7 @@ namespace KinaUnaXamarin.Views
             }
             var ci = CrossMultilingual.Current.NeutralCultureInfoList.ToList().First(element => element.TwoLetterISOLanguageName == languageCode);
 
-            var translation =
-                SaveLabel.Text = resmgr.Value.GetString("Save", ci);
+            SaveLabel.Text = resmgr.Value.GetString("Save", ci);
             SelectLanguageLabel.Text = resmgr.Value.GetString("SelectLanguage", ci);
             Title = resmgr.Value.GetString("Language", ci);
             WarningLabel.Text = resmgr.Value.GetString("ChangeLanguageWarning", ci);

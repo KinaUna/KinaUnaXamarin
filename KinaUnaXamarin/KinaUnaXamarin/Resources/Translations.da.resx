@@ -840,4 +840,13 @@
   <data name="ItemsPerPage" xml:space="preserve">
     <value>Data per side</value>
   </data>
+  <data name="DeletePhoto" xml:space="preserve">
+    <value>Slet foto</value>
+  </data>
+  <data name="DeletePhotoMessage" xml:space="preserve">
+    <value>Er du sikker på at du vil slette dette foto</value>
+  </data>
+  <data name="Saving" xml:space="preserve">
+    <value>Gemmer...</value>
+  </data>
 </root>

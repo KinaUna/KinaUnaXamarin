@@ -7,6 +7,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -17,7 +18,7 @@ using Location = KinaUnaXamarin.Models.KinaUna.Location;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class HomePage : ContentPage
+    public partial class HomePage
     {
         private readonly HomeFeedViewModel _viewModel;
         private double _screenWidth;
@@ -63,12 +64,6 @@ namespace KinaUnaXamarin.Views
             }
             
             _reload = false;
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            // Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
 
         private async Task SetUserAndProgeny()
@@ -288,9 +283,18 @@ namespace KinaUnaXamarin.Views
                 UpcomingEventsStatckLayout.IsVisible = true;
                 foreach (CalendarItem ev in eventsList)
                 {
-                    ev.StartTime = TimeZoneInfo.ConvertTimeFromUtc(ev.StartTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
-                    ev.EndTime = TimeZoneInfo.ConvertTimeFromUtc(ev.EndTime.Value, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
-                    ev.StartString = ev.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " + ev.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
+                    if (ev.StartTime != null)
+                    {
+                        ev.StartTime = TimeZoneInfo.ConvertTimeFromUtc(ev.StartTime.Value,
+                            TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
+                        if (ev.EndTime != null)
+                        {
+                            ev.EndTime = TimeZoneInfo.ConvertTimeFromUtc(ev.EndTime.Value,
+                                TimeZoneInfo.FindSystemTimeZoneById(_viewModel.UserInfo.Timezone));
+                            ev.StartString = ev.StartTime.Value.ToString("dd-MMM-yyyy HH:mm") + " - " +
+                                             ev.EndTime.Value.ToString("dd-MMM-yyyy HH:mm");
+                        }
+                    }
 
                     if (eventListCurrent == 0)
                     {
@@ -364,7 +368,7 @@ namespace KinaUnaXamarin.Views
 
             if (Device.RuntimePlatform == Device.UWP)
             {
-                if (_screenWidth != Application.Current.MainPage.Width || _screenHeight != Application.Current.MainPage.Height)
+                if (Math.Abs(_screenWidth - Application.Current.MainPage.Width) > 0.0001 || Math.Abs(_screenHeight - Application.Current.MainPage.Height) > 0.0001)
                 {
                     _screenWidth = Application.Current.MainPage.Width;
                     _screenHeight = Application.Current.MainPage.Height;
@@ -403,7 +407,7 @@ namespace KinaUnaXamarin.Views
             }
             else
             {
-                if (_screenWidth != width || _screenHeight != height)
+                if (Math.Abs(_screenWidth - width) > 0.0001 || Math.Abs(_screenHeight - height) > 0.0001)
                 {
                     _screenWidth = width;
                     _screenHeight = height;

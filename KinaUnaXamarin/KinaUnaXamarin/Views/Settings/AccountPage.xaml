@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             x:Class="KinaUnaXamarin.Views.AccountPage"
+             x:Class="KinaUnaXamarin.Views.Settings.AccountPage"
              Visual="Material"
              Title="{i18n:Translate Account}"
              BackgroundColor="WhiteSmoke">

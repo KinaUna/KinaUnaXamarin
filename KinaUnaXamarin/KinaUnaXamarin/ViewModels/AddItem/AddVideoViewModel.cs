@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using KinaUnaXamarin.Models.KinaUna;
 using MvvmHelpers;
 using Plugin.Multilingual;

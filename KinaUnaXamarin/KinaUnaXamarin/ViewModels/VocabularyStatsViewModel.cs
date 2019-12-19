@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Text;
 using System.Windows.Input;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
 using Plugin.Multilingual;
 using Xamarin.Forms;
 
@@ -31,7 +28,7 @@ namespace KinaUnaXamarin.ViewModels
         private List<string> _chartTypeList;
         private double _maxValue;
         private double _minValue;
-        private OxyPlot.PlotModel _vocabularyPlotModel;
+        private PlotModel _vocabularyPlotModel;
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
 
@@ -97,7 +94,7 @@ namespace KinaUnaXamarin.ViewModels
         }
         
 
-        public OxyPlot.PlotModel VocabularyPlotModel
+        public PlotModel VocabularyPlotModel
         {
             get => _vocabularyPlotModel;
             set => SetProperty(ref _vocabularyPlotModel, value);

@@ -9,10 +9,11 @@
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              xmlns:viewModels="clr-namespace:KinaUnaXamarin.ViewModels;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
-             x:Class="KinaUnaXamarin.Views.FriendDetailPage"
+             x:Class="KinaUnaXamarin.Views.Details.FriendDetailPage"
              Visual="Material"
              BackgroundColor="WhiteSmoke"
-             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:details="clr-namespace:KinaUnaXamarin.ViewModels.Details;assembly=KinaUnaXamarin"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
         <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
@@ -21,7 +22,7 @@
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.BindingContext>
-        <viewModels:FriendDetailViewModel />
+        <details:FriendDetailViewModel />
     </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0">

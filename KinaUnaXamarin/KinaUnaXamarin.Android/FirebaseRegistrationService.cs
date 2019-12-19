@@ -1,12 +1,8 @@
-﻿
-using System;
-using System.Threading.Tasks;
+﻿using System;
 using WindowsAzure.Messaging;
 using Android.App;
 using Android.Util;
-using Firebase.Iid;
 using Firebase.Messaging;
-using Newtonsoft.Json;
 using Xamarin.Essentials;
 
 namespace KinaUnaXamarin.Droid
@@ -33,8 +29,6 @@ namespace KinaUnaXamarin.Droid
                 // subscribe to the SubscriptionTags list with a simple template.
                 string pnsHandle = reg.PNSHandle;
                 SecureStorage.SetAsync("PnsHandle", pnsHandle);
-                var cats = string.Join(", ", reg.Tags);
-                var temp = hub.RegisterTemplate(pnsHandle, "defaultTemplate", AzureNotificationsConstants.FCMTemplateBody, AzureNotificationsConstants.SubscriptionTags);
             }
             catch (Exception e)
             {

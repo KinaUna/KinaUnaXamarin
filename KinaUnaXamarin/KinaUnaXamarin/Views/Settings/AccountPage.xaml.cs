@@ -13,10 +13,10 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Settings
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class AccountPage : ContentPage
+    public partial class AccountPage
     {
         private readonly AccountViewModel _viewModel;
         private bool _online = true;
@@ -43,11 +43,6 @@ namespace KinaUnaXamarin.Views
                 _reload = true;
                 await Reload();
             });
-        }
-
-        private async void RegisterButton_OnClicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync("//register");
         }
 
         protected override async void OnAppearing()

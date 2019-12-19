@@ -19,9 +19,9 @@ namespace KinaUnaXamarin.Views
     // Uses OxyPlot, see: https://oxyplot.readthedocs.io/en/master/getting-started/hello-xamarin-forms.html
 
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class SleepStatsPage : ContentPage
+    public partial class SleepStatsPage
     {
-        private SleepStatsViewModel _viewModel;
+        private readonly SleepStatsViewModel _viewModel;
         private bool _reload = true;
         
         public SleepStatsPage()

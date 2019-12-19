@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using KinaUnaXamarin.Models.KinaUna;
 using MvvmHelpers;
 using Plugin.Multilingual;
 
-namespace KinaUnaXamarin.ViewModels
+namespace KinaUnaXamarin.ViewModels.Details
 {
     class ContactDetailViewModel : BaseViewModel
     {

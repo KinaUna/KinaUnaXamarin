@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using MvvmHelpers;
-using Plugin.Multilingual;
 using Xamarin.Forms;
 
 namespace KinaUnaXamarin.ViewModels

@@ -10,7 +10,7 @@ using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Media;
 using Plugin.Multilingual;
 using TimeZoneConverter;
@@ -18,12 +18,12 @@ using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ContactDetailPage : ContentPage
+    public partial class ContactDetailPage
     {
-        private readonly ContactDetailViewModel _viewModel = new ContactDetailViewModel();
+        private readonly ContactDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -228,7 +228,8 @@ namespace KinaUnaXamarin.Views
             _viewModel.AddressIdNumber = 0;
             if (_viewModel.CurrentContact.Address != null)
             {
-                _viewModel.AddressIdNumber = _viewModel.CurrentContact.AddressIdNumber.Value;
+                if (_viewModel.CurrentContact.AddressIdNumber != null)
+                    _viewModel.AddressIdNumber = _viewModel.CurrentContact.AddressIdNumber.Value;
                 _viewModel.AddressLine1 = _viewModel.CurrentContact.Address.AddressLine1;
                 _viewModel.AddressLine2 = _viewModel.CurrentContact.Address.AddressLine2;
                 _viewModel.City = _viewModel.CurrentContact.Address.City;
@@ -295,7 +296,7 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentContact.Website = _viewModel.Website;
                 _viewModel.CurrentContact.Notes = _viewModel.Notes;
                 
-                _viewModel.CurrentContact.Context = ContextEntry?.Text ?? ""; ;
+                _viewModel.CurrentContact.Context = ContextEntry?.Text ?? "";
                 _viewModel.CurrentContact.Tags = TagsEntry?.Text ?? "";
                 _viewModel.CurrentContact.AccessLevel = _viewModel.AccessLevel;
                 _viewModel.CurrentContact.Active = _viewModel.Active;
@@ -390,7 +391,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteContact", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteContactMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
@@ -470,7 +471,7 @@ namespace KinaUnaXamarin.Views
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
 
                     autoSuggestBox.ItemsSource = null;

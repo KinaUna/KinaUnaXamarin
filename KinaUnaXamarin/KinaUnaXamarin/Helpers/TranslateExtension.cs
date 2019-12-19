@@ -31,7 +31,7 @@ namespace KinaUnaXamarin.Helpers
 
 #if DEBUG
                 throw new ArgumentException(
-                    String.Format("Key '{0}' was not found in resources '{1}' for culture '{2}'.", Text, ResourceId, ci.Name),
+                    $@"Key '{Text}' was not found in resources '{ResourceId}' for culture '{ci.Name}'.",
                     "Text");
 #else
 				translation = Text; // returns the key, which GETS DISPLAYED TO THE USER

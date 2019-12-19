@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,9 +15,9 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VocabularyPage : ContentPage
+    public partial class VocabularyPage
     {
-        private VocabularyViewModel _viewModel;
+        private readonly VocabularyViewModel _viewModel;
         private bool _reload = true;
         
         public VocabularyPage()

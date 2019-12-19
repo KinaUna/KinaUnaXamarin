@@ -11,19 +11,19 @@ using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
-using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.ViewModels.Details;
 using Plugin.Multilingual;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace KinaUnaXamarin.Views
+namespace KinaUnaXamarin.Views.Details
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class LocationDetailPage : ContentPage
+    public partial class LocationDetailPage
     {
-        private readonly LocationDetailViewModel _viewModel = new LocationDetailViewModel();
+        private readonly LocationDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -264,14 +264,13 @@ namespace KinaUnaXamarin.Views
                 _viewModel.CurrentLocation.County = _viewModel.County;
                 _viewModel.CurrentLocation.State = _viewModel.State;
                 _viewModel.CurrentLocation.Country = _viewModel.Country;
-                double latitude = 0.0;
-                bool latitudeParsed = double.TryParse(_viewModel.Latitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out latitude);
+                bool latitudeParsed = double.TryParse(_viewModel.Latitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out double latitude);
                 if (latitudeParsed)
                 {
                     _viewModel.CurrentLocation.Latitude = latitude;
                 }
-                double longitude = 0.0;
-                bool longitudeParsed = double.TryParse(_viewModel.Longitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out longitude);
+
+                bool longitudeParsed = double.TryParse(_viewModel.Longitude.Replace(',', '.'), NumberStyles.Any, CultureInfo.InvariantCulture, out double longitude);
                 if (longitudeParsed)
                 {
                     _viewModel.CurrentLocation.Longitude = longitude;
@@ -330,7 +329,7 @@ namespace KinaUnaXamarin.Views
             string confirmTitle = resmgr.Value.GetString("DeleteLocation", ci);
             string confirmMessage = resmgr.Value.GetString("DeleteLocationMessage", ci) + " ? ";
             string yes = resmgr.Value.GetString("Yes", ci);
-            string no = resmgr.Value.GetString("No", ci); ;
+            string no = resmgr.Value.GetString("No", ci);
             bool confirmDelete = await DisplayAlert(confirmTitle, confirmMessage, yes, no);
             if (confirmDelete)
             {
@@ -410,7 +409,7 @@ namespace KinaUnaXamarin.Views
                             newText = newText + tagString + ", ";
                         }
                     }
-                    newText = newText + e.ChosenSuggestion.ToString() + ", ";
+                    newText = newText + e.ChosenSuggestion + ", ";
                     autoSuggestBox.Text = newText;
 
                     autoSuggestBox.ItemsSource = null;

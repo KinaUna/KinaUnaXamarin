@@ -1,5 +1,4 @@
 ﻿using System;
-using TimeZoneConverter;
 
 namespace KinaUnaXamarin.Models.KinaUna
 {

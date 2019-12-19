@@ -1,16 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
-using System.Resources;
-using System.Text;
-using System.Windows.Input;
-using KinaUnaXamarin.Helpers;
 using KinaUnaXamarin.Models.KinaUna;
-using KinaUnaXamarin.Services;
 using MvvmHelpers;
 using Plugin.Multilingual;
 
-namespace KinaUnaXamarin.ViewModels
+namespace KinaUnaXamarin.ViewModels.Details
 {
     class VaccinationDetailViewModel : BaseViewModel
     {

@@ -6,6 +6,7 @@ using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -14,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class PhotosPage : ContentPage
+    public partial class PhotosPage
     {
         private readonly PhotosViewModel _viewModel;
         private bool _reload = true;
@@ -32,6 +33,7 @@ namespace KinaUnaXamarin.Views
             
             MessagingCenter.Subscribe<SelectProgenyPage>(this, "Reload", async (sender) =>
             {
+                _reload = true;
                 await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();
@@ -39,6 +41,7 @@ namespace KinaUnaXamarin.Views
 
             MessagingCenter.Subscribe<AccountViewModel>(this, "Reload", async (sender) =>
             {
+                _reload = true;
                 await SetUserAndProgeny();
                 _viewModel.PageNumber = 1;
                 await Reload();
@@ -83,8 +86,8 @@ namespace KinaUnaXamarin.Views
             bool screenChanged = false;
             if (Device.RuntimePlatform == Device.UWP)
             {
-                if (_screenWidth != Application.Current.MainPage.Width ||
-                    _screenHeight != Application.Current.MainPage.Height)
+                if (Math.Abs(_screenWidth - Application.Current.MainPage.Width) > 0.0001 ||
+                    Math.Abs(_screenHeight - Application.Current.MainPage.Height) > 0.0001)
                 {
                     _screenWidth = Application.Current.MainPage.Width;
                     _screenHeight = Application.Current.MainPage.Height;
@@ -93,7 +96,7 @@ namespace KinaUnaXamarin.Views
                 screenChanged = true;
             }
 
-            if (_screenWidth != width || _screenHeight != height)
+            if (Math.Abs(_screenWidth - width) > 0.0001 || Math.Abs(_screenHeight - height) > 0.0001)
             {
                 _screenWidth = width;
                 _screenHeight = height;

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using KinaUnaXamarin.Models;
 using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Services;
 using KinaUnaXamarin.ViewModels;
+using KinaUnaXamarin.Views.Details;
 using TimeZoneConverter;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -15,7 +15,7 @@ using Xamarin.Forms.Xaml;
 namespace KinaUnaXamarin.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ContactsPage : ContentPage
+    public partial class ContactsPage
     {
         private int _viewChild = Constants.DefaultChildId;
         private UserInfo _userInfo;
@@ -86,8 +86,8 @@ namespace KinaUnaXamarin.Views
             bool screenChanged = false;
             if (Device.RuntimePlatform == Device.UWP)
             {
-                if (_screenWidth != Application.Current.MainPage.Width ||
-                    _screenHeight != Application.Current.MainPage.Height)
+                if (Math.Abs(_screenWidth - Application.Current.MainPage.Width) > 0.0001 ||
+                    Math.Abs(_screenHeight - Application.Current.MainPage.Height) > 0.0001)
                 {
                     _screenWidth = Application.Current.MainPage.Width;
                     _screenHeight = Application.Current.MainPage.Height;
@@ -96,7 +96,7 @@ namespace KinaUnaXamarin.Views
                 screenChanged = true;
             }
 
-            if (_screenWidth != width || _screenHeight != height)
+            if (Math.Abs(_screenWidth - width) > 0.0001 || Math.Abs(_screenHeight - height) > 0.0001)
             {
                 _screenWidth = width;
                 _screenHeight = height;
