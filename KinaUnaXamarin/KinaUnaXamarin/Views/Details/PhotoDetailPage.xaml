@@ -10,7 +10,6 @@
              xmlns:behaviors="clr-namespace:KinaUnaXamarin.Behaviors;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:autoSuggest="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
@@ -21,7 +20,9 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />

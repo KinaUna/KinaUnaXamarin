@@ -8,6 +8,7 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:myFamily="clr-namespace:KinaUnaXamarin.ViewModels.MyFamily;assembly=KinaUnaXamarin"
+             xmlns:kinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="{i18n:Translate MyChildren}"
              Visual="Material"
              BackgroundColor="WhiteSmoke">
@@ -37,7 +38,7 @@
                         <CollectionView x:Name="ProgenyCollectionView" ItemsLayout="HorizontalList" SelectionMode="Single" HeightRequest="105" SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid Padding="10">
+                                    <Grid Padding="10" x:DataType="kinaUna:Progeny">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="20" />
                                             <RowDefinition Height="60" />
@@ -91,7 +92,8 @@
                                    BackgroundColor="WhiteSmoke" TextColor="Black" Margin="10, 0, 0, 10"></Label>
                             <Picker HorizontalOptions="FillAndExpand"  x:Name="TimeZonePicker" ItemsSource="{Binding TimeZoneList}"
                                     ItemDisplayBinding="{Binding DisplayName}" IsEnabled="{Binding EditMode}" IsVisible="{Binding EditMode}"
-                                    SelectedItem="{Binding SelectedTimeZone}" TextColor="Black" BackgroundColor="White" ></Picker>
+                                    SelectedItem="{Binding SelectedTimeZone}" TextColor="Black" BackgroundColor="White"
+                                    ></Picker>
                         </StackLayout>
                         <StackLayout Orientation="Vertical" Margin="0,1,0,0" Padding="4" BackgroundColor="WhiteSmoke">
                             <Label Text="{i18n:Translate ProfilePicture}" TextColor="DarkSlateGray"></Label>

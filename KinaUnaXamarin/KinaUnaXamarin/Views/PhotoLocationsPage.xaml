@@ -10,7 +10,6 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
-             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              xmlns:maps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              Title="{i18n:Translate PhotoLocations}"
              Visual="Material">

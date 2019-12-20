@@ -44,8 +44,10 @@ namespace KinaUnaXamarin.Views.Details
         public PhotoDetailPage()
         {
             InitializeComponent();
-            _viewModel = new PhotoDetailViewModel();
-            _viewModel.CurrentPictureId = 0;
+            _viewModel = new PhotoDetailViewModel
+            {
+                CurrentPictureId = 0
+            };
             BindingContext = _viewModel;
             ContentGrid.BindingContext = _viewModel;
         }
@@ -348,8 +350,8 @@ namespace KinaUnaXamarin.Views.Details
                     LocationMap.IsVisible = true;
                     double lat;
                     double lon;
-                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
-                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
+                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
                     if (latParsed && lonParsed)
                     {
                         Position position = new Position(lat, lon);

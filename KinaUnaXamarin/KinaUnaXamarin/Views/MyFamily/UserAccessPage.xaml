@@ -6,7 +6,6 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.MyFamily.UserAccessPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="{i18n:Translate UserAccess}"
              Visual="Material"

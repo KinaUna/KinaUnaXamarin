@@ -5,7 +5,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.NotificationsPageNav"
              Visual="Material"

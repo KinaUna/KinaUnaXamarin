@@ -307,8 +307,8 @@ namespace KinaUnaXamarin.Views.Details
                 LocationMap.IsVisible = true;
                 double lat;
                 double lon;
-                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
-                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, System.Globalization.NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
+                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
                 if (latParsed && lonParsed)
                 {
                     Position position = new Position(lat, lon);

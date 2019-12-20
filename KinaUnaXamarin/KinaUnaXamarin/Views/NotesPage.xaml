@@ -6,13 +6,11 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.NotesPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              Title="{i18n:Translate Notes}"
              Visual="Material">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
             <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>

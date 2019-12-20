@@ -11,7 +11,6 @@
              Visual="Material">
     <ContentPage.Resources>
         <ResourceDictionary>
-            <i18n:TextNotEmptyConverter x:Key="TextNotEmptyConverter"></i18n:TextNotEmptyConverter>
             <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
         </ResourceDictionary>
     </ContentPage.Resources>

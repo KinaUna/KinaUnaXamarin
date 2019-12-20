@@ -11,6 +11,7 @@ namespace KinaUnaXamarin.Services
     public class Database
     {
         readonly SQLiteAsyncConnection _database;
+        private static object collisionLock = new object();
 
         public Database(string dbPath)
         {

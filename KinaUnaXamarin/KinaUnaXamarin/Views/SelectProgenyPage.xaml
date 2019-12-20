@@ -13,7 +13,9 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">

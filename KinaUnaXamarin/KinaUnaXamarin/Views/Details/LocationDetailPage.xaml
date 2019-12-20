@@ -1,11 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:forms="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
              mc:Ignorable="d"
@@ -14,7 +12,9 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />

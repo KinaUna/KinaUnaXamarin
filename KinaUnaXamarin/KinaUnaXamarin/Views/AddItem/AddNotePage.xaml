@@ -14,9 +14,12 @@
              BackgroundColor="WhiteSmoke"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:kinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Content>
         <StackLayout Orientation="Vertical" Spacing="0" VerticalOptions="FillAndExpand">
@@ -30,7 +33,7 @@
                                             SelectionChanged="ProgenyCollectionView_OnSelectionChanged">
                                 <CollectionView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid Padding="10">
+                                        <Grid Padding="10" x:DataType="kinaUna:Progeny">
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="20" />
                                                 <RowDefinition Height="60" />
@@ -65,7 +68,7 @@
                             </StackLayout>
                             <StackLayout Margin="5" BackgroundColor="White">
                                 <Label Text="{i18n:Translate Content}" TextColor="DarkSlateGray" />
-                                <controls:ExtendedWebView x:Name="ContentWebView" HeightRequest="300"
+                                <controls:ExtendedWebView x:Name="ContentWebView" HeightRequest="300" Navigating="ContentWebView_OnNavigating"
                                                           Focused="ContentWebView_OnFocused" BackgroundColor="White" />
                                 <!--<Editor x:Name="ContentEditor" Text="" TextColor="Black" Margin="15, 0, 0, 0" AutoSize="TextChanges"></Editor>-->
                             </StackLayout>

@@ -4,7 +4,6 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
-             xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.Details.SleepDetailPage"
@@ -12,7 +11,9 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
@@ -156,7 +157,7 @@
                                     FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White"
                                     BackgroundColor="DimGray" Clicked="CancelButton_OnClicked"
                                     IsVisible="{Binding EditMode}" />
-                            <StackLayout Grid.ColumnSpan="2" Orientation="Horizontal"
+                            <StackLayout Orientation="Horizontal"
                                          IsVisible="{Binding CanUserEditItems}" VerticalOptions="End"
                                          HorizontalOptions="EndAndExpand">
                                 <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}"

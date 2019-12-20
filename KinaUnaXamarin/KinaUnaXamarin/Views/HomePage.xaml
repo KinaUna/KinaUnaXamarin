@@ -9,7 +9,6 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
-             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.HomePage"
              Title="Home"
              Visual="Material"
@@ -176,7 +175,7 @@
                                 <Label Text="{Binding FriendObject.FriendSince, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding FriendObject.Name}" TextColor="White"></Label>
-                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                            <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
                                                Source = "{Binding FriendObject.PictureLink}">
@@ -258,7 +257,7 @@
                                 <Label Text="{Binding ContactObject.DateAdded, StringFormat='{0:dd-MMM-yyyy}'}" TextColor="Orange" FontSize="13" FontAttributes="Bold"></Label>
                             </StackLayout>
                             <Label Text="{Binding ContactObject.DisplayName}" TextColor="White"></Label>
-                            <forms:CachedImage Grid.Row="2" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                            <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                                                HeightRequest="120"
                                                RetryCount="3"
                                                Source = "{Binding ContactObject.PictureLink}">

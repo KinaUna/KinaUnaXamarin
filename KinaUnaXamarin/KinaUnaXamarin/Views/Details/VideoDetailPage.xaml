@@ -10,7 +10,6 @@
              mc:Ignorable="d"
              x:Class="KinaUnaXamarin.Views.Details.VideoDetailPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
-             xmlns:processors="clr-namespace:PanCardView.Processors;assembly=PanCardView"
              xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              xmlns:autoSuggest="clr-namespace:dotMorten.Xamarin.Forms;assembly=dotMorten.Xamarin.Forms.AutoSuggestBox"
@@ -19,7 +18,9 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core" 
              ios:Page.UseSafeArea="true">
     <ContentPage.Padding>
-        <OnPlatform x:TypeArguments="Thickness" iOS="0, 20, 0, 0" Default="0, 0, 0, 0" />
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
     </ContentPage.Padding>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
