@@ -33,6 +33,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomIndicator.xaml.cs">
+      <DependentUpon>CustomIndicator.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Resources\Translations.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>

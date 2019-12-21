@@ -120,6 +120,9 @@
                     </StackLayout>
                 </Grid>
             </ScrollView>
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+                <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+            </StackLayout>
             <Button Grid.Row="0" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
                     BackgroundColor="DarkGreen" TextColor="White" HeightRequest="60" FontSize="14" Margin="1" />
             <StackLayout Grid.Row="1" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">

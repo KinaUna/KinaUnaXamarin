@@ -9,6 +9,7 @@
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              Title="{i18n:Translate OnThisDay}"
              Visual="Material"
              BackgroundColor="DarkGray"
@@ -324,7 +325,7 @@
                 </OnPlatform>
             </Grid.Margin>
             <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
-                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
                     <Label Text="{i18n:Translate OfflineMessage}" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
                 <Button Command="{Binding LoginCommand}" IsVisible="{Binding IsLoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}"
@@ -336,7 +337,7 @@
                           ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
             </StackLayout>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

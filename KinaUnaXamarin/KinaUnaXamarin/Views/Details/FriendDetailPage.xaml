@@ -35,7 +35,7 @@
                 <Label Text="{Binding Name}" TextColor="White" FontSize="16" LineBreakMode="TailTruncation"></Label>
             </StackLayout>
             <Grid BackgroundColor="WhiteSmoke" VerticalOptions="FillAndExpand">
-                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" VerticalOptions="Start">
                     <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
                 </StackLayout>
                 <ScrollView>

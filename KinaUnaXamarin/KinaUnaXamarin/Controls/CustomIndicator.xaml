@@ -6,11 +6,11 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
-             x:Class="KinaUnaXamarin.Controls.SavingIndicator">
+             x:Class="KinaUnaXamarin.Controls.CustomIndicator">
   <ContentView.Content>
-      <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" BackgroundColor="#55800080" IsEnabled="True">
-           <controls:CustomLoader x:Name="Loader" Source="icon_large.png" IsEnabled="True" IsVisible="True" IsRunning="True" VerticalOptions="Center" HorizontalOptions="Center"></controls:CustomLoader>
-          <Label Text="{i18n:Translate Saving}" VerticalOptions="End" HorizontalOptions="Center" Margin="0, 0, 0, 100" TextColor="White" FontSize="24" BackgroundColor="Black"/>
+      <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+           <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="True" IsRunning="True" VerticalOptions="Start" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
+          <!--<Label Text="{i18n:Translate Saving}" VerticalOptions="End" HorizontalOptions="Center" Margin="0, 0, 0, 100" TextColor="White" FontSize="24" BackgroundColor="Black"/>-->
       </Grid>
   </ContentView.Content>
 </ContentView>

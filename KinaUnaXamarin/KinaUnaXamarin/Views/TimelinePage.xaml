@@ -9,6 +9,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.TimelinePage"
              Title="{i18n:Translate Timeline}"
              Visual="Material"
@@ -345,7 +346,7 @@
                           ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
             </Grid>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red">
+            <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <Button Command="{Binding LoginCommand}" IsVisible="{Binding IsLoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}"
@@ -354,7 +355,7 @@
                 <Label Text="{i18n:Translate ShowTimelineBefore}"></Label>
                 <DatePicker x:Name="TimelineStartDatePicker" MinimumDate="{Binding Progeny.BirthDay}" Format="dd MMM yyyy" DateSelected="TimelineStartDatePicker_OnDateSelected" BackgroundColor="White" TextColor="Black"></DatePicker>
             </StackLayout>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

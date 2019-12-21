@@ -55,8 +55,7 @@ namespace KinaUnaXamarin.Views.Details
         public PhotoDetailPage(int pictureId)
         {
             InitializeComponent();
-            _viewModel = new PhotoDetailViewModel();
-            _viewModel.CurrentPictureId = pictureId;
+            _viewModel = new PhotoDetailViewModel {CurrentPictureId = pictureId};
             BindingContext = _viewModel;
             ContentGrid.BindingContext = _viewModel;
         }
@@ -348,10 +347,8 @@ namespace KinaUnaXamarin.Views.Details
                     !string.IsNullOrEmpty(_viewModel.CurrentPictureViewModel.Longtitude))
                 {
                     LocationMap.IsVisible = true;
-                    double lat;
-                    double lon;
-                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
-                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                    bool latParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double lat);
+                    bool lonParsed = double.TryParse(_viewModel.CurrentPictureViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double lon);
                     if (latParsed && lonParsed)
                     {
                         Position position = new Position(lat, lon);
@@ -408,7 +405,7 @@ namespace KinaUnaXamarin.Views.Details
                     y = BottomSheetFrame.TranslationY;
 
                     //at the end of the event - snap to the closest location
-                    var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(e.TotalY + y)));
+                    var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetClosestLockState(e.TotalY + y)));
 
                     //depending on Swipe Up or Down - change the snapping animation
                     if (isSwipeUp(e))
@@ -436,7 +433,7 @@ namespace KinaUnaXamarin.Views.Details
             return false;
         }
 
-        private double getClosestLockState(double translationY)
+        private double GetClosestLockState(double translationY)
         {
             //Play with these values to adjust the locking motions - this will change depending on the amount of content ona  apge
             var lockStates = new[] { 0, .1, .2, .3, .4, .5, .6, .7, .8, .9 };
@@ -540,7 +537,7 @@ namespace KinaUnaXamarin.Views.Details
             y = BottomSheetFrame.TranslationY;
             if (Math.Abs(y) < Height / 10)
             {
-                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(_detailsHeight + 15)));
+                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetClosestLockState(_detailsHeight + 15)));
                 BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 350, Easing.SpringIn);
             }
             else

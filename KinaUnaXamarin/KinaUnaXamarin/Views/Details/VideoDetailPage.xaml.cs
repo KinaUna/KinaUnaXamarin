@@ -285,12 +285,11 @@ namespace KinaUnaXamarin.Views.Details
             _viewModel.CurrentVideoId = _viewModel.CurrentVideoViewModel.VideoId;
             await UpdateEditInfo();
 
-            PictureTime picTime;
             if (_viewModel.CurrentVideoViewModel.VideoTime != null && _viewModel.Progeny.BirthDay.HasValue)
             {
                 DateTime picTimeBirthday = new DateTime(_viewModel.Progeny.BirthDay.Value.Ticks, DateTimeKind.Unspecified);
 
-                picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentVideoViewModel.VideoTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
+                PictureTime picTime = new PictureTime(picTimeBirthday, _viewModel.CurrentVideoViewModel.VideoTime, TimeZoneInfo.FindSystemTimeZoneById(_viewModel.Progeny.TimeZone));
                 _viewModel.PicTimeValid = true;
                 _viewModel.PicYears = picTime.CalcYears();
                 _viewModel.PicMonths = picTime.CalcMonths();
@@ -305,10 +304,8 @@ namespace KinaUnaXamarin.Views.Details
                 !string.IsNullOrEmpty(_viewModel.CurrentVideoViewModel.Longtitude))
             {
                 LocationMap.IsVisible = true;
-                double lat;
-                double lon;
-                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lat);
-                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out lon);
+                bool latParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Latitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double lat);
+                bool lonParsed = double.TryParse(_viewModel.CurrentVideoViewModel.Longtitude, NumberStyles.Any, CultureInfo.GetCultureInfo("en-US"), out double lon);
                 if (latParsed && lonParsed)
                 {
                     Position position = new Position(lat, lon);
@@ -347,7 +344,7 @@ namespace KinaUnaXamarin.Views.Details
                     y = BottomSheetFrame.TranslationY;
 
                     //at the end of the event - snap to the closest location
-                    var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(e.TotalY + y)));
+                    var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetClosestLockState(e.TotalY + y)));
 
                     //depending on Swipe Up or Down - change the snapping animation
                     if (isSwipeUp(e))
@@ -375,7 +372,7 @@ namespace KinaUnaXamarin.Views.Details
             return false;
         }
 
-        private double getClosestLockState(double translationY)
+        private double GetClosestLockState(double translationY)
         {
             //Play with these values to adjust the locking motions - this will change depending on the amount of content ona  apge
             var lockStates = new[] { 0, .1, .2, .3, .4, .5, .6, .7, .8, .9 };
@@ -399,9 +396,9 @@ namespace KinaUnaXamarin.Views.Details
             }
 
             var selectedLockState = lockStates[closestIndex];
-            var TranslateToLockState = GetProportionCoordinate(selectedLockState);
+            var translateToLockState = GetProportionCoordinate(selectedLockState);
 
-            return TranslateToLockState;
+            return translateToLockState;
         }
 
         private double GetProportionCoordinate(double proportion)
@@ -477,7 +474,7 @@ namespace KinaUnaXamarin.Views.Details
             y = BottomSheetFrame.TranslationY;
             if (Math.Abs(y) < Height / 10)
             {
-                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(getClosestLockState(_detailsHeight + 15)));
+                var finalTranslation = Math.Max(Math.Min(0, -1000), -Math.Abs(GetClosestLockState(_detailsHeight + 15)));
                 BottomSheetFrame.TranslateTo(BottomSheetFrame.X, finalTranslation, 350, Easing.SpringIn);
             }
             else

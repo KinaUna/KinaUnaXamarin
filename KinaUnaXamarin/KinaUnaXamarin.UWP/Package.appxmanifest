@@ -9,7 +9,7 @@
   <Identity
     Name="38968KinaUna.KinaUnaXamarin"
     Publisher="CN=BE5324AA-73CC-4753-B1A6-C8558EA95B79"
-    Version="1.0.82.0" />
+    Version="1.0.83.0" />
 
   <mp:PhoneIdentity PhoneProductId="5b491a9d-0728-4322-994c-bb8f9bdc4d88" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 

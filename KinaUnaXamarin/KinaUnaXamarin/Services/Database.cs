@@ -125,11 +125,11 @@ namespace KinaUnaXamarin.Services
             _database.DeleteAllAsync<UserPictureDto>().Wait();
         }
 
-        protected static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 3)
+        private static Task<T> AttemptAndRetry<T>(Func<Task<T>> action, int numRetries = 5)
         {
-            return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, pollyRetryAttempt).ExecuteAsync(action);
+            return Policy.Handle<SQLiteException>().WaitAndRetryAsync(numRetries, PollyRetryAttempt).ExecuteAsync(action);
 
-            TimeSpan pollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
+            TimeSpan PollyRetryAttempt(int attemptNumber) => TimeSpan.FromSeconds(Math.Pow(2, attemptNumber));
         }
 
         public async Task<List<Progeny>> GetProgenyListAsync()
@@ -380,9 +380,13 @@ namespace KinaUnaXamarin.Services
         public async Task<PictureViewModel> GetPictureViewModelAsync(int pictureId)
         {
             PictureViewModelDto pictureViewModelDto = await AttemptAndRetry(() => _database.Table<PictureViewModelDto>().FirstOrDefaultAsync(p => p.PictureId == pictureId)).ConfigureAwait(false);
-            PictureViewModel pictureViewModel =
-                JsonConvert.DeserializeObject<PictureViewModel>(pictureViewModelDto.PictureViewModelString);
-            return pictureViewModel;
+            if (pictureViewModelDto != null)
+            {
+                PictureViewModel pictureViewModel =
+                    JsonConvert.DeserializeObject<PictureViewModel>(pictureViewModelDto.PictureViewModelString);
+                return pictureViewModel;
+            }
+            return new PictureViewModel();
         }
         public async Task<int> SavePictureViewModelAsync(PictureViewModel pictureViewModel)
         {

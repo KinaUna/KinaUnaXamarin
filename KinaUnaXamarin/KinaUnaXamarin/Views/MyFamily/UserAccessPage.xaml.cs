@@ -47,6 +47,21 @@ namespace KinaUnaXamarin.Views.MyFamily
             base.OnAppearing();
 
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            var networkAccess = Connectivity.NetworkAccess;
+            bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                _online = true;
+                OfflineStackLayout.IsVisible = false;
+
+            }
+            else
+            {
+                _online = false;
+                OfflineStackLayout.IsVisible = true;
+
+            }
+
             if (_reload)
             {
                 _reload = false;
@@ -63,10 +78,19 @@ namespace KinaUnaXamarin.Views.MyFamily
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            var networkAccess = e.NetworkAccess;
+            var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                OfflineStackLayout.IsVisible = false;
+            }
+            else
+            {
+                OfflineStackLayout.IsVisible = true;
+            }
             if (internetAccess != _online)
             {
+                _online = internetAccess;
                 await Reload();
             }
         }

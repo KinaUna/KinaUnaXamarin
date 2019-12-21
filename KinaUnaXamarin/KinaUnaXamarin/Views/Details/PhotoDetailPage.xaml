@@ -349,9 +349,9 @@
                     </StackLayout>
                 </StackLayout>
             </RelativeLayout>
-            <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
-                               IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand"
-                               HorizontalOptions="FillAndExpand" Margin="50" />
+            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                               Opacity="0.8" VerticalOptions="FillAndExpand"
+                               HorizontalOptions="FillAndExpand" />
             <controls:SavingIndicator IsVisible="{Binding IsSaving}"></controls:SavingIndicator>
         </Grid>
     </ContentPage.Content>

@@ -9,6 +9,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.HomePage"
              Title="Home"
              Visual="Material"
@@ -570,7 +571,7 @@
             <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
-            <ActivityIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End" />
+            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

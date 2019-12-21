@@ -52,11 +52,13 @@ namespace KinaUnaXamarin.Views.MyFamily
             bool internetAccess = networkAccess == NetworkAccess.Internet;
             if (internetAccess)
             {
+                _online = true;
                 OfflineStackLayout.IsVisible = false;
                 EditButton.IsEnabled = true;
             }
             else
             {
+                _online = false;
                 OfflineStackLayout.IsVisible = true;
                 EditButton.IsEnabled = false;
             }
@@ -76,10 +78,21 @@ namespace KinaUnaXamarin.Views.MyFamily
 
         private async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
-            var networkAccess = e.NetworkAccess;
+            var networkAccess = Connectivity.NetworkAccess;
             bool internetAccess = networkAccess == NetworkAccess.Internet;
+            if (internetAccess)
+            {
+                OfflineStackLayout.IsVisible = false;
+                EditButton.IsEnabled = true;
+            }
+            else
+            {
+                OfflineStackLayout.IsVisible = true;
+                EditButton.IsEnabled = false;
+            }
             if (internetAccess != _online)
             {
+                _online = internetAccess;
                 await Reload();
             }
         }
