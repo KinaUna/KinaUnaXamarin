@@ -31,13 +31,15 @@ namespace KinaUnaXamarin.Views.Details
         {
             
             InitializeComponent();
-            _viewModel = new VocabularyDetailViewModel();
-            _viewModel.CurrentVocabularyItemId = vocabularyItem.WordId;
-            _viewModel.Word = vocabularyItem.Word;
-            _viewModel.AccessLevel = vocabularyItem.AccessLevel;
-            _viewModel.Language = vocabularyItem.Language;
-            _viewModel.SoundsLike = vocabularyItem.SoundsLike;
-            _viewModel.Description = vocabularyItem.Description;
+            _viewModel = new VocabularyDetailViewModel
+            {
+                CurrentVocabularyItemId = vocabularyItem.WordId,
+                Word = vocabularyItem.Word,
+                AccessLevel = vocabularyItem.AccessLevel,
+                Language = vocabularyItem.Language,
+                SoundsLike = vocabularyItem.SoundsLike,
+                Description = vocabularyItem.Description
+            };
             BindingContext = _viewModel;
             
         }
@@ -225,6 +227,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime wordDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
                 _viewModel.CurrentVocabularyItem.Date = wordDate;
@@ -237,6 +240,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 VocabularyItem resultVocabularyItem = await ProgenyService.UpdateVocabularyItem(_viewModel.CurrentVocabularyItem);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = true;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultVocabularyItem != null)  // Todo: Error message if update fails.
                 {

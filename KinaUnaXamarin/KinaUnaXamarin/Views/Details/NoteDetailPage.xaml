@@ -131,6 +131,10 @@
                         <Label Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
                     </Grid>
                 </ScrollView>
+                <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                          Opacity="0.8" VerticalOptions="FillAndExpand"
+                                          HorizontalOptions="FillAndExpand" />
+                <controls:SavingIndicator IsVisible="{Binding IsSaving}"></controls:SavingIndicator>
             </Grid>
             <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand">
                 <StackLayout.GestureRecognizers>

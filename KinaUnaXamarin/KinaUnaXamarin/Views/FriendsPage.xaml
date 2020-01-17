@@ -8,6 +8,8 @@
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:forms="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              Title="{i18n:Translate Friends}"
              Visual="Material"
              BackgroundColor="DarkGray">
@@ -17,11 +19,26 @@
         </ResourceDictionary>
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
-                     Clicked="ReloadToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" IconImageSource="optionsicon.png" Clicked="OptionsToolBarItem_OnClicked"></ToolbarItem>
-        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" IconImageSource="childicon.png" Clicked="ProgenyToolBarItem_OnClicked"></ToolbarItem>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" Clicked="ReloadToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Reload}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" Clicked="AddItemToolbarButton_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Plus}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="OptionsToolBarItem" Text="Options" Clicked="OptionsToolBarItem_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Tune}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" Clicked="ProgenyToolBarItem_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HumanChild}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <Grid x:Name="ContainerGrid" BackgroundColor="DarkGray">
@@ -110,7 +127,9 @@
                 <Picker x:Name="SortByPicker" Margin="20, 0, 0, 0" ItemsSource="{Binding SortByList}" BackgroundColor="White" TextColor="Black"></Picker>
                 <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}" BackgroundColor="DarkGreen" TextColor="White"></Button>
             </StackLayout>
-            <ActivityIndicator IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
+            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                      Opacity="0.8" VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

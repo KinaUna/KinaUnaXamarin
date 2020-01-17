@@ -71,8 +71,7 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SavePhotoButton_OnClicked(object sender, EventArgs e)
         {
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (string.IsNullOrEmpty(_filePath) || progeny == null)
+            if (string.IsNullOrEmpty(_filePath) || !(ProgenyCollectionView.SelectedItem is Progeny progeny))
             {
                 return;
             }
@@ -129,6 +128,8 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 await ProgenyService.SaveTimeLineItem(tItem);
             }
+            _addPhotoViewModel.IsBusy = false;
+            _addPhotoViewModel.IsSaving = false;
 
             ErrorLabel.IsVisible = true;
             if (newPicture.PictureId == 0)
@@ -152,8 +153,7 @@ namespace KinaUnaXamarin.Views.AddItem
                 await Shell.Current.Navigation.PopModalAsync();
             }
 
-            _addPhotoViewModel.IsBusy = false;
-            _addPhotoViewModel.IsSaving = false;
+            
         }
 
         private async void CancelPhotoButton_OnClicked(object sender, EventArgs e)

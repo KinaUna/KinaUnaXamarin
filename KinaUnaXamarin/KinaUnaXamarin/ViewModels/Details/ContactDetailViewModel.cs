@@ -45,6 +45,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private int _dateMonth;
         private int _dateDay;
         private DateTime? _date;
+        private bool _isSaving;
 
         public ContactDetailViewModel()
         {
@@ -94,6 +95,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Contact> ContactItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

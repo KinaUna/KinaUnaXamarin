@@ -117,11 +117,10 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveSkillButton_OnClicked(object sender, EventArgs e)
         {
-            _viewModel.IsBusy = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
-                
+                _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
                 Skill saveSkill = new Skill();
                 saveSkill.ProgenyId = progeny.Id;
                 saveSkill.AccessLevel = _viewModel.AccessLevel;
@@ -139,6 +138,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     // Todo: Translate messages.
                     saveSkill = await ProgenyService.SaveSkill(saveSkill);
+                    _viewModel.IsBusy = false;
+                    _viewModel.IsSaving = false;
                     if (saveSkill.SkillId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -154,6 +155,7 @@ namespace KinaUnaXamarin.Views.AddItem
                         SaveSkillButton.IsVisible = false;
                         CancelSkillButton.Text = "Ok";
                         CancelSkillButton.BackgroundColor = Color.FromHex("#4caf50");
+                        await Shell.Current.Navigation.PopModalAsync();
                     }
                 }
                 else
@@ -167,6 +169,7 @@ namespace KinaUnaXamarin.Views.AddItem
             }
 
             _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
         }
 
         private async void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -849,4 +849,25 @@
   <data name="Saving" xml:space="preserve">
     <value>Speichern...</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>Hilfe</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Dokumentation</value>
+  </data>
+  <data name="GettingStarted" xml:space="preserve">
+    <value>Erste Schritte</value>
+  </data>
+  <data name="ReportIssue" xml:space="preserve">
+    <value>Ein Problem melden</value>
+  </data>
+  <data name="SupporNewIssueLink" xml:space="preserve">
+    <value>https://support.kinauna.com/issues/</value>
+  </data>
+  <data name="SupportDocsLink" xml:space="preserve">
+    <value>https://support.kinauna.com/docs/d/21/de--deutsch</value>
+  </data>
+  <data name="SupportStartLink" xml:space="preserve">
+    <value>https://support.kinauna.com/docs/d/31/kinauna-mobil-app--erste-schritte</value>
+  </data>
 </root>

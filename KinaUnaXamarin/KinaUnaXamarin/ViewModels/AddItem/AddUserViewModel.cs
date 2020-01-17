@@ -10,6 +10,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
     {
         private int _accessLevel;
         private List<string> _accessLevelList;
+        private bool _isSaving;
 
         public AddUserViewModel()
         {
@@ -50,6 +51,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

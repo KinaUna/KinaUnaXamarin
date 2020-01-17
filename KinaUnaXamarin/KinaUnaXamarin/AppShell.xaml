@@ -66,16 +66,20 @@
     <FlyoutItem Title="Home" x:Name="HomeFlyoutItem"
                 Icon="{x:Static models:IconFont.Home}">
         <Tab Title="Home"
-             Icon="homeicon.png"
              Route="home">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Home}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent 
                           ContentTemplate="{DataTemplate views:HomePage}">
             </ShellContent>
         </Tab>
         <Tab x:Name="YearAgoMenuItem"
              Title="{i18n:Translate OnThisDay}"
-             Icon="timelineicon.png"
              Route="yearago">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.History}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent 
                           ContentTemplate="{DataTemplate views:YearAgoPage}">
             </ShellContent>
@@ -93,16 +97,18 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Photos}" x:Name="PhotosFlyoutItem"
                 Icon="{x:Static models:IconFont.ImageMultiple}">
-        <Tab x:Name="PhotosMenuItem" Title="{i18n:Translate Photos}"
-             Icon="photosicon.png"
-             Route="photos">
+        <Tab x:Name="PhotosMenuItem" Title="{i18n:Translate Photos}" Route="photos">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.ImageMultiple}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent 
                           ContentTemplate="{DataTemplate views:PhotosPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate PhotoLocations}" x:Name="PhotoLocationsTabItem"
-             Icon="locationsicon.png"
-             Route="photolocations">
+        <Tab Title="{i18n:Translate PhotoLocations}" x:Name="PhotoLocationsTabItem" Route="photolocations">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.MapMarkerCheck}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:PhotoLocationsPage}">
             </ShellContent>
         </Tab>
@@ -131,15 +137,17 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Sleep}" x:Name="SleepFlyoutItem"
                 Icon="{x:Static models:IconFont.Sleep}">
-        <Tab Title="{i18n:Translate Sleep}" x:Name="SleepTabItem"
-             Icon="sleepicon.png"
-             Route="sleep">
+        <Tab Title="{i18n:Translate Sleep}" x:Name="SleepTabItem" Route="sleep">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Sleep}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:SleepPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate Statistics}" x:Name="SleepStatsTabItem"
-             Icon="charticon.png"
-             Route="sleepstats">
+        <Tab Title="{i18n:Translate Statistics}" x:Name="SleepStatsTabItem" Route="sleepstats">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.ChartLine}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:SleepStatsPage}">
             </ShellContent>
         </Tab>
@@ -179,15 +187,17 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Measurements}" x:Name="MeasurementsFlyoutItem"
                 Icon="{x:Static models:IconFont.Ruler}">
-        <Tab Title="{i18n:Translate Measurements}" x:Name="MeasurementsTabItem"
-             Icon="measurementsicon.png"
-             Route="measurements">
+        <Tab Title="{i18n:Translate Measurements}" x:Name="MeasurementsTabItem" Route="measurements">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Ruler}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:MeasurementsPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate Statistics}" x:Name="MeasurementsStatsTabItem"
-             Icon="charticon.png"
-             Route="measurementsstats">
+        <Tab Title="{i18n:Translate Statistics}" x:Name="MeasurementsStatsTabItem" Route="measurementsstats">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.ChartLine}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:MeasurementsStatsPage}">
             </ShellContent>
         </Tab>
@@ -205,15 +215,17 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Vocabulary}" x:Name="VocabularyFlyoutItem"
                 Icon="{x:Static models:IconFont.MessageProcessing}">
-        <Tab Title="{i18n:Translate Vocabulary}" x:Name="VocabularyTabItem"
-             Icon="vocabularyicon.png"
-             Route="vocabulary">
+        <Tab Title="{i18n:Translate Vocabulary}" x:Name="VocabularyTabItem" Route="vocabulary">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.MessageProcessing}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:VocabularyPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate Statistics}" x:Name="VocabularyStatsTabItem"
-             Icon="charticon.png"
-             Route="vocabularystats">
+        <Tab Title="{i18n:Translate Statistics}" x:Name="VocabularyStatsTabItem" Route="vocabularystats">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.ChartLine}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate views:VocabularyStatsPage}">
             </ShellContent>
         </Tab>
@@ -242,36 +254,41 @@
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate MyFamily}" x:Name="MyFamilyFlyoutItem"
                 Icon="{x:Static models:IconFont.AccountChild}">
-        <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem"
-             Icon="childicon.png"
-             Route="mychildren">
+        <Tab Title="{i18n:Translate MyChildren}" x:Name="MyChildrenTabItem" Route="mychildren">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.AccountChildCircle}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate myFamilyViews:MyChildrenPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate UserAccess}" x:Name="UserAccessTabItem"
-             Icon="myfamilyicon.png"
-             Route="useraccess">
+        <Tab Title="{i18n:Translate UserAccess}" x:Name="UserAccessTabItem" Route="useraccess">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.AccountKey}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate myFamilyViews:UserAccessPage}">
             </ShellContent>
         </Tab>
     </FlyoutItem>
     <FlyoutItem Title="{i18n:Translate Settings}" x:Name="SettingsFlyoutItem"
                 Icon="{x:Static models:IconFont.Settings}">
-        <Tab Title="{i18n:Translate Language}" x:Name="LanguageTabItem"
-             Icon="languageicon.png"
-             Route="language">
+        <Tab Title="{i18n:Translate Language}" x:Name="LanguageTabItem" Route="language">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Web}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate settingsViews:LanguagePage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate Account}" x:Name="AccountTabItem"
-             Icon="useraccounticon.png"
-             Route="account">
+        <Tab Title="{i18n:Translate Account}" x:Name="AccountTabItem" Route="account">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.ShieldAccount}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate settingsViews:AccountPage}">
             </ShellContent>
         </Tab>
-        <Tab Title="{i18n:Translate About}" x:Name="AboutTabItem"
-             Icon="infoicon.png"
-             Route="about">
+        <Tab Title="{i18n:Translate About}" x:Name="AboutTabItem" Route="about">
+            <Tab.Icon>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Information}"></FontImageSource>
+            </Tab.Icon>
             <ShellContent ContentTemplate="{DataTemplate settingsViews:AboutPage}">
             </ShellContent>
         </Tab>

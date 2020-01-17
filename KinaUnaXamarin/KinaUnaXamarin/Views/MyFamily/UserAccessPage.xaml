@@ -7,15 +7,32 @@
              x:Class="KinaUnaXamarin.Views.MyFamily.UserAccessPage"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:modelsKinaUna="clr-namespace:KinaUnaXamarin.Models.KinaUna;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
              Title="{i18n:Translate UserAccess}"
              Visual="Material"
              BackgroundColor="WhiteSmoke">
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
-                     Clicked="ReloadToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="ProgenyToolBarItem" IconImageSource="childicon.png"
-                     Clicked="ProgenyToolBarItem_OnClicked" />
+        <ToolbarItem x:Name="HelpToolbarButton" Text="Help" Clicked="HelpToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HelpCircle}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" Clicked="ReloadToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Reload}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" Clicked="AddItemToolbarButton_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Plus}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" Clicked="ProgenyToolBarItem_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HumanChild}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Resources>
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
@@ -120,7 +137,7 @@
                     </StackLayout>
                 </Grid>
             </ScrollView>
-            <StackLayout x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
+            <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red" HorizontalOptions="FillAndExpand" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
             <Button Grid.Row="0" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedOut}" Text="{i18n:Translate LogInOrRegister}" HorizontalOptions="FillAndExpand" VerticalOptions="Start"
@@ -128,7 +145,9 @@
             <StackLayout Grid.Row="1" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
                 <Label Text="{i18n:Translate NoChildrenFound}"></Label>
             </StackLayout>
-            <ActivityIndicator Grid.Row="1" IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" Opacity="0.8" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Margin="50"></ActivityIndicator>
+            <controls:CustomIndicator Grid.Row="1" IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                      Opacity="0.8" VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

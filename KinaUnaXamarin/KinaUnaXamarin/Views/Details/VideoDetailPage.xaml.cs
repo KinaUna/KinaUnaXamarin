@@ -545,6 +545,9 @@ namespace KinaUnaXamarin.Views.Details
 
         private async void SaveButton_OnClicked(object sender, EventArgs e)
         {
+            _viewModel.IsSaving = true;
+            _viewModel.IsBusy = true;
+
             Video updatedVideo = await ProgenyService.GetVideo(_viewModel.CurrentVideoViewModel.VideoId, _accessToken, _userInfo.Timezone);
             updatedVideo.Progeny = _viewModel.Progeny;
             updatedVideo.Tags = TagsEditor.Text;
@@ -603,15 +606,7 @@ namespace KinaUnaXamarin.Views.Details
                     TimeLineItem updatedTimeLineItem = await ProgenyService.UpdateTimeLineItem(tItem);
                     if (updatedTimeLineItem != null && updatedTimeLineItem.TimeLineId != 0)
                     {
-                        MessageLabel.IsVisible = true;
-                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                        MessageLabel.Text = resmgr.Value.GetString("VideoSaved", ci) + savedVideo.VideoId;
-                        MessageLabel.BackgroundColor = Color.Green;
-                        SaveButton.IsVisible = false;
-                        DeleteButton.IsVisible = false;
-                        CancelButton.Text = "Ok";
-                        CancelButton.BackgroundColor = Color.FromHex("#4caf50");
-                        CancelButton.IsEnabled = true;
+                        _viewModel.EditMode = false;
                         await Reload();
                     }
                     else
@@ -626,6 +621,9 @@ namespace KinaUnaXamarin.Views.Details
                     }
                 }
             }
+
+            _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
         }
 
         private async void DeleteButton_OnClicked(object sender, EventArgs e)

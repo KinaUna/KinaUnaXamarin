@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
 using System.Resources;
 using KinaUnaXamarin.Helpers;
+using KinaUnaXamarin.Models.KinaUna;
 using KinaUnaXamarin.Resources;
 using KinaUnaXamarin.Services;
 using Plugin.Multilingual;
@@ -93,6 +96,33 @@ namespace KinaUnaXamarin.Views.Settings
             SelectLanguageLabel.Text = resmgr.Value.GetString("SelectLanguage", ci);
             Title = resmgr.Value.GetString("Language", ci);
             WarningLabel.Text = resmgr.Value.GetString("ChangeLanguageWarning", ci);
+        }
+
+        private async void HelpToolbarButton_OnClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PushModalAsync(new HelpPage());
+        }
+
+        private async void AddItemToolbarButton_OnClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PushModalAsync(new AddItemPage());
+        }
+
+        private async void ProgenyToolBarItem_OnClicked(object sender, EventArgs e)
+        {
+            string userEmail = await UserService.GetUserEmail();
+            List<Progeny> progenyList = await ProgenyService.GetProgenyList(userEmail);
+            ObservableCollection<Progeny> progenyCollection = new ObservableCollection<Progeny>();
+            if (progenyList != null && progenyList.Any())
+            {
+                foreach (Progeny prog in progenyList)
+                {
+                    progenyCollection.Add(prog);
+                }
+            }
+
+            SelectProgenyPage selProPage = new SelectProgenyPage(progenyCollection);
+            await Shell.Current.Navigation.PushModalAsync(selProPage);
         }
     }
 }

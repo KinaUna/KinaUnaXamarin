@@ -26,8 +26,9 @@
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.Content>
-        <RelativeLayout BackgroundColor="Black">
-            <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
+        <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+            <RelativeLayout BackgroundColor="Black">
+                <Grid x:Name="ContentGrid" BackgroundColor="Black" Margin="0"
                   RelativeLayout.WidthConstraint=
                   "{ConstraintExpression Type=RelativeToParent,
                                 Property=Width,
@@ -36,14 +37,14 @@
                   "{ConstraintExpression Type=RelativeToParent,
                                 Property=Height,
                                 Factor=0.89}">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="0"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
-                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
-                </StackLayout>
-                <panCardView:CarouselView
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <StackLayout Grid.Row="0" x:Name="OfflineStackLayout" IsVisible="False" BackgroundColor="Red">
+                        <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                    </StackLayout>
+                    <panCardView:CarouselView
                 x:Name="VideoCarousel"
                 HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
                 Grid.Row="1"
@@ -53,139 +54,138 @@
                 IsCyclical="False"
                 IsVerticalSwipeEnabled="False"
                 IsViewReusingEnabled="True">
-                    <panCardView:CarouselView.ItemTemplate>
-                        <DataTemplate x:DataType="modelsKinaUna:VideoViewModel">
-                            <ContentView VerticalOptions="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.VideoVerticalOptions}">
-                                <Grid Margin="0" IsClippedToBounds="True">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                        <RowDefinition Height="20"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="2000">
+                        <panCardView:CarouselView.ItemTemplate>
+                            <DataTemplate x:DataType="modelsKinaUna:VideoViewModel">
+                                <ContentView VerticalOptions="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.VideoVerticalOptions}">
+                                    <Grid Margin="0" IsClippedToBounds="True">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="20"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <controls:ExtendedWebView Source="{Binding VideoLink}" Grid.Row="1" Grid.Column="0" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" HeightRequest="2000">
 
-                                    </controls:ExtendedWebView>
-                                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
-                                        <Label Text="Video" TextColor="WhiteSmoke"></Label>
-                                        <Label Text="{Binding VideoNumber}" TextColor="WhiteSmoke"></Label>
-                                        <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
-                                        <Label Text="{Binding VideoCount}" TextColor="WhiteSmoke"></Label>
-                                    </StackLayout>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
-                                        <Label Text="{Binding VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
-                                    </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
-                                        <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
-                                    </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False">
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
-                                        </Frame.GestureRecognizers>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="5,0,0,0" ></Label>
-                                            <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="0, 0, 5, 0" ></Label>
+                                        </controls:ExtendedWebView>
+                                        <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
+                                            <Label Text="Video" TextColor="WhiteSmoke"></Label>
+                                            <Label Text="{Binding VideoNumber}" TextColor="WhiteSmoke"></Label>
+                                            <Label Text="{i18n:Translate Of}" TextColor="WhiteSmoke"></Label>
+                                            <Label Text="{Binding VideoCount}" TextColor="WhiteSmoke"></Label>
                                         </StackLayout>
-                                    </Frame>
-                                    <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="End" BackgroundColor="DeepSkyBlue" Padding="10" Margin="1" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.CanUserEditItems}">
-                                        <Frame.GestureRecognizers>
-                                            <TapGestureRecognizer Tapped="EditClicked"></TapGestureRecognizer>
-                                        </Frame.GestureRecognizers>
-                                        <StackLayout Orientation="Horizontal">
-                                            <Label  Text="{x:Static models:IconFont.Pencil}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="20" Margin="5,0,0,0" ></Label>
-                                        </StackLayout>
-                                    </Frame>
-                                </Grid>
-                            </ContentView>
-                        </DataTemplate>
-                    </panCardView:CarouselView.ItemTemplate>
-                    <panCardViewControls:LeftArrowControl/>
-                    <panCardViewControls:RightArrowControl/>
-                    <panCardViewControls:IndicatorsControl/>
-                </panCardView:CarouselView>
-                <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
-                    <Grid Margin="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="2*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="5"></Label>
-                        <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <autoSuggest:AutoSuggestBox x:Name="TagsEditor" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></autoSuggest:AutoSuggestBox>
-                        </StackLayout>
-                        <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Duration}"></Label>
-                        <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5, 0, 5, 0" BackgroundColor="White">
-                            <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
-                                <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
+                                        <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="Start" BackgroundColor="DarkGray" Padding="5" Margin="0" HasShadow="False">
+                                            <Label Text="{Binding VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" FontSize="11" Margin="5, 0, 5, 0" ></Label>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="DarkSlateGray" Padding="5" Margin="0" HasShadow="False">
+                                            <Label  Text="{Binding Location}" TextColor="LightBlue" FontSize="11" HorizontalTextAlignment="End" Margin="5, 0, 5, 0"></Label>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="End" VerticalOptions="End" BackgroundColor="ForestGreen" Padding="10" Margin="0" HasShadow="False">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="CommentsClicked"></TapGestureRecognizer>
+                                            </Frame.GestureRecognizers>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label  Text="{x:Static models:IconFont.Comment}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="5,0,0,0" ></Label>
+                                                <Label  Text="{Binding CommentsCount}" TextColor="LightGoldenrodYellow" FontSize="16" Margin="0, 0, 5, 0" ></Label>
+                                            </StackLayout>
+                                        </Frame>
+                                        <Frame Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" VerticalOptions="End" BackgroundColor="DeepSkyBlue" Padding="10" Margin="1" HasShadow="False" IsVisible="{Binding Source={x:Reference ContentGrid}, Path=BindingContext.CanUserEditItems}">
+                                            <Frame.GestureRecognizers>
+                                                <TapGestureRecognizer Tapped="EditClicked"></TapGestureRecognizer>
+                                            </Frame.GestureRecognizers>
+                                            <StackLayout Orientation="Horizontal">
+                                                <Label  Text="{x:Static models:IconFont.Pencil}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="LightGoldenrodYellow" FontSize="20" Margin="5,0,0,0" ></Label>
+                                            </StackLayout>
+                                        </Frame>
+                                    </Grid>
+                                </ContentView>
+                            </DataTemplate>
+                        </panCardView:CarouselView.ItemTemplate>
+                        <panCardViewControls:LeftArrowControl/>
+                        <panCardViewControls:RightArrowControl/>
+                        <panCardViewControls:IndicatorsControl/>
+                    </panCardView:CarouselView>
+                    <ScrollView Grid.Row="1" IsVisible="{Binding EditMode}" HorizontalOptions="FillAndExpand" VerticalOptions="End" BackgroundColor="#AAFFFFFF" Margin="0">
+                        <Grid Margin="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="2*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Row="0" Grid.Column="0" Text="Tags" Margin="5"></Label>
+                            <StackLayout Grid.Row="0" Grid.Column="1" Margin="5" BackgroundColor="White">
+                                <autoSuggest:AutoSuggestBox x:Name="TagsEditor" TextChanged="TagsEditor_OnTextChanged" QuerySubmitted="TagsEditor_OnQuerySubmitted" SuggestionChosen="TagsEditor_OnSuggestionChosen" TextColor="Black" UpdateTextOnSelect="False" ></autoSuggest:AutoSuggestBox>
                             </StackLayout>
-                            <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
-                                <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
+                            <Label Grid.Row="1" Grid.Column="0" Text="{i18n:Translate Duration}"></Label>
+                            <StackLayout Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="5, 0, 5, 0" BackgroundColor="White">
+                                <Label Text="{i18n:Translate Hours}" WidthRequest="80"></Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Entry x:Name="VideoHoursEntry" Text="{Binding VideoHours}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
+                                    <Stepper x:Name="VideoHoursStepper" Minimum="0" Maximum="24" Increment="1" Value="{Binding VideoHours}" ></Stepper>
+                                </StackLayout>
+                                <Label Text="{i18n:Translate Minutes}" WidthRequest="80"></Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Entry x:Name="VideoMinutesEntry" Text="{Binding VideoMinutes}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
+                                    <Stepper x:Name="VideoMinutesStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoMinutes}" ></Stepper>
+                                </StackLayout>
+                                <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
+                                <StackLayout Orientation="Horizontal">
+                                    <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
+                                    <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
+                                </StackLayout>
                             </StackLayout>
-                            <Label Text="{i18n:Translate Seconds}" WidthRequest="80"></Label>
-                            <StackLayout Orientation="Horizontal">
-                                <Entry x:Name="VideoSecondsEntry" Text="{Binding VideoSeconds}" TextColor="Black" Margin="15, 0, 0, 0" Keyboard="Numeric" WidthRequest="40" BackgroundColor="White"></Entry>
-                                <Stepper x:Name="VideoSecondsStepper" Minimum="0" Maximum="59" Increment="1" Value="{Binding VideoSeconds}" ></Stepper>
+                            <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
+                            <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
+                                <StackLayout Orientation="Horizontal">
+                                    <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black" ></DatePicker>
+                                    <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black" ></TimePicker>
+                                    <!--Todo: Add Seconds to timePicker-->
+                                </StackLayout>
                             </StackLayout>
-                        </StackLayout>
-                        <Label Grid.Row="2" Grid.Column="0" Text="{i18n:Translate DateAndTime}" Margin="5"></Label>
-                        <StackLayout Grid.Row="2" Grid.Column="1" Margin="5" BackgroundColor="White" IsVisible="{Binding EditMode}">
-                            <StackLayout Orientation="Horizontal">
-                                <DatePicker x:Name="PhotoDatePicker" Format="dd MMM yyyy" BackgroundColor="White" TextColor="Black" ></DatePicker>
-                                <TimePicker x:Name="PhotoTimePicker" Format="HH:mm" BackgroundColor="White" TextColor="Black" ></TimePicker>
-                                <!--Todo: Add Seconds to timePicker-->
+                            <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
+                            <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
+                                <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" ></autoSuggest:AutoSuggestBox>
                             </StackLayout>
-                        </StackLayout>
-                        <Label Grid.Row="3" Grid.Column="0" Text="{i18n:Translate Location}" Margin="5"></Label>
-                        <StackLayout Grid.Row="3" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <autoSuggest:AutoSuggestBox x:Name="LocationEntry" TextChanged="LocationEntry_OnTextChanged" QuerySubmitted="LocationEntry_OnQuerySubmitted" SuggestionChosen="LocationEntry_OnSuggestionChosen" TextColor="Black" BackgroundColor="White" ></autoSuggest:AutoSuggestBox>
-                        </StackLayout>
-                        <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="LatitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="LongitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
-                        <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White">
-                            <Entry x:Name="AltitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
-                        </StackLayout>
-                        <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
-                        <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" >
-                            <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"></Picker>
-                        </StackLayout>
-                        <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
-                            <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>
-                            <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
-                                <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="20" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                            <Label Grid.Row="4" Grid.Column="0" Text="{i18n:Translate Latitude}" Margin="5"></Label>
+                            <StackLayout Grid.Row="4" Grid.Column="1" Margin="5" BackgroundColor="White">
+                                <Entry x:Name="LatitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
                             </StackLayout>
-                        </StackLayout>
-                        <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
-                    </Grid>
-                </ScrollView>
-                <ActivityIndicator Grid.Row="1" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="End"></ActivityIndicator>
-            </Grid>
-            <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
+                            <Label Grid.Row="5" Grid.Column="0" Text="{i18n:Translate Longitude}" Margin="5"></Label>
+                            <StackLayout Grid.Row="5" Grid.Column="1" Margin="5" BackgroundColor="White">
+                                <Entry x:Name="LongitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
+                            </StackLayout>
+                            <Label Grid.Row="6" Grid.Column="0" Text="{i18n:Translate Altitude}" Margin="5"></Label>
+                            <StackLayout Grid.Row="6" Grid.Column="1" Margin="5" BackgroundColor="White">
+                                <Entry x:Name="AltitudeEntry" BackgroundColor="White" TextColor="Black" ></Entry>
+                            </StackLayout>
+                            <Label Grid.Row="7" Grid.Column="0" Text="{i18n:Translate AccessLevel}" Margin="5"></Label>
+                            <StackLayout  Grid.Row="7" Grid.Column="1" Margin="5" BackgroundColor="White" >
+                                <Picker x:Name="AccessLevelPicker" ItemsSource="{Binding AccessLevelList}" BackgroundColor="White" TextColor="Black"></Picker>
+                            </StackLayout>
+                            <StackLayout Grid.Row="8" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" Margin="0" Padding="5" IsVisible="{Binding CanUserEditItems}" VerticalOptions="End" HorizontalOptions="Fill" BackgroundColor="WhiteSmoke">
+                                <Button x:Name="SaveButton" Text="{x:Static models:IconFont.ContentSave}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="#4caf50" Clicked="SaveButton_OnClicked"></Button>
+                                <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="EndAndExpand">
+                                    <Button x:Name="DeleteButton" Text="{x:Static models:IconFont.Delete}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="20" TextColor="White" BackgroundColor="Red" Clicked="DeleteButton_OnClicked" IsVisible="{Binding EditMode}" HorizontalOptions="End"></Button>
+                                </StackLayout>
+                            </StackLayout>
+                            <Label Grid.Row="9" Grid.Column="0" Grid.ColumnSpan="2" x:Name="MessageLabel" Text="" IsVisible="False" TextColor="White" Margin="15" BackgroundColor="PaleVioletRed" ></Label>
+                        </Grid>
+                    </ScrollView>
+                </Grid>
+                <Frame HasShadow="False" CornerRadius="8" Padding="5,4,5,0" BackgroundColor="Black"
                    x:Name="BottomSheetFrame" 
                    RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent,
                         Property=Height,Factor=.87,Constant=0}"
@@ -194,117 +194,117 @@
                    RelativeLayout.HeightConstraint="{ConstraintExpression
                         Type=RelativeToParent,Property=Height,Factor=1,Constant=0}"
                    IsVisible="{Binding EditMode,Converter={StaticResource InverseBoolConverter}}">
-                <Frame.GestureRecognizers>
-                    <PanGestureRecognizer PanUpdated="FrameOnPanUpdated" />
-                    <TapGestureRecognizer Tapped="FrameOnTap" NumberOfTapsRequired="1"></TapGestureRecognizer>
-                </Frame.GestureRecognizers>
-                <StackLayout Spacing="5">
-                    <BoxView HeightRequest="8" CornerRadius="4" WidthRequest="60" BackgroundColor="Gray" HorizontalOptions="Center"/>
-                    <StackLayout x:Name="InfoStackLayout" Orientation="Vertical" Margin="0, 10, 0, 0">
-                        <StackLayout x:Name="DataStackLayout" Orientation="Vertical" MinimumWidthRequest="350">
-                            <FlexLayout Wrap="Wrap">
-                                <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
-                                <Label Text="{Binding CurrentVideoViewModel.Tags}" TextColor="White" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label Text="{i18n:Translate VideoLocation}" Margin="0,0,5,0" TextColor="Azure" />
-                                <Label Text="{Binding CurrentVideoViewModel.Location}" TextColor="White" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label Text="{i18n:Translate VideoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
-                                <Label Text="{Binding CurrentVideoViewModel.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="White" />
-                                <Label Text="{i18n:Translate YearsOld}" Margin="5, 0" TextColor="Azure"/>
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="White" />
-                                <Label Text="{i18n:Translate MonthsOld}" Margin="5, 0" TextColor="Azure"/>
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="White" />
-                                <Label Text="{i18n:Translate WeeksAnd}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="White" />
-                                <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="White" />
-                                <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="White" />
-                                <Label Text="{i18n:Translate HoursOld}" Margin="5, 0" TextColor="Azure"/>
-                            </FlexLayout>
-                            <FlexLayout Wrap="Wrap">
-                                <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="White" />
-                                <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
-                                <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="White" />
-                                <Label Text="{i18n:Translate MinutesOld}" Margin="5, 0" TextColor="Azure" />
-                            </FlexLayout>
-                        </StackLayout>
-                        <googleMaps:Map x:Name="LocationMap" Margin="5"
+                    <Frame.GestureRecognizers>
+                        <PanGestureRecognizer PanUpdated="FrameOnPanUpdated" />
+                        <TapGestureRecognizer Tapped="FrameOnTap" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                    </Frame.GestureRecognizers>
+                    <StackLayout Spacing="5">
+                        <BoxView HeightRequest="8" CornerRadius="4" WidthRequest="60" BackgroundColor="Gray" HorizontalOptions="Center"/>
+                        <StackLayout x:Name="InfoStackLayout" Orientation="Vertical" Margin="0, 10, 0, 0">
+                            <StackLayout x:Name="DataStackLayout" Orientation="Vertical" MinimumWidthRequest="350">
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="Tags:" Margin="0,0,5,0" TextColor="Azure" />
+                                    <Label Text="{Binding CurrentVideoViewModel.Tags}" TextColor="White" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="{i18n:Translate VideoLocation}" Margin="0,0,5,0" TextColor="Azure" />
+                                    <Label Text="{Binding CurrentVideoViewModel.Location}" TextColor="White" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label Text="{i18n:Translate VideoTaken}" Margin="0,0,5,0" TextColor="Azure"/>
+                                    <Label Text="{Binding CurrentVideoViewModel.VideoTime, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="White" />
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeYears" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeYears" Text="{Binding PicYears}" TextColor="White" />
+                                    <Label Text="{i18n:Translate YearsOld}" Margin="5, 0" TextColor="Azure"/>
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeMonths" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeMonths" Text="{Binding PicMonths}" TextColor="White" />
+                                    <Label Text="{i18n:Translate MonthsOld}" Margin="5, 0" TextColor="Azure"/>
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeWeeks" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeWeeks0" Text="{Binding PicWeeks[0]}" TextColor="White" />
+                                    <Label Text="{i18n:Translate WeeksAnd}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeWeeks1" Text="{Binding PicWeeks[1]}" TextColor="White" />
+                                    <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeDays" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeDays" Text="{Binding PicDays}" TextColor="White" />
+                                    <Label Text="{i18n:Translate DaysOld}" Margin="5, 0" TextColor="Azure"/>
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeHours" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeHours" Text="{Binding PicHours}" TextColor="White" />
+                                    <Label Text="{i18n:Translate HoursOld}" Margin="5, 0" TextColor="Azure"/>
+                                </FlexLayout>
+                                <FlexLayout Wrap="Wrap">
+                                    <Label x:Name="ProgenyNamePictimeMinutes" Text="{Binding Progeny.NickName}" TextColor="White" />
+                                    <Label Text="{i18n:Translate Was}" Margin="5, 0" TextColor="Azure"/>
+                                    <Label x:Name="ProgenyPictimeMinutes" Text="{Binding PicMinutes}" TextColor="White" />
+                                    <Label Text="{i18n:Translate MinutesOld}" Margin="5, 0" TextColor="Azure" />
+                                </FlexLayout>
+                            </StackLayout>
+                            <googleMaps:Map x:Name="LocationMap" Margin="5"
                                         MapType="Street"
                                         HeightRequest="200"
                                         WidthRequest="200">
-                        </googleMaps:Map>
+                            </googleMaps:Map>
+                        </StackLayout>
                     </StackLayout>
-                </StackLayout>
-            </Frame>
-            <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End" Margin="0, 0, 0, 45">
-                <Grid VerticalOptions="End">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-                    <CollectionView x:Name="CommentsCollectionView" ItemsLayout="VerticalList" Margin="5" VerticalOptions="Start" Grid.Row="0">
-                        <CollectionView.EmptyView>
-                            <StackLayout>
-                                <Label Text="{i18n:Translate NoCommentsToDisplay}" TextColor="DarkSlateGray"
+                </Frame>
+                <RelativeLayout IsVisible="{Binding ShowComments}" BackgroundColor="#AAFFFFFF" VerticalOptions="End" Margin="0, 0, 0, 45">
+                    <Grid VerticalOptions="End">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <CollectionView x:Name="CommentsCollectionView" ItemsLayout="VerticalList" Margin="5" VerticalOptions="Start" Grid.Row="0">
+                            <CollectionView.EmptyView>
+                                <StackLayout>
+                                    <Label Text="{i18n:Translate NoCommentsToDisplay}" TextColor="DarkSlateGray"
                                    Margin="0,25,0,0"
                                    FontAttributes="Bold"
                                    FontSize="18"
                                    HorizontalOptions="Fill"
                                    HorizontalTextAlignment="Center"
                                    BackgroundColor="WhiteSmoke"/>
-                            </StackLayout>
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="modelsKinaUna:Comment">
-                                <Grid Padding="5" Margin="5">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"></RowDefinition>
-                                        <RowDefinition Height="*"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="55"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                </StackLayout>
+                            </CollectionView.EmptyView>
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="modelsKinaUna:Comment">
+                                    <Grid Padding="5" Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="30"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="55"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
 
-                                    </Grid.ColumnDefinitions>
-                                    <BoxView Color="Lavender" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" CornerRadius="5"/>
-                                    <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding AuthorImage}"
+                                        </Grid.ColumnDefinitions>
+                                        <BoxView Color="Lavender" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" CornerRadius="5"/>
+                                        <Image Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Source="{Binding AuthorImage}"
                                    Aspect="AspectFit"
                                    HeightRequest="50"
                                    WidthRequest="50"
                                    HorizontalOptions="End"/>
-                                    <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
-                                        <Label Text="{Binding DisplayName}" TextColor="DarkSlateGray" FontSize="16" VerticalTextAlignment="Center"></Label>
-                                        <Label Text="{Binding Created, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="DarkOliveGreen" FontSize="12" VerticalTextAlignment="Center" Margin="5, 0, 0, 0"></Label>
-                                    </StackLayout>
+                                        <StackLayout Orientation="Horizontal" Grid.Row="0" Grid.Column="1">
+                                            <Label Text="{Binding DisplayName}" TextColor="DarkSlateGray" FontSize="16" VerticalTextAlignment="Center"></Label>
+                                            <Label Text="{Binding Created, StringFormat='{0:dd-MMM-yyyy HH:mm}'}" TextColor="DarkOliveGreen" FontSize="12" VerticalTextAlignment="Center" Margin="5, 0, 0, 0"></Label>
+                                        </StackLayout>
 
-                                    <Label Text="{Binding CommentText}" Grid.Row="1" Grid.Column="1" TextColor="Black" FontSize="15"></Label>
-                                    <Button x:Name="DeleteCommentButton"
+                                        <Label Text="{Binding CommentText}" Grid.Row="1" Grid.Column="1" TextColor="Black" FontSize="15"></Label>
+                                        <Button x:Name="DeleteCommentButton"
                                         Grid.Row="2" Grid.Column="1"
                                         Text="{i18n:Translate Delete}"
                                         IsVisible="{Binding IsAuthor}"
@@ -317,37 +317,42 @@
                                         IsEnabled="{Binding IsAuthor}"
                                         Clicked="DeleteCommentButton_OnClicked"
                                         CommandParameter="{Binding CommentId}"></Button>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
-                    <Grid VerticalOptions="End" Grid.Row="1" Margin="0,5,0,0" BackgroundColor="Black">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="30"></RowDefinition>
-                            <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                            <ColumnDefinition Width="50"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Label Text="{i18n:Translate AddComment}" Grid.Row="0" Grid.Column="0" TextColor="Honeydew" VerticalTextAlignment="Center"></Label>
-                        <Editor x:Name="AddCommentEditor" AutoSize="TextChanges" BackgroundColor="White" Grid.Row="1" Grid.Column="0" TextColor="Black"></Editor>
-                        <Button x:Name="AddCommentButton" Text=">" BackgroundColor="DarkGreen" TextColor="White" FontSize="16" Grid.Row="1" Grid.Column="1" Margin="0, 0, 5, 0" Padding="0" Clicked="AddCommentButton_OnClicked" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Button>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Grid VerticalOptions="End" Grid.Row="1" Margin="0,5,0,0" BackgroundColor="Black">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="30"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                                <ColumnDefinition Width="50"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{i18n:Translate AddComment}" Grid.Row="0" Grid.Column="0" TextColor="Honeydew" VerticalTextAlignment="Center"></Label>
+                            <Editor x:Name="AddCommentEditor" AutoSize="TextChanges" BackgroundColor="White" Grid.Row="1" Grid.Column="0" TextColor="Black"></Editor>
+                            <Button x:Name="AddCommentButton" Text=">" BackgroundColor="DarkGreen" TextColor="White" FontSize="16" Grid.Row="1" Grid.Column="1" Margin="0, 0, 5, 0" Padding="0" Clicked="AddCommentButton_OnClicked" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></Button>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </RelativeLayout>
-            <StackLayout Orientation="Horizontal" BackgroundColor="DarkSlateBlue" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand"
+                </RelativeLayout>
+                <StackLayout Orientation="Horizontal" BackgroundColor="DarkSlateBlue" Margin="0" Padding="5" VerticalOptions="End" HorizontalOptions="FillAndExpand"
                          RelativeLayout.WidthConstraint="{ConstraintExpression Type=RelativeToParent, Property=Width, Factor=1}"
                          RelativeLayout.YConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.91}"
                          RelativeLayout.HeightConstraint="{ConstraintExpression Type=RelativeToParent, Property=Height, Factor=0.09}">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
-                </StackLayout.GestureRecognizers>
-                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" VerticalOptions="End" Padding="0">
-                    <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
-                    <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped"></TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" VerticalOptions="End" Padding="0">
+                        <Label Text="{x:Static models:IconFont.CloseCircleOutline}" FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24" VerticalTextAlignment="Center"></Label>
+                        <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18" VerticalTextAlignment="Center"></Label>
+                    </StackLayout>
                 </StackLayout>
-            </StackLayout>
-        </RelativeLayout>
+            </RelativeLayout>
+            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                      Opacity="0.8" VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand" />
+            <controls:SavingIndicator IsVisible="{Binding IsSaving}"></controls:SavingIndicator>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

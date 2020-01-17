@@ -130,7 +130,7 @@ namespace KinaUnaXamarin.Views.AddItem
             }
 
             _addChildViewModel.IsBusy = true;
-            
+            _addChildViewModel.IsSaving = true;
             Progeny progeny = new Progeny();
             if (!string.IsNullOrEmpty(_filePath))
             {
@@ -153,7 +153,8 @@ namespace KinaUnaXamarin.Views.AddItem
             progeny.Admins = userEmail;
 
             Progeny newProgeny = await ProgenyService.AddProgeny(progeny);
-            
+            _addChildViewModel.IsSaving = false;
+            _addChildViewModel.IsBusy = false;
             MessageLabel.IsVisible = true;
             if (newProgeny.Id == 0)
             {
@@ -176,9 +177,11 @@ namespace KinaUnaXamarin.Views.AddItem
 
                 // Update the progeny list.
                 await ProgenyService.GetProgenyList(userEmail);
+                await Shell.Current.Navigation.PopModalAsync();
             }
 
-            _addChildViewModel.IsBusy = false;
+            
+
         }
 
         private async void CancelChildButton_OnClicked(object sender, EventArgs e)

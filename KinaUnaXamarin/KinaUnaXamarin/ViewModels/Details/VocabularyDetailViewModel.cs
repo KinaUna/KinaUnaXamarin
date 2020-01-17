@@ -26,7 +26,8 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _soundsLike;
         private string _description;
         private string _language;
-        
+        private bool _isSaving;
+
         public VocabularyDetailViewModel()
         {
             _progeny = new Progeny();
@@ -76,6 +77,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<VocabularyItem> VocabularyItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

@@ -164,10 +164,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveSleepButton_OnClicked(object sender, EventArgs e)
         {
-            _addSleepViewModel.IsBusy = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
+                _addSleepViewModel.IsBusy = true;
+                _addSleepViewModel.IsSaving = true;
+
                 DateTime start = new DateTime(_addSleepViewModel.StartYear, _addSleepViewModel.StartMonth, _addSleepViewModel.StartDay, _addSleepViewModel.StartHours, _addSleepViewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_addSleepViewModel.EndYear, _addSleepViewModel.EndMonth, _addSleepViewModel.EndDay, _addSleepViewModel.EndHours, _addSleepViewModel.EndMinutes, 0);
 
@@ -187,6 +189,9 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     // Todo: Translate messages.
                     saveSleep = await ProgenyService.SaveSleep(saveSleep);
+                    _addSleepViewModel.IsBusy = false;
+                    _addSleepViewModel.IsSaving = false;
+
                     if (saveSleep.SleepId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -202,6 +207,7 @@ namespace KinaUnaXamarin.Views.AddItem
                         SaveSleepButton.IsVisible = false;
                         CancelSleepButton.Text = "Ok";
                         CancelSleepButton.BackgroundColor = Color.FromHex("#4caf50");
+                        await Shell.Current.Navigation.PopModalAsync();
                     }
                 }
                 else
@@ -215,6 +221,7 @@ namespace KinaUnaXamarin.Views.AddItem
             }
 
             _addSleepViewModel.IsBusy = false;
+            _addSleepViewModel.IsSaving = false;
         }
 
         private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)

@@ -77,11 +77,11 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveVideoButton_OnClicked(object sender, EventArgs e)
         {
-            _viewModel.IsBusy = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
-                
+                _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
+
                 Video saveVideo = new Video();
                 saveVideo.ProgenyId = progeny.Id;
                 saveVideo.AccessLevel = _viewModel.AccessLevel;
@@ -150,6 +150,9 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     // Todo: Translate messages.
                     saveVideo = await ProgenyService.SaveVideo(saveVideo);
+                    _viewModel.IsBusy = false;
+                    _viewModel.IsSaving = false;
+
                     if (saveVideo.VideoId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -184,6 +187,7 @@ namespace KinaUnaXamarin.Views.AddItem
                             SaveVideoButton.IsVisible = false;
                             CancelVideoButton.Text = "Ok";
                             CancelVideoButton.BackgroundColor = Color.FromHex("#4caf50");
+                            await Shell.Current.Navigation.PopModalAsync();
                         }
                         else
                         {
@@ -204,6 +208,7 @@ namespace KinaUnaXamarin.Views.AddItem
             }
 
             _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
         }
 
         private async void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)

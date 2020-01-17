@@ -10,6 +10,23 @@
              Title="{i18n:Translate Language}"
              Visual="Material"
              BackgroundColor="WhiteSmoke">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="HelpToolbarButton" Text="Help" Clicked="HelpToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HelpCircle}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" Clicked="AddItemToolbarButton_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Plus}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" Clicked="ProgenyToolBarItem_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HumanChild}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout Padding="20" VerticalOptions="StartAndExpand" BackgroundColor="WhiteSmoke">
             <StackLayout.Margin>

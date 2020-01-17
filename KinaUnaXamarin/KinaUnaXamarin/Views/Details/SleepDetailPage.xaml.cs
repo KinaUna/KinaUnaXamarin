@@ -237,6 +237,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
                 CheckDates();
                 DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
@@ -250,6 +251,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Sleep resultSleep = await ProgenyService.UpdateSleep(_viewModel.CurrentSleep);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.AccountEdit;
                 if (resultSleep != null)  // Todo: Error message if update fails.
                 {

@@ -272,6 +272,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 _viewModel.CurrentContact.FirstName = _viewModel.FirstName;
                 _viewModel.CurrentContact.MiddleName = _viewModel.MiddleName;
@@ -324,12 +325,11 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Contact resultContact = await ProgenyService.UpdateContact(_viewModel.CurrentContact);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultContact != null)  // Todo: Error message if update fails.
                 {
-                    MessageLabel.Text = "Contact Updated"; // Todo: Translate
-                    MessageLabel.BackgroundColor = Color.DarkGreen;
-                    MessageLabel.IsVisible = true;
+                    
                     await Reload();
                 }
             }

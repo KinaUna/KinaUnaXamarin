@@ -36,6 +36,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _location;
         private List<string> _locationAutoSuggestList;
         private List<string> _contextAutoSuggestList;
+        private bool _isSaving;
 
         public EventDetailViewModel()
         {
@@ -95,6 +96,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<CalendarItem> EventItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

@@ -26,6 +26,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _description;
         private string _category;
         private List<string> _categoryAutoSuggestList;
+        private bool _isSaving;
 
         public SkillDetailViewModel()
         {
@@ -76,6 +77,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Skill> SkillItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

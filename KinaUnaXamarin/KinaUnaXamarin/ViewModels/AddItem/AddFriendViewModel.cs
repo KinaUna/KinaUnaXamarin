@@ -15,6 +15,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private int _friendType;
         private List<string> _contextAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public AddFriendViewModel()
         {
@@ -75,6 +76,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

@@ -15,6 +15,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private DateTime _date;
         private TimeSpan _time;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public AddLocationViewModel()
         {
@@ -56,6 +57,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

@@ -31,6 +31,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private int _rating = 3;
         private int _accessLevel;
         private TimeSpan _duration;
+        private bool _isSaving;
 
         public SleepDetailViewModel()
         {
@@ -90,6 +91,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Sleep> SleepItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

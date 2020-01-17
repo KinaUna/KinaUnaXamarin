@@ -124,11 +124,10 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveNoteButton_OnClicked(object sender, EventArgs e)
         {
-            _viewModel.IsBusy = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
-                
+                _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
                 Note saveNote = new Note();
                 saveNote.ProgenyId = progeny.Id;
                 saveNote.AccessLevel = _viewModel.AccessLevel;
@@ -149,6 +148,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 if (ProgenyService.Online())
                 {
                     saveNote = await ProgenyService.SaveNote(saveNote);
+                    _viewModel.IsBusy = false;
+                    _viewModel.IsSaving = false;
                     if (saveNote.NoteId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -164,6 +165,7 @@ namespace KinaUnaXamarin.Views.AddItem
                         SaveNoteButton.IsVisible = false;
                         CancelNoteButton.Text = "Ok";
                         CancelNoteButton.BackgroundColor = Color.FromHex("#4caf50");
+                        await Shell.Current.Navigation.PopModalAsync();
                     }
                 }
                 else
@@ -172,17 +174,16 @@ namespace KinaUnaXamarin.Views.AddItem
                     ErrorLabel.Text = $"Error: No internet connection. Measurement for {progeny.NickName} was not saved. Try again later.";
                     ErrorLabel.BackgroundColor = Color.Red;
                 }
-                
+
+                _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 ErrorLabel.IsVisible = true;
             }
-
-            _viewModel.IsBusy = false;
         }
 
         private async void ProgenyCollectionView_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Progeny viewProgeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (viewProgeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny viewProgeny)
             {
                 _viewModel.CategoryAutoSuggestList = await ProgenyService.GetCategoryAutoSuggestList(viewProgeny.Id, 0);
             }

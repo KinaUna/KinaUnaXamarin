@@ -25,7 +25,8 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _notes;
         private string _description;
         private string _name;
-        
+        private bool _isSaving;
+
         public VaccinationDetailViewModel()
         {
             _progeny = new Progeny();
@@ -75,6 +76,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Vaccination> VaccinationItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

@@ -252,6 +252,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime locDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay, _viewModel.DateHours, _viewModel.DateMinutes, 0);
                 _viewModel.CurrentLocation.Date = locDate;
@@ -283,6 +284,8 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Models.KinaUna.Location resultLocation = await ProgenyService.UpdateLocation(_viewModel.CurrentLocation);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
+
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultLocation != null)  // Todo: Error message if update fails.
                 {

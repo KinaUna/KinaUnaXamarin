@@ -30,6 +30,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private DateTime _date;
         private TimeSpan _time;
         private List<string> _categoryAutoSuggestList;
+        private bool _isSaving;
 
         public NoteDetailViewModel()
         {
@@ -82,6 +83,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Note> NoteItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

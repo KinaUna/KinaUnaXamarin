@@ -94,7 +94,6 @@
                                     BackgroundColor="DimGray" Clicked="CancelPhotoButton_OnClicked" />
                             </StackLayout>
                         </StackLayout>
-                        
                     </Grid>
                 </ScrollView>
                 <ActivityIndicator IsEnabled="{Binding IsBusy}" IsVisible="{Binding IsBusy}"

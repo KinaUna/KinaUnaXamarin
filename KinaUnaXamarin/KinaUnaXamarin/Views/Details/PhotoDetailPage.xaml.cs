@@ -653,16 +653,10 @@ namespace KinaUnaXamarin.Views.Details
                     TimeLineItem updatedTimeLineItem = await ProgenyService.UpdateTimeLineItem(tItem);
                     if (updatedTimeLineItem != null && updatedTimeLineItem.TimeLineId != 0)
                     {
-                        MessageLabel.IsVisible = true;
-                        var ci = CrossMultilingual.Current.CurrentCultureInfo;
-                        MessageLabel.Text = resmgr.Value.GetString("PhotoSaved", ci) + savedPicture.PictureId;
-                        MessageLabel.BackgroundColor = Color.Green;
-                        SaveButton.IsVisible = false;
-                        DeleteButton.IsVisible = false;
-                        CancelButton.Text = "Ok";
-                        CancelButton.BackgroundColor = Color.FromHex("#4caf50");
-                        CancelButton.IsEnabled = true;
+                        PhotoCarousel.VerticalOptions = LayoutOptions.FillAndExpand;
+                        _viewModel.PhotoVerticalOptions = LayoutOptions.FillAndExpand;
                         _viewModel.EditMode = false;
+                        await Reload();
                     }
                     else
                     {

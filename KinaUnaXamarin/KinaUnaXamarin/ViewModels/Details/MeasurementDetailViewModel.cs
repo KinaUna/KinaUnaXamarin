@@ -28,7 +28,8 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _hairColor;
         private string _eyeColor;
         private DateTime _date;
-        
+        private bool _isSaving;
+
         public MeasurementDetailViewModel()
         {
             _progeny = new Progeny();
@@ -78,6 +79,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Measurement> MeasurementItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

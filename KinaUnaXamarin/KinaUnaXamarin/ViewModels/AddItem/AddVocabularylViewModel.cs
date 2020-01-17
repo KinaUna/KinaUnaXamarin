@@ -14,6 +14,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private List<string> _accessLevelList;
         private bool _online;
         private DateTime _date;
+        private bool _isSaving;
 
         public AddVocabularyViewModel()
         {
@@ -53,7 +54,13 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
-        
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
+
         public List<string> AccessLevelList {
 
             get => _accessLevelList;

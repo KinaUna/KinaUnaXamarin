@@ -224,6 +224,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime skillDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
                 _viewModel.CurrentSkillItem.SkillFirstObservation = skillDate;
@@ -235,6 +236,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Skill resultSkillItem = await ProgenyService.UpdateSkill(_viewModel.CurrentSkillItem);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultSkillItem != null)  // Todo: Error message if update fails.
                 {

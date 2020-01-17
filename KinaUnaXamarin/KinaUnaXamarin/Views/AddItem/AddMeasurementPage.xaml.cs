@@ -117,11 +117,10 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveMeasurementButton_OnClicked(object sender, EventArgs e)
         {
-            _viewModel.IsBusy = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
-                
+                _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
                 Measurement saveMeasurement = new Measurement();
                 saveMeasurement.ProgenyId = progeny.Id;
                 saveMeasurement.AccessLevel = _viewModel.AccessLevel;
@@ -155,6 +154,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     // Todo: Translate messages.
                     saveMeasurement = await ProgenyService.SaveMeasurement(saveMeasurement);
+                    _viewModel.IsBusy = false;
+                    _viewModel.IsSaving = false;
                     if (saveMeasurement.MeasurementId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -170,19 +171,24 @@ namespace KinaUnaXamarin.Views.AddItem
                         SaveMeasurementButton.IsVisible = false;
                         CancelMeasurementButton.Text = "Ok";
                         CancelMeasurementButton.BackgroundColor = Color.FromHex("#4caf50");
+                        await Shell.Current.Navigation.PopModalAsync();
                     }
                 }
                 else
                 {
+                    _viewModel.IsBusy = false;
+                    _viewModel.IsSaving = false;
                     // Todo: Translate message.
                     ErrorLabel.Text = $"Error: No internet connection. Measurement for {progeny.NickName} was not saved. Try again later.";
                     ErrorLabel.BackgroundColor = Color.Red;
                 }
-                
+
+                _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 ErrorLabel.IsVisible = true;
             }
 
-            _viewModel.IsBusy = false;
+            
         }
 
         private async void TapGestureRecognizer_OnTapped(object sender, EventArgs e)

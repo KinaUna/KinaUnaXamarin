@@ -66,12 +66,12 @@ namespace KinaUnaXamarin.Views.AddItem
 
         private async void SaveUserButton_OnClicked(object sender, EventArgs e)
         {
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
                 SaveUserButton.IsEnabled = false;
                 CancelUserButton.IsEnabled = false;
                 _addUserViewModel.IsBusy = true;
+                _addUserViewModel.IsSaving = true;
 
                 UserAccess userAccess = new UserAccess();
                 userAccess.Progeny = progeny;
@@ -80,7 +80,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 userAccess.AccessLevel = _addUserViewModel.AccessLevel;
 
                 UserAccess newUserAccess = await ProgenyService.AddUser(userAccess);
-
+                _addUserViewModel.IsBusy = false;
+                _addUserViewModel.IsSaving = false;
 
                 MessageLabel.IsVisible = true;
                 if (newUserAccess.AccessId == 0)
@@ -101,9 +102,8 @@ namespace KinaUnaXamarin.Views.AddItem
                     CancelUserButton.Text = "Ok";
                     CancelUserButton.BackgroundColor = Color.FromHex("#4caf50");
                     CancelUserButton.IsEnabled = true;
+                    await Shell.Current.Navigation.PopModalAsync();
                 }
-
-                _addUserViewModel.IsBusy = false;
             }
         }
 

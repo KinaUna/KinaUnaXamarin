@@ -18,7 +18,7 @@ namespace KinaUnaXamarin.Views.Details
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class VaccinationDetailPage
     {
-        private readonly VaccinationDetailViewModel _viewModel = new VaccinationDetailViewModel();
+        private readonly VaccinationDetailViewModel _viewModel;
         private UserInfo _userInfo;
         private string _accessToken;
         private int _viewChild = Constants.DefaultChildId;
@@ -29,7 +29,7 @@ namespace KinaUnaXamarin.Views.Details
 
         public VaccinationDetailPage(Vaccination vaccinationItem)
         {
-            
+            _viewModel = new VaccinationDetailViewModel();
             InitializeComponent();
             _viewModel.CurrentVaccinationId = vaccinationItem.VaccinationId;
             _viewModel.AccessLevel = vaccinationItem.AccessLevel;
@@ -220,6 +220,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime vacDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
                 _viewModel.CurrentVaccination.VaccinationDate = vacDate;
@@ -230,6 +231,7 @@ namespace KinaUnaXamarin.Views.Details
 
                 // Save changes.
                 Vaccination resultVaccination = await ProgenyService.UpdateVaccination(_viewModel.CurrentVaccination);
+                _viewModel.IsBusy = false;
                 _viewModel.IsBusy = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultVaccination != null)  // Todo: Error message if update fails.

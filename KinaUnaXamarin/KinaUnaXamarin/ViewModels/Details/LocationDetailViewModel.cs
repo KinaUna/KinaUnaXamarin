@@ -38,6 +38,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private string _longitude;
         private string _houseNumber;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public LocationDetailViewModel()
         {
@@ -90,6 +91,12 @@ namespace KinaUnaXamarin.ViewModels.Details
         }
 
         public ObservableRangeCollection<Location> LocationItems { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

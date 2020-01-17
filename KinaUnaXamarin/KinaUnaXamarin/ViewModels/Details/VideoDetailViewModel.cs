@@ -36,6 +36,7 @@ namespace KinaUnaXamarin.ViewModels.Details
         private List<string> _locationAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
         private LayoutOptions _videoVerticalOptions;
+        private bool _isSaving;
 
         public VideoDetailViewModel()
         {
@@ -72,6 +73,12 @@ namespace KinaUnaXamarin.ViewModels.Details
                     _accessLevelList.Add("Public/Anyone");
                 }
             }
+        }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
         }
 
         public ObservableRangeCollection<VideoViewModel> VideoItems { get; set; }

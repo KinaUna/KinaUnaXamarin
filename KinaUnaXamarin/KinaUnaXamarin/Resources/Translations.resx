@@ -849,4 +849,25 @@
   <data name="Saving" xml:space="preserve">
     <value>Saving...</value>
   </data>
+  <data name="Help" xml:space="preserve">
+    <value>Help</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="GettingStarted" xml:space="preserve">
+    <value>Getting Started</value>
+  </data>
+  <data name="ReportIssue" xml:space="preserve">
+    <value>Report an Issue</value>
+  </data>
+  <data name="SupporNewIssueLink" xml:space="preserve">
+    <value>https://support.kinauna.com/issues/</value>
+  </data>
+  <data name="SupportDocsLink" xml:space="preserve">
+    <value>https://support.kinauna.com/docs/d/14/en--english</value>
+  </data>
+  <data name="SupportStartLink" xml:space="preserve">
+    <value>https://support.kinauna.com/docs/d/27/kinauna-mobile-app--getting-started</value>
+  </data>
 </root>

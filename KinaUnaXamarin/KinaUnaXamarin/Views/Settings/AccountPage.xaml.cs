@@ -263,5 +263,10 @@ namespace KinaUnaXamarin.Views.Settings
                 return stream;
             });
         }
+
+        private async void HelpToolbarButton_OnClicked(object sender, EventArgs e)
+        {
+            await Shell.Current.Navigation.PushModalAsync(new HelpPage());
+        }
     }
 }

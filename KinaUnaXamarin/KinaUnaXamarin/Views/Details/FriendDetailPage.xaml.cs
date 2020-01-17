@@ -237,6 +237,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime frnDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
                 _viewModel.CurrentFriend.FriendSince = frnDate;
@@ -267,6 +268,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Friend resulFriend = await ProgenyService.UpdateFriend(_viewModel.CurrentFriend);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resulFriend != null)  // Todo: Error message if update fails.
                 {

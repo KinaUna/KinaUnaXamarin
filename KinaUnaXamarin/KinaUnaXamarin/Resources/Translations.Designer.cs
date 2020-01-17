@@ -943,6 +943,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Documentation.
+        /// </summary>
+        internal static string Documentation {
+            get {
+                return ResourceManager.GetString("Documentation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Duration.
         /// </summary>
         internal static string Duration {
@@ -1240,6 +1249,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Getting Started.
+        /// </summary>
+        internal static string GettingStarted {
+            get {
+                return ResourceManager.GetString("GettingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hair Color.
         /// </summary>
         internal static string HairColor {
@@ -1254,6 +1272,15 @@ namespace KinaUnaXamarin.Resources {
         internal static string Height {
             get {
                 return ResourceManager.GetString("Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Help.
+        /// </summary>
+        internal static string Help {
+            get {
+                return ResourceManager.GetString("Help", resourceCulture);
             }
         }
         
@@ -1762,6 +1789,15 @@ namespace KinaUnaXamarin.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Report an Issue.
+        /// </summary>
+        internal static string ReportIssue {
+            get {
+                return ResourceManager.GetString("ReportIssue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset.
         /// </summary>
         internal static string Reset {
@@ -1983,6 +2019,33 @@ namespace KinaUnaXamarin.Resources {
         internal static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://support.kinauna.com/issues/.
+        /// </summary>
+        internal static string SupporNewIssueLink {
+            get {
+                return ResourceManager.GetString("SupporNewIssueLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://support.kinauna.com/docs/d/14/en--english.
+        /// </summary>
+        internal static string SupportDocsLink {
+            get {
+                return ResourceManager.GetString("SupportDocsLink", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://support.kinauna.com/docs/d/27/kinauna-mobile-app--getting-started.
+        /// </summary>
+        internal static string SupportStartLink {
+            get {
+                return ResourceManager.GetString("SupportStartLink", resourceCulture);
             }
         }
         

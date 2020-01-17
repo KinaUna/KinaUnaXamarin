@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
+             xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             x:Class="KinaUnaXamarin.Views.HelpPage"
+             Title="{i18n:Translate Help}"
+             Visual="Material"
+             BackgroundColor="DarkGray">
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+            <On Platform="iOS">0, 20, 0, 0</On>
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Resources>
+        <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.Margin>
+                <OnPlatform x:TypeArguments="Thickness" Default="0, 0, 0, 0">
+                    <On Platform="UWP">0,0,40,0</On>
+                </OnPlatform>
+            </Grid.Margin>
+            <StackLayout x:Name="ContainerStackLayout" Orientation="Vertical" VerticalOptions="FillAndExpand" Spacing="0">
+                <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online,Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red">
+                    <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" BackgroundColor="Black">
+                    <Button x:Name="GettingStartedButton" Text="{i18n:Translate GettingStarted}" Clicked="GettingStartedButton_OnClicked" BackgroundColor="Green" TextColor="White" FontSize="12" Margin="0"></Button>
+                    <Button x:Name="DocsButton" Text="{i18n:Translate Documentation}" Clicked="DocsButton_OnClicked" BackgroundColor="SlateGray" TextColor="Black" FontSize="10" Margin="5"></Button>
+                    <Button x:Name="ReportButton" Text="{i18n:Translate ReportIssue}" Clicked="ReportButton_OnClicked" BackgroundColor="SlateGray"  TextColor="Black" Margin="5" FontSize="10"></Button>
+                </StackLayout>
+                <WebView x:Name="HelpWebView" Source="{i18n:Translate SupportStartLink}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"></WebView>
+                <StackLayout Orientation="Horizontal" BackgroundColor="Black" Margin="0" Padding="5" VerticalOptions="End"
+                             HorizontalOptions="FillAndExpand">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="TapGestureRecognizer_OnTapped" />
+                    </StackLayout.GestureRecognizers>
+                    <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" Margin="5" Padding="5">
+                        <Label Text="{x:Static models:IconFont.CloseCircleOutline}"
+                               FontFamily="{StaticResource MaterialFontFamily}" TextColor="WhiteSmoke" FontSize="24"
+                               VerticalTextAlignment="Center" />
+                        <Label Text="{i18n:Translate Close}" TextColor="WhiteSmoke" FontSize="18"
+                               VerticalTextAlignment="Center" />
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+            <StackLayout x:Name="OptionsStackLayout" Orientation="Vertical" IsVisible="{Binding ShowOptions}" BackgroundColor="LightYellow" VerticalOptions="Start" Margin="0, 0, 0, 5" Padding="15">
+                <Label Text="{i18n:Translate FilterByTag}" TextColor="DarkSlateGray" Margin="10, 10, 0, 0"></Label>
+                <Picker x:Name="TagFilterPicker" ItemsSource="{Binding TagsCollection}" TextColor="DarkSlateGray" BackgroundColor="White" Margin="40, 10, 0, 0"></Picker>
+                <StackLayout Orientation="Vertical" Margin="0, 10, 0, 0">
+                    <Label Text="{i18n:Translate PicturesPerPage}" TextColor="DarkSlateGray" Margin="10, 10, 0, 0"></Label>
+                    <Label x:Name="ItemsPerPageLabel" Text="{Binding ItemsPerPage}" TextColor="Black" FontSize="18" HorizontalOptions="Center"></Label>
+                    <Slider x:Name="ItemsPerPageSlider"  BackgroundColor="White" Margin="40, 10, 0, 10" Maximum="64" Minimum="4" Value="{Binding ItemsPerPage}"></Slider>
+                </StackLayout>
+                <StackLayout Orientation="Vertical" Margin="0, 20, 0, 10">
+                    
+                </StackLayout>
+            </StackLayout>
+            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                      Opacity="0.8" VerticalOptions="FillAndExpand"
+                                      HorizontalOptions="FillAndExpand" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

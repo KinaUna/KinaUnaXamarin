@@ -13,6 +13,7 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private bool _online;
         private List<string> _contextAutoSuggestList;
         private List<string> _tagsAutoSuggestList;
+        private bool _isSaving;
 
         public AddContactViewModel()
         {
@@ -54,6 +55,12 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
 
         public List<string> AccessLevelList
         {

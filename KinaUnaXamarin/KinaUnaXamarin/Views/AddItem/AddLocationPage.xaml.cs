@@ -120,7 +120,7 @@ namespace KinaUnaXamarin.Views.AddItem
             SaveLocationButton.IsEnabled = false;
             CancelLocationButton.IsEnabled = false;
             _viewModel.IsBusy = true;
-
+            _viewModel.IsSaving = true;
 
             Location location = new Location();
             
@@ -158,7 +158,9 @@ namespace KinaUnaXamarin.Views.AddItem
             DateTime locationTime = new DateTime(LocationDatePicker.Date.Year, LocationDatePicker.Date.Month, LocationDatePicker.Date.Day, LocationTimePicker.Time.Hours, LocationTimePicker.Time.Minutes, 0);
             location.Date = locationTime;
             Location newLocation = await ProgenyService.SaveLocation(location);
-            
+            _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
+
             ErrorLabel.IsVisible = true;
             if (newLocation.LocationId == 0)
             {
@@ -178,9 +180,10 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelLocationButton.Text = "Ok";
                 CancelLocationButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelLocationButton.IsEnabled = true;
+                await Shell.Current.Navigation.PopModalAsync();
             }
 
-            _viewModel.IsBusy = false;
+            
         }
 
         private async void CancelLocationButton_OnClicked(object sender, EventArgs e)

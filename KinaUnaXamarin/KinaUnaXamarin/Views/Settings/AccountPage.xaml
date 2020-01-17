@@ -7,6 +7,7 @@
              mc:Ignorable="d"
              xmlns:i18n="clr-namespace:KinaUnaXamarin.Helpers"
              xmlns:models="clr-namespace:KinaUnaXamarin.Models;assembly=KinaUnaXamarin"
+             xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Views.Settings.AccountPage"
              Visual="Material"
              Title="{i18n:Translate Account}"
@@ -18,11 +19,26 @@
         <i18n:InverseBoolConverter x:Key="InverseBoolConverter" />
     </ContentPage.Resources>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" IconImageSource="reloadicon.png"
-                     Clicked="ReloadToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" IconImageSource="addicon.png" Clicked="AddItemToolbarButton_OnClicked" />
-        <ToolbarItem x:Name="ProgenyToolBarItem" IconImageSource="childicon.png"
-                     Clicked="ProgenyToolBarItem_OnClicked" />
+        <ToolbarItem x:Name="HelpToolbarButton" Text="Help" Clicked="HelpToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HelpCircle}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ReloadToolbarButton" Text="Refresh" Clicked="ReloadToolbarButton_OnClicked">
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Reload}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="AddItemToolbarButton" Text="Add" Clicked="AddItemToolbarButton_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.Plus}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
+        <ToolbarItem x:Name="ProgenyToolBarItem" Text="{Binding Progeny.NickName}" Clicked="ProgenyToolBarItem_OnClicked" >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HumanChild}"></FontImageSource>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView BackgroundColor="WhiteSmoke">
@@ -71,7 +87,9 @@
                         <Button x:Name="EditButton" Text="{x:Static models:IconFont.AccountEdit}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DarkGreen" Clicked="EditButton_OnClicked"></Button>
                         <Button x:Name="CancelButton" Text="{x:Static models:IconFont.Cancel}" FontFamily="{StaticResource MaterialFontFamily}" FontSize="22" TextColor="White" BackgroundColor="DimGray" Clicked="CancelButton_OnClicked" IsVisible="{Binding EditMode}"></Button>
                     </StackLayout>
-                    <ActivityIndicator x:Name="AccountAcitivityIndicator" IsVisible="{Binding IsBusy}" IsRunning="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+                    <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
+                                              Opacity="0.8" VerticalOptions="FillAndExpand"
+                                              HorizontalOptions="FillAndExpand" />
                 </Grid>
                 <!--<Label x:Name="MessageLabel" Text="{Binding Message}" TextColor="Blue" Margin="10"></Label>-->
                 <Button x:Name="LogInButton" Command="{Binding LoginCommand}" IsVisible="{Binding LoggedIn,Converter={StaticResource InverseBoolConverter}}" Text="{i18n:Translate LogInOrRegister}" BackgroundColor="#4caf50" TextColor="White" HeightRequest="60" FontSize="18" Margin="5"></Button>

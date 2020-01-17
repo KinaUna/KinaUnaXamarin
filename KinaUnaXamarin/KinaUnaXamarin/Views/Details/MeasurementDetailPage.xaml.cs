@@ -227,6 +227,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime mesDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay);
                 _viewModel.CurrentMeasurement.Date = mesDate;
@@ -256,6 +257,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Measurement resultMeasurement = await ProgenyService.UpdateMeasurement(_viewModel.CurrentMeasurement);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultMeasurement != null)  // Todo: Error message if update fails.
                 {

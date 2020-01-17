@@ -122,6 +122,7 @@ namespace KinaUnaXamarin.Views.AddItem
             SaveFriendButton.IsEnabled = false;
             CancelFriendButton.IsEnabled = false;
             _viewModel.IsBusy = true;
+            _viewModel.IsSaving = true;
 
 
             Friend friend = new Friend();
@@ -163,7 +164,9 @@ namespace KinaUnaXamarin.Views.AddItem
             // Upload Friend object to add it to the database.
             
             Friend newFriend = await ProgenyService.SaveFriend(friend);
-            
+            _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
+
             ErrorLabel.IsVisible = true;
             if (newFriend.FriendId == 0)
             {
@@ -183,9 +186,10 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelFriendButton.Text = "Ok";
                 CancelFriendButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelFriendButton.IsEnabled = true;
+                await Shell.Current.Navigation.PopModalAsync();
             }
 
-            _viewModel.IsBusy = false;
+            
         }
 
         private async void CancelFriendButton_OnClicked(object sender, EventArgs e)

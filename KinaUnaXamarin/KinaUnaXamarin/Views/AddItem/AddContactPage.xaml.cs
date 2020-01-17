@@ -120,7 +120,7 @@ namespace KinaUnaXamarin.Views.AddItem
             SaveContactButton.IsEnabled = false;
             CancelContactButton.IsEnabled = false;
             _viewModel.IsBusy = true;
-
+            _viewModel.IsSaving = true;
 
             Contact contact = new Contact();
             
@@ -177,7 +177,9 @@ namespace KinaUnaXamarin.Views.AddItem
 
             // Upload Contact object to add it to the database.
             Contact newContact = await ProgenyService.SaveContact(contact);
-            
+            _viewModel.IsBusy = false;
+            _viewModel.IsSaving = false;
+
             ErrorLabel.IsVisible = true;
             if (newContact.ContactId == 0)
             {
@@ -197,9 +199,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 CancelContactButton.Text = "Ok";
                 CancelContactButton.BackgroundColor = Color.FromHex("#4caf50");
                 CancelContactButton.IsEnabled = true;
+                await Shell.Current.Navigation.PopModalAsync();
             }
-
-            _viewModel.IsBusy = false;
         }
 
         private async void CancelContactButton_OnClicked(object sender, EventArgs e)

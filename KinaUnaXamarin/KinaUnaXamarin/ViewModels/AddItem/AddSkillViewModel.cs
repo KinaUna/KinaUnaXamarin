@@ -15,6 +15,8 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         private bool _online;
         private DateTime _date;
         private List<string> _categoryAutoSuggestList;
+        private bool _isSaving;
+
 
         public AddSkillViewModel()
         {
@@ -54,7 +56,13 @@ namespace KinaUnaXamarin.ViewModels.AddItem
         }
 
         public ObservableCollection<Progeny> ProgenyCollection { get; set; }
-        
+
+        public bool IsSaving
+        {
+            get => _isSaving;
+            set => SetProperty(ref _isSaving, value);
+        }
+
         public List<string> AccessLevelList {
 
             get => _accessLevelList;

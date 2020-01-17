@@ -232,6 +232,7 @@ namespace KinaUnaXamarin.Views.Details
             {
                 _viewModel.EditMode = false;
                 _viewModel.IsBusy = true;
+                _viewModel.IsSaving = true;
 
                 DateTime noteDate = new DateTime(_viewModel.DateYear, _viewModel.DateMonth, _viewModel.DateDay, _viewModel.DateHours, _viewModel.DateMinutes, 0);
                 _viewModel.CurrentNote.CreatedDate = noteDate;
@@ -245,6 +246,7 @@ namespace KinaUnaXamarin.Views.Details
                 // Save changes.
                 Note resultNote = await ProgenyService.UpdateNote(_viewModel.CurrentNote);
                 _viewModel.IsBusy = false;
+                _viewModel.IsSaving = false;
                 EditButton.Text = IconFont.CalendarEdit;
                 if (resultNote != null)  // Todo: Error message if update fails.
                 {

@@ -151,8 +151,7 @@ namespace KinaUnaXamarin.Views.AddItem
         {
             _viewModel.IsBusy = true;
             _viewModel.IsSaving = true;
-            Progeny progeny = ProgenyCollectionView.SelectedItem as Progeny;
-            if (progeny != null)
+            if (ProgenyCollectionView.SelectedItem is Progeny progeny)
             {
                 DateTime start = new DateTime(_viewModel.StartYear, _viewModel.StartMonth, _viewModel.StartDay, _viewModel.StartHours, _viewModel.StartMinutes, 0);
                 DateTime end = new DateTime(_viewModel.EndYear, _viewModel.EndMonth, _viewModel.EndDay, _viewModel.EndHours, _viewModel.EndMinutes, 0);
@@ -177,6 +176,8 @@ namespace KinaUnaXamarin.Views.AddItem
                 {
                     // Todo: Translate messages.
                     saveEvent = await ProgenyService.SaveCalendarEvent(saveEvent);
+                    _viewModel.IsSaving = false;
+                    _viewModel.IsBusy = false;
                     if (saveEvent.EventId == 0)
                     {
                         var ci = CrossMultilingual.Current.CurrentCultureInfo;
@@ -198,15 +199,15 @@ namespace KinaUnaXamarin.Views.AddItem
                 else
                 {
                     // Todo: Translate message.
+                    _viewModel.IsSaving = false;
+                    _viewModel.IsBusy = false;
                     ErrorLabel.Text = $"Error: No internet connection. Calendar Event for {progeny.NickName} was not saved. Try again later.";
                     ErrorLabel.BackgroundColor = Color.Red;
                 }
-                
+                _viewModel.IsSaving = false;
+                _viewModel.IsBusy = false;
                 ErrorLabel.IsVisible = true;
             }
-
-            _viewModel.IsSaving = false;
-            _viewModel.IsBusy = false;
         }
 
         private void LocationEntry_OnTextChanged(object sender, AutoSuggestBoxTextChangedEventArgs e)
