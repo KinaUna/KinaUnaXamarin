@@ -67,6 +67,7 @@
     <MtouchArch>ARM64</MtouchArch>
     <CodesignKey>Apple Development: PER ROSING MOGENSEN (25HXMLS95A)</CodesignKey>
     <OptimizePNGs>true</OptimizePNGs>
+    <CodesignProvision>iOS Team Provisioning Profile: com.kinauna.xamarin</CodesignProvision>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
     <AppExtensionDebugBundleId />

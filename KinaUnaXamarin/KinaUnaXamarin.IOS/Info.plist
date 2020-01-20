@@ -7,9 +7,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.kinauna.xamarin</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.84</string>
+	<string>1.0.85</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.84</string>
+	<string>1.0.85</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -26,6 +26,7 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>

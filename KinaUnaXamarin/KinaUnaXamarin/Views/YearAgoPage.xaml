@@ -19,7 +19,8 @@
         <viewModels:TimelineFeedViewModel></viewModels:TimelineFeedViewModel>
     </ContentPage.BindingContext>
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="HelpToolbarButton" Text="Help" Clicked="HelpToolbarButton_OnClicked">
+        <ToolbarItem x:Name="HelpToolbarButton" Text="Help
+                     " Clicked="HelpToolbarButton_OnClicked">
             <ToolbarItem.IconImageSource>
                 <FontImageSource FontFamily="{StaticResource MaterialFontFamily}" Glyph="{x:Static models:IconFont.HelpCircle}"></FontImageSource>
             </ToolbarItem.IconImageSource>

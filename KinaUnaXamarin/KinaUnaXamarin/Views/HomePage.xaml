@@ -371,72 +371,168 @@
                                 </StackLayout>
                             </Grid>
                             <StackLayout x:Name="AgeInfoStackLayout" BackgroundColor="White" Padding="10" IsVisible="False">
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameYears" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" Margin="5, 0" />
-                                    <Label x:Name="ProgenyYears" Text="{Binding Years}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate YearsOld}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMonth" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMonths" Text="{Binding Months}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate MonthsOld}" TextColor="DarkSlateGray" Margin="5, 0" />
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyWeeksName" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                    <Label x:Name="ProgenyWeeks" Text="{Binding Weeks[0]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate WeeksAnd}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                    <Label x:Name="ProgenyWeeksDays" Text="{Binding Weeks[1]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate DaysOld}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                    <Label x:Name="ProgenyDays" Text="{Binding Days}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate DaysOld}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                    <Label x:Name="ProgenyHours" Text="{Binding Hours}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate HoursOld}" TextColor="DarkSlateGray" Margin="5, 0"/>
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMinutes" Text="{Binding Minutes}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate MinutesOld}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMilestoneWeeks" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneWeeks0" Text="{Binding WeeksMileStone[0]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate Weeks}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneWeeks1" Text="{Binding WeeksMileStone[1]}" TextColor="Green" />
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMilestoneDays" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneDays0" Text="{Binding DaysMileStone[0]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate Days}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneDays1" Text="{Binding DaysMileStone[1]}" TextColor="Green" />
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMilestoneHours" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray"  Margin="5, 0" />
-                                    <Label x:Name="ProgenyMilestoneHours0" Text="{Binding HoursMileStone[0]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate Hours}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneHours1" Text="{Binding HoursMileStone[1]}" TextColor="Green" />
-                                </FlexLayout>
-                                <FlexLayout Wrap="Wrap">
-                                    <Label x:Name="ProgenyNameMilestoneMinutes" Text="{Binding Progeny.NickName}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneMinutes0" Text="{Binding MinutesMileStone[0]}" TextColor="Green" />
-                                    <Label Text="{i18n:Translate Minutes}" TextColor="DarkSlateGray"  Margin="5, 0"/>
-                                    <Label x:Name="ProgenyMilestoneMinutes1" Text="{Binding MinutesMileStone[1]}" TextColor="Green" />
-                                </FlexLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameYears" LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyYears" Text="{Binding Years}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate YearsOld}" TextColor="DarkSlateGray"/>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal" >
+                                    <Label x:Name="ProgenyNameMonth" LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMonths" Text="{Binding Months}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate MonthsOld}" TextColor="DarkSlateGray" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyWeeksName" LineBreakMode="WordWrap" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyWeeks" Text="{Binding Weeks[0]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate WeeksAnd}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyWeeksDays" Text="{Binding Weeks[1]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate DaysOld}" TextColor="DarkSlateGray" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameDays" LineBreakMode="WordWrap" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray"/>
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyDays" Text="{Binding Days}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate DaysOld}" TextColor="DarkSlateGray" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameHours" LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyHours" Text="{Binding Hours}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate HoursOld}" TextColor="DarkSlateGray" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameMinutes" LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate IsNow}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMinutes" Text="{Binding Minutes}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate MinutesOld}" TextColor="DarkSlateGray" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameMilestoneWeeks" LineBreakMode="WordWrap" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneWeeks0" Text="{Binding WeeksMileStone[0]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate Weeks}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneWeeks1" Text="{Binding WeeksMileStone[1]}" TextColor="Green" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameMilestoneDays" LineBreakMode="WordWrap">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green" ></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneDays0" Text="{Binding DaysMileStone[0]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate Days}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneDays1" Text="{Binding DaysMileStone[1]}" TextColor="Green" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameMilestoneHours" LineBreakMode="WordWrap" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneHours0" Text="{Binding HoursMileStone[0]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate Hours}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneHours1" Text="{Binding HoursMileStone[1]}" TextColor="Green" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label x:Name="ProgenyNameMilestoneMinutes" LineBreakMode="WordWrap" >
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Progeny.NickName}" TextColor="Green"></Span>
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate WillBe}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneMinutes0" Text="{Binding MinutesMileStone[0]}" TextColor="Green" />
+                                                <Span Text=" "></Span>
+                                                <Span Text="{i18n:Translate Minutes}" TextColor="DarkSlateGray" />
+                                                <Span Text=" "></Span>
+                                                <Span x:Name="ProgenyMilestoneMinutes1" Text="{Binding MinutesMileStone[1]}" TextColor="Green" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </StackLayout>
                             </StackLayout>
                             <StackLayout x:Name="RandomPictureStackLayout" BackgroundColor="White" Padding="10" IsVisible="False">
                                 <forms:CachedImage HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Margin="0, 0, 0, 10"
