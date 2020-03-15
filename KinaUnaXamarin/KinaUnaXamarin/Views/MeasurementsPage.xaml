@@ -131,9 +131,7 @@
                     <Button x:Name="SetOptionsButton" Text="{i18n:Translate Save}" Clicked="SetOptionsButton_OnClicked" BackgroundColor="DarkGreen" TextColor="White"></Button>
                 </StackLayout>
             </StackLayout>
-            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
-                                      Opacity="0.8" VerticalOptions="FillAndExpand"
-                                      HorizontalOptions="FillAndExpand" />
+            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

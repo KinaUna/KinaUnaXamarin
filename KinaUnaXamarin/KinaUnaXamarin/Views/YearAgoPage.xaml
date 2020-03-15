@@ -355,7 +355,7 @@
                           ItemSelected="TimeLineListView_OnItemSelected">
                 </ListView>
             </StackLayout>
-            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
+            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

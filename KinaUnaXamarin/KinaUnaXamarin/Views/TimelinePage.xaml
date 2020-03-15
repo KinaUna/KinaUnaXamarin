@@ -371,7 +371,8 @@
                 <Label Text="{i18n:Translate ShowTimelineBefore}"></Label>
                 <DatePicker x:Name="TimelineStartDatePicker" MinimumDate="{Binding Progeny.BirthDay}" Format="dd MMM yyyy" DateSelected="TimelineStartDatePicker_OnDateSelected" BackgroundColor="White" TextColor="Black"></DatePicker>
             </StackLayout>
-            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
+            <!--<controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False"/>-->
+            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

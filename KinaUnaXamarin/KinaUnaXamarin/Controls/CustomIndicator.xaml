@@ -8,7 +8,7 @@
              xmlns:controls="clr-namespace:KinaUnaXamarin.Controls;assembly=KinaUnaXamarin"
              x:Class="KinaUnaXamarin.Controls.CustomIndicator">
   <ContentView.Content>
-      <Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" IsEnabled="False">
+      <Grid VerticalOptions="End" HorizontalOptions="Center" IsEnabled="False" MinimumHeightRequest="100">
            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="True" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
           <!--<Label Text="{i18n:Translate Saving}" VerticalOptions="End" HorizontalOptions="Center" Margin="0, 0, 0, 100" TextColor="White" FontSize="24" BackgroundColor="Black"/>-->
       </Grid>

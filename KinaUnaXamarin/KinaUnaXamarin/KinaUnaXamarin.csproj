@@ -27,7 +27,7 @@
     <PackageReference Include="Xamarin.FFImageLoading.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Svg.Forms" Version="2.4.11.982" />
     <PackageReference Include="Xamarin.FFImageLoading.Transformations" Version="2.4.11.982" />
-    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991477" />  
+    <PackageReference Include="Xamarin.Forms" Version="4.4.0.991537" />  
     <PackageReference Include="Xamarin.Essentials" Version="1.4.0-pre2" />  
     <PackageReference Include="Xamarin.Forms.GoogleMaps" Version="3.3.0" />
   </ItemGroup>

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.85" package="com.kinauna.xamarin" android:installLocation="auto" android:versionCode="85">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="1.0.86" package="com.kinauna.xamarin" android:installLocation="auto" android:versionCode="86">
 	<uses-sdk android:minSdkVersion="25" android:targetSdkVersion="28" />
 	<application android:label="KinaUna Xamarin" android:icon="@drawable/icon_large_beta">
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.kinauna.xamarin.fileprovider" android:exported="false" android:grantUriPermissions="true">

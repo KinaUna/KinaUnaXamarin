@@ -145,9 +145,7 @@
             <StackLayout Grid.Row="1" IsVisible="{Binding AnyChildren, Converter={StaticResource InverseBoolConverter}}">
                 <Label Text="{i18n:Translate NoChildrenFound}"></Label>
             </StackLayout>
-            <controls:CustomIndicator Grid.Row="1" IsEnabled="False" IsVisible="{Binding IsBusy}"
-                                      Opacity="0.8" VerticalOptions="FillAndExpand"
-                                      HorizontalOptions="FillAndExpand" />
+            <controls:CustomLoader Grid.Row="1" x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

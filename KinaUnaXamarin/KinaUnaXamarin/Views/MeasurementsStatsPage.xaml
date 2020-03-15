@@ -85,9 +85,7 @@
                 <Picker x:Name="ChartTypePicker" Margin="40, 10, 0, 0" ItemsSource="{Binding ChartTypeList}" BackgroundColor="White" TextColor="Black"></Picker>
                 <Button x:Name="SubmitOptionsButton" Clicked="SubmitOptionsButton_OnClicked" Text="{i18n:Translate Apply}" BackgroundColor="DarkGreen" TextColor="White"></Button>
             </StackLayout>
-            <controls:CustomIndicator IsEnabled="False" IsVisible="{Binding IsBusy}"
-                                      Opacity="0.8" VerticalOptions="FillAndExpand"
-                                      HorizontalOptions="FillAndExpand" />
+            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

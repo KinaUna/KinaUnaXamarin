@@ -683,7 +683,8 @@
             <StackLayout x:Name="OfflineStackLayout" IsVisible="{Binding Online, Converter={StaticResource InverseBoolConverter}}" BackgroundColor="Red" VerticalOptions="Start">
                 <Label Text="{i18n:Translate OfflineMessage}" TextColor="White" FontSize="16" HorizontalOptions="Center"></Label>
             </StackLayout>
-            <controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />
+            <!--<controls:CustomIndicator x:Name="HomeAcitivityIndicator" IsVisible="{Binding IsBusy}" IsEnabled="False" />-->
+            <controls:CustomLoader x:Name="Loader" Source="icon.png" IsEnabled="False" IsVisible="{Binding IsBusy}" IsRunning="True" VerticalOptions="End" HorizontalOptions="Center" Margin="50"></controls:CustomLoader>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

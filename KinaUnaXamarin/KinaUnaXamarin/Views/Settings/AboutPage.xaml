@@ -31,7 +31,7 @@
             <StackLayout Spacing="25" Padding="15">
                 <Image Source="KinaUnaLogo_1536x768.png" Aspect="AspectFit" VerticalOptions="Start"
                        HorizontalOptions="Center" Margin="0, 10, 0, 20" />
-                <Label Text="Kina Una Xamarin App" FontAttributes="Bold"
+                <Label Text="Kina Una Xamarin App" FontAttributes="Bold" FontSize="14"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
                        TextColor="DarkSlateGray"/>
@@ -39,25 +39,45 @@
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
                        TextColor="DarkSlateGray"/>
-                <Label Text="https://www.kinauna.com"
+                <Label x:Name="WebsiteLinkLabel" Text="https://www.kinauna.com" TextDecorations="Underline"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
-                       TextColor="DarkSlateGray"/>
+                       TextColor="DarkSlateGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="WebsiteLinkLabel_Tapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text="Support:" FontAttributes="Bold" Margin="0, 20, 0, 0"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
                        TextColor="DarkSlateGray"/>
-                <Label Text="support@kinauna.com"
+                <Label x:Name="SupportLinkLabel" Text="https://support.kinauna.com" TextDecorations="Underline"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
-                       TextColor="DarkSlateGray"/>
+                       TextColor="DarkSlateGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SupportLinkLabel_Tapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
+                <Label x:Name="SupportEmailLabel" Text="support@kinauna.com" TextDecorations="Underline"
+                       VerticalOptions="Start" 
+                       HorizontalOptions="CenterAndExpand"
+                       TextColor="DarkSlateGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SupportEmailLabel_Tapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label Text="Source Code:" Margin="0, 20, 0, 0"
                        HorizontalOptions="Center" LineBreakMode="WordWrap" FontAttributes="Bold"
                        TextColor="DarkSlateGray"></Label>
-                <Label Text="https://github.com/KinaUna/KinaUnaXamarin"
+                <Label x:Name="SourceCodeLinkLabel" Text="https://github.com/KinaUna/KinaUnaXamarin" TextDecorations="Underline"
                        HorizontalOptions="Center"
                        LineBreakMode="WordWrap"
-                       TextColor="DarkSlateGray"></Label>
+                       TextColor="DarkSlateGray">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="SourceCodeLinkLabel_Tapped"></TapGestureRecognizer>
+                    </Label.GestureRecognizers>
+                </Label>
                 <Label x:Name="VersionLabel" Margin="0, 20, 0, 0"
                        VerticalOptions="Start" 
                        HorizontalOptions="CenterAndExpand"
