@@ -392,7 +392,7 @@
       <Version>4.4.10-beta</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Essentials">
-      <Version>1.4.0-pre2</Version>
+      <Version>1.5.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.FFImageLoading.Forms">
       <Version>2.4.11.982</Version>
@@ -404,7 +404,7 @@
       <Version>2.4.11.982</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms">
-      <Version>4.4.0.991537</Version>
+      <Version>4.5.0.356</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.GoogleMaps">
       <Version>3.3.0</Version>
