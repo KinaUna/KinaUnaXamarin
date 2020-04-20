@@ -78,7 +78,7 @@
       <Version>1.0.7</Version>
     </PackageReference>
     <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox">
-      <Version>1.0.1</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="glidex.forms">
       <Version>2.0.1.394</Version>

@@ -360,7 +360,7 @@
       <Version>1.0.7</Version>
     </PackageReference>
     <PackageReference Include="dotMorten.Xamarin.Forms.AutoSuggestBox">
-      <Version>1.0.1</Version>
+      <Version>1.1.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Azure.NotificationHubs">
       <Version>3.3.0</Version>
