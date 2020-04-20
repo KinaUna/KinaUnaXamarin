@@ -4,6 +4,7 @@ using IdentityModel.OidcClient.Browser;
 using System.Diagnostics;
 using AuthenticationServices;
 using System;
+using System.Threading;
 using UIKit;
 
 namespace KinaUnaXamarin.IOS
@@ -19,7 +20,7 @@ namespace KinaUnaXamarin.IOS
             Debug.WriteLine("ctor");
         }
 
-        public Task<BrowserResult> InvokeAsync(BrowserOptions options)
+        public Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
         {
             var tcs = new TaskCompletionSource<BrowserResult>();
 

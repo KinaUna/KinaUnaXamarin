@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using IdentityModel.Client;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
 using KinaUnaXamarin.Extensions;
@@ -146,7 +147,7 @@ namespace KinaUnaXamarin.Services
             var options = new OidcClientOptions
             {
                 Authority = Constants.AuthServerUrl,
-                ClientId = "kinaunaxamarin",
+                ClientId = "kinaunaxamarin2",
                 RedirectUri = "kinaunaxamarinclients://callback",
                 PostLogoutRedirectUri = "kinaunaxamarinclients://callback",
                 Scope = "openid profile email firstname middlename lastname timezone viewchild kinaunaprogenyapi kinaunamediaapi",

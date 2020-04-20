@@ -7,9 +7,9 @@
 	<key>CFBundleIdentifier</key>
 	<string>com.kinauna.xamarin</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0.86</string>
+	<string>1.0.87</string>
 	<key>CFBundleVersion</key>
-	<string>1.0.86</string>
+	<string>1.0.87</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -41,8 +41,6 @@
 	<array>
 		<string>materialdesignicons-webfont.ttf</string>
 	</array>
-	<key>XSAppIconAssets</key>
-	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Can we use your location at all times?</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
@@ -68,5 +66,7 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>XSAppIconAssets</key>
+	<string>Assets.xcassets/AppIcon.appiconset</string>
 </dict>
 </plist>

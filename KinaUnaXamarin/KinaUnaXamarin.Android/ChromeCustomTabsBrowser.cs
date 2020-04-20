@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -6,6 +7,7 @@ using Android.Graphics;
 using Android.Support.CustomTabs;
 using IdentityModel.OidcClient.Browser;
 using Plugin.CurrentActivity;
+// using AndroidX.Browser.CustomTabs;
 
 namespace KinaUnaXamarin.Droid
 {
@@ -24,7 +26,7 @@ namespace KinaUnaXamarin.Droid
             _manager = new CustomTabsActivityManager(_context);
         }
 
-        public Task<BrowserResult> InvokeAsync(BrowserOptions options)
+        public Task<BrowserResult> InvokeAsync(BrowserOptions options, CancellationToken cancellationToken = default)
         {
             var task = new TaskCompletionSource<BrowserResult>();
 
